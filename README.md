@@ -19,7 +19,7 @@
 -  **Speed:** 2299MHz
 
 # Setup
-After you have downloaded the zip file, you will want to open the folder in your prefered code editing software. Once it is open go into the config.json file and change the varables to fit your needs. Don't forget to create a .env file to store your token in.
+After you have downloaded the zip file, you will want to open the folder in your preferred code editing software. Once it is open go into the config.json file and change the variables to fit your needs. Do not forget to create a .env file to store your token in.
 
 # Bot credits:
 - Scripting:
