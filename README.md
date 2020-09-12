@@ -1,5 +1,5 @@
 # Billybobbeep
-![](billy.mp4)
+![](billy.png)
 
 # About:
 - Billy is a discord.js operating 
