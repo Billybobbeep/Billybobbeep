@@ -7,8 +7,6 @@ const configFile = require('./config.json');
 let prefix = configFile.prefix;
 let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
 
-// used to store playlists for different guilds
-const guilds = {};
 /////////////////////////////
 //////Exporting Modules//////
 /////////////////////////////
