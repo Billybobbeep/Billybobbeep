@@ -23,9 +23,9 @@ After you have downloaded the zip file, you will want to open the folder in your
 
 # Bot credits:
 - Scripting:
-    * Spoink#2793
-    * Will Os#9857
-    * Wow13524#0001
+    Spoink#2793
+    Will Os#9857
+    Wow13524#0001
 
 - Name:
-    * wibbleywobbley♡#1564
+    wibbleywobbley♡#1564
