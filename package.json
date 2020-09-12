@@ -1,0 +1,43 @@
+{
+  "name": "spoinkbot",
+  "version": "1.1.0",
+  "main": "bot.js",
+  "author": "Spoink",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "#"
+  },
+  "description": "",
+  "dependencies": {
+    "@replit/database": "^2.0.0",
+    "circular-json": "^0.5.9",
+    "dateformat": "^3.0.3",
+    "discord.js": "^12.3.1",
+    "discord.js-commando": "^0.10.0",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "get-youtube-id": "^1.0.1",
+    "humanize-duration": "^3.23.1",
+    "mathjs": "^7.1.0",
+    "moment": "^2.27.0",
+    "moment-duration-format": "^2.3.2",
+    "mongo": "^0.1.0",
+    "mongoose": "^5.9.25",
+    "ms": "^2.1.2",
+    "node": "^14.5.0",
+    "node-superfetch": "^0.1.10",
+    "opusscript": "0.0.7",
+    "os": "^0.1.1",
+    "path": "^0.12.7",
+    "quick.db": "^7.1.1",
+    "random-puppy": "^1.1.0",
+    "request": "^2.88.2",
+    "schema": "^0.2.1",
+    "sequelize": "^6.3.3",
+    "sqlite": "^4.0.12",
+    "superfetch": "^1.1.1",
+    "uptimerobot": "^1.0.1",
+    "ytdl-core": "^3.2.0"
+  }
+}

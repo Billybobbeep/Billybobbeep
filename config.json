@@ -1,0 +1,53 @@
+{
+    "prefix" : "~",
+    "AutoRoleId" : "734491245908590644",
+
+    "WelcomeChannel" : "733588094418419752",
+    "MainChat" : "733588281375195228",
+    "RolesChannel" : "734486634682384465",
+    "PollChannel" : "734487565758890145",
+    "BotCommandsChannel" : "733595548577300542",
+    "AuxChannel" : "734493626482163813",
+    "RulesChannel" : "734486711609983017", 
+    "AnnouncementChannel" : "734486835509723156",
+    "MemesChannel" : "734487587456155758",
+    "CountingChannel" : "736252488298266644",
+    "JokesChannel" : "737771208376057881",
+    "LoggingChannel" : "738097180451274784",
+    "AllDayMusicChannel" : "734493691791671366",
+
+    "WelcomeChannelModeration" : true,
+    "AutoRole" : true,
+    "Moderation" : true,
+    "LogKicks" : false,
+    "LogBans" : false,
+    "SendLogs" : true,
+
+    "SpoinkID" : "697194959119319130",
+    "WibWobID" : "441613173003649028",
+
+    "TotalUserVoiceId" : "735083886693842969",
+    "MembersVoiceId" : "734706495618547721",
+    "BotsVoiceId" : "734706524752052226",
+    "ServerId" : "733442092667502613",
+    "OnlineVoiceId" : "752816692232585256",
+
+
+    "TickEmoji1" : "736952966447366154",
+    "TickEmoji2" : "736953079420813376",
+    "TickEmoji3" : "737044447455346759",
+    "CrossEmoji" : "736952985330122772",
+    "SlooshEmoji" : "734494003659014192",
+    "PartyBlobEmoji" : "736953742686945331",
+    "SadBlob" : "736955688936276019",
+    "SmilingBlob" : "736955717508136980",
+    "AFK" : "736987444473495624",
+    "RainbowParty" : "736987055971893379",
+    "BonkEmoji" : "737044312692490351",
+    "CrazyBlobEmoji" : "737044282875314217",
+    "PatEmoji" : "736955688936276019",
+    "Siren" : "737325644945555557",
+    "Police2" : "737325681410572388",
+    "Police1" : "737325666172797060"
+
+}
