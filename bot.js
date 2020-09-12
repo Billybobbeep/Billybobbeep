@@ -1,3 +1,4 @@
+module.exports = async() {
 // [Varibles] //
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -185,3 +186,4 @@ client.on('guildMemberRemove', member => {
 });
 
 client.login(process.env.TOKEN);
+}
