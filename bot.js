@@ -1,4 +1,4 @@
-module.exports = async() {
+module.exports = async() => {
 // [Varibles] //
 const Discord = require('discord.js');
 const client = new Discord.Client();
