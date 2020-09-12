@@ -67,7 +67,8 @@ client.on('message', async message => {
 			msg.startsWith(prefix + 'cmds') ||
 			message.content.toLowerCase() == prefix + 'joins' ||
       message.content.toLowerCase() == prefix + 'leaderboard' ||
-			message.content.toLowerCase() == prefix + 'leaves'
+			message.content.toLowerCase() == prefix + 'leaves' ||
+			message.content.toLowerCase() == prefix + 'info'
 		)
 			return;
 		const commandFile = require(`./Commands/${command}.js`);
@@ -127,6 +128,10 @@ client.on('message', async message => {
 	if (message.content.toLowerCase() == prefix + 'leaves') {
 		const commandFile = require(`./Commands/musicCommands/24hMusic/leave.js`);
 		commandFile(message, client);
+	}
+	if (message.content.toLowerCase() == prefix + 'info') {
+		const commandFile = require(`./Embeds/info.js`);
+		commandFile(client, msg, args, prefix, message);
 	}
 });
 
