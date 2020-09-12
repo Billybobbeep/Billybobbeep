@@ -1,6 +1,6 @@
 # Billybobbeep
 ![](billy.png)
-![View full gif](billy.mp4)
+![View full gif](https://images-ext-1.discordapp.net/external/b75d2K9cz3qw-jyMCwp_zzjHkW-Ifonono_yQ3Zpk0s/https/i.imgur.com/t4iZ6wS.mp4)
 
 # About:
 - Billy is a discord.js operating 
