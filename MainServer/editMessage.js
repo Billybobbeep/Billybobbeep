@@ -25,7 +25,7 @@ module.exports = async(client) => {
 
             const embed = new Discord.MessageEmbed()
             .setTitle(`Message Edited`)
-            .setDescription(`**Old Content:** ${oldMessage.content}` +
+            .setDescription(`**Old Content:** ${oldMessage.content}\n` +
             `**New Content:** ${newMessage.content}\n` +
             `**Channel:** ${oldMessage.channel}\n` +
             `**Message ID:** ${newMessage.id}\n\n` +
