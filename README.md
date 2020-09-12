@@ -22,10 +22,10 @@
 After you have downloaded the zip file, you will want to open the folder in your prefered code editing software. Once it is open go into the config.json file and change the varables to fit your needs. Don't forget to create a .env file to store your token in.
 
 # Bot credits:
-- Scripting:\n
-    Spoink#2793\n
-    Will Os#9857\n
-    Wow13524#0001
+- Scripting:
+    * Spoink#2793
+    * Will Os#9857
+    * Wow13524#0001
 
-- Name:\n
-    wibbleywobbley♡#1564
+- Name:
+    * wibbleywobbley♡#1564
