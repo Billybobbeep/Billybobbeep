@@ -9,7 +9,7 @@ module.exports = async (client) => {
   client.on("message", async message => {
     if (message.author.bot) return; // ignore bots
     if (!message.content.toLowerCase().startsWith(configFile.prefix)) {
-      let xpFile = fs.readFile('proectdb.json', 'utf8', async function() {
+      let xpFile = fs.readFile('proectdb.json', 'utf8');
         var json = JSON.parse(xpFile);
         if (json.hasOwnProperty(message.author.id)) {
           let xpObject = json[message.author.id];
@@ -41,7 +41,6 @@ module.exports = async (client) => {
           }
           await fs.writeFile('proectdb.json', JSON.stringify(xpObject, null, 4), 'utf8').catch(err => console.log(err));
         }
-      });
     }
   });
 }
