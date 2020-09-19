@@ -6,15 +6,15 @@ module.exports = async(client) => {
     let prefix = configFile.prefix;
     
     client.on('messageUpdate', async (oldMessage, newMessage) => {
-        if (newMessage.guild.id !== configFile.ServerId) return;
-            if (newMessage.author.bot) return;
-            if (newMessage.content === null) {
+        if (oldMessage.guild.id !== configFile.ServerId) return;
+            if (oldMessage.author.bot) return;
+            if (oldMessage.content === null) {
                 const embed = new Discord.MessageEmbed()
             .setTitle(`Message Edited`)
             .setDescription(`**Old Content:** ${oldMessage.content}\n` +
             `**New Content:** *This message provided no text.*\n` +
             `**Channel:** ${oldMessage.channel}\n` +
-            `**Message ID:** ${newMessage.id}\n\n` +
+            `**Message ID:** ${oldMessage.id}\n\n` +
             `**Author:** ${oldMessage.author}\n` +
             `**Author Tag:** ${oldMessage.author.tag}\n` +
             `**Author ID:** ${oldMessage.author.id}`)
@@ -26,9 +26,9 @@ module.exports = async(client) => {
             const embed = new Discord.MessageEmbed()
             .setTitle(`Message Edited`)
             .setDescription(`**Old Content:** ${oldMessage.content}\n` +
-            `**New Content:** ${newMessage.content}\n` +
+            `**New Content:** ${oldMessage.content}\n` +
             `**Channel:** ${oldMessage.channel}\n` +
-            `**Message ID:** ${newMessage.id}\n\n` +
+            `**Message ID:** ${oldMessage.id}\n\n` +
             `**Author:** ${oldMessage.author}\n` +
             `**Author Tag:** ${oldMessage.author.tag}\n` +
             `**Author ID:** ${oldMessage.author.id}`)
