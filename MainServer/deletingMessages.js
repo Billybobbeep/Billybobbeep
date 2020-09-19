@@ -59,6 +59,7 @@ module.exports = async(message, Discord, client) => {
                   .setColor('#dbbf70')
         LoggingChannel.send(embed2)
     }
+    } 
     if (args[0]) {
         if (args[0].startsWith('discord.gg')) {
         message.delete()
@@ -277,5 +278,4 @@ module.exports = async(message, Discord, client) => {
                   .setColor('#dbbf70')
         LoggingChannel.send(embed2)
         }
-    }
 }
