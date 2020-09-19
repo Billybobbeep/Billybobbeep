@@ -13,4 +13,4 @@ server.get('/home/status', function(req, res) {
   res.sendFile(__dirname + "/Public/status.html");
 });
 
-server.listen(3000, () => { console.log("Billybobbeep is online") });
+server.listen(5000, () => { console.log("Billybobbeep is online") });
