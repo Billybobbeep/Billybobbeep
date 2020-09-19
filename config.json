@@ -21,7 +21,7 @@
     "Moderation" : true,
     "LogKicks" : false,
     "LogBans" : false,
-    "SendLogs" : true,
+    "SendLogs" : false,
 
     "SpoinkID" : "697194959119319130",
     "WibWobID" : "441613173003649028",

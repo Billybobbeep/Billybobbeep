@@ -30,9 +30,6 @@ client.once('ready', async () => {
 	const reactionRole1 = require('./MainServer/reactionRoles/main.js');
 	reactionRole1();
 
-  const levelSystem = require('./MainServer/levelSys/main.js');
-	levelSystem(client);
-
 	//Display activities in the correct order
 	let activities = [`${prefix}help`, `Work in progress.`],
 		i = 0;
@@ -133,6 +130,10 @@ client.on('message', async message => {
 		const commandFile = require(`./Embeds/info.js`);
 		commandFile(client, msg, args, prefix, message);
 	}
+  if (message.content.toLowerCase() == prefix + 'help') {
+		const commandFile = require(`./Embeds/help.js`);
+		commandFile(client, msg, args, prefix, message);
+	}
 });
 
 //Monitoring
@@ -140,7 +141,7 @@ client.on('message', async message => {
 client.on('message', message => {
 	//let BotStatusChannel = client.channels.cache.get(configFile.BotStatusChannel);
 	const reactMessages = require(`./MainServer/deletingMessages.js`);
-	reactMessages(message);
+	reactMessages(message, Discord, client);
 
 	if (
 		message.channel.id === configFile.PollChannel ||

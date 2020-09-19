@@ -1,5 +1,6 @@
 module.exports = async(client, message, Discord) => {
 
+if (message.author.id === '731498842813366304') return;
 const configFile = require('../config.json')
 let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
 

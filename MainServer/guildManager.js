@@ -1,5 +1,5 @@
 module.exports = async(client) => {
-  const configFile = require('../config.json')
+const configFile = require('../config.json')
 let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
 
   client.on("guildCreate", guild => {

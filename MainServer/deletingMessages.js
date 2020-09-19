@@ -1,7 +1,8 @@
 const configFile = require('../config.json')
 const spoink = configFile.SpoinkID;
-
-module.exports = async(message) => {
+let prefix = configFile.prefix;
+module.exports = async(message, Discord, client) => {
+  const LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
     if(message.author.bot) return;
 
         if (message.channel.id === configFile.RolesChannel) {
@@ -41,11 +42,22 @@ module.exports = async(message) => {
         const embed = new Discord.MessageEmbed()
                 .setTitle(`Billybobbeep | Invite Links`)
                 .setDescription(`We have detected that you have sent a discord invite link, if you would like to share your server inside of our server please contact one of the owners.\n` +
-                                `Detected Invite Link: ${message.content.toLowerCase()}\n` +
+                                `Detected Invite Link: **${message.content.toLowerCase()}**\n` +
                                 `Thanks, the Squiddies Staff Team.`)
                 .setTimestamp()
         message.author.send(embed)
-        spoink.send(embed)
+        const embed2 = new Discord.MessageEmbed()
+                  .setTitle(`Invite Link Detected`)
+                  .setDescription(`**Invite Link:** ${message.content.toLowerCase()}\n` +
+                  `**Message ID:** ${message.id}\n\n` +
+                  `**Channel:** ${message.channel}\n` +
+                  `**Channel ID:** ${message.channel.id}\n\n` +
+                  `**Author:** ${message.author}\n` +
+                  `**Author Tag:** ${message.author.tag}\n` +
+                  `**Author ID:** ${message.author.id}\n`)
+                  .setTimestamp()
+                  .setColor('#dbbf70')
+        LoggingChannel.send(embed2)
     }
     if (args[0]) {
         if (args[0].startsWith('discord.gg')) {
@@ -53,11 +65,22 @@ module.exports = async(message) => {
         const embed = new Discord.MessageEmbed()
                 .setTitle(`Billybobbeep | Invite Links`)
                 .setDescription(`We have detected that you have sent a discord invite link, if you would like to share your server inside of our server please contact one of the owners.\n` +
-                                `Detected Invite Link: ${message.content.toLowerCase()}\n` +
+                                `Detected Invite Link: **${message.content.toLowerCase()}**\n` +
                                 `Thanks, the Squiddies Staff Team.`)
                 .setTimestamp()
         message.author.send(embed)
-        spoink.send(embed)
+        const embed2 = new Discord.MessageEmbed()
+                  .setTitle(`Invite Link Detected`)
+                  .setDescription(`**Invite Link:** ${message.content.toLowerCase()}\n` +
+                  `**Message ID:** ${message.id}\n\n` +
+                  `**Channel:** ${message.channel}\n` +
+                  `**Channel ID:** ${message.channel.id}\n\n` +
+                  `**Author:** ${message.author}\n` +
+                  `**Author Tag:** ${message.author.tag}\n` +
+                  `**Author ID:** ${message.author.id}\n`)
+                  .setTimestamp()
+                  .setColor('#dbbf70')
+        LoggingChannel.send(embed2)
         }
     }
     if (args[1]) {
@@ -66,11 +89,22 @@ module.exports = async(message) => {
         const embed = new Discord.MessageEmbed()
                 .setTitle(`Billybobbeep | Invite Links`)
                 .setDescription(`We have detected that you have sent a discord invite link, if you would like to share your server inside of our server please contact one of the owners.\n` +
-                                `Detected Invite Link: ${message.content.toLowerCase()}\n` +
+                                `Detected Invite Link: **${message.content.toLowerCase()}**\n` +
                                 `Thanks, the Squiddies Staff Team.`)
                 .setTimestamp()
         message.author.send(embed)
-        spoink.send(embed)
+        const embed2 = new Discord.MessageEmbed()
+                  .setTitle(`Invite Link Detected`)
+                  .setDescription(`**Invite Link:** ${message.content.toLowerCase()}\n` +
+                  `**Message ID:** ${message.id}\n\n` +
+                  `**Channel:** ${message.channel}\n` +
+                  `**Channel ID:** ${message.channel.id}\n\n` +
+                  `**Author:** ${message.author}\n` +
+                  `**Author Tag:** ${message.author.tag}\n` +
+                  `**Author ID:** ${message.author.id}\n`)
+                  .setTimestamp()
+                  .setColor('#dbbf70')
+        LoggingChannel.send(embed2)
         }
     }
     if (args[2]) {
@@ -79,11 +113,22 @@ module.exports = async(message) => {
         const embed = new Discord.MessageEmbed()
                 .setTitle(`Billybobbeep | Invite Links`)
                 .setDescription(`We have detected that you have sent a discord invite link, if you would like to share your server inside of our server please contact one of the owners.\n` +
-                                `Detected Invite Link: ${message.content.toLowerCase()}\n` +
+                                `Detected Invite Link: **${message.content.toLowerCase()}**\n` +
                                 `Thanks, the Squiddies Staff Team.`)
                 .setTimestamp()
         message.author.send(embed)
-        spoink.send(embed)
+        const embed2 = new Discord.MessageEmbed()
+                  .setTitle(`Invite Link Detected`)
+                  .setDescription(`**Invite Link:** ${message.content.toLowerCase()}\n` +
+                  `**Message ID:** ${message.id}\n\n` +
+                  `**Channel:** ${message.channel}\n` +
+                  `**Channel ID:** ${message.channel.id}\n\n` +
+                  `**Author:** ${message.author}\n` +
+                  `**Author Tag:** ${message.author.tag}\n` +
+                  `**Author ID:** ${message.author.id}\n`)
+                  .setTimestamp()
+                  .setColor('#dbbf70')
+        LoggingChannel.send(embed2)
         }
     }
     if (args[3]) {
@@ -92,11 +137,22 @@ module.exports = async(message) => {
         const embed = new Discord.MessageEmbed()
                 .setTitle(`Billybobbeep | Invite Links`)
                 .setDescription(`We have detected that you have sent a discord invite link, if you would like to share your server inside of our server please contact one of the owners.\n` +
-                                `Detected Invite Link: ${message.content.toLowerCase()}\n` +
+                                `Detected Invite Link: **${message.content.toLowerCase()}**\n` +
                                 `Thanks, the Squiddies Staff Team.`)
                 .setTimestamp()
         message.author.send(embed)
-        spoink.send(embed)
+        const embed2 = new Discord.MessageEmbed()
+                  .setTitle(`Invite Link Detected`)
+                  .setDescription(`**Invite Link:** ${message.content.toLowerCase()}\n` +
+                  `**Message ID:** ${message.id}\n\n` +
+                  `**Channel:** ${message.channel}\n` +
+                  `**Channel ID:** ${message.channel.id}\n\n` +
+                  `**Author:** ${message.author}\n` +
+                  `**Author Tag:** ${message.author.tag}\n` +
+                  `**Author ID:** ${message.author.id}\n`)
+                  .setTimestamp()
+                  .setColor('#dbbf70')
+        LoggingChannel.send(embed2)
         }
     }
     if (args[4]) {
@@ -105,11 +161,22 @@ module.exports = async(message) => {
         const embed = new Discord.MessageEmbed()
                 .setTitle(`Billybobbeep | Invite Links`)
                 .setDescription(`We have detected that you have sent a discord invite link, if you would like to share your server inside of our server please contact one of the owners.\n` +
-                                `Detected Invite Link: ${message.content.toLowerCase()}\n` +
+                                `Detected Invite Link: **${message.content.toLowerCase()}**\n` +
                                 `Thanks, the Squiddies Staff Team.`)
                 .setTimestamp()
         message.author.send(embed)
-        spoink.send(embed)
+        const embed2 = new Discord.MessageEmbed()
+                  .setTitle(`Invite Link Detected`)
+                  .setDescription(`**Invite Link:** ${message.content.toLowerCase()}\n` +
+                  `**Message ID:** ${message.id}\n\n` +
+                  `**Channel:** ${message.channel}\n` +
+                  `**Channel ID:** ${message.channel.id}\n\n` +
+                  `**Author:** ${message.author}\n` +
+                  `**Author Tag:** ${message.author.tag}\n` +
+                  `**Author ID:** ${message.author.id}\n`)
+                  .setTimestamp()
+                  .setColor('#dbbf70')
+        LoggingChannel.send(embed2)
         }
     }
     if (args[5]) {
@@ -118,11 +185,22 @@ module.exports = async(message) => {
         const embed = new Discord.MessageEmbed()
                 .setTitle(`Billybobbeep | Invite Links`)
                 .setDescription(`We have detected that you have sent a discord invite link, if you would like to share your server inside of our server please contact one of the owners.\n` +
-                                `Detected Invite Link: ${message.content.toLowerCase()}\n` +
+                                `Detected Invite Link: **${message.content.toLowerCase()}**\n` +
                                 `Thanks, the Squiddies Staff Team.`)
                 .setTimestamp()
         message.author.send(embed)
-        spoink.send(embed)
+        const embed2 = new Discord.MessageEmbed()
+                  .setTitle(`Invite Link Detected`)
+                  .setDescription(`**Invite Link:** ${message.content.toLowerCase()}\n` +
+                  `**Message ID:** ${message.id}\n\n` +
+                  `**Channel:** ${message.channel}\n` +
+                  `**Channel ID:** ${message.channel.id}\n\n` +
+                  `**Author:** ${message.author}\n` +
+                  `**Author Tag:** ${message.author.tag}\n` +
+                  `**Author ID:** ${message.author.id}\n`)
+                  .setTimestamp()
+                  .setColor('#dbbf70')
+        LoggingChannel.send(embed2)
         }
     }
     if (args[6]) {
@@ -131,11 +209,22 @@ module.exports = async(message) => {
         const embed = new Discord.MessageEmbed()
                 .setTitle(`Billybobbeep | Invite Links`)
                 .setDescription(`We have detected that you have sent a discord invite link, if you would like to share your server inside of our server please contact one of the owners.\n` +
-                                `Detected Invite Link: ${message.content.toLowerCase()}\n` +
+                                `Detected Invite Link: **${message.content.toLowerCase()}**\n` +
                                 `Thanks, the Squiddies Staff Team.`)
                 .setTimestamp()
         message.author.send(embed)
-        spoink.send(embed)
+        const embed2 = new Discord.MessageEmbed()
+                  .setTitle(`Invite Link Detected`)
+                  .setDescription(`**Invite Link:** ${message.content.toLowerCase()}\n` +
+                  `**Message ID:** ${message.id}\n\n` +
+                  `**Channel:** ${message.channel}\n` +
+                  `**Channel ID:** ${message.channel.id}\n\n` +
+                  `**Author:** ${message.author}\n` +
+                  `**Author Tag:** ${message.author.tag}\n` +
+                  `**Author ID:** ${message.author.id}\n`)
+                  .setTimestamp()
+                  .setColor('#dbbf70')
+        LoggingChannel.send(embed2)
         }
     }
     if (args[7]) {
@@ -144,24 +233,49 @@ module.exports = async(message) => {
         const embed = new Discord.MessageEmbed()
                 .setTitle(`Billybobbeep | Invite Links`)
                 .setDescription(`We have detected that you have sent a discord invite link, if you would like to share your server inside of our server please contact one of the owners.\n` +
-                                `Detected Invite Link: ${message.content.toLowerCase()}\n` +
+                                `Detected Invite Link: **${message.content.toLowerCase()}**\n` +
                                 `Thanks, the Squiddies Staff Team.`)
                 .setTimestamp()
         message.author.send(embed)
-        spoink.send(embed)
+        const embed2 = new Discord.MessageEmbed()
+                  .setTitle(`Invite Link Detected`)
+                  .setDescription(`**Invite Link:** ${message.content.toLowerCase()}\n` +
+                  `**Message ID:** ${message.id}\n\n` +
+                  `**Channel:** ${message.channel}\n` +
+                  `**Channel ID:** ${message.channel.id}\n\n` +
+                  `**Author:** ${message.author}\n` +
+                  `**Author Tag:** ${message.author.tag}\n` +
+                  `**Author ID:** ${message.author.id}\n`)
+                  .setTimestamp()
+                  .setColor('#dbbf70')
+        LoggingChannel.send(embed2)
         }
     }
     if (args[8]) {
-        if (args[8].startsWith('discord.gg')) {
+        if (args[8].startsWith('discord.gg') ||
+        args[8].startsWith('https://discord.gg') ||
+        args[8].startsWith('www.discord.gg') ||
+        args[8].startsWith('http://discord.gg')) {
         message.delete()
         const embed = new Discord.MessageEmbed()
                 .setTitle(`Billybobbeep | Invite Links`)
                 .setDescription(`We have detected that you have sent a discord invite link, if you would like to share your server inside of our server please contact one of the owners.\n` +
-                                `Detected Invite Link: ${message.content.toLowerCase()}\n` +
+                                `Detected Invite Link: **${message.content.toLowerCase()}**\n` +
                                 `Thanks, the Squiddies Staff Team.`)
                 .setTimestamp()
         message.author.send(embed)
-        spoink.send(embed)
+        const embed2 = new Discord.MessageEmbed()
+                  .setTitle(`Invite Link Detected`)
+                  .setDescription(`**Invite Link:** ${message.content.toLowerCase()}\n` +
+                  `**Message ID:** ${message.id}\n\n` +
+                  `**Channel:** ${message.channel}\n` +
+                  `**Channel ID:** ${message.channel.id}\n\n` +
+                  `**Author:** ${message.author}\n` +
+                  `**Author Tag:** ${message.author.tag}\n` +
+                  `**Author ID:** ${message.author.id}\n`)
+                  .setTimestamp()
+                  .setColor('#dbbf70')
+        LoggingChannel.send(embed2)
         }
     }
 }

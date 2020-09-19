@@ -1,14 +1,9 @@
 # Billybobbeep
-![](billy.png)
-![View full gif](https://images-ext-1.discordapp.net/external/b75d2K9cz3qw-jyMCwp_zzjHkW-Ifonono_yQ3Zpk0s/https/i.imgur.com/t4iZ6wS.mp4)
 
 # About:
 - Billy is a discord.js operating 
-- Billy is build for **Squiddies.** [(discord.gg/qNJEj3s)](https://www.discord.gg/qNJEj3s)
+- Billy is build for/around **Squiddies.** [(discord.gg/qNJEj3s)](https://www.discord.gg/qNJEj3s)
 - Billy was scripted by: **Spoink#2793**
-```
-Billy was 
-```
 
 # Version Control
 - **Discord.js** : v12.3.1
@@ -21,11 +16,10 @@ Billy was
 **CPU:**
 -  **Cores:** 4
 -  **Model:** Intel(R) Xeon(R) CPU @ 2.30GHz
--  **Average Speed:** 2299MHz
+-　**Speed:** 2299MHz
 
 # Setup
-After you have downloaded the zip file, you will want to open the folder in your preferred code editing software. Once it is open go into the config.json file and change the variables to fit your needs. Do not forget to create a .env file to store your token in.
-
+After you have downloaded the zip file, you will want to open the folder in your prefered code editing software. Once it is open go into the config.json file and change the varables to fit your needs. Don't forget to create a .env file to store your token in.
 
 # Bot credits:
 - Scripting:
