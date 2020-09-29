@@ -189,5 +189,6 @@ client.on('guildMemberRemove', member => {
 	}
 });
 
-client.login(process.env.TOKEN);
+//client.login(process.env.TOKEN);
+client.login("NzMxNDk4ODQyODEzMzY2MzA0.Xwm7Yg._c2J4XxLYHoZuoc302zWsCeF-HI")
 }
