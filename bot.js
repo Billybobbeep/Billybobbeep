@@ -44,6 +44,9 @@ client.once('ready', async () => {
 	const guildManager = require('./MainServer/guildManager.js');
 	guildManager(client);
 
+	const eventManager = require('./events/audio/playVC.js');
+	eventManager(client);
+
 	const deleteMessages = require('./MainServer/deleteMessages.js');
 	deleteMessages(client);
 try {
@@ -100,7 +103,8 @@ client.on('message', async message => {
       message.content.toLowerCase() == prefix + 'image' ||
       message.content.toLowerCase() == prefix + 'help' ||
       message.content.toLowerCase() == prefix + 'daily' ||
-      message.content.toLowerCase() == prefix + 'work' ||
+	  message.content.toLowerCase() == prefix + 'work' ||
+	  message.content.toLowerCase() == prefix + 'startevent' ||
       msg.startsWith(prefix + 'afk') ||
       msg.startsWith(prefix + 'back') ||
       msg.startsWith(prefix + 'whois')
