@@ -66,11 +66,11 @@ client.on('message', async message => {
     message.channel.send(embed);
       if (message.author.id === user.id) {
         embed.setDescription(`You have marked your self as AFK in ${message.guild}\nReason: ${reason}`)
-        embed.setFooter(`When you are back please run the command ${configFile.prefix}back in ${message.guild}`)
+        embed.setFooter(`When you are back please run the command '${configFile.prefix}back me' in ${message.guild}`)
         return user.send(embed)
       } else {
         embed.setDescription(`${message.author.tag} has marked you as AFK in ${message.guild}\nReason: ${reason}`)
-        embed.setFooter(`When you are back please run the command ${configFile.prefix}back in ${message.guild}`)
+        embed.setFooter(`When you are back please run the command '${configFile.prefix}back me' in ${message.guild}`)
         return user.send(embed)
       }
     }
@@ -146,9 +146,9 @@ client.on('message', async message => {
     //Let know that a user is AFK
     if (message.mentions.users.first()) {
       afkMembers.forEach((a) => {
-      //let user = message.mentions.users.first()
+      let user = message.mentions.users.first()
       //if (user.id === a) {
-      if (message.mentions.users.has(a) || message.mentions.users.has(a)) {
+      if (message.mentions.users.has(a)) {
         embed.setDescription('The user you have pinged (' + user.tag + ') is currently AFK.')
         return message.channel.send(embed)
       }
@@ -159,9 +159,9 @@ client.on('message', async message => {
 
     let offlineMembers1 = guild.members.cache.filter(member => member.presence.status == 'offline').array()
     offlineMembers1.forEach((offline) => {
-      let user = message.mentions.users.first()
-      if (user.id === offline.user.id) {
-        embed.setDescription('The user you have pinged (' + user.tag + ') is currently offline.')
+      if (message.mentions.users.has(offline.id)) {
+        console.log(offline)
+        embed.setDescription('The user you have pinged (' + offline.user.username + '#' + offline.user.discriminator +') is currently offline.')
         return message.channel.send(embed)
       }
     });
