@@ -2,36 +2,61 @@ module.exports = async() => {
 // [Varibles] //
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const Version = require('./package.json');
 const configFile = require('./config.json');
 let prefix = configFile.prefix;
-let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
+const embed = new Discord.MessageEmbed()
 
 /////////////////////////////
 //////Exporting Modules//////
 /////////////////////////////
 
+const AfkFile = require('./MainServer/Afk/AfkHandle.js');
+AfkFile(client);
+
+module.exports.data = function(callback) {
+  var totalNum = client.guilds.cache.get(configFile.ServerId).members.cache.array();
+  var totalOnlineNum = client.guilds.cache.get(configFile.ServerId).members.cache.filter(m => m.presence.status != 'offline').array();
+  var totalBotNum = client.guilds.cache.get(configFile.ServerId).members.cache.filter(m => m.user.bot);
+  setTimeout(function() {
+    var jsonArr = {
+      "TMembers": totalNum.length,
+      "TOnline": totalOnlineNum.length,
+      "TBots" : totalBotNum.size,
+      "TMembers2" : totalNum,
+      "TOnline2" : totalOnlineNum,
+      "TBots2" : totalBotNum.array()
+    }
+    callback(jsonArr);
+  }, 30);
+}
+
+const server125 = require('./server.js');
+server125(client);
+
+
 client.once('ready', async () => {
 	const serverStatsFile = require('./MainServer/serverstats.js');
 	serverStatsFile(client);
 
+  const mentionsHandle = require('./MainServer/mentions.js');
+	mentionsHandle(client);
+
 	const guildManager = require('./MainServer/guildManager.js');
 	guildManager(client);
 
-	const serverStats2 = require('./UDecide/serverstats.js');
-	serverStats2(client);
-
 	const deleteMessages = require('./MainServer/deleteMessages.js');
 	deleteMessages(client);
-
+try {
 	const editMessages = require('./MainServer/editMessage.js');
 	editMessages(client);
-
+} catch(e) {
+  console.log(e)
+}
 	const reactionRole1 = require('./MainServer/reactionRoles/main.js');
 	reactionRole1();
 
 	//Display activities in the correct order
-	let activities = [`${prefix}help`, `Work in progress.`],
+	let activities = [`${prefix}help`, `Version 2.0 👀`],
 		i = 0;
 	setInterval(() => {
 		client.user.setActivity(`${activities[i++ % activities.length]}`, {
@@ -39,10 +64,16 @@ client.once('ready', async () => {
 		});
 	}, 10000);
 
-	setInterval(() => {
-		const autoFeed = require(`./Commands/automaticFeed/main.js`);
-		autoFeed(client);
-	}, 86400000);
+let guild = client.guilds.cache.get(configFile.ServerId);
+  var numberOfOnline;
+  let userOnline = guild.channels.cache.find(channel => channel.id === configFile.OnlineVoiceId);
+  setInterval(async function() {
+    guild.members.fetch();
+    numberOfOnline = guild.members.cache.filter(member => member.presence.status == 'online').array().length;
+    if (numberOfOnline != userOnline.name.slice(14)) {
+      userOnline.edit({ name: "➳𝓞𝓷𝓵𝓲𝓷𝓮 𝓤𝓼𝓮𝓻𝓼: " + numberOfOnline });
+    }
+  }, 50000);
 });
 
 client.on('message', async message => {
@@ -61,22 +92,33 @@ client.on('message', async message => {
 		if (
 			message.content.toLowerCase() == prefix + 'ping' ||
 			message.content.toLowerCase() == prefix + 'members' ||
-			msg.startsWith(prefix + 'cmds') ||
+			msg.startsWith(prefix + 'c') ||
 			message.content.toLowerCase() == prefix + 'joins' ||
       message.content.toLowerCase() == prefix + 'leaderboard' ||
 			message.content.toLowerCase() == prefix + 'leaves' ||
-			message.content.toLowerCase() == prefix + 'info'
-		)
-			return;
+			message.content.toLowerCase() == prefix + 'info' ||
+      message.content.toLowerCase() == prefix + 'image' ||
+      message.content.toLowerCase() == prefix + 'help' ||
+      message.content.toLowerCase() == prefix + 'daily' ||
+      message.content.toLowerCase() == prefix + 'work' ||
+      msg.startsWith(prefix + 'afk') ||
+      msg.startsWith(prefix + 'back') ||
+      msg.startsWith(prefix + 'whois')
+      ) return;
 		const commandFile = require(`./Commands/${command}.js`);
 		commandFile(client, msg, args, prefix, message);
 	} catch (err) {
 		if (configFile.SendLogs === true) {
-			LoggingChannel.send(
-				`There was an error in ${
-					message.channel
-				}.\n **Error:** ${err}\n **Command:** ${command}`
-			);
+      if (message.channel.type === 'dm') return;
+      let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
+      embed.setTitle(`Command Error`)
+      embed.setDescription(
+        `**Channel:** ${message.channel}\n` +
+        `**Command:** ${command}\n\n` +
+        `**Error Code:**\n` + err
+      )
+      embed.setColor(`#fcb69f`)
+			LoggingChannel.send(embed);
 		} else {
 			return;
 		}
@@ -93,7 +135,7 @@ client.on('message', async message => {
 		.trim()
 		.split(/ +/g);
 	let msg = message.content.toLowerCase();
-
+try {
 	if (message.content.toLowerCase() == prefix + 'ping') {
 		const commandFile = require(`./Commands/pong.js`);
 		commandFile(client, msg, args, prefix, message);
@@ -108,7 +150,7 @@ client.on('message', async message => {
 		msg.startsWith(prefix + 'c')
 	) {
 		const commandFile = require(`./Embeds/Commands/main.js`);
-		commandFile(msg, args, prefix, message);
+		commandFile(msg, args, prefix, message, client);
 	}
 	if (message.content.toLowerCase() == prefix + 'pronounrole') {
 		const commandFile = require(`./MainServer/reactionRoles/pronoun.js`);
@@ -118,14 +160,6 @@ client.on('message', async message => {
 		const commandFile = require(`./MainServer/reactionRoles/country.js`);
 		commandFile(message);
 	}
-	if (message.content.toLowerCase() == prefix + 'joins') {
-		const commandFile = require(`./Commands/musicCommands/24hMusic/join.js`);
-		commandFile(message, client);
-	}
-	if (message.content.toLowerCase() == prefix + 'leaves') {
-		const commandFile = require(`./Commands/musicCommands/24hMusic/leave.js`);
-		commandFile(message, client);
-	}
 	if (message.content.toLowerCase() == prefix + 'info') {
 		const commandFile = require(`./Embeds/info.js`);
 		commandFile(client, msg, args, prefix, message);
@@ -134,26 +168,68 @@ client.on('message', async message => {
 		const commandFile = require(`./Embeds/help.js`);
 		commandFile(client, msg, args, prefix, message);
 	}
+  if (message.content.toLowerCase() == prefix + 'image') {
+		const commandFile = require(`./Commands/image.js`);
+		commandFile.run(client, msg, args, prefix, message);
+	}
+  if (message.content.toLowerCase() == prefix + 'credit' || message.content.toLowerCase() == prefix + 'credits') {
+		const commandFile = require(`./Embeds/credit.js`);
+		commandFile(client, msg, args, prefix, message);
+	}
+  if (message.content.toLowerCase() == prefix + 'daily') {
+		const commandFile = require(`./Commands/Economy/daily.js`);
+		commandFile(prefix, message);
+	}
+  if (message.content.toLowerCase() == prefix + 'work') {
+		const commandFile = require(`./Commands/Economy/work.js`);
+		commandFile(prefix, message);
+	}
+} catch (err) {
+		if (configFile.SendLogs === true) {
+      if (message.channel.type === 'dm') return;
+      let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
+      embed.setTitle(`Command Error`)
+      embed.setDescription(
+        `**Channel:** ${message.channel}\n` +
+        `**Command:** ${command}\n\n` +
+        `**Error Code:**\n` + err
+      )
+      embed.setColor(`#fcb69f`)
+			LoggingChannel.send(embed);
+		} else {
+			return;
+		}
+	}
 });
 
 //Monitoring
 
 client.on('message', message => {
-	//let BotStatusChannel = client.channels.cache.get(configFile.BotStatusChannel);
+try {
 	const reactMessages = require(`./MainServer/deletingMessages.js`);
 	reactMessages(message, Discord, client);
 
 	if (
 		message.channel.id === configFile.PollChannel ||
-		message.channel.id === configFile.MemesChannel ||
-		message.channel.id === configFile.JokesChannel
+		message.channel.id === configFile.MemesChannel
 	) {
 		const reactMessages = require(`./MainServer/reactions.js`);
 		reactMessages(message);
 	}
-	if (message.channel.id === configFile.CountingChannel) {
-		const countingFile = require('./MainServer/countingChannel.js');
-		countingFile(message, client);
+} catch (err) {
+		if (configFile.SendLogs === true) {
+      let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
+      embed.setTitle(`Command Error`)
+      embed.setDescription(
+        `**Channel:** ${message.channel}\n` +
+        `**Command:** ${command}\n\n` +
+        `**Error Code:**\n` + err
+      )
+      embed.setColor(`#fcb69f`)
+			LoggingChannel.send(embed);
+		} else {
+			return;
+		}
 	}
 });
 
@@ -164,6 +240,7 @@ client.on('guildMemberAdd', member => {
 		NewMember(member);
 	} catch (err) {
 		if (configFile.SendLogs === true) {
+      let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
 			LoggingChannel.send(
 				`Error whilst welcoming a new member.\n **Error:** ${err}\n **Member:** ${member}`
 			);
@@ -180,8 +257,9 @@ client.on('guildMemberRemove', member => {
 		NewMember(member);
 	} catch {
 		if (configFile.SendLogs === true) {
+      LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
 			LoggingChannel.send(
-				`Error whilst dismissing a member.\n **Error:** ${err}\n **Member:** ${member}`
+				`**Error whilst dismissing a member.**\n **Error:** ${err}\n **Member:** ${member}`
 			);
 		} else {
 			return;
@@ -189,6 +267,5 @@ client.on('guildMemberRemove', member => {
 	}
 });
 
-//client.login(process.env.TOKEN);
-client.login("NzMxNDk4ODQyODEzMzY2MzA0.Xwm7Yg._c2J4XxLYHoZuoc302zWsCeF-HI")
+client.login(process.env.TOKEN);
 }

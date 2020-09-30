@@ -5,17 +5,18 @@ const configFile = require('../config.json')
 let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
 
   const embed = new Discord.MessageEmbed()
-                  .setTitle(`DM Recieved`)
-                  .setDescription(`
-                          **Content:** ${message}
-                          **Message ID:** ${message.id}\n
-                          **Author:** ${message.author}
-                          **Author Tag:** ${message.author.tag}
-                          **Author ID:** ${message.author.id}`)
-                  .setTimestamp()
-                  .setColor('#dbbf70')
+    .setTitle(`DM Recieved`)
+    .setDescription(
+        `**Content:** ${message}\n` +
+        `**Message ID:** ${message.id}\n\n` +
+        `**Author:** ${message.author}\n` +
+        `**Author Tag:** ${message.author.tag}\n` +
+        `**Author ID:** ${message.author.id}\n`)
+    .setTimestamp()
+    .setColor('#dbbf70')
 
   if (message.channel.type === 'dm') {
+    if (message.content.toLowerCase().startsWith(configFile.prefix)) return;
       LoggingChannel.send(embed)
       return;
     }

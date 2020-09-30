@@ -1,199 +1,92 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Billybobbeep | Home</title>
+	<title>Home | Billybobbeep</title>
+  <link href="/style/home.css" rel="stylesheet">
+  <link href="/style/header.css" rel="stylesheet">
+  <link href="/style/contactForm.css" rel="stylesheet">
+  <link href="/style/footer.css" rel="stylesheet">
+  <link href="/style/image/sloosh.png" rel="icon">
+  <meta name="viewport" content="width=device-width, inital-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta charset="UTF-8">
 </head>
-<style>
-	//Header Styling
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  header {
-      font-family: sans-serif;
-      background-color: white;
-  }
-
-  nav {
-      height: 10vh;
-  }
-
-  .nav-links {
-      display: flex;
-      list-style: none;
-      width: 50%;
-      height: 100%;
-      justify-content: space-around;
-      align-items: center;
-      margin: auto;
-  }
-
-  .nav-links li a {
-      color: black;
-      text-decoration: none;
-      font-size: 16px;
-  }
-
-  .landing {
-      height: 90vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-  }
-
-  .landing h1 {
-      margin: 100px;
-      font-size: 50px;
-      color: #ae5fce;
-  }
-
-  @media screen and (max-width: 768px) {
-      .line {
-          width: 30px;
-          height: 3px;
-          background: black;
-          margin: 5px;
-      }
-
-      nav {
-          position: relative;
-      }
-
-      .hamburger {
-          position: absolute;
-          cursor: pointer;
-          right: 5%;
-          top: 50%;
-          transform: translate(-5%, -50%);
-          z-index: 7;
-      }
-
-      .nav-links {
-          position: fixed;
-          /*background: #5b78c7;*/
-          z-index: 6;
-          height: 100vh;
-          width: 100%;
-          flex-direction: column;
-          clip-path: circle(100px at 100% -10%);
-          -webkit-clip-path: circle(100px at 100% -20%);
-          transition: all 2s ease-out;
-      }
-
-      .nav-links.open {
-          clip-path: circle(1100px at 100% -10%);
-          -webkit-clip-path: circle(1100px at 100% -10%);
-          pointer-events: all;
-          background: #7a7974;
-      }
-      .hamburger.open {
-          position: fixed;
-          top: 5%;
-      }
-      .overflow.open {
-          overflow: hidden;
-      }
-
-      .landing {
-          flex-direction: column;
-          opacity: 1;
-      }
-      .landing .logo {
-          position: relative;
-          width: 20%;
-          height: 20%;
-          top: 0px;
-          left: 0px;
-      }
-
-      .nav-links li {
-          opacity: 0;
-      }
-      .nav-links li a {
-          font-size: 25px;
-          color: white;
-      }
-      .nav-links li:nth-child(1) {
-          transition: all 0.5s ease 1s;
-      }
-      .nav-links li:nth-child(2) {
-          transition: all 0.5s ease 1.2s;
-      }
-      .nav-links li:nth-child(3) {
-          transition: all 0.5s ease 1.4s;
-      }
-      .nav-links li:nth-child(4) {
-          transition: all 0.5s ease 1.6s;
-      }
-      .nav-links li:nth-child(5) {
-          transition: all 0.5s ease 1.8s;
-      }
-      li.fade {
-          opacity: 1;
-      }
-      .header {
-          position: fixed;
-          width: 100%;
-          height: 10vh;
-          z-index: 10;
-      }
-  }
-</style>
 <header>
-  <nav>
-    <div class="hamburger">
-        <div class="line"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-    </div>
-    <ul class="nav-links">
-        <li><a class="menuButton currentPage" href="#">Home</a></li>
-        <li><a class="remove menuButton" href="#OurServices">About</a></li>
-        <li><a class="menuButton" href="/home/status">Status</a></li>
-    </ul>
-  </nav>
-<div class="black-image-home"></div>
+	<nav>
+		<div class="hamburger">
+			<div class="line"></div>
+			<div class="line"></div>
+			<div class="line"></div>
+		</div>
+		<ul class="nav-links">
+			<li><a class="menuButton currentPage" href="#">Home</a></li>
+      <li><a href="/home/events" class="menuButton">Events</a></li>
+			<li><a class="menuButton" href="/home/status">Status</a></li>
+		</ul>
+	</nav>
 </header>
-<body>
-  <div class="firstSection">
-    <img class="firstImage" src="./sloosh.png">
-  </div>
-  <script>
-    //Header Script
-    const hamburger = document.querySelector(".hamburger")
-    const navLinks = document.querySelector(".nav-links")
-    const overflow = document.querySelector(".overflow")
-    const links = document.querySelectorAll(".nav-links li")
-    const about = document.querySelector(".remove")
-    const currentPage = document.querySelector(".currentPage")
+<body class="overflow">
+  <img class="firstImage" src="/style/image/cover.png">
+  <section id="aboutUs">
+	<span class="title">About Billy</span>
+	<ul>
+		<li class="text">Billybobbeep is a discord bot, built for <a id="serverName" href="https://www.discord.com/invite/qNJEj3s" target="null">★𝕊𝕢𝕦𝕚𝕕𝕕𝕚𝕖𝕤🦋</a></li>
+		<li class="text">Created by- <strong>Spoink#2793</strong></li>
+		<li class="text">Scripted by- <strong>Spoink#2793</strong> & <strong>Will Os#9857</strong></li>
+		<li class="text">Name development & suggestions:- <strong>wibbleywobbley♡#1564</strong></li>
+		<li class="para">
+			It has been a huge pleasure to script & develop Billybobbeep and a great thanks for all the support
+			I have received throughout the development processes.
+			However, Billybobbeep is not finished yet! We are working towards a brand-new version 2.0.
+		</li>
+	</ul>
+  </section>
 
-    hamburger.addEventListener("click", () => {
-        navLinks.classList.toggle("open");
-        hamburger.classList.toggle("open");
-        overflow.classList.toggle("open");
-        links.forEach(link => {
-            link.classList.toggle("fade")
-        })
-    })
-    about.addEventListener("click", () => {
-        navLinks.classList.toggle("open");
-        hamburger.classList.toggle("open");
-        overflow.classList.toggle("open");
-        links.forEach(link => {
-            link.classList.toggle("fade")
-        })
-    })
-    currentPage.addEventListener("click", () => {
-        navLinks.classList.toggle("open");
-        hamburger.classList.toggle("open");
-        overflow.classList.toggle("open");
-        links.forEach(link => {
-            link.classList.toggle("fade")
-        })
-    })
-  </script>
+  <section id="contactUs">
+	<div class="container">
+		 <h2 class="title">Contact Us</h2>
+	   <p></p>
+	  <div class="contact-form">
+
+		<div>
+		</div>
+		
+	 <div>
+	 <form action="/contact/submit" autocomplete="off">
+		 <input type="text" id="fName" name="fName" class="first-name field" placeholder="First Name" required>
+		<input type="text" id="sName" name="sName" class="last-name field" placeholder="Last Name"><br>
+		<input type="text" id="discord" name="discord" class="discord field" placeholder="Discord username & tag" required><br>
+		<input type="text" id="subject" name="subject" class="subject field" placeholder="Subject" required><br>
+		<textarea name="message" id="message" class="message-content field" placeholder="Message" rows="5" required></textarea><br>
+		<button class="submit">Send Message</button> 
+	  </form>   
+		</div>
+	  </div>
+	</div>
+	<div class="wrapper">
+		<div class="button">
+			<a class="socialLink" href="https://www.discord.com/invite/qNJEj3s" target="null">
+			<div class="icon">
+				<i class="fab fa-discord"></i></div>
+				<span>Discord</span>
+				</a>
+			</div>
+		<div class="button">
+			<a class="socialLink" href="https://github.com/Tyler2P/Billybobbeep" target="null">
+			<div class="icon">
+				<i class="fab fa-github"></i></div>
+				<span>Github</span>
+				</a>
+			</div>
+		</div>
+	</section>
+
+  <script src="/style/header.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="/style/contactForm.js"></script>
+  <script src="/style/footer.js"></script>
+   <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <script src="/style/removeLinks.js"></script>
   </body>
 </html>

@@ -12,7 +12,9 @@ module.exports = async(msg, args, prefix, message) => {
         `${prefix}info\n` +
         "*Gives more details about the bot.*\n" +
         `${prefix}serverinfo\n` +
-        "*Gives you information on the server.*\n")
+        "*Provides you with information on the server.*\n" +
+        `${prefix}credits\n` +
+        "*Provides you with Billybobbeep's development credits*")
         .setColor([177, 210, 240])
         .setFooter(`Requested by: ${message.author.tag}`)
         .setTimestamp()

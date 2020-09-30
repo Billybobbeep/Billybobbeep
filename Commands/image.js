@@ -1,8 +1,12 @@
 const Discord = require(`discord.js`);
 const configFile = require('../config.json');
 
-let randomImage = [`https://cdn.discordapp.com/attachments/731508540761440336/732301974543794297/8296f82029ae59b698060544deb1531a.png`
-`https://img.memecdn.com/1st-world-problems_c_7194833.jpg`, 
+module.exports.run = async(client, msg, args, prefix, message) => {
+
+const embed = new Discord.MessageEmbed()
+
+var randomImage = [
+`https://cdn.discordapp.com/attachments/731508540761440336/732301974543794297/8296f82029ae59b698060544deb1531a.png`,
 `https://media.discordapp.net/attachments/729336942998585346/732000263988314242/image0.png?width=415&height=475`, 
 `https://media.discordapp.net/attachments/729336942998585346/729337997681492048/image0.png`, 
 `https://cdn.discordapp.com/attachments/705899347480412231/731873326934392842/Screen_Shot_2020-07-05_at_03.07.09.png`, 
@@ -16,7 +20,9 @@ let randomImage = [`https://cdn.discordapp.com/attachments/731508540761440336/73
 `https://media.discordapp.net/attachments/705899347480412231/731873868184158208/Screen_Shot_2020-06-16_at_09.18.58.png`, 
 `https://media.discordapp.net/attachments/729336942998585346/729337991356481606/image0.jpg`, 
 `https://media.discordapp.net/attachments/729336942998585346/729337930954440794/image0.jpg?width=478&height=475`, 
-`https://media.discordapp.net/attachments/729336942998585346/729337922620358666/image0.png?width=487&height=475`, 
+`https://media.discordapp.net/attachments/729336942998585346/729337922620358666/image0.png?width=487&height=475`,
+`https://cdn.discordapp.com/attachments/737269522532401173/758397625044435004/image0.jpg`,
+`https://cdn.discordapp.com/attachments/700061881779355670/758398700493471759/image0.png`,
 `https://media.discordapp.net/attachments/729336942998585346/729337910708666448/image0.jpg?width=633&height=475`, 
 `https://media.discordapp.net/attachments/729337022027792484/729338094301478972/image1.png`, 
 `https://media.discordapp.net/attachments/729337022027792484/729338093601292328/image0.png?width=845&height=475`,
@@ -41,7 +47,8 @@ let randomImage = [`https://cdn.discordapp.com/attachments/731508540761440336/73
 `https://cdn.discordapp.com/attachments/730170141198909442/730743350805659668/image0.jpg`, 
 `https://cdn.discordapp.com/attachments/730170141198909442/730534144345374780/Staring_Hamster-7aa2cb69-5a36-48ef-8bd3-5dcec2505355.jpg`, 
 `https://cdn.discordapp.com/attachments/730170141198909442/730174433578451015/image0.jpg`, 
-`https://cdn.discordapp.com/attachments/730170141198909442/730174425210814464/image0.png`, 
+`https://cdn.discordapp.com/attachments/730170141198909442/730174425210814464/image0.png`,
+`https://cdn.discordapp.com/attachments/700061881779355670/758398695166705724/image0.png`,
 `https://cdn.discordapp.com/attachments/730170141198909442/730174422136389662/image0.jpg`, 
 `https://cdn.discordapp.com/attachments/730170141198909442/730174334819106816/image0.png`, 
 `https://cdn.discordapp.com/attachments/730170141198909442/730174292771209286/image0.png`, 
@@ -54,7 +61,9 @@ let randomImage = [`https://cdn.discordapp.com/attachments/731508540761440336/73
 `https://media.discordapp.net/attachments/714224966232440862/731878774869852210/20200712_152223.jpg?width=307&height=475`, 
 `https://media.discordapp.net/attachments/714224966232440862/731878774387376260/20200712_152341.jpg?width=526&height=475`, 
 `https://media.discordapp.net/attachments/714224966232440862/731878774118809690/20200712_152352.jpg?width=406&height=474`, 
-`https://media.discordapp.net/attachments/714224966232440862/731878773875540058/20200712_152405.jpg?width=573&height=475`, 
+`https://media.discordapp.net/attachments/714224966232440862/731878773875540058/20200712_152405.jpg?width=573&height=475`,
+`https://cdn.discordapp.com/attachments/700061881779355670/758398686194827314/image0.jpg`,
+`https://cdn.discordapp.com/attachments/700061881779355670/758398636852772924/image0.jpg`,
 `https://media.discordapp.net/attachments/714224966232440862/731878773586264064/20200712_152417.jpg?width=833&height=475`,
 `https://media.discordapp.net/attachments/729336942998585346/732000252302852126/image0.png?width=494&height=475`,
 `https://media.discordapp.net/attachments/729336942998585346/732000241636868207/image0.png?width=684&height=475`,
@@ -117,7 +126,9 @@ let randomImage = [`https://cdn.discordapp.com/attachments/731508540761440336/73
 `https://cdn.discordapp.com/attachments/729336942998585346/754020113275158558/image0.jpg`,
 `https://cdn.discordapp.com/attachments/729336942998585346/754020109042974840/image0.jpg`]
 
-module.exports = async(client, msg, args, prefix, message) => {
+embed.setColor("#5ebd60")
+embed.setTitle(`Billybobbeep | Image Generator`)
+        embed.setDescription(`Please note: These images may include explicit content`)
 
 function Generator(lastImage) {
         let unfunnyMemeSend = randomImage[Math.floor(Math.random() * randomImage.length)]
@@ -125,11 +136,7 @@ function Generator(lastImage) {
           Generator2(lastImage)
         }
         lastImage = unfunnyMemeSend
-        const embed = new Discord.MessageEmbed()
-        .setTitle(`Billybobbeep | Image Generator`)
-        .setDescription(`Please note: These images may include explicit content`)
-        .setImage(unfunnyMemeSend)
-        .setColor("#5ebd60")
+        embed.setImage(unfunnyMemeSend)
     }
 
 function Generator2(lastImage) {
@@ -138,11 +145,7 @@ function Generator2(lastImage) {
           Generator(lastImage)
         }
         lastImage = unfunnyMemeSend
-        const embed = new Discord.MessageEmbed()
-        .setTitle(`Billybobbeep | Image Generator`)
-        .setDescription(`Please note: These images may include explicit content`)
-        .setImage(unfunnyMemeSend)
-        .setColor("#b3a8f0")
+        embed.setImage(unfunnyMemeSend)
     }
 
   let lastImage = "";

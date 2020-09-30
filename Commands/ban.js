@@ -18,26 +18,8 @@ module.exports = async(client, msg, args, prefix, message) => {
             message.channel.send(`Successfully banned **${user.tag}**`);
             console.log(`${message.author.username} successfully banned **${user.tag}**`);
             let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
-
-        let pinned;
-        if (message.pinned) {
-            pinned = true
-        } else {
-            pinned = false
-        }
-
-        const embed = new Discord.MessageEmbed()
-        .setTitle(`Banned Member`)
-        .setDescription(`**Channel:** ${message.channel}
-                        **Member Banned:** ${user.tag}\n
-                        **Moderator:** ${message.author}
-                        **Moderator Tag:** ${message.author.tag}
-                        **Moderator ID:** ${message.author.id}`)
-        .setTimestamp()
-        .setColor("#a9d9b7")
-        LoggingChannel.send(embed)
-        }).catch(err => {
-            message.reply("I was unable to ban the member you provided.");
-        })
+            }).catch(err => {
+                message.reply("I was unable to ban the member you provided.");
+            })
     }
 }

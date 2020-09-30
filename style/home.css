@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+
+body {
+  background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.15) 100%), radial-gradient(at top center, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.40) 120%) #989898;
+  background-blend-mode: multiply,multiply;
+  overflow-x: hidden;
+}
+.black-image {
+  width: 100%;
+  height: 3px;
+  background-color: black;
+  border-color: black;
+  border-width: 2px;
+}
+.firstImage {
+  width: 100%;
+  height: 840px;
+  position: relative;
+  z-index: 1;
+  top: 1px;
+  margin: 0px;
+  padding: 0px;
+}
+.title {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  font-family: 'Lobster', cursive;
+  font-size: 50px;
+  justify-content: center;
+  margin: auto;
+  cursor: default;
+}
+.text {
+  position: relative;
+  text-align: center;
+  cursor: default;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-family: 'Indie Flower', cursive;
+  font-size: 30px;
+}
+.para {
+  font-weight: bold;
+  position: relative;
+  text-align: center;
+  cursor: default;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  font-family: 'Indie Flower', cursive;
+  font-size: 20px;
+}
+
+
+li a {
+  text-decoration: none;
+  color: #999494;
+}
+#serverName {
+  position: relative;
+}
+
+#serverName::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: white;
+  transform-origin: bottom right;
+  transition: transform 0.50s ease-out;
+}
+#serverName:hover::before {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+@media only screen and (max-width:1210px) {
+    .firstImage {
+        width: 100%;
+        height: 600px;
+        position: relative;
+        z-index: 1;
+        top: 1px;
+        margin: 0px;
+        padding: 0px;
+    }
+}
+@media only screen and (max-width:1075px) {
+    .firstImage {
+        width: 100%;
+        height: 450px;
+        position: relative;
+        z-index: 1;
+        top: 1px;
+        margin: 0px;
+        padding: 0px;
+    }
+}
+@media only screen and (max-width:990px) {
+    .firstImage {
+        width: 100%;
+        height: 300px;
+        position: relative;
+        z-index: 1;
+        top: 1px;
+        margin: 0px;
+        padding: 0px;
+    }
+}
+@media only screen and (max-width:510px) {
+    .firstImage {
+        width: 100%;
+        height: 500px;
+        position: relative;
+        z-index: 1;
+        top: 1px;
+        margin: 0px;
+        padding: 0px;
+    }
+}

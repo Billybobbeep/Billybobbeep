@@ -3,25 +3,19 @@
     "AutoRoleId" : "734491245908590644",
 
     "WelcomeChannel" : "733588094418419752",
-    "MainChat" : "733588281375195228",
     "RolesChannel" : "734486634682384465",
     "PollChannel" : "734487565758890145",
     "BotCommandsChannel" : "733595548577300542",
-    "AuxChannel" : "734493626482163813",
     "RulesChannel" : "734486711609983017", 
-    "AnnouncementChannel" : "734486835509723156",
     "MemesChannel" : "734487587456155758",
-    "CountingChannel" : "736252488298266644",
-    "JokesChannel" : "737771208376057881",
     "LoggingChannel" : "738097180451274784",
-    "AllDayMusicChannel" : "734493691791671366",
 
     "WelcomeChannelModeration" : true,
     "AutoRole" : true,
     "Moderation" : true,
-    "LogKicks" : false,
-    "LogBans" : false,
-    "SendLogs" : false,
+    "LogKicks" : true,
+    "LogBans" : true,
+    "SendLogs" : true,
 
     "SpoinkID" : "697194959119319130",
     "WibWobID" : "441613173003649028",
@@ -30,7 +24,7 @@
     "MembersVoiceId" : "734706495618547721",
     "BotsVoiceId" : "734706524752052226",
     "ServerId" : "733442092667502613",
-    "OnlineVoiceId" : "752816692232585256",
+    "OnlineVoiceId" : "758376522070491137",
 
 
     "TickEmoji1" : "736952966447366154",

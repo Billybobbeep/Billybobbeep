@@ -2,63 +2,148 @@
 <html>
 
 <head>
-	<title>Billybobbeep | Status</title>
+	<title>Status | Billybobbeep</title>
+  <link href="/style/image/sloosh.png" rel="icon">
 	<link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Sniglet&display=swap" rel="stylesheet">
+  <link href="/style/header.css" rel="stylesheet">
+  <link href="/style/footer.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, inital-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta charset="UTF-8">
 </head>
 <style>
 	body {
-		background-color: black;
+		background-image: linear-gradient(to right, #ec77ab 0%, #7873f5 100%);
+		background-size: cover;
 		overflow: hidden;
 	}
 
 	h2 {
 		font-family: 'Dancing Script', cursive;
 		font-size: 30px;
-		color: #9ef0e5;
+		color: black;
 	}
 
 	h1 {
 		font-family: 'Sniglet', cursive;
 		font-size: 20px;
-		color: #4ab0f0;
+		color: black;
 	}
 
 	h3 {
 		font-family: 'Sniglet', cursive;
 		font-size: 15px;
-		color: #1479fc;
+		color: black;
 	}
 
 	a {
 		text-decoration: none;
-		color: #1479fc;
+		color: black;
 	}
 
 	.text {
 		cursor: default;
+		position: relative;
 	}
 
 	.background {
-		background-color: white;
-		display: flex;
+		background-image: linear-gradient(-225deg, #3D4E81 0%, #5753C9 48%, #6E7FF3 100%);
 		justify-content: center;
 		margin: auto;
 		width: 500px;
-		height: 200px;
+		height: 250px;
 		border: black;
 		border-radius: 10px;
 		overflow: hidden;
 	}
+  .spacee {
+    padding-bottom: 45px;
+  }
+  .bc {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 100%;
+  }
+  button {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-radius: 50px;
+    border-color: #f5f7fa;
+  }
+  .margin-right {
+    margin-right: 10px;
+  }
 </style>
-
+ <header>
+    <nav>
+      <div class="hamburger">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+      </div>
+      <ul class="nav-links">
+        <li><a class="menuButton" href="/home">Home</a></li>
+        <li><a href="/home/events" class="menuButton">Events</a></li>
+        <li><a class="menuButton currentPage" href="#">Status</a></li>
+      </ul>
+    </nav>
+  </header>
 <body>
 	<div class="background">
-		<span><h2 class="text">Billybobbeep is currently online</h2></span><br><br>
-      <span><h1 class="text">Info:</h1></span>
-      <span><h3 class="text"><strong>Built for - </strong>Squiddies<a href="https://discord.gg/qNJEj3s" target="null">(https://discord.gg/qNJEj3s)</a></h3></span>
-      <span><h3 class="text"><strong>Built by - </strong> Spoink#2793</h3></span>
-      </div>
+    <span><h2 class="text">Billybobbeep is currently online</h2></span><br>
+    <span><h1 class="text">Info:</h1></span><br>
+    <span><h3 class="text" id="TMembers">Loading...</h3></span>
+    <span><h3 class="text" id="TBots">Loading...</h3></span>
+    <span><h3 class="text spacee" id="TOnline">Loading...</h3></span>
+    <div class="bc">
+      <button id="refresh" class="margin-right">Refresh Stats</button>
+      <button id="vas">View All Stats</button>
+    </div>
+    </div>
+      <div class="wrapper">
+		<div class="button">
+			<a class="socialLink" href="https://www.discord.com/invite/qNJEj3s" target="null">
+			<div class="icon">
+				<i class="fab fa-discord"></i></div>
+				<span>Discord</span>
+				</a>
+			</div>
+		<div class="button">
+			<a class="socialLink" href="https://github.com/Tyler2P/Billybobbeep" target="null">
+			<div class="icon">
+				<i class="fab fa-github"></i></div>
+				<span>Github</span>
+				</a>
+			</div>
+		</div>
   </body>
+  <script src="/style/header.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="/style/contactForm.js"></script>
+  <script src="/style/footer.js"></script>
+   <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script>
+    function updateStat(){
+      $.ajax({url: '/home/database/users/rPUqgbgzBjTGfgZTZeHsDedGJVDUuEXWwKSxfZRymTVPttdLhDABAateSAuENZZVzwJsVheQTNbuZpRXtCqnqLRrsmASjQKQrJmTuFWNhFYQNFVXKkGjrgYYbEDZUjytDEZAXpAUejNQcachyvyHxEvSrfydQznwQQsGnPHnPNUnbFVtRNDXbHgHFqkkkqZsUjRSGsNWbzfwbXNZBmYTTXykCYxyRyEkdPCygqrDgksQsARDNxtZYkSwgWnjZRxBWKSgLWDMRQakwrHeJTPYtpLezdMksCbrWESccSCuxVtjtkeQyTjLaDcmaWbKbTjYNXGhAvMnpgnDLmHTZDhguJvRmnUTZbFBPHStTTqCZYNMBFHhNHDxzfdSknNzLkGbKxVkpQPXarYPbxVCsekhUTqQEpHJkfYBrPNgFhNqxLXUKuVaJAKahvSLfUkrWbawjATxHfgdDvRTjALZuTzkZVJcwsfZYwGdnGbYMLFhsduygNzkhkVgJYLuCWAbKYJKHyWEVqUUpsxwePmBrXJqVprZahWnSeUEprLrnXEagGSgGUZbHZkSMZagLfxaSPQxfgtzcchxEGzWPPxedueZugADeUQEufSsXSghktkXWuudggkVSwErYQhwVsRkMBEqZYUJMKmAskKYkpqTrFKTNZjgJcvrtBscXTWevaWLcTevNLNRcpcNPkYXJwKatDhNYMHaHZRrJYyrLHrKVuNtNtpCCyUSdEdRJTzcVphCgVqffzdbgHxKLxPbCkBqnwZpjXSRjVLarGpRZupwqbKPDkxFfsArhhspZPqyHBnTqvAcEaPGXTzQeCtXMRzvnadfykTafvNujCUBTXTsBbPtTJxAxcagyujMkBzDwqvZEWXfjfzmMCTbETRhrLduWcNNgKZhrwMgGRqPHHGyxRGCHkvRmPNMnpemXBrmUsBeznCBuSPaeCAZdGaGfjLkHmcEPHhXKQHRtSpUraympWASNhAvBKKtQZqLARfUQZYQhMZkhvKANExwqBggpATAugTs/get?type=bot&bot=true'}).done(function (data){
+        data = JSON.stringify(data);
+        data = JSON.parse(data);
+        $('#TMembers').html(`Total Members: ${data.TMembers}`);
+        $('#TBots').html(`Total Online: ${data.TOnline}`);
+        $('#TOnline').html(`Total Bots: ${data.TBots}`);
+      });
+    }
+    updateStat();
+    $("#refresh").click(function() {
+      updateStat();
+    });
+    $("#vas").click(() => {
+      window.location.href = '/home/status/more'
+    });
+  </script>
 </html>

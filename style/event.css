@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+
+html{
+  min-height: 100%;
+}
+
+body {
+  background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%);
+}
+.link {
+  position: relative;
+}
+.link::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: white;
+  transform-origin: bottom right;
+  transition: transform 0.50s ease-out;
+}
+.link:hover::before {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.title {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  font-family: 'Lobster', cursive;
+  font-size: 50px;
+  justify-content: center;
+  margin: auto;
+  cursor: default;
+}
+.text {
+  position: relative;
+  text-align: center;
+  cursor: default;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-family: 'Indie Flower', cursive;
+  font-size: 30px;
+}
+.info {
+  display: flex;
+  position: relative;
+  text-align: center;
+  cursor: default;
+  font-family: 'Indie Flower', cursive;
+  font-size: 30px;
+  }

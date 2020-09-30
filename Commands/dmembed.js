@@ -5,8 +5,8 @@ module.exports = async(client, msg, args, prefix, message) => {
 if (!message.member.permissions.has("MANAGE_MESSAGES")) return message.channel.send("You do not have the permissions to do this.");
     
 const embed = new Discord.MessageEmbed()
-        .setTitle(`Billybobbeep | New Poll`)
-        .setDescription(`Hello, this is an automated message from Squiddies.\n We were wondering if you would be intrested in taking part in server events. Please reply to this message with either a yes or no. Thanks, the Squiddies staff team.\n*More will be announced shortly after we get enough intrests.`)
+        .setTitle(`Billybobbeep | Announcement`)
+        .setDescription(``)
         .setTimestamp()
         .setColor("#a9d9b7")
 

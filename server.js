@@ -1,16 +1,70 @@
+module.exports = async (client) => {
 const express = require("express");
-const server = express();
+const app = express();
+const Discord = require('discord.js')
+var port = 3000;
+const bot = require("./bot");
 
-server.use('/public', express.static('Public'));
+app.use('/style', express.static('style'));
+app.set('view engine', 'ejs');
 
-server.all('/', function(req, res) {
+function listen() {
+
+app.all('/', function(req, res) {
   res.redirect("/home");
 });
-server.get('/home', function(req, res) {
+app.get('/home', function(req, res) {
   res.sendFile(__dirname + "/Public/index.html");
 });
-server.get('/home/status', function(req, res) {
+app.get('/home/status', function(req, res) {
   res.sendFile(__dirname + "/Public/status.html");
 });
+app.get('/home/status/more', (req, res) => {
+  res.sendFile(__dirname + '/Public/moreStatus.html')
+});
+app.get('/home/events', function(req, res) {
+  res.sendFile(__dirname + "/Public/events.html");
+});
+app.get('/home/database/:name/:id/get', (req, res) => {
+  if (req.params.name != 'users') res.redirect('/home'); if (req.params.id != 'rPUqgbgzBjTGfgZTZeHsDedGJVDUuEXWwKSxfZRymTVPttdLhDABAateSAuENZZVzwJsVheQTNbuZpRXtCqnqLRrsmASjQKQrJmTuFWNhFYQNFVXKkGjrgYYbEDZUjytDEZAXpAUejNQcachyvyHxEvSrfydQznwQQsGnPHnPNUnbFVtRNDXbHgHFqkkkqZsUjRSGsNWbzfwbXNZBmYTTXykCYxyRyEkdPCygqrDgksQsARDNxtZYkSwgWnjZRxBWKSgLWDMRQakwrHeJTPYtpLezdMksCbrWESccSCuxVtjtkeQyTjLaDcmaWbKbTjYNXGhAvMnpgnDLmHTZDhguJvRmnUTZbFBPHStTTqCZYNMBFHhNHDxzfdSknNzLkGbKxVkpQPXarYPbxVCsekhUTqQEpHJkfYBrPNgFhNqxLXUKuVaJAKahvSLfUkrWbawjATxHfgdDvRTjALZuTzkZVJcwsfZYwGdnGbYMLFhsduygNzkhkVgJYLuCWAbKYJKHyWEVqUUpsxwePmBrXJqVprZahWnSeUEprLrnXEagGSgGUZbHZkSMZagLfxaSPQxfgtzcchxEGzWPPxedueZugADeUQEufSsXSghktkXWuudggkVSwErYQhwVsRkMBEqZYUJMKmAskKYkpqTrFKTNZjgJcvrtBscXTWevaWLcTevNLNRcpcNPkYXJwKatDhNYMHaHZRrJYyrLHrKVuNtNtpCCyUSdEdRJTzcVphCgVqffzdbgHxKLxPbCkBqnwZpjXSRjVLarGpRZupwqbKPDkxFfsArhhspZPqyHBnTqvAcEaPGXTzQeCtXMRzvnadfykTafvNujCUBTXTsBbPtTJxAxcagyujMkBzDwqvZEWXfjfzmMCTbETRhrLduWcNNgKZhrwMgGRqPHHGyxRGCHkvRmPNMnpemXBrmUsBeznCBuSPaeCAZdGaGfjLkHmcEPHhXKQHRtSpUraympWASNhAvBKKtQZqLARfUQZYQhMZkhvKANExwqBggpATAugTs') res.redirect('/home'); if (req.query.bot != 'true') res.redirect('/home'); if (req.query.type != 'bot') res.redirect('/home'); bot.data(function(data) { res.send(data); }); });
+app.get('/home/events/:id', (req, res) => {
+  if (req.params.id === '1') {
+    res.sendFile(__dirname + "/Public/events/spoink.html")
+  } else if (req.params.id === '2') {
+    res.sendFile(__dirname + "/Public/events/billy.html")
+  } else {
+    res.status(404)
+    res.sendFile(__dirname + "/Public/error404.html")
+  }
+});
+app.get('/contact/submit', (req, res) => {
+  if (!req.query) res.render('general.ejs');
+  if (!req.query.fName || !req.query.sName || !req.query.discord || !req.query.subject || !req.query.message) res.render('general.ejs');
+  const embed = new Discord.MessageEmbed()
+  .setTitle('Billybobbeep | Contact Us Submissions')
+  .setColor('#5271C4')
+  .setTimestamp()
+  .setDescription(
+    '**First Name:** ' + req.query.fName +
+    '\n**Second Name:** ' + req.query.sName +
+    '\n**Discord Tag:** ' + req.query.discord +
+    '\n**Subject:** ' + req.query.subject +
+    '\n**Message:** ' + req.query.message
+  )
+  let LoggingChannel = client.channels.cache.get('738097180451274784');
+  LoggingChannel.send(embed)
+  res.render('success.ejs');
+});
 
-server.listen(5000, () => { console.log("Billybobbeep is online") });
+app.use(function(req, res) {
+    res.status(404)
+    res.sendFile(__dirname + '/Public/error404.html');
+});
+
+
+app.listen(port, () => { console.log("Billybobbeep is online") });
+
+}
+
+listen()
+}
