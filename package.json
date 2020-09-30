@@ -23,6 +23,7 @@
     "os": "^0.1.1",
     "random-puppy": "^1.1.0",
     "request": "^2.88.2",
-    "uptimerobot": "^1.0.1"
+    "uptimerobot": "^1.0.1",
+    "yt-search": "^2.3.1"
   }
 }
