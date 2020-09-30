@@ -45,7 +45,7 @@ module.exports = async client => {
 				'**Content:** ' + message.content +
 					'\n**Message ID:** ' + message.id +
 					'\n**Channel:** ' + message.channel +
-					'\n\n**Author:** ' + message.author +
+					`\n\n**Author:** ${message.author}` +
 					'\n**Author Tag:** ' + message.author.tag +
 					'\n**Author ID:** ' + message.author.id +
 					'\n\n**Command:** ' + command +
