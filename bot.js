@@ -78,7 +78,7 @@ module.exports = async() => {
 	
 	client.on('message', async message => {
 		if (message.channel === configFile.LoggingChannel) return;
-		if (message.author.bot) return; //Ensures bots cannot access command
+		if (message.author.bot) return;
 		if (!message.content.startsWith(prefix)) return;
 	
 		let args = message.content
@@ -90,23 +90,23 @@ module.exports = async() => {
 	
 		try {
 			if (
-				message.content.toLowerCase() == prefix + 'ping' ||
-				message.content.toLowerCase() == prefix + 'members' ||
-				msg.startsWith(prefix + 'c') ||
-				message.content.toLowerCase() == prefix + 'joins' ||
-		  message.content.toLowerCase() == prefix + 'leaderboard' ||
-				message.content.toLowerCase() == prefix + 'leaves' ||
-				message.content.toLowerCase() == prefix + 'info' ||
-		  message.content.toLowerCase() == prefix + 'image' ||
-		  message.content.toLowerCase() == prefix + 'help' ||
-		  message.content.toLowerCase() == prefix + 'daily' ||
-		  message.content.toLowerCase() == prefix + 'work' ||
-		  message.content.toLowerCase() == prefix + 'startevent' ||
-		message.content.toLowerCase() == prefix + 'shutdown' ||
-		  msg.startsWith(prefix + 'afk') ||
-		  msg.startsWith(prefix + 'back') ||
-		  msg.startsWith(prefix + 'whois')
-		  ) return;
+			message.content.toLowerCase() == prefix + 'ping' ||
+			message.content.toLowerCase() == prefix + 'members' ||
+			msg.startsWith(prefix + 'c') ||
+			message.content.toLowerCase() == prefix + 'joins' ||
+			message.content.toLowerCase() == prefix + 'leaderboard' ||
+			message.content.toLowerCase() == prefix + 'leaves' ||
+			message.content.toLowerCase() == prefix + 'info' ||
+			message.content.toLowerCase() == prefix + 'image' ||
+			message.content.toLowerCase() == prefix + 'help' ||
+			message.content.toLowerCase() == prefix + 'daily' ||
+			message.content.toLowerCase() == prefix + 'work' ||
+			message.content.toLowerCase() == prefix + 'startevent' ||
+			message.content.toLowerCase() == prefix + 'shutdown' ||
+			msg.startsWith(prefix + 'afk') ||
+			msg.startsWith(prefix + 'back') ||
+			msg.startsWith(prefix + 'whois')
+			) return;
 			const commandFile = require(`./Commands/${command}.js`);
 			commandFile(client, msg, args, prefix, message);
 		} catch (err) {
@@ -174,7 +174,8 @@ module.exports = async() => {
 			const commandFile = require(`./Commands/image.js`);
 			commandFile.run(client, msg, args, prefix, message);
 		}
-	  if (message.content.toLowerCase() == prefix + 'credit' || message.content.toLowerCase() == prefix + 'credits') {
+	  if (message.content.toLowerCase() == prefix + 'credit' || 
+	  		message.content.toLowerCase() == prefix + 'credits') {
 			const commandFile = require(`./Embeds/credit.js`);
 			commandFile(client, msg, args, prefix, message);
 		}
