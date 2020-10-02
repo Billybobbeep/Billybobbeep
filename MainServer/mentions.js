@@ -67,12 +67,19 @@ module.exports = async (client) => {
       if (messagedUser.tag === client.user.tag) {
         if (message.content.toLowerCase().startsWith('<@!' + client.user.id + '> say') ||
         message.content.toLowerCase().startsWith('<@' + client.user.id + '> say')) {
-          if (!args[2]) {
-            embed.setDescription('Please specify a message to send');
-            return message.channel.send(embed)
-          }
-          await message.delete();
-          await message.channel.send(args.slice(2).join(" "));
+          const commandFile = require('./mentions/say.js')
+          commandFile(client, message, args)
+          return;
+        }
+      }
+    }
+    if (message.mentions.users.first()) {
+      let messagedUser = message.mentions.users.first();
+      if (messagedUser.tag === client.user.tag) {
+        if (message.content.toLowerCase().startsWith('<@!' + client.user.id + '> secret') ||
+        message.content.toLowerCase().startsWith('<@' + client.user.id + '> secret')) {
+          const commandFile = require('./mentions/secret.js')
+          commandFile(client, message, args)
           return;
         }
       }
