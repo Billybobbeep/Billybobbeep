@@ -52,21 +52,40 @@ module.exports = async (client) => {
         if (args[0].toLowerCase() == 'welcome') {
           message.channel.send('greetings, <@' + message.author.id + '>')
         } else {
-          /*args.forEach((a) => {
-            if (a.endsWith(',') || a.endsWith('.') || a.endsWith('?') || a.endsWith('/') || a.endsWith('\\' ) || a.endsWith('@') || a.endsWith('|') || a.endsWith('-') || a.endsWith(':') || a.endsWith(';') || a.endsWith('.')) {
-              message.channel.send(args[0] + ' <@' + message.author.id + '>')
-            } else {*/
-              message.channel.send(args[0] + `, <@${message.author.id}>`)
-            //}
-        //});
+            if (args.includes(',') || args.includes('.') || args.includes('?') || args.includes('/') || args.includes('\\' ) || args.includes('@') || args.includes('|') || args.includes('-') || args.includes(':') || args.includes(';') || args.includes('.')) {
+              return message.channel.send(args[0] + ' <@' + message.author.id + '>')
+            } else {
+              return message.channel.send(args[0] + `, <@${message.author.id}>`)
+            }
         }
       }
     }
+
+    //mention commands
+    if (message.mentions.users.first()) {
+      let messagedUser = message.mentions.users.first();
+      if (messagedUser.tag === client.user.tag) {
+        if (message.content.toLowerCase().startsWith('<@!' + client.user.id + '> say') ||
+        message.content.toLowerCase().startsWith('<@' + client.user.id + '> say')) {
+          if (!args[2]) {
+            embed.setDescription('Please specify a message to send');
+            return message.channel.send(embed)
+          }
+          await message.delete();
+          await message.channel.send(args.slice(2).join(" "));
+          return;
+        }
+      }
+    }
+
+
 
     //Answer when mentioned
     if (message.mentions.users.first()) {
       let messagedUser = message.mentions.users.first();
         if (args[1]) return;
+        if (message.author.bot) return;
+        if (!args[0] == '<@!' + client.user.id + '>' || !args[0] == '<@' + client.user.id + '>') return;
         if (messagedUser.tag === client.user.tag) {
             embed.setDescription(`Prefix: \`${configFile.prefix}\`\n` +
               `For additional help please enter the command: \`${configFile.prefix}help\` or enter "help <@${client.user.id}>"`)
