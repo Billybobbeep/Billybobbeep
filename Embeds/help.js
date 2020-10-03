@@ -4,9 +4,9 @@ const configFile = require('../config.json');
 module.exports = async(client, msg, args, prefix, message) => {
   const helpEmbed = new Discord.MessageEmbed()
   .setTitle("Billybobbeep | Help")
-  .setDescription("Thank you for using Billybobbeep!\n" +
+  .setDescription(`Thank you for using ${client.user.username}!\n` +
   "This bot was created and scripted by **Spoink#2793**\n" +
-  "If you encounter any problems with the bot or have any questions please feel free to DM Spoink!\n" +
+  "To view all credits please enter the command `~credits`\n" +
   "\n" +
   "Below are some commands to get you started:\n" +
   `${prefix}cmds\n` +
