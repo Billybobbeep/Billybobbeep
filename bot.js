@@ -1,4 +1,5 @@
 module.exports = async() => {
+	'use strict';
 	// [Varibles] //
 	const Discord = require('discord.js');
 	const client = new Discord.Client();
@@ -38,7 +39,7 @@ module.exports = async() => {
 		const serverStatsFile = require('./MainServer/serverstats.js');
 		serverStatsFile(client);
 	
-	  const mentionsHandle = require('./MainServer/mentions.js');
+		const mentionsHandle = require('./MainServer/mentions.js');
 		mentionsHandle(client);
 	
 		const guildManager = require('./MainServer/guildManager.js');
@@ -46,6 +47,9 @@ module.exports = async() => {
 	
 		const deleteMessages = require('./MainServer/deleteMessages.js');
 		deleteMessages(client);
+
+		const talk2billy = require('./MainServer/talk2billy/main.js')
+		talk2billy(client)
 	try {
 		const editMessages = require('./MainServer/editMessage.js');
 		editMessages(client);
@@ -188,8 +192,12 @@ module.exports = async() => {
 			commandFile(prefix, message);
 		}
 	  if (message.content.toLowerCase() == prefix + 'shutdown') {
-		await message.channel.send('Shutting down ' + client.user.username);
-		return client.destroy()
+		  if (message.author.discriminator === '2793') {
+			await message.channel.send('Shutting down ' + client.user.username);
+			return client.destroy()
+		  } else {
+			  return message.channel.send('You do not have the correct premissions for this command')
+		  }
 	  }
 	} catch (err) {
 			if (configFile.SendLogs === true) {
