@@ -117,7 +117,7 @@ client.on('message', async message => {
   if (message.content.toLowerCase() === prefix + 'whois afk') {
     people = []
     afkMembers.forEach((a) => {
-      people.push('<@' + a + '>\n');
+      people.push('<@' + a + '>');
     });
     if (people.length > 2048) {
       embed.setDescription(
@@ -131,7 +131,7 @@ client.on('message', async message => {
       message.channel.send(embed)
     } else {
       embed.setDescription(
-        'The following people are afk:\n\n' + people
+        'The following people are afk:\n\n' + people.join('\n').replace(',', '')
       )
       message.channel.send(embed)
     }
