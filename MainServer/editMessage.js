@@ -9,7 +9,7 @@ module.exports = async(client) => {
       if (oldMessage.author.bot) return;
       if (!newMessage) return;
         if (oldMessage.guild.id !== configFile.ServerId) return;
-            if (newMessage.content === null) {
+            if (newMessage.content === null || newMessage.content === " " || newMessage.content === undefined) {
                 const embed = new Discord.MessageEmbed()
             .setTitle(`Message Edited`)
             .setDescription(`**Old Content:** ${oldMessage.content}\n` +
@@ -21,8 +21,9 @@ module.exports = async(client) => {
             `**Author ID:** ${oldMessage.author.id}`)
             .setTimestamp()
             .setColor("#84faaa")
-            LoggingChannel.send(embed)
+            return LoggingChannel.send(embed)
             }
+            if (oldMessage === newMessage) return;
 
             const embed = new Discord.MessageEmbed()
             .setTitle(`Message Edited`)
