@@ -37,7 +37,7 @@ module.exports = async (client, msg, args, prefix, message) => {
     
     function mainEmbed() {
         embed.setTitle('Billybobbeep | Fonts');
-        embed.setDescription('Supported Fonts:\nDouble\nFancy\nHand\nCursed\nSmooth')
+        embed.setDescription('Supported Fonts:\nDouble\nFancy\nHand\nCursed\nSmooth\nSmol')
         embed.setFooter(`Requested by: ${message.author.tag}`)
         embed.setTimestamp()
         embed.setColor('5A9EAB')
@@ -195,6 +195,36 @@ module.exports = async (client, msg, args, prefix, message) => {
             y : 'Y',
             x : '᙭',
             z : 'ᘔ',
+            ' ' : ' '
+        }
+    } else if (args[0].toLowerCase() === 'smol') {
+        var letters = {
+            a : 'α',
+            b : 'в',
+            c : '¢',
+            d : '∂',
+            e : 'є',
+            f : 'f',
+            g : 'g',
+            h : 'н',
+            i : 'ι',
+            j : 'ʝ',
+            k : 'к',
+            l : 'ℓ',
+            m : 'м',
+            n : 'и',
+            o : 'σ',
+            p : 'ρ',
+            q : 'q',
+            r : 'я',
+            s : 'ѕ',
+            t : 'т',
+            u : 'υ',
+            v : 'ν',
+            w : 'ω',
+            y : 'у',
+            x : 'χ',
+            z : 'z',
             ' ' : ' '
         }
     } else {
