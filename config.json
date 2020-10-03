@@ -9,6 +9,7 @@
     "RulesChannel" : "734486711609983017", 
     "MemesChannel" : "734487587456155758",
     "LoggingChannel" : "738097180451274784",
+    "talk2billy" : "736254265189990500",
 
     "WelcomeChannelModeration" : true,
     "AutoRole" : true,
@@ -16,6 +17,7 @@
     "LogKicks" : true,
     "LogBans" : true,
     "SendLogs" : true,
+    "talk2billyEnabled" : false,
 
     "SpoinkID" : "697194959119319130",
     "WibWobID" : "441613173003649028",
@@ -25,7 +27,6 @@
     "BotsVoiceId" : "734706524752052226",
     "ServerId" : "733442092667502613",
     "OnlineVoiceId" : "758376522070491137",
-
 
     "TickEmoji1" : "736952966447366154",
     "TickEmoji2" : "736953079420813376",
@@ -43,5 +44,4 @@
     "Siren" : "737325644945555557",
     "Police2" : "737325681410572388",
     "Police1" : "737325666172797060"
-
 }
