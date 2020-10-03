@@ -46,7 +46,7 @@ client.on('message', async message => {
       return message.channel.send(embed)
     }
     if (args[2]) {
-      reason = args[2]
+      reason = args.slice(2).join(" ")
     } else {
       reason = 'No reason was provided.'
     }
