@@ -55,7 +55,7 @@ module.exports = async client => {
 			`**Pinned:** ${pinned}\n`)
 			return LoggingChannel.send(embed);
 		}
-		if (message.embeds.length > 0) {
+		if (message.toLowerCase().includes('https://') || message.toLowerCase().includes('http://') || message.toLowerCase().includes('www.') || message.toLowerCase().includes('.com') || message.toLowerCase().includes('.co.uk')) {
 			embed.setDescription(
 				`**Content:** *This message contained an embeded link.*\n` +
 				`**Link**: ${message.content}` +
