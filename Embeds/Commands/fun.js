@@ -23,8 +23,8 @@ module.exports = async(msg, args, prefix, message) => {
             "*Repeats what you say in a secret message format.*\n" +
             `${prefix}rolldice\n` +
             "*Rolls a dice and gives you the number.*\n" +
-
-
+            `${prefix}font\n` +
+            "*Gives you a list of fonts you can turn your message into*"
             `${prefix}image\n` +
             "*Generates a random image.*\n")
         .setColor([177, 210, 240])
