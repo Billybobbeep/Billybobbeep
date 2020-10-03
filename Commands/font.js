@@ -36,7 +36,7 @@ module.exports = async (client, msg, args, prefix, message) => {
         for (var i = 0; i < args.join(" ").length; i++) {
             var letter = args.join(" ")[i].toLowerCase();
             for (var j = 0; j < 1; j++) {
-                lines[j] += letters[letter] + '';
+                lines[j] += letters[letter] + '-';
             }
         }
     message.channel.send(starter + lines.join("\n"))
