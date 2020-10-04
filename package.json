@@ -20,7 +20,6 @@
     "os": "^0.1.1",
     "random-puppy": "^1.1.0",
     "rellax": "^1.12.1",
-    "request": "^2.88.2",
-    "uptimerobot": "^1.0.1"
+    "request": "^2.88.2"
   }
 }
