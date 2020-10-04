@@ -1,6 +1,6 @@
 module.exports = async (client, latestType, ready, message) => {
     console.log('yeye')
-    /*client.on('message', async (msg) => {
+    client.on('message', async (msg) => {
         if (msg.author.id != latestType.id) return;
         if (!message) return;
         if (!latestType.id && !latestType.ready) return;
@@ -8,5 +8,5 @@ module.exports = async (client, latestType, ready, message) => {
             message.delete()
             ready = false
         }
-    });*/
+    });
 }
