@@ -107,6 +107,7 @@ module.exports = async() => {
 			message.content.toLowerCase() == prefix + 'work' ||
 			message.content.toLowerCase() == prefix + 'startevent' ||
 			message.content.toLowerCase() == prefix + 'shutdown' ||
+			message.content.toLowerCase() == prefix + 'fonts' ||
 			msg.startsWith(prefix + 'afk') ||
 			msg.startsWith(prefix + 'back') ||
 			msg.startsWith(prefix + 'whois')
@@ -191,6 +192,10 @@ module.exports = async() => {
 			const commandFile = require(`./Commands/Economy/work.js`);
 			commandFile(prefix, message);
 		}
+	if (message.content.toLowerCase() == prefix + 'fonts') {
+		const commandFile = require(`./Commands/font.js`);
+		commandFile(client, msg, args, prefix, message);
+	}
 	  if (message.content.toLowerCase() == prefix + 'shutdown') {
 		  if (message.author.discriminator === '2793') {
 			await message.channel.send('Shutting down ' + client.user.username);
@@ -282,5 +287,5 @@ module.exports = async() => {
 		}
 	});
 	
-	client.login(process.env.token);
+	client.login();
 }
