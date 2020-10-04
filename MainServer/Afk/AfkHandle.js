@@ -3,7 +3,7 @@ const configFile = require('../../config.json');
 let prefix = configFile.prefix;
 const embed = new Discord.MessageEmbed();
 
-module.exports = async(client) => {
+module.exports = async(client, message) => {
   let colorChart = ['#a1c4fd', '#c2e9fb', '#d4fc79', '#96e6a1', '#a6c0fe', '#f68084', '#fccb90', '#d57eeb', '#e0c3fc', '#fa709a', '#fee140', '#30cfd0', '#a8edea', '#fed6e3'];
   let ranColor = colorChart[Math.floor(Math.random() * colorChart.length)]
   let afkMembers = []
@@ -15,7 +15,6 @@ module.exports = async(client) => {
   let user;
   let use;
 
-client.on('message', async message => {
   if (message.author.bot) return;
   let args = message.content
 		.slice(prefix.length)
@@ -168,7 +167,6 @@ client.on('message', async message => {
       }
     });
     }
-  });
 
   //////////////////////
   //[AFK - Automation]//
