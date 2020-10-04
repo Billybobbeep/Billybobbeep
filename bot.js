@@ -139,6 +139,36 @@ module.exports = async() => {
 		AfkFile(client, message);
 		const DmLogger = require('./MainServer/dmRecieving.js');
 		DmLogger(client, message, Discord);
+
+
+		try {
+			const reactMessages = require(`./MainServer/deletingMessages.js`);
+			reactMessages(message, Discord, client);
+
+			if (
+				message.channel.id === configFile.PollChannel ||
+				message.channel.id === configFile.MemesChannel
+			) {
+				const reactMessages = require(`./MainServer/reactions.js`);
+				reactMessages(message);
+			}
+		} catch (err) {
+				if (configFile.SendLogs === true) {
+				let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
+				embed.setTitle(`Command Error`)
+				embed.setDescription(
+				`**Channel:** ${message.channel}\n` +
+				`**Command:** ${command}\n\n` +
+				`**Error Code:**\n` + err
+				)
+				embed.setColor(`#fcb69f`)
+					LoggingChannel.send(embed);
+				} else {
+					return;
+				}
+		}
+
+
 		if (message.channel === configFile.LoggingChannel) return;
 		if (message.author.bot) return; //Ensures bots cannot access command
 		if (!message.content.startsWith(prefix)) return;
@@ -212,37 +242,6 @@ module.exports = async() => {
 	} catch (err) {
 			if (configFile.SendLogs === true) {
 		  if (message.channel.type === 'dm') return;
-		  let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
-		  embed.setTitle(`Command Error`)
-		  embed.setDescription(
-			`**Channel:** ${message.channel}\n` +
-			`**Command:** ${command}\n\n` +
-			`**Error Code:**\n` + err
-		  )
-		  embed.setColor(`#fcb69f`)
-				LoggingChannel.send(embed);
-			} else {
-				return;
-			}
-		}
-	});
-	
-	//Monitoring
-	
-	client.on('message', message => {
-	try {
-		const reactMessages = require(`./MainServer/deletingMessages.js`);
-		reactMessages(message, Discord, client);
-	
-		if (
-			message.channel.id === configFile.PollChannel ||
-			message.channel.id === configFile.MemesChannel
-		) {
-			const reactMessages = require(`./MainServer/reactions.js`);
-			reactMessages(message);
-		}
-	} catch (err) {
-			if (configFile.SendLogs === true) {
 		  let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
 		  embed.setTitle(`Command Error`)
 		  embed.setDescription(
