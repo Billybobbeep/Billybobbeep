@@ -14,7 +14,7 @@ let messageBad = ['bad', ':(', ':c', 'd:']
 let messageAgree = ['i agree', 'i do agree']
 let messageDisagree = ['i disagree', 'i do not agree', 'i object', 'no']
 let messageLaugh = ['lol', 'xd', 'lmao', ':)', ':d', '(:', 'c:', ':p']
-
+let messageWhy = ['why', 'how come']
 
 module.exports = async (client) => {
     client.on('message', async message => {
@@ -52,7 +52,7 @@ module.exports = async (client) => {
         });
         messageGood.forEach((a) => {
             if (message.content.toLowerCase().startsWith(a)) {
-                if (message.includes('bad', 'not good')) return modules.bad(message)
+                if (message.content.includes('bad', 'not good')) return modules.bad(message)
                 modules.good(message)
             }
         });
