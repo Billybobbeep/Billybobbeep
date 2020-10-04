@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "@replit/database": "^2.0.0",
+    "discord-anti-spam": "^2.4.1",
     "discord.js": "^12.3.1",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
