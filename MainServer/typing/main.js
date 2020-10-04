@@ -21,7 +21,8 @@ module.exports = async (client) => {
         setTimeout(() => {
             if (ready === true && latestType != 0 && latestType.isReady === true) {
                 if (!message) return;
-                message.edit(`Woah there <@!${latestType}>, you just ghost typed.`)
+                console.log(latestType)
+                message.edit(`Woah there <@!${latestType.id}>, you just ghost typed.`)
             }
         }, 5000);
     });
