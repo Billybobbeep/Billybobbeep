@@ -11,22 +11,16 @@
   "description": "",
   "dependencies": {
     "@replit/database": "^2.0.0",
-    "dateformat": "^3.0.3",
     "discord.js": "^12.3.1",
-    "discord.js-commando": "^0.10.0",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "moment": "^2.27.0",
-    "moment-duration-format": "^2.3.2",
     "ms": "^2.1.2",
     "node": "^14.5.0",
     "os": "^0.1.1",
     "random-puppy": "^1.1.0",
     "rellax": "^1.12.1",
     "request": "^2.88.2",
-    "uptimerobot": "^1.0.1",
-    "yt-search": "^2.3.1",
-    "ytdl": "^1.3.5",
-    "ytdl-core": "^3.3.0"
+    "uptimerobot": "^1.0.1"
   }
 }
