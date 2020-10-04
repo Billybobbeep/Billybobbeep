@@ -53,8 +53,8 @@ module.exports = async(message, Discord, client) => {
       await LoggingChannel.send(embed)
     }
 
-    if (message.attachments.size > 0) {
-        if (message.author.id != '724629665871822950') return; //lexi
+    /*if (message.attachments.size > 0) {
+        if (message.author.id != '724629665871822950') return;
         var countDownDate = new Date("October 3, 2020 15:00:00").getTime();
         var currentTime = new Date().getTime();
    
@@ -80,5 +80,5 @@ module.exports = async(message, Discord, client) => {
       embed.setDescription(`You cannot send images in ${message.guild} for another:\n**${days}** days, **${hours}** hours, **${minutes}** minutes and **${seconds}** seconds.\nReason: Maximum warnings.`)
       message.author.send(embed)
       }
-  }
+  }*/
 }
