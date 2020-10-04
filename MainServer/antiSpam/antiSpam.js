@@ -6,9 +6,8 @@ var AntiSpam = []
 var count = 0;
 
 module.exports = async (client) => {
-
+    let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
     client.on('message', async message => {
-        count = 0
         if (!message.guild || message.author.id === message.client.user.id || settings.ignoreBots && message.author.bot ) return;
         if (message.channel.id === message.author.lastMessageChannelID) {
             AntiSpam.push(message.author.id)
@@ -18,13 +17,15 @@ module.exports = async (client) => {
                 count++;
             }
         });
-        if (count === 5) {
+        if (count > settings.messageToWarn && count < settings.messageToWarn + 2) {
             embed.setTitle('Billybobbeep | Spam Prevention');
             embed.setDescription('You have been warned for spamming in ' + message.guild.name);
-            embed.setColor('#fbc2eb')
-            embed.setTimestamp()
-            await message.author.send(embed)
+            embed.setColor('#fbc2eb');
+            embed.setTimestamp();
+            await message.author.send(embed);
             message.member.roles.add(configFile.MutedRole)
+            embed.setDescription(`Spam detected.\n\n**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Spam content:** ${message.content}`)
+            await LoggingChannel.send(embed)
             setTimeout(() => {
                 message.member.roles.remove(configFile.MutedRole)
             }, 1000);
