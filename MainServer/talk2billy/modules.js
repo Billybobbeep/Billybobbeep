@@ -61,3 +61,33 @@ module.exports.feeling = function (message) {
     let response = reply[Math.floor(Math.random() * reply.length)]
     return message.channel.send(response)
 }
+module.exports.doing = function (message) {
+    let reply = ['not alot, you', 'nm, you?', 'just doing stuff, wbu', 'just chilling in the server, what about you?']
+    let response = reply[Math.floor(Math.random() * reply.length)]
+    return message.channel.send(response)
+}
+module.exports.yeah = function (message) {
+    let reply = ['yeye', 'yuhh', 'ikr', 'ikrr', '']
+    let response = reply[Math.floor(Math.random() * reply.length)]
+    return message.channel.send(response)
+}
+module.exports.attachment = function (message) {
+    let reply = ['do i smell an image?', 'you cannot send images here ♥', 'no ♥']
+    let response = reply[Math.floor(Math.random() * reply.length)]
+    return message.channel.send(response)
+}
+module.exports.oh = function (message) {
+    let reply = ['oh?', 'right', 'i disagree']
+    let response = reply[Math.floor(Math.random() * reply.length)]
+    return message.channel.send(response)
+}
+module.exports.good = function (message) {
+    let reply = ['goodgood', 'ayeee thats good', 'das good init']
+    let response = reply[Math.floor(Math.random() * reply.length)]
+    return message.channel.send(response)
+}
+module.exports.bad = function (message) {
+    let reply = ['oh no :(', 'noo, what happened?', ':/']
+    let response = reply[Math.floor(Math.random() * reply.length)]
+    return message.channel.send(response)
+}
