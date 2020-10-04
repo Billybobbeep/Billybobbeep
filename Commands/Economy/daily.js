@@ -11,7 +11,7 @@ module.exports = async(prefix, message) => {
       var yyyy = today.getFullYear();
       var numdate = dd + mm + yyyy;
       var fs = require('fs');
-      fs.readFile('./database/shop.json', 'utf8', function readFileCallback(err, data) {
+      fs.readFile('./Commands/Economy/database/shop.json', 'utf8', function readFileCallback(err, data) {
         var count = 0;
         stuff = JSON.parse(data);
         stuff.forEach(m => {
@@ -28,11 +28,11 @@ module.exports = async(prefix, message) => {
           }
           stuff.push(json);
           stuff = JSON.stringify(stuff);
-          fs.writeFile('./database/shop.json', stuff, 'utf8', function() { });
+          fs.writeFile('./Commands/Economy/database/shop.json', stuff, 'utf8', function() { });
         }
       });
       setTimeout(function() {
-        fs.readFile('./database/shop.json', 'utf8', function readFileCallback(err, data) {
+        fs.readFile('./Commands/Economy/database/shop.json', 'utf8', function readFileCallback(err, data) {
           var stuff = JSON.parse(data);
           stuff.forEach(m => {
             if (m.userID == message.author.id) {
@@ -42,7 +42,7 @@ module.exports = async(prefix, message) => {
                 stuff[index].money += 500;
                 var currentMoney = stuff[index].money;
                 stuff = JSON.stringify(stuff);
-                fs.writeFile('./database/shop.json', stuff, 'utf8', function() { });
+                fs.writeFile('./Commands/Economy/database/shop.json', stuff, 'utf8', function() { });
                 embed.setTitle("Economy | Daily Command");
                 embed.setDescription("You have successfully added £500 to your balance! Your balance is now: `£" + currentMoney + "`");
                 message.channel.send({ embed });
