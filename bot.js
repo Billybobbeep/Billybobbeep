@@ -291,5 +291,5 @@ module.exports = async() => {
 		}
 	});
 	
-	client.login();
+	client.login(process.env.token);
 }
