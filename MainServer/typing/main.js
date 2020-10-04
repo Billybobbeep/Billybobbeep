@@ -21,8 +21,10 @@ module.exports = async (client) => {
         setTimeout(() => {
             if (ready === true && latestType != 0 && latestType.isReady === true) {
                 if (!message) return;
+                let channel = guild.channels.cache.find(channel => channel.id === message.channel.id);
+                if (!channel.messages.fetch(latestType.id)) return;
                 message.edit(`Woah there <@!${latestType.id}>, you just ghost typed.`)
             }
-        }, 5000);
+        }, 10000);
     });
 }
