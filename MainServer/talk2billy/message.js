@@ -3,7 +3,7 @@ const modules = require('./modules.js')
 const configFile= require('../../config.json')
 
 //Settings\\
-let messageHello = ['hello', 'hi', 'morning', 'good morning', 'hoi', 'yo', 'ola', 'hi', 'ahola', 'alhoa', 'wagwan']
+let messageHello = ['hello', 'hi', 'morning', 'good morning', 'hoi', 'yo', 'ola', 'hi', 'ahola', 'alhoa', 'wagwan', 'welcome', 'greetings']
 let messageFeeling = ['how are you', 'you good', 'hows you', 'how is you', 'how r u', 'hows u']
 let messageBye = ['bye', 'night', 'good night', 'i leaving', 'i\'m leaving', 'i\'m leaving now', 'cya', 'bai', 'im off', 'right im off', 'im leaving', 'im leaving now']
 let messageDoing = ['wyd', 'wuu2', 'wassup', 'sup', 'what you doing', 'what u doing', 'whats you up to', 'what you up to', 'what ya doing', 'whatcha up 2', 'whatcha up to', 'whatcha up two']
