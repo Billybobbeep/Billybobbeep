@@ -17,7 +17,7 @@
     "LogKicks" : true,
     "LogBans" : true,
     "SendLogs" : true,
-    "talk2billyEnabled" : false,
+    "talk2billyEnabled" : true,
 
     "SpoinkID" : "697194959119319130",
     "WibWobID" : "441613173003649028",
