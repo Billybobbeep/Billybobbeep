@@ -11,9 +11,6 @@ module.exports = async() => {
 	//////Exporting Modules//////
 	/////////////////////////////
 	
-	const AfkFile = require('./MainServer/Afk/AfkHandle.js');
-	AfkFile(client);
-	
 	module.exports.data = function(callback) {
 	  var totalNum = client.guilds.cache.get(configFile.ServerId).members.cache.array();
 	  var totalOnlineNum = client.guilds.cache.get(configFile.ServerId).members.cache.filter(m => m.presence.status != 'offline').array();
@@ -38,6 +35,12 @@ module.exports = async() => {
 	client.once('ready', async () => {
 		const serverStatsFile = require('./MainServer/serverstats.js');
 		serverStatsFile(client);
+
+		const typing = require('./MainServer/typing/main.js')
+		typing(client)
+
+		const antiSpam = require('./MainServer/antiSpam/antiSpam.js');
+		antiSpam(client)
 	
 		const mentionsHandle = require('./MainServer/mentions.js');
 		mentionsHandle(client);
@@ -132,6 +135,8 @@ module.exports = async() => {
 		}
 	});
 	client.on('message', async message => {
+		const AfkFile = require('./MainServer/Afk/AfkHandle.js');
+		AfkFile(client, message);
 		const DmLogger = require('./MainServer/dmRecieving.js');
 		DmLogger(client, message, Discord);
 		if (message.channel === configFile.LoggingChannel) return;
