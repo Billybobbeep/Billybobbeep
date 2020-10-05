@@ -13,6 +13,7 @@ module.exports = async (client) => {
             AntiSpam.push(message.author.id)
         }
         AntiSpam.forEach((result) => {
+          if (AntiSpam.toLocaleString.length < settings.messagesToWarn) return;
             if (message.author.id === result) {
                 count++;
             }
@@ -28,7 +29,7 @@ module.exports = async (client) => {
             await LoggingChannel.send(embed)
             setTimeout(() => {
                 message.member.roles.remove(configFile.MutedRole)
-            }, 1000);
+            }, 30000);
         }
     });
     setInterval(() => {

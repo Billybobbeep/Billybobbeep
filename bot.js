@@ -63,7 +63,7 @@ module.exports = async() => {
 		reactionRole1();
 	
 		//Display activities in the correct order
-		let activities = [`${prefix}help`, `Version 2.0 👀`],
+		let activities = [`${prefix}help`, `Version 2.0 👀`, 'Erroring like theres no tomorrow 😔🤚'],
 			i = 0;
 		setInterval(() => {
 			client.user.setActivity(`${activities[i++ % activities.length]}`, {
