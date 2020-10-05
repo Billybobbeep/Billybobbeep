@@ -2,7 +2,7 @@ const fs = require('fs');
 var latestType = 0
 var ready = false
 var message;
-var configFile = require('../../config.json')
+var configFile = require('../../config.json');
 
 module.exports = async (client) => {
     fs.readFile('./MainServer/typing/data.json', 'utf8', function readFileCallback(err, data) {
@@ -19,7 +19,7 @@ module.exports = async (client) => {
             const file = require('./second.js')
             file(client, latestType, ready, message)
         }, 10);
-        setTimeout(() => {
+        /*setTimeout(() => {
             if (ready === true && latestType != 0 && latestType.isReady === true) {
                 if (!message) return;
                let guild = client.guilds.cache.get(configFile.ServerId);
@@ -27,6 +27,6 @@ module.exports = async (client) => {
                 if (!channel.messages.fetch(latestType.id)) return;
                 message.edit(`Woah there <@!${latestType.id}>, you just ghost typed.`)
             }
-        }, 10000);
+        }, 10000);*/
     });
 }
