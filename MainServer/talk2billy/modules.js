@@ -3,7 +3,6 @@ const embed = new Discord.MessageEmbed().setTitle('Billybobbeep | Talk to Billy'
 const settings = require('./settings.json');
 const configFile = require('../../config.json');
 const fs = require('fs');
-const { json } = require('express');
 
 //errors
 module.exports.disabled = function (message) {
@@ -90,4 +89,29 @@ module.exports.bad = function (message) {
     let reply = ['oh no :(', 'noo, what happened?', ':/']
     let response = reply[Math.floor(Math.random() * reply.length)]
     return message.channel.send(response)
+}
+module.exports.agree = function (message) {
+    let reply = ['yessir', 'bet', 'goodgood', 'yeeeeh']
+    let response = reply[Math.floor(Math.random() * reply.length)]
+    return message.channel.send(response)
+}
+module.exports.disagree = function (message) {
+    let reply = ['right', 'how do i reply to that-', 'hm', 'ping pong, your opinion is wrong', 'thanks for your feedback']
+    let response = reply[Math.floor(Math.random() * reply.length)]
+    return message.channel.send(response)
+}
+module.exports.laugh = function (message) {
+    let reply = ['lmaoo', 'right', 'i have no emotionssss ✨']
+    let response = reply[Math.floor(Math.random() * reply.length)]
+    return message.channel.send(response)
+}
+module.exports.why = function (message) {
+    let reply =['why not', 'ahhh i dont know how to answerrr', 'how do i respond to thatt']
+    let response = reply[Math.floor(Math.random() * monitorEventLoopDelay.length)]
+    return message.channel.send(message)
+}
+module.exports.know = function (message) {
+    let reply =['yeye', 'yuhh', 'yeah', 'yeeeeh']
+    let response = reply[Math.floor(Math.random() * monitorEventLoopDelay.length)]
+    return message.channel.send(message)
 }
