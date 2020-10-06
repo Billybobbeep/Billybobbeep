@@ -42,17 +42,11 @@ module.exports = async() => {
 		const antiSpam = require('./MainServer/antiSpam/antiSpam.js');
 		antiSpam(client)
 	
-		const mentionsHandle = require('./MainServer/mentions.js');
-		mentionsHandle(client);
-	
 		const guildManager = require('./MainServer/guildManager.js');
 		guildManager(client);
 	
 		const deleteMessages = require('./MainServer/deleteMessages.js');
 		deleteMessages(client);
-
-		const talk2billy = require('./MainServer/talk2billy/main.js')
-		talk2billy(client)
 	try {
 		const editMessages = require('./MainServer/editMessage.js');
 		editMessages(client);
@@ -83,8 +77,8 @@ module.exports = async() => {
 	  }, 50000);
 	});
 	
-	client.on('message', async message => {
-		if (message.channel === configFile.LoggingChannel) return;
+	function command_function(message) {
+		if (message.channel.id === configFile.LoggingChannel) return;
 		if (message.author.bot) return;
 		if (!message.content.startsWith(prefix)) return;
 	
@@ -96,80 +90,48 @@ module.exports = async() => {
 		let command = args.shift().toLowerCase();
 	
 		try {
-			if (
-			message.content.toLowerCase() == prefix + 'ping' ||
-			message.content.toLowerCase() == prefix + 'members' ||
-			msg.startsWith(prefix + 'c') ||
-			message.content.toLowerCase() == prefix + 'joins' ||
-			message.content.toLowerCase() == prefix + 'leaderboard' ||
-			message.content.toLowerCase() == prefix + 'leaves' ||
-			message.content.toLowerCase() == prefix + 'info' ||
-			message.content.toLowerCase() == prefix + 'image' ||
-			message.content.toLowerCase() == prefix + 'help' ||
-			message.content.toLowerCase() == prefix + 'daily' ||
-			message.content.toLowerCase() == prefix + 'work' ||
-			message.content.toLowerCase() == prefix + 'startevent' ||
-			message.content.toLowerCase() == prefix + 'shutdown' ||
-			message.content.toLowerCase() == prefix + 'fonts' ||
-			msg.startsWith(prefix + 'afk') ||
-			msg.startsWith(prefix + 'back') ||
-			msg.startsWith(prefix + 'whois')
-			) return;
 			const commandFile = require(`./Commands/${command}.js`);
 			commandFile(client, msg, args, prefix, message);
 		} catch (err) {
 			if (configFile.SendLogs === true) {
-		  if (message.channel.type === 'dm') return;
-		  let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
-		  embed.setTitle(`Command Error`)
-		  embed.setDescription(
-			`**Channel:** ${message.channel}\n` +
-			`**Command:** ${command}\n\n` +
-			`**Error Code:**\n` + err
-		  )
-		  embed.setColor(`#fcb69f`)
-				LoggingChannel.send(embed);
-			} else {
-				return;
-			}
-		}
-	});
-	client.on('message', async message => {
-		const AfkFile = require('./MainServer/Afk/AfkHandle.js');
-		AfkFile(client, message);
-		const DmLogger = require('./MainServer/dmRecieving.js');
-		DmLogger(client, message, Discord);
-
-
-		try {
-			const reactMessages = require(`./MainServer/deletingMessages.js`);
-			reactMessages(message, Discord, client);
-
-			if (
-				message.channel.id === configFile.PollChannel ||
-				message.channel.id === configFile.MemesChannel
-			) {
-				const reactMessages = require(`./MainServer/reactions.js`);
-				reactMessages(message);
-			}
-		} catch (err) {
-				if (configFile.SendLogs === true) {
+				if (message.channel.type === 'dm') return;
 				let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
 				embed.setTitle(`Command Error`)
 				embed.setDescription(
-				`**Channel:** ${message.channel}\n` +
-				`**Command:** ${command}\n\n` +
-				`**Error Code:**\n` + err
+					`**Channel:** ${message.channel}\n` +
+					`**Command:** ${command}\n\n` +
+					`**Error Code:**\n` + err
 				)
 				embed.setColor(`#fcb69f`)
-					LoggingChannel.send(embed);
+				LoggingChannel.send(embed);
 				} else {
 					return;
 				}
 		}
+	};
+
+	client.on('message', async message => {
+		const talk2billy = require('./MainServer/talk2billy/main.js')
+		talk2billy(client, message)
+		const AfkFile = require('./MainServer/Afk/AfkHandle.js');
+		AfkFile(client, message);
+		const DmLogger = require('./MainServer/dmRecieving.js');
+		DmLogger(client, message, Discord);
+		const reactMessages = require(`./MainServer/deletingMessages.js`);
+		reactMessages(message, Discord, client);
+		const mentionsHandle = require('./MainServer/mentions.js');
+		mentionsHandle(client, message);
+
+		if (
+			message.channel.id === configFile.PollChannel ||
+			message.channel.id === configFile.MemesChannel
+		) {
+			const reactMessages = require(`./MainServer/reactions.js`);
+			reactMessages(message);
+		}
 
 
-		if (message.channel === configFile.LoggingChannel) return;
+		if (message.channel.id === configFile.LoggingChannel) return;
 		if (message.author.bot) return; //Ensures bots cannot access command
 		if (!message.content.startsWith(prefix)) return;
 		let args = message.content
@@ -177,14 +139,13 @@ module.exports = async() => {
 			.trim()
 			.split(/ +/g);
 		let msg = message.content.toLowerCase();
-	try {
 		if (message.content.toLowerCase() == prefix + 'ping') {
 			const commandFile = require(`./Commands/pong.js`);
-			commandFile(client, msg, args, prefix, message);
+			return commandFile(client, msg, args, prefix, message);
 		}
 		if (message.content.toLowerCase() == prefix + 'members') {
 			const commandFile = require(`./Commands/members.js`);
-			commandFile(client, msg, args, prefix, message);
+			return commandFile(client, msg, args, prefix, message);
 		}
 		if (
 			msg.startsWith(prefix + 'cmds') ||
@@ -192,69 +153,54 @@ module.exports = async() => {
 			msg.startsWith(prefix + 'c')
 		) {
 			const commandFile = require(`./Embeds/Commands/main.js`);
-			commandFile(msg, args, prefix, message, client);
+			return commandFile(msg, args, prefix, message, client);
 		}
 		if (message.content.toLowerCase() == prefix + 'pronounrole') {
 			const commandFile = require(`./MainServer/reactionRoles/pronoun.js`);
-			commandFile(message);
+			return commandFile(message);
 		}
 		if (message.content.toLowerCase() == prefix + 'countryrole') {
 			const commandFile = require(`./MainServer/reactionRoles/country.js`);
-			commandFile(message);
+			return commandFile(message);
 		}
 		if (message.content.toLowerCase() == prefix + 'info') {
 			const commandFile = require(`./Embeds/info.js`);
-			commandFile(client, msg, args, prefix, message);
+			return commandFile(client, msg, args, prefix, message);
 		}
 	  if (message.content.toLowerCase() == prefix + 'help') {
 			const commandFile = require(`./Embeds/help.js`);
-			commandFile(client, msg, args, prefix, message);
+			return commandFile(client, msg, args, prefix, message);
 		}
 	  if (message.content.toLowerCase() == prefix + 'image') {
 			const commandFile = require(`./Commands/image.js`);
-			commandFile.run(client, msg, args, prefix, message);
+			return commandFile.run(client, msg, args, prefix, message);
 		}
 	  if (message.content.toLowerCase() == prefix + 'credit' || 
 	  		message.content.toLowerCase() == prefix + 'credits') {
 			const commandFile = require(`./Embeds/credit.js`);
-			commandFile(client, msg, args, prefix, message);
+			return commandFile(client, msg, args, prefix, message);
 		}
 	  if (message.content.toLowerCase() == prefix + 'daily') {
 			const commandFile = require(`./Commands/Economy/daily.js`);
-			commandFile(prefix, message);
+			return commandFile(prefix, message);
 		}
 	  if (message.content.toLowerCase() == prefix + 'work') {
 			const commandFile = require(`./Commands/Economy/work.js`);
-			commandFile(prefix, message);
+			return commandFile(prefix, message);
 		}
 	if (message.content.toLowerCase() == prefix + 'fonts') {
 		const commandFile = require(`./Commands/font.js`);
-		commandFile(client, msg, args, prefix, message);
+		return commandFile(client, msg, args, prefix, message);
 	}
 	  if (message.content.toLowerCase() == prefix + 'shutdown') {
 		  if (message.author.discriminator === '2793') {
 			await message.channel.send('Shutting down ' + client.user.username);
 			return client.destroy()
-		  } else {
-			  return message.channel.send('You do not have the correct premissions for this command')
-		  }
-	  }
-	} catch (err) {
-			if (configFile.SendLogs === true) {
-		  if (message.channel.type === 'dm') return;
-		  let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
-		  embed.setTitle(`Command Error`)
-		  embed.setDescription(
-			`**Channel:** ${message.channel}\n` +
-			`**Command:** ${command}\n\n` +
-			`**Error Code:**\n` + err
-		  )
-		  embed.setColor(`#fcb69f`)
-				LoggingChannel.send(embed);
-			} else {
-				return;
-			}
+		} else {
+			return message.channel.send('You do not have the correct premissions for this command');
 		}
+	}
+	command_function(message)
 	});
 	
 	// Welcomes new members
@@ -291,5 +237,5 @@ module.exports = async() => {
 		}
 	});
 	
-	client.login(process.env.token);
+	client.login('NzMxNDk4ODQyODEzMzY2MzA0.Xwm7Yg.A-sIB2NAVkZI62oyu-UJHzNOM9k');
 }
