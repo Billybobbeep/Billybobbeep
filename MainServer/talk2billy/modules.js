@@ -107,11 +107,25 @@ module.exports.laugh = function (message) {
 }
 module.exports.why = function (message) {
     let reply =['why not', 'ahhh i dont know how to answerrr', 'how do i respond to thatt']
-    let response = reply[Math.floor(Math.random() * monitorEventLoopDelay.length)]
+    let response = reply[Math.floor(Math.random() * reply.length)]
     return message.channel.send(message)
 }
 module.exports.know = function (message) {
     let reply =['yeye', 'yuhh', 'yeah', 'yeeeeh']
-    let response = reply[Math.floor(Math.random() * monitorEventLoopDelay.length)]
+    let response = reply[Math.floor(Math.random() * reply.length)]
+    return message.channel.send(message)
+}
+module.exports.replySame = function(message) {
+    let args = message.content.split(/ +/g);
+    return message.channel.send(args[0])
+}
+module.exports.noProblem = function(message) {
+    let reply =['no problem', 'no problemm']
+    let response = reply[Math.floor(Math.random() * reply.length)]
+    return message.channel.send(message)
+}
+module.exports.thanks = function(message) {
+    let reply =['thanks', 'thank you', 'fanks', '👉👈']
+    let response = reply[Math.floor(Math.random() * reply.length)]
     return message.channel.send(message)
 }
