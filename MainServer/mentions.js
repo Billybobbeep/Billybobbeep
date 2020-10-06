@@ -3,8 +3,7 @@ const configFile = require('../config.json');
 let prefix = configFile.prefix;
 const embed = new Discord.MessageEmbed()
 
-module.exports = async (client) => {
-  client.on('message', async message => {
+module.exports = async (client, message) => {
     embed.setTitle('Billybobbeep | Mentioned');
     embed.setColor('#fed6e3');
     embed.setFooter(`Requested by: ${message.author.tag}`);
@@ -99,5 +98,4 @@ module.exports = async (client) => {
           message.channel.send(embed)
         }
     }
-  });
 }
