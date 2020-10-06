@@ -8,6 +8,7 @@ var count = 0;
 module.exports = async (client) => {
     let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
     client.on('message', async message => {
+        if (message.channel.id === configFile.talk2billy) return;
         if (!message.guild || message.author.id === message.client.user.id || settings.ignoreBots && message.author.bot ) return;
         if (message.channel.id === message.author.lastMessageChannelID) {
             AntiSpam.push(message.author.id)
