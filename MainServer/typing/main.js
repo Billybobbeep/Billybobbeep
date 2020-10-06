@@ -12,6 +12,7 @@ module.exports = async (client) => {
         fs.writeFile('./MainServer/typing/data.json', `{ "id" : ${nd.id}, "isReady" : false }`, `utf8`, function() { });
     });
     client.on('typingStart', async (channel, user) => {
+        if (channel.id === configFile.talk2billy) return;
         message = await channel.send(`<@!${user.id}> is typing`);
         latestType = { id :  user.id, isReady : true }
         fs.writeFile('./MainServer/typing/data.json', `{ "id" : ${user.id}, "isReady" : true }`, 'utf8', function() { });
