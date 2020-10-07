@@ -38,9 +38,6 @@ module.exports = async() => {
 
 		const typing = require('./MainServer/typing/main.js')
 		typing(client)
-
-		const antiSpam = require('./MainServer/antiSpam/antiSpam.js');
-		antiSpam(client)
 	
 		const guildManager = require('./MainServer/guildManager.js');
 		guildManager(client);
@@ -121,6 +118,8 @@ module.exports = async() => {
 		reactMessages(message, Discord, client);
 		const mentionsHandle = require('./MainServer/mentions.js');
 		mentionsHandle(client, message);
+		const antiSpam = require('./MainServer/antiSpam/antiSpam.js');
+		antiSpam(client, message)
 
 		if (
 			message.channel.id === configFile.PollChannel ||
@@ -237,5 +236,5 @@ module.exports = async() => {
 		}
 	});
 	
-	client.login('NzMxNDk4ODQyODEzMzY2MzA0.Xwm7Yg.A-sIB2NAVkZI62oyu-UJHzNOM9k');
+	client.login('NzMxNDk4ODQyODEzMzY2MzA0.Xwm7Yg.l79EVwVUte7ow1cJCXwwn8r8hEE');
 }

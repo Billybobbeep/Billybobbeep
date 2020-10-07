@@ -5,9 +5,8 @@ const configFile = require('../../config.json');
 var AntiSpam = []
 var count = 0;
 
-module.exports = async (client) => {
+module.exports = async (client, message) => {
     let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
-    client.on('message', async message => {
         if (message.channel.id === configFile.talk2billy) return;
         if (!message.guild || message.author.id === message.client.user.id || settings.ignoreBots && message.author.bot ) return;
         if (message.channel.id === message.author.lastMessageChannelID) {
@@ -32,7 +31,6 @@ module.exports = async (client) => {
                 message.member.roles.remove(configFile.MutedRole)
             }, 30000);
         }
-    });
     setInterval(() => {
         if (AntiSpam.length < settings.messagesToWarn) return;
         AntiSpam.forEach((result) => {

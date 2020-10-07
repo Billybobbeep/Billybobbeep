@@ -11,5 +11,8 @@ module.exports = async (client, latestType, ready, message) => {
             message.delete()
             ready = false
         }
+        let searchMessage = guild.channels.cache.forEach(m => {
+            console.log(m.messages)
+        });
     });
 }
