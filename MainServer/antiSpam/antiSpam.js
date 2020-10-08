@@ -32,7 +32,6 @@ module.exports = async (client, message) => {
             }, 30000);
         }
     setInterval(() => {
-        if (AntiSpam.length < settings.messagesToWarn) return;
         AntiSpam.forEach((result) => {
             AntiSpam.splice(AntiSpam.indexOf(result), 1);
         });

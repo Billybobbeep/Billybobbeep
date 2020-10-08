@@ -54,7 +54,7 @@ module.exports = async() => {
 		reactionRole1();
 	
 		//Display activities in the correct order
-		let activities = [`${prefix}help`, `Version 2.0 👀`, 'Erroring like theres no tomorrow 😔🤚'],
+		let activities = [`${prefix}help`, `Version 2.0 👀`],
 			i = 0;
 		setInterval(() => {
 			client.user.setActivity(`${activities[i++ % activities.length]}`, {
@@ -118,8 +118,8 @@ module.exports = async() => {
 		reactMessages(message, Discord, client);
 		const mentionsHandle = require('./MainServer/mentions.js');
 		mentionsHandle(client, message);
-		const antiSpam = require('./MainServer/antiSpam/antiSpam.js');
-		antiSpam(client, message)
+		//const antiSpam = require('./MainServer/antiSpam/antiSpam.js');
+		//antiSpam(client, message)
 
 		if (
 			message.channel.id === configFile.PollChannel ||
@@ -236,5 +236,5 @@ module.exports = async() => {
 		}
 	});
 	
-	client.login('NzMxNDk4ODQyODEzMzY2MzA0.Xwm7Yg.l79EVwVUte7ow1cJCXwwn8r8hEE');
+	client.login(process.env.token);
 }
