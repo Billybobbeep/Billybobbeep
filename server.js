@@ -4,6 +4,7 @@ const app = express();
 const Discord = require('discord.js')
 var port = 3000;
 const bot = require("./bot");
+const fs = require('fs');
 
 app.use('/style', express.static('style'));
 app.set('view engine', 'ejs');
@@ -42,12 +43,58 @@ app.get('/contact/submit', (req, res) => {
   LoggingChannel.send(embed)
   res.render('success.ejs');
 });
+app.get('/discord/invite', function(req, res) {
+    fs.readFile('./Public/analytics/invites.json', 'utf8', function readFileCallback(err, data) {
+      if (err) {
+        console.log(err)
+      }
+      data = JSON.parse(data)
+      if (!req.query.from) {
+        var total = data[0].total;
+        var website = data[0].website;
+        var json = [{
+          "total" : total + 1,
+          "spoink" : data[0].spoink,
+          "other" : data[0].other,
+          "website" : website + 1
+        }]
+        json = JSON.stringify(json)
+        fs.writeFile('./Public/analytics/invites.json', json, 'utf8', function() { })
+        res.redirect('https://discord.com/invite/qNJEj3s');
+      } else {
+        if (req.query.from === 'spoink' || req.query.from === 'tyler') {
+        var total = data[0].total;
+        var spoink = data[0].spoink;
+        var json = [{
+          "total" : total + 1,
+          "spoink" : spoink + 1,
+          "other" : data[0].other,
+          "website" : data[0].website
+        }]
+        json = JSON.stringify(json)
+        fs.writeFile('./Public/analytics/invites.json', json, 'utf8', function() { })
+        res.redirect('https://discord.com/invite/qNJEj3s');
+        } else {
+          var total = data[0].total;
+          var other = data[0].other;
+          var json = [{
+            "total" : total + 1,
+            "spoink" : data[0].spoink,
+            "other" : other + 1,
+            "website" : data[0].website
+          }]
+          json = JSON.stringify(json)
+          fs.writeFile('./Public/analytics/invites.json', json, 'utf8', function() { })
+          res.redirect('https://discord.com/invite/qNJEj3s');
+        }
+      }
+    });
+});
 
 app.use(function(req, res) {
     res.status(404)
     res.sendFile(__dirname + '/Public/error404.html');
 });
-
 
 app.listen(port, () => { console.log("Billybobbeep is online") });
 
