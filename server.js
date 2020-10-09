@@ -22,21 +22,8 @@ app.get('/home/status', function(req, res) {
 app.get('/home/status/more', (req, res) => {
   res.sendFile(__dirname + '/Public/moreStatus.html')
 });
-app.get('/home/events', function(req, res) {
-  res.sendFile(__dirname + "/Public/events.html");
-});
 app.get('/home/database/:name/:id/get', (req, res) => {
   if (req.params.name != 'users') res.redirect('/home'); if (req.params.id != 'rPUqgbgzBjTGfgZTZeHsDedGJVDUuEXWwKSxfZRymTVPttdLhDABAateSAuENZZVzwJsVheQTNbuZpRXtCqnqLRrsmASjQKQrJmTuFWNhFYQNFVXKkGjrgYYbEDZUjytDEZAXpAUejNQcachyvyHxEvSrfydQznwQQsGnPHnPNUnbFVtRNDXbHgHFqkkkqZsUjRSGsNWbzfwbXNZBmYTTXykCYxyRyEkdPCygqrDgksQsARDNxtZYkSwgWnjZRxBWKSgLWDMRQakwrHeJTPYtpLezdMksCbrWESccSCuxVtjtkeQyTjLaDcmaWbKbTjYNXGhAvMnpgnDLmHTZDhguJvRmnUTZbFBPHStTTqCZYNMBFHhNHDxzfdSknNzLkGbKxVkpQPXarYPbxVCsekhUTqQEpHJkfYBrPNgFhNqxLXUKuVaJAKahvSLfUkrWbawjATxHfgdDvRTjALZuTzkZVJcwsfZYwGdnGbYMLFhsduygNzkhkVgJYLuCWAbKYJKHyWEVqUUpsxwePmBrXJqVprZahWnSeUEprLrnXEagGSgGUZbHZkSMZagLfxaSPQxfgtzcchxEGzWPPxedueZugADeUQEufSsXSghktkXWuudggkVSwErYQhwVsRkMBEqZYUJMKmAskKYkpqTrFKTNZjgJcvrtBscXTWevaWLcTevNLNRcpcNPkYXJwKatDhNYMHaHZRrJYyrLHrKVuNtNtpCCyUSdEdRJTzcVphCgVqffzdbgHxKLxPbCkBqnwZpjXSRjVLarGpRZupwqbKPDkxFfsArhhspZPqyHBnTqvAcEaPGXTzQeCtXMRzvnadfykTafvNujCUBTXTsBbPtTJxAxcagyujMkBzDwqvZEWXfjfzmMCTbETRhrLduWcNNgKZhrwMgGRqPHHGyxRGCHkvRmPNMnpemXBrmUsBeznCBuSPaeCAZdGaGfjLkHmcEPHhXKQHRtSpUraympWASNhAvBKKtQZqLARfUQZYQhMZkhvKANExwqBggpATAugTs') res.redirect('/home'); if (req.query.bot != 'true') res.redirect('/home'); if (req.query.type != 'bot') res.redirect('/home'); bot.data(function(data) { res.send(data); }); });
-app.get('/home/events/:id', (req, res) => {
-  if (req.params.id === '1') {
-    res.sendFile(__dirname + "/Public/events/spoink.html")
-  } else if (req.params.id === '2') {
-    res.sendFile(__dirname + "/Public/events/billy.html")
-  } else {
-    res.status(404)
-    res.sendFile(__dirname + "/Public/error404.html")
-  }
-});
 app.get('/contact/submit', (req, res) => {
   if (!req.query) res.render('general.ejs');
   if (!req.query.fName || !req.query.sName || !req.query.discord || !req.query.subject || !req.query.message) res.render('general.ejs');
