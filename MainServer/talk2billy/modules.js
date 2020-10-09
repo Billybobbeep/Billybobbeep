@@ -129,3 +129,9 @@ module.exports.thanks = function(message) {
     let response = reply[Math.floor(Math.random() * reply.length)]
     return message.channel.send(message)
 }
+module.exports.unknownMsg = function(message) {
+  if (message.content.startsWith(configFile.prefix)) return;
+  let reply = ['sorry I do not understand you', 'invalid phrase entered']
+  let response = reply[Math.floor(Math.random() * reply.length)]
+  return message.channel.send(response)
+}
