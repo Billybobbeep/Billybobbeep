@@ -173,8 +173,12 @@ module.exports = async() => {
 			return commandFile(client, msg, args, prefix, message);
 		}
     if (message.content.toLowerCase() == prefix + 'leaderboard') {
-      const commandFile = require(`./MainServer/levels/main.js`);
+      const commandFile = require(`./MainServer/levels/leaderboard.js`);
       return commandFile(client, message);
+    }
+    if (message.content.toLowerCase().startsWith(prefix + 'removelevel') || message.content.toLowerCase().startsWith(prefix + 'removelvl') || message.content.toLowerCase().startsWith(prefix + 'rl')) {
+      const commandFile = require(`./MainServer/levels/removeLvl.js`);
+      return commandFile(client, message, prefix);
     }
 	  if (message.content.toLowerCase() == prefix + 'image') {
 			const commandFile = require(`./Commands/image.js`);

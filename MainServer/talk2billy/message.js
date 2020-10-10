@@ -19,7 +19,8 @@ let messageHello = [
   'alhoa',
   'wagwan',
   'welcome',
-  'greetings'
+  'greetings',
+  'billy'
 ];
 let messageFeeling = [
   'how are you',
@@ -80,8 +81,6 @@ let messageWhy = ['why', 'how come'];
 let messageKnow = ['ikr', 'i know', 'i know right'];
 let messageThanks = ['thank you', 'thank'];
 let replySame = ['oop'];
-let includesIconic = ['iconic']
-let includesBilly = ['billy']
 
 module.exports = async (client, message) => {
   let inuse = false;
@@ -176,7 +175,7 @@ module.exports = async (client, message) => {
     }
   });
   messageKnow.forEach(a => {
-    if (message.content.toLowerCase().startsWith(a)) {
+    if (message.content.toLowerCase().startsWith(a) || message.content.toLowerCase().includes('iconic')) {
       if (inuse === true) return;
       inuse = true;
       modules.know(message);
@@ -194,20 +193,6 @@ module.exports = async (client, message) => {
       if (inuse === true) return;
       inuse = true;
       modules.noProblem(message);
-    }
-  });
-    includesIconic.forEach(a => {
-    if (message.content.toLowerCase().includes(a)) {
-      if (inuse === true) return;
-      inuse = true
-      modules.yeah(message)
-    }
-  });
-  includesBilly.forEach(a => {
-    if (message.content.toLowerCase().includes(a) || message.content.toLowerCase().startsWith(a)) {
-      if (inuse === true) return;
-      inuse = true
-      modules.hello(message)
     }
   });
   if (inuse === false) {

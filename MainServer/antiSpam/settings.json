@@ -1,5 +1,5 @@
 {
     "ignoreBots" : true,
     "messageToWarn" : 5,
-    "timeToWarn" : 1500
+    "timeToWarn" : 3000
 }

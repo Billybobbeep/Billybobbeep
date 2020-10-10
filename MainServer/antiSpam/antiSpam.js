@@ -31,9 +31,11 @@ module.exports = async (client, message) => {
                 message.member.roles.remove(configFile.MutedRole)
             }, 30000);
         }
-    setInterval(() => {
-        AntiSpam.forEach((result) => {
-            AntiSpam.splice(AntiSpam.indexOf(result), 1);
-        });
-    }, settings.timeToWarn);
 }
+setInterval(() => {
+  if (AntiSpam.length < 1) return;
+    AntiSpam.forEach((result) => {
+      if (AntiSpam.length < 1) return;
+        AntiSpam.splice(AntiSpam.indexOf(result), 1);
+    });
+}, settings.timeToWarn);
