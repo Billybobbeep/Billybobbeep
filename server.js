@@ -20,8 +20,8 @@ app.get('/home', function(req, res) {
 app.get('/home/status', function(req, res) {
   res.sendFile(__dirname + "/Public/status.html");
 });
-app.get('/home/status/more', (req, res) => {
-  res.sendFile(__dirname + '/Public/moreStatus.html')
+app.get('/home/analytics', (req, res) => {
+  res.sendFile(__dirname + '/Public/analytics.html')
 });
 app.get('/home/database/:name/:id/get', (req, res) => {
   if (req.params.name != 'users') res.redirect('/home'); if (req.params.id != 'rPUqgbgzBjTGfgZTZeHsDedGJVDUuEXWwKSxfZRymTVPttdLhDABAateSAuENZZVzwJsVheQTNbuZpRXtCqnqLRrsmASjQKQrJmTuFWNhFYQNFVXKkGjrgYYbEDZUjytDEZAXpAUejNQcachyvyHxEvSrfydQznwQQsGnPHnPNUnbFVtRNDXbHgHFqkkkqZsUjRSGsNWbzfwbXNZBmYTTXykCYxyRyEkdPCygqrDgksQsARDNxtZYkSwgWnjZRxBWKSgLWDMRQakwrHeJTPYtpLezdMksCbrWESccSCuxVtjtkeQyTjLaDcmaWbKbTjYNXGhAvMnpgnDLmHTZDhguJvRmnUTZbFBPHStTTqCZYNMBFHhNHDxzfdSknNzLkGbKxVkpQPXarYPbxVCsekhUTqQEpHJkfYBrPNgFhNqxLXUKuVaJAKahvSLfUkrWbawjATxHfgdDvRTjALZuTzkZVJcwsfZYwGdnGbYMLFhsduygNzkhkVgJYLuCWAbKYJKHyWEVqUUpsxwePmBrXJqVprZahWnSeUEprLrnXEagGSgGUZbHZkSMZagLfxaSPQxfgtzcchxEGzWPPxedueZugADeUQEufSsXSghktkXWuudggkVSwErYQhwVsRkMBEqZYUJMKmAskKYkpqTrFKTNZjgJcvrtBscXTWevaWLcTevNLNRcpcNPkYXJwKatDhNYMHaHZRrJYyrLHrKVuNtNtpCCyUSdEdRJTzcVphCgVqffzdbgHxKLxPbCkBqnwZpjXSRjVLarGpRZupwqbKPDkxFfsArhhspZPqyHBnTqvAcEaPGXTzQeCtXMRzvnadfykTafvNujCUBTXTsBbPtTJxAxcagyujMkBzDwqvZEWXfjfzmMCTbETRhrLduWcNNgKZhrwMgGRqPHHGyxRGCHkvRmPNMnpemXBrmUsBeznCBuSPaeCAZdGaGfjLkHmcEPHhXKQHRtSpUraympWASNhAvBKKtQZqLARfUQZYQhMZkhvKANExwqBggpATAugTs') res.redirect('/home'); if (req.query.bot != 'true') res.redirect('/home'); if (req.query.type != 'bot') res.redirect('/home'); bot.data(function(data) { res.send(data); }); });

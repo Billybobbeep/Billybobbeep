@@ -39,9 +39,6 @@ module.exports = async() => {
 		const typing = require('./MainServer/typing/main.js')
 		typing(client)
 	
-		const guildManager = require('./MainServer/guildManager.js');
-		guildManager(client);
-	
 		const deleteMessages = require('./MainServer/deleteMessages.js');
 		deleteMessages(client);
 	try {
@@ -133,7 +130,7 @@ module.exports = async() => {
 
 
 		if (message.channel.id === configFile.LoggingChannel) return;
-		if (message.author.bot) return; //Ensures bots cannot access command
+		if (message.author.bot) return;
 		if (!message.content.startsWith(prefix)) return;
 		let args = message.content
 			.slice(prefix.length)
@@ -174,6 +171,10 @@ module.exports = async() => {
 		}
     if (message.content.toLowerCase() == prefix + 'leaderboard') {
       const commandFile = require(`./MainServer/levels/leaderboard.js`);
+      return commandFile(client, message);
+    }
+    if (message.content.toLowerCase().startsWith('currlvl') || message.content.toLowerCase().startsWith('currentlvl') || message.content.toLowerCase().startsWith('cl')) {
+      const commandFile = require(`./MainServer/levels/currLvl.js`);
       return commandFile(client, message);
     }
     if (message.content.toLowerCase().startsWith(prefix + 'removelevel') || message.content.toLowerCase().startsWith(prefix + 'removelvl') || message.content.toLowerCase().startsWith(prefix + 'rl')) {

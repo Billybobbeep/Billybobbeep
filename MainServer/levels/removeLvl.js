@@ -10,7 +10,7 @@ module.exports = async (client, message, prefix) => {
     return message.channel.send('Please mention a user.')
   }
   let currLvl = db.get(user.id + '.level');
-  if (!args[1]) {
+  if (!args[2]) {
     return message.channel.send('Please specify an amount.')
   }
   if (args[2] === 'all') {
