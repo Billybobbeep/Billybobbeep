@@ -21,5 +21,4 @@ module.exports = async (client, latestType, ready, message) => {
             //console.log(result.messages.cache.Map())
         });
         //console.log('found ' + count + ' channels')
-    });
 }

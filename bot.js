@@ -120,8 +120,8 @@ module.exports = async() => {
 		mentionsHandle(client, message);
     const levels = require('./MainServer/levels/main.js');
     levels(client, message)
-		//const antiSpam = require('./MainServer/antiSpam/antiSpam.js');
-		//antiSpam(client, message)
+		const antiSpam = require('./MainServer/antiSpam/antiSpam.js');
+		antiSpam(client, message)
 
 		if (
 			message.channel.id === configFile.PollChannel ||
@@ -172,6 +172,10 @@ module.exports = async() => {
 			const commandFile = require(`./Embeds/help.js`);
 			return commandFile(client, msg, args, prefix, message);
 		}
+    if (message.content.toLowerCase() == prefix + 'leaderboard') {
+      const commandFile = require(`./MainServer/levels/main.js`);
+      return commandFile(client, message);
+    }
 	  if (message.content.toLowerCase() == prefix + 'image') {
 			const commandFile = require(`./Commands/image.js`);
 			return commandFile.run(client, msg, args, prefix, message);
