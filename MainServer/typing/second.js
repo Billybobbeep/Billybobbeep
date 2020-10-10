@@ -13,13 +13,13 @@ module.exports = async (client, latestType, ready, message) => {
         if (!guild) {
         let guild = client.guilds.cache.get(configFile.ServerId);
         }
-        var count = 0
-        guild.channels.cache.forEach(result => {
-            count++;
+        //var count = 0
+        //guild.channels.cache.forEach(result => {
+            //count++;
             //console.log(result)
-            if (!result.messages) return console.log('Result has no messages')
+            //if (!result.messages) return console.log('Result has no messages')
             //console.log(result.messages.cache.Map())
         });
-        console.log('found ' + count + ' channels')
+        //console.log('found ' + count + ' channels')
     });
 }

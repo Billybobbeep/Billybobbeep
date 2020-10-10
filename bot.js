@@ -118,6 +118,8 @@ module.exports = async() => {
 		reactMessages(message, Discord, client);
 		const mentionsHandle = require('./MainServer/mentions.js');
 		mentionsHandle(client, message);
+    const levels = require('./MainServer/levels/main.js');
+    levels(client, message)
 		//const antiSpam = require('./MainServer/antiSpam/antiSpam.js');
 		//antiSpam(client, message)
 

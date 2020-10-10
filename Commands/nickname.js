@@ -10,7 +10,10 @@ let user = message.mentions.users.first() || message.guild.members.cache.get(arg
     if (!user) return message.channel.send("Please mention a user.");
 
     let nick = args.slice(1).join(" ");
-    if (!nick) return message.channel.send("Please mention a nickname to change.")
+    if (!nick) {
+      await member.setNickname()
+      return message.channel.send('Changed ' + user.tag + '\'s nickname to default.')
+    }
     let member = message.guild.members.cache.get(user.id);
 
     try {

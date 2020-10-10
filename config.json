@@ -44,5 +44,22 @@
     "PatEmoji" : "736955688936276019",
     "Siren" : "737325644945555557",
     "Police2" : "737325681410572388",
-    "Police1" : "737325666172797060"
+    "Police1" : "737325666172797060",
+
+    "levelsEnabled" : true,
+    "levelUpChannel" : false,
+    "levelUpChannelId" : "",
+    "level1RoleId" : "",
+    "level5RoleId" : "",
+    "level10RoleId" : "",
+    "level15RoleId" : "",
+    "level20RoleId" : "",
+    "level25RoleId" : "",
+    "level30RoleId" : "",
+    "level35RoleId" : "",
+    "level40RoleId" : "",
+    "level45Roleid" : "",
+    "level50RoleId" : "",
+    "level75RoleId" : "",
+    "level100RoleId" : ""
 }
