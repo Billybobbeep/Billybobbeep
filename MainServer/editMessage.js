@@ -3,7 +3,6 @@ module.exports = async(client) => {
     const Discord = require(`discord.js`);
     const configFile = require('../config.json')
     let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
-    let prefix = configFile.prefix;
     
     client.on('messageUpdate', async (oldMessage, newMessage) => {
       if (oldMessage.author.bot) return;

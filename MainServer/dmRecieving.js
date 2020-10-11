@@ -1,3 +1,5 @@
+const db = require('quick.db');
+
 module.exports = async(client, message, Discord) => {
 
 if (message.author.id === '731498842813366304') return;
@@ -16,7 +18,7 @@ let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
     .setColor('#dbbf70')
 
   if (message.channel.type === 'dm') {
-    if (message.content.toLowerCase().startsWith(configFile.prefix)) return;
+    if (message.content.toLowerCase().startsWith(db.get(message.guild.id + '.prefix') || '~')) return;
       LoggingChannel.send(embed)
       return;
     }

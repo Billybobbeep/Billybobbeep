@@ -1,10 +1,8 @@
-const editMessage = require('./editMessage');
-
 module.exports = async client => {
 	const Discord = require(`discord.js`);
 	const configFile = require('../config.json');
+  const db = require('quick.db');
 	let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
-	let prefix = configFile.prefix;
   const embed = new Discord.MessageEmbed()
   embed.setTitle(`Message Deleted`)
   embed.setTimestamp();
@@ -14,6 +12,7 @@ module.exports = async client => {
 	let pinned;
 
 	client.on('messageDelete', message => {
+    let prefix = db.get(message.guild.id + '.prefix') || '~'
 		let msg = message.content.toLowerCase();
 
 		if (msg.startsWith(prefix)) {

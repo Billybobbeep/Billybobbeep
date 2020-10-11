@@ -1,12 +1,11 @@
 const db = require('quick.db');
 const Discord = require('discord.js')
-const configFile = require('../../config.json');
 
 module.exports = async(message) => {
-  var prefix = db.get(message.guild.id + '.prefix') || configFile.prefix
+  var prefix = db.get(message.guild.id + '.prefix') || '~'
   let args = message.content.slice(prefix.length).trim().split(/ +/g);
   let user = message.guild.members.cache.get(args[1]) || message.mentions.users.first() || message.author
-  let currLvl = db.get(user.id + '.level') || 0;
+  let currLvl = db.get(message.guild.id + '_' + user.id + '.level') || 0;
 
   if (user.username === undefined) {
     user = user.user

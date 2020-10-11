@@ -1,10 +1,10 @@
 const Discord = require(`discord.js`);
 const configFile = require('../../config.json');
-let prefix = configFile.prefix;
 const embed = new Discord.MessageEmbed();
 const db = require('quick.db');
 
 module.exports = async (client, message) => {
+  let prefix = db.get(message.guild.id + '.prefix') || '~'
   let colorChart = ['#a1c4fd', '#c2e9fb', '#d4fc79', '#96e6a1', '#a6c0fe', '#f68084', '#fccb90', '#d57eeb', '#e0c3fc', '#fa709a', '#fee140', '#30cfd0', '#a8edea', '#fed6e3'];
   let ranColor = colorChart[Math.floor(Math.random() * colorChart.length)]
   let offlineMembers = []
@@ -65,11 +65,11 @@ module.exports = async (client, message) => {
       message.channel.send(embed);
       if (message.author.id === user.id) {
         embed.setDescription(`You have marked your self as AFK in ${message.guild}\nReason: ${reason}`)
-        embed.setFooter(`When you are back please run the command '${configFile.prefix}back me' in ${message.guild}`)
+        embed.setFooter(`When you are back please run the command '${db.get(message.guild.id + '.prefix') || '~'}back me' in ${message.guild}`)
         return user.send(embed)
       } else {
         embed.setDescription(`${message.author.tag} has marked you as AFK in ${message.guild}\nReason: ${reason}`)
-        embed.setFooter(`When you are back please run the command '${configFile.prefix}back me' in ${message.guild}`)
+        embed.setFooter(`When you are back please run the command '${db.get(message.guild.id + '.prefix') || '~'}back me' in ${message.guild}`)
         return user.send(embed)
       }
     }

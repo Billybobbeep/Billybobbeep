@@ -2,9 +2,9 @@ module.exports = async() => {
 	'use strict';
 	// [Varibles] //
 	const Discord = require('discord.js');
+  const db = require('quick.db');
 	const client = new Discord.Client();
 	const configFile = require('./config.json');
-	let prefix = configFile.prefix;
 	const embed = new Discord.MessageEmbed()
 	
 	/////////////////////////////
@@ -35,7 +35,7 @@ module.exports = async() => {
 	client.once('ready', async () => {
 		const serverStatsFile = require('./MainServer/serverstats.js');
 		serverStatsFile(client);
-    	
+
 		const deleteMessages = require('./MainServer/deleteMessages.js');
 		deleteMessages(client);
 	try {
@@ -48,7 +48,7 @@ module.exports = async() => {
 		reactionRole1();
 	
 		//Display activities in the correct order
-		let activities = [`${prefix}help`, `Version 2.0 👀`],
+		let activities = [`~help`, `Version 2.0 👀`],
 			i = 0;
 		setInterval(() => {
 			client.user.setActivity(`${activities[i++ % activities.length]}`, {
@@ -68,7 +68,7 @@ module.exports = async() => {
 	  }, 50000);
 	});
 	
-	function command_function(message) {
+	function command_function(message, prefix) {
 		if (message.channel.id === configFile.LoggingChannel) return;
 		if (message.author.bot) return;
 		if (!message.content.startsWith(prefix)) return;
@@ -102,8 +102,8 @@ module.exports = async() => {
 	};
 
 	client.on('message', async message => {
-		const talk2billy = require('./MainServer/talk2billy/main.js')
-		talk2billy(client, message)
+		//const talk2billy = require('./MainServer/talk2billy/main.js')
+		//talk2billy(client, message)
 		const AfkFile = require('./MainServer/Afk/AfkHandle.js');
 		AfkFile(client, message);
 		const DmLogger = require('./MainServer/dmRecieving.js');
@@ -128,6 +128,7 @@ module.exports = async() => {
 
 		if (message.channel.id === configFile.LoggingChannel) return;
 		if (message.author.bot) return;
+    let prefix = db.get(message.guild.id + '.prefix') || '~'
 		if (!message.content.startsWith(prefix)) return;
 		let args = message.content
 			.slice(prefix.length)
@@ -203,7 +204,7 @@ module.exports = async() => {
 			return message.channel.send('You do not have the correct premissions for this command');
 		}
 	}
-	command_function(message)
+	command_function(message, prefix)
 	});
 	
 	// Welcomes new members

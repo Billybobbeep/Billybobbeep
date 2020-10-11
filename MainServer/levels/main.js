@@ -14,19 +14,19 @@ module.exports = async (client, message) => {
   if (db.get(message.guild.id + '.levelUpChannel') === true) {
     levelUpChannel = db.get(message.guild.id + '.levelUpChannelId')
   }
-  if (message.content.startsWith(configFile.prefix)) return;
-  xp.add(message.author.id, gainedXp)
-  if (xp.get(message.author.id) >= configFile.xpForLevel) {
-    xp.delete(message.author.id);
-    db.add(message.author.id + '.level', 1);
+  if (message.content.startsWith(db.get(message.guild.id + '.prefix') || '~')) return;
+  xp.add(message.guild.id + '_' + message.author.id, gainedXp)
+  if (xp.get(message.guild.id + '_' + message.author.id) >= configFile.xpForLevel) {
+    xp.delete(message.guild.id + '_' + message.author.id);
+    db.add(message.guild.id + '_' + message.author.id + '.level', 1);
     if (!levelUpChannel) {
-      message.reply(`is now level ${db.get(message.author.id + '.level')}`);
+      message.reply(`is now level ${db.get(message.guild.id + '_' + message.author.id + '.level')}`);
     } else {
       let channel = client.channels.cache.get(levelUpChannel);
-      channel.send(`${message.author} is now level ${db.get(message.author.id + '.level')}`)
+      channel.send(`${message.author} is now level ${db.get(message.guild.id + '_' + message.author.id + '.level')}`)
     }
   }
-  var currlev = db.get(message.author.id + '.level')
+  var currlev = db.get(message.guild.id + '_' + message.author.id + '.level')
   var user = message.guild.members.cache.get(message.author.id)
   if (currlev === 1) {
       message.member.roles.add(configFile.level1RoleId)

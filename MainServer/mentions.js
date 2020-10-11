@@ -1,6 +1,5 @@
 const Discord = require(`discord.js`);
-const configFile = require('../config.json');
-let prefix = configFile.prefix;
+const db = require('quick.db');
 const embed = new Discord.MessageEmbed()
 
 module.exports = async (client, message) => {
@@ -93,8 +92,8 @@ module.exports = async (client, message) => {
         if (message.author.bot) return;
         if (!args[0] == '<@!' + client.user.id + '>' || !args[0] == '<@' + client.user.id + '>') return;
         if (messagedUser.tag === client.user.tag) {
-            embed.setDescription(`Prefix: \`${configFile.prefix}\`\n` +
-              `For additional help please enter the command: \`${configFile.prefix}help\` or enter "help <@${client.user.id}>"`)
+            embed.setDescription(`Prefix: \`${db.get(message.guild.id + '.prefix') || '~'}\`\n` +
+              `For additional help please enter the command: \`${db.get(message.guild.id + '.prefix') || '~'}help\` or enter "help <@${client.user.id}>"`)
           message.channel.send(embed)
         }
     }

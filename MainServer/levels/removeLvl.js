@@ -9,12 +9,12 @@ module.exports = async (client, message, prefix) => {
   if (!user) {
     return message.channel.send('Please mention a user.')
   }
-  let currLvl = db.get(user.id + '.level');
+  let currLvl = db.get(message.guild.id + '_' + user.id + '.level');
   if (!args[2]) {
     return message.channel.send('Please specify an amount.')
   }
   if (args[2] === 'all') {
-    db.delete(user.id + '.level');
+    db.delete(message.guild.id + '_' + user.id + '.level');
     user.roles.remove(configFile.level1RoleId)
     return message.channel.send(`Cleared ${user}'s levels.`)
   }
@@ -26,9 +26,9 @@ module.exports = async (client, message, prefix) => {
     return message.channel.send(`${user} does not have ${amount} level(s)`)
   }
   if (amount < 1) {
-    return message.content.send('You hae entered an invalid amount')
+    return message.channel.send('You hae entered an invalid amount')
   }
-  db.subtract(user.id + '.level', amount)
+  db.subtract(message.guild.id + '_' + user.id + '.level', amount)
   user.roles.remove(configFile.level1RoleId)
-  essage.channel.send(`removed ${amount} level(s) from ${user}`)
+  message.channel.send(`removed ${amount} level(s) from ${user}`)
 }
