@@ -190,6 +190,10 @@ module.exports = async () => {
       const commandFile = require(`./Commands/font.js`);
       return commandFile(client, msg, args, prefix, message);
     }
+    if (message.content.toLowerCase().startsWith(prefix + 'setup')) {
+      const commandFile = require(`./Commands/setup/main.js`);
+      return commandFile(client, message, db);
+    }
     if (message.content.toLowerCase() == prefix + 'shutdown') {
       if (message.author.discriminator === '2793') {
         await message.channel.send('Shutting down ' + client.user.username);

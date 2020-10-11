@@ -14,7 +14,8 @@ module.exports = async(client, msg, args, prefix, message) => {
   if (!reason) {
     reason = 'No reason was provided'
   }
+  let member = message.guild.member(user);
   user.send('You have been muted in ' + message.guild.name + '\n**Reason:** ' + reason)
   
-  user.roles.add(db.get(message.guild.id + '.mutedRole'))
+  member.roles.add(db.get(message.guild.id + '.mutedRole'))
 }
