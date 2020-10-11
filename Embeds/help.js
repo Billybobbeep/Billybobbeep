@@ -1,12 +1,10 @@
 const Discord = require(`discord.js`);
 const configFile = require('../config.json');
 
-module.exports = async (client, msg, args, prefix, message) => {
+module.exports = async (client, prefix, message) => {
   const helpEmbed = new Discord.MessageEmbed()
     .setTitle("Billybobbeep | Help")
     .setDescription(`Thank you for using ${client.user.username}!\n` +
-      "This bot was created and scripted by **Spoink#2793**\n" +
-      `To view all credits please enter the command \`${prefix}credits\`\n` +
       "\n" +
       "Below are some commands to get you started:\n" +
       `${prefix}cmds\n` +

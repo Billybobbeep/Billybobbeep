@@ -36,6 +36,8 @@ module.exports = async () => {
     const serverStatsFile = require('./MainServer/serverstats.js');
     serverStatsFile(client);
 
+    var guildManage = require('./MainServer/guildCreate.js');
+    guildManage(client)
     const deleteMessages = require('./MainServer/deleteMessages.js');
     deleteMessages(client);
     try {
@@ -158,11 +160,11 @@ module.exports = async () => {
     }
     if (message.content.toLowerCase() == prefix + 'info') {
       const commandFile = require(`./Embeds/info.js`);
-      return commandFile(client, msg, args, prefix, message);
+      return commandFile(client, message);
     }
     if (message.content.toLowerCase() == prefix + 'help') {
       const commandFile = require(`./Embeds/help.js`);
-      return commandFile(client, msg, args, prefix, message);
+      return commandFile(client, prefix, message);
     }
     if (message.content.toLowerCase().startsWith(prefix + 'removelevel') || message.content.toLowerCase().startsWith(prefix + 'removelvl') || message.content.toLowerCase().startsWith(prefix + 'rl')) {
       const commandFile = require(`./MainServer/levels/removeLvl.js`);

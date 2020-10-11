@@ -15,7 +15,6 @@ module.exports = async (client, message, prefix) => {
   }
   if (args[2] === 'all') {
     db.delete(message.guild.id + '_' + user.id + '.level');
-    user.roles.remove(configFile.level1RoleId)
     return message.channel.send(`Cleared ${user}'s levels.`)
   }
   if (isNaN(args[2])) {
@@ -29,6 +28,5 @@ module.exports = async (client, message, prefix) => {
     return message.channel.send('You hae entered an invalid amount')
   }
   db.subtract(message.guild.id + '_' + user.id + '.level', amount)
-  user.roles.remove(configFile.level1RoleId)
   message.channel.send(`removed ${amount} level(s) from ${user}`)
 }

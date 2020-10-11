@@ -4,7 +4,7 @@ const { utc } = require('moment');
 const os = require('os');
 const ms = require('ms');
 
-module.exports = async (client, msg, args, prefix, message) => {
+module.exports = async (client, message) => {
   const core = os.cpus()[0];
   const embed = new MessageEmbed()
     .setDescription("**Billybobbeep | Bot Info**")
