@@ -234,5 +234,5 @@ module.exports = async () => {
     }
   });
 
-  client.login('NzMxNDk4ODQyODEzMzY2MzA0.Xwm7Yg.NPPPCQnkNoraqNL0IcAjZNKMXeM');
+  client.login(process.env.token);
 }
