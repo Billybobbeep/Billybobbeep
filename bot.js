@@ -164,6 +164,10 @@ module.exports = async () => {
       const commandFile = require(`./MainServer/levels/removeLvl.js`);
       return commandFile(client, message, prefix);
     }
+    if (message.content.toLowerCase().startsWith(prefix + 'job')) {
+      const commandFile = require(`./Commands/Economy/jobs.js`);
+      return commandFile(message, prefix);
+    }
     if (message.content.toLowerCase() == prefix + 'image') {
       const commandFile = require(`./Commands/image.js`);
       return commandFile.run(client, msg, args, prefix, message);
