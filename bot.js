@@ -55,17 +55,6 @@ module.exports = async() => {
 				type: 'LISTENING'
 			});
 		}, 10000);
-	
-	let guild = client.guilds.cache.get(configFile.ServerId);
-	  var numberOfOnline;
-	  let userOnline = guild.channels.cache.find(channel => channel.id === configFile.OnlineVoiceId);
-	  setInterval(async function() {
-		guild.members.fetch();
-		numberOfOnline = guild.members.cache.filter(member => member.presence.status == 'online').array().length;
-		if (numberOfOnline != userOnline.name.slice(14)) {
-		  userOnline.edit({ name: "➳𝓞𝓷𝓵𝓲𝓷𝓮 𝓤𝓼𝓮𝓻𝓼: " + numberOfOnline });
-		}
-	  }, 50000);
 	});
 	
 	function command_function(message, prefix) {
@@ -79,7 +68,7 @@ module.exports = async() => {
 			.split(/ +/g);
 		let msg = message.content.toLowerCase();
 		let command = args.shift().toLowerCase();
-    if (message.content.toLowerCase().startsWith(prefix + 'back') || message.content.toLowerCase().startsWith(prefix + 'afk') || message.content.toLowerCase().startsWith(prefix + 'whois')) return;
+    if (message.content.toLowerCase().startsWith(prefix + 'back') || message.content.toLowerCase().startsWith(prefix + 'afk')) return;
 		try {
 			const commandFile = require(`./Commands/${command}.js`);
 			commandFile(client, msg, args, prefix, message);
