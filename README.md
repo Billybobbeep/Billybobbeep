@@ -7,7 +7,7 @@
 
 # Version Control
 - **Discord.js** : v12.3.1
-- **Bot Version** : v1.1.0
+- **Bot Version** : v2.0.0
 - **Node JS** : v12.18.3
 
 # General Information
