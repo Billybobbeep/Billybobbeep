@@ -1,6 +1,6 @@
 const Discord = require(`discord.js`);
 const configFile = require('../config.json');
-
+const db = require('quick.db');
 module.exports = async (client, msg, args, prefix, message) => {
   if (!message.member.hasPermission("KICK_MEMBERS") || !message.member.hasPermission("ADMINISTRATOR")) return message.channel.send("You do not have the permission to run this command.")
   let user = message.mentions.users.first();
@@ -16,7 +16,21 @@ module.exports = async (client, msg, args, prefix, message) => {
   member.kick(reason).then(() => {
     message.channel.send(`Successfully kicked **${user.tag}**`);
     console.log(`${message.author.username} successfully kicked **${user.tag}**`);
-    let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
+    if (db.get(message.guild.id + '.loggingChannel')) {
+      let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
+      var embed = new Discord.MessageEmbed()
+      embed.setTitle('Kicked Member')
+      embed.setDescription(
+        `**Member Tag:** ${member.tag}\n` +
+        `**Member ID:** ${member.id}\n\n` +
+        `**Moderator:** ${message.author}\n` +
+        `**Moderator Tag:** ${message.author.tag}\n` +
+        `**Moderator ID:** ${message.author.id}`
+      )
+      embed.setColor('#ebc7ff')
+      embed.setTimestamp()
+      LoggingChannel.send(embed)
+    }
   }).catch(err => {
     message.reply("I was unable to kick the member you provided.");
   })
