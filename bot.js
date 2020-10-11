@@ -103,8 +103,8 @@ module.exports = async () => {
     mentionsHandle(client, message);
     const levels = require('./MainServer/levels/main.js');
     levels(client, message)
-    const antiSpam = require('./MainServer/antiSpam/antiSpam.js');
-    antiSpam(client, message)
+    //const antiSpam = require('./MainServer/antiSpam/antiSpam.js');
+    //antiSpam(client, message)
 
     if (
       message.channel.id === configFile.PollChannel ||
@@ -230,5 +230,5 @@ module.exports = async () => {
     }
   });
 
-  client.login(process.env.token);
+  client.login('NzMxNDk4ODQyODEzMzY2MzA0.Xwm7Yg.NPPPCQnkNoraqNL0IcAjZNKMXeM');
 }
