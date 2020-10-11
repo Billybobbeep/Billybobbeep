@@ -5,5 +5,4 @@ module.exports = async(client, message, level) => {
   embed.setTitle('Billybobbeep | Level Leaderboard')
   embed.setFooter(`Requested by: ${message.author.username}#${message.author.discriminator}`)
   embed.setColor('#5dbcd2')
-  console.log(level.all())
 }

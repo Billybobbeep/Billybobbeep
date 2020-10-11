@@ -82,7 +82,7 @@ module.exports = async() => {
 			.split(/ +/g);
 		let msg = message.content.toLowerCase();
 		let command = args.shift().toLowerCase();
-	
+    if (message.content.toLowerCase().startsWith(prefix + 'back') || message.content.toLowerCase().startsWith(prefix + 'afk') || message.content.toLowerCase().startsWith(prefix + 'whois')) return;
 		try {
 			const commandFile = require(`./Commands/${command}.js`);
 			commandFile(client, msg, args, prefix, message);
@@ -141,6 +141,10 @@ module.exports = async() => {
 			const commandFile = require(`./Commands/pong.js`);
 			return commandFile(client, msg, args, prefix, message);
 		}
+    if (message.content.toLowerCase().startsWith(prefix + 'cl') || message.content.toLowerCase().startsWith(prefix + 'currlvl') || message.content.toLowerCase().startsWith(prefix + 'currentlvl')) {
+      const commandFile = require('./MainServer/levels/currLvl.js')
+      commandFile(message)
+    }
 		if (message.content.toLowerCase() == prefix + 'members') {
 			const commandFile = require(`./Commands/members.js`);
 			return commandFile(client, msg, args, prefix, message);
@@ -169,14 +173,6 @@ module.exports = async() => {
 			const commandFile = require(`./Embeds/help.js`);
 			return commandFile(client, msg, args, prefix, message);
 		}
-    if (message.content.toLowerCase() == prefix + 'leaderboard') {
-      const commandFile = require(`./MainServer/levels/leaderboard.js`);
-      return commandFile(client, message);
-    }
-    if (message.content.toLowerCase().startsWith('currlvl') || message.content.toLowerCase().startsWith('currentlvl') || message.content.toLowerCase().startsWith('cl')) {
-      const commandFile = require(`./MainServer/levels/currLvl.js`);
-      return commandFile(client, message);
-    }
     if (message.content.toLowerCase().startsWith(prefix + 'removelevel') || message.content.toLowerCase().startsWith(prefix + 'removelvl') || message.content.toLowerCase().startsWith(prefix + 'rl')) {
       const commandFile = require(`./MainServer/levels/removeLvl.js`);
       return commandFile(client, message, prefix);

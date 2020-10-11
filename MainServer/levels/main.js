@@ -14,6 +14,7 @@ module.exports = async (client, message) => {
   if (db.get(message.guild.id + '.levelUpChannel') === true) {
     levelUpChannel = db.get(message.guild.id + '.levelUpChannelId')
   }
+  if (message.content.startsWith(configFile.prefix)) return;
   xp.add(message.author.id, gainedXp)
   if (xp.get(message.author.id) >= configFile.xpForLevel) {
     xp.delete(message.author.id);
