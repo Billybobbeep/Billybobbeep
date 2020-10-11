@@ -1,7 +1,7 @@
 const db = require('quick.db');
 const Discord = require('discord.js')
 
-module.exports = async(message) => {
+module.exports = async (message) => {
   var prefix = db.get(message.guild.id + '.prefix') || '~'
   let args = message.content.slice(prefix.length).trim().split(/ +/g);
   let user = message.guild.members.cache.get(args[1]) || message.mentions.users.first() || message.author

@@ -29,7 +29,7 @@ module.exports = async (client, message) => {
   var currlev = db.get(message.guild.id + '_' + message.author.id + '.level')
   var user = message.guild.members.cache.get(message.author.id)
   if (currlev === 1) {
-      message.member.roles.add(configFile.level1RoleId)
+    message.member.roles.add(configFile.level1RoleId)
   }
   if (currlev === 5) {
     message.member.roles.add(configFile.level5RoleId)
@@ -50,7 +50,7 @@ module.exports = async (client, message) => {
     message.member.roles.add(configFile.level30RoleId)
   }
   if (currlev === 35) {
-      message.member.roles.add(configFile.level35RoleId)
+    message.member.roles.add(configFile.level35RoleId)
   }
   if (currlev === 40) {
     message.member.roles.add(configFile.level40RoleId)
