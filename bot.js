@@ -132,6 +132,10 @@ module.exports = async () => {
       const commandFile = require('./MainServer/levels/currLvl.js')
       commandFile(message)
     }
+    if (message.content.toLowerCase() == prefix + 'credit' || message.content.toLowerCase() == prefix + 'credits') {
+      const commandFile = require(`./Embeds/credit.js`);
+      return commandFile(message);
+    }
     if (message.content.toLowerCase() == prefix + 'members') {
       const commandFile = require(`./Commands/members.js`);
       return commandFile(client, msg, args, prefix, message);
@@ -171,11 +175,6 @@ module.exports = async () => {
     if (message.content.toLowerCase() == prefix + 'image') {
       const commandFile = require(`./Commands/image.js`);
       return commandFile.run(client, msg, args, prefix, message);
-    }
-    if (message.content.toLowerCase() == prefix + 'credit' ||
-      message.content.toLowerCase() == prefix + 'credits') {
-      const commandFile = require(`./Embeds/credit.js`);
-      return commandFile(client, msg, args, prefix, message);
     }
     if (message.content.toLowerCase() == prefix + 'daily') {
       const commandFile = require(`./Commands/Economy/daily.js`);

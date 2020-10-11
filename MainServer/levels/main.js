@@ -3,7 +3,7 @@ const configFile = require('../../config.json');
 var xp = new db.table('xp');
 
 module.exports = async (client, message) => {
-  var levelUpChannel;
+  var levelUpChannel = db.get(message.guild.id + '.levelUpChannel') || false;
 
   let xpForLevel = 30;
   var currlev = db.get(message.guild.id + '_' + message.author.id + '.level')
@@ -39,8 +39,9 @@ module.exports = async (client, message) => {
   }
   if (message.author.bot) return;
   if (message.channel.id === configFile.talk2billy) return;
-  if (db.get(message.guild.id + '.levelsEnabled') === false) return;
-  if (db.get(message.guild.id + '.levelUpChannel') === true) {
+  let levelsEnabled = db.get(message.guild.id + '.levelsEnabled') || true;
+  if (!levelsEnabled) return;
+  if (levelUpChannel) {
     levelUpChannel = db.get(message.guild.id + '.levelUpChannelId')
   }
   if (message.content.startsWith(db.get(message.guild.id + '.prefix') || '~')) return;
