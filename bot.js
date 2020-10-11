@@ -35,10 +35,7 @@ module.exports = async() => {
 	client.once('ready', async () => {
 		const serverStatsFile = require('./MainServer/serverstats.js');
 		serverStatsFile(client);
-
-		const typing = require('./MainServer/typing/main.js')
-		typing(client)
-	
+    	
 		const deleteMessages = require('./MainServer/deleteMessages.js');
 		deleteMessages(client);
 	try {
