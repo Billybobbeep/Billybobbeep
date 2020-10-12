@@ -12,7 +12,8 @@ module.exports = async client => {
   let pinned;
 
   client.on('messageDelete', message => {
-    let prefix = db.get(message.guild.id + '.prefix') || '~'
+  if (!mesage.guild) return;
+  let prefix = db.get(message.guild.id + '.prefix') || '~'
     let msg = message.content.toLowerCase();
 
     if (msg.startsWith(prefix)) {

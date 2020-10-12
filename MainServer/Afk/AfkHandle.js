@@ -4,6 +4,7 @@ const embed = new Discord.MessageEmbed();
 const db = require('quick.db');
 
 module.exports = async (client, message) => {
+  if (!message.guild) return;
   let colorChart = ['#a1c4fd', '#c2e9fb', '#d4fc79', '#96e6a1', '#a6c0fe', '#f68084', '#fccb90', '#d57eeb', '#e0c3fc', '#fa709a', '#fee140', '#30cfd0', '#a8edea', '#fed6e3'];
   let ranColor = colorChart[Math.floor(Math.random() * colorChart.length)]
   let prefix = db.get(message.guild.id + '.prefix') || '~'

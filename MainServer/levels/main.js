@@ -3,6 +3,7 @@ const configFile = require('../../config.json');
 var xp = new db.table('xp');
 
 module.exports = async (client, message) => {
+  if (!message.guild) return;
   var levelUpChannel = db.get(message.guild.id + '.levelUpChannel') || false;
 
   let xpForLevel = 30;

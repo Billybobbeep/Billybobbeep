@@ -5,7 +5,10 @@ module.exports = (client, message, db) => {
     .trim()
     .split(/ +/g);
 
-  if (!args[2]) return message.channel.send('Please mention a channel.')
+  if (!args[2]) {
+    db.delete(message.guild.id + '.loggingChannel')
+    return message.channel.send('Removed logging channel from the database.')
+  }
   console.log(args)
   let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[2])
   db.set(message.guild.id + '.loggingChannel', channel.id)

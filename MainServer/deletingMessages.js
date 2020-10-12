@@ -2,6 +2,7 @@ const configFile = require('../config.json')
 const db = require('quick.db');
 
 module.exports = async (message, Discord, client) => {
+  if (!message.guild) return;
   let prefix = db.get(message.guild.id + '.prefix') || '~'
   const embed = new Discord.MessageEmbed()
   const LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);

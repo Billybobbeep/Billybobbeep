@@ -119,6 +119,7 @@ module.exports = async () => {
 
     if (message.channel.id === configFile.LoggingChannel) return;
     if (message.author.bot) return;
+    if (!message.guild) return;
     let prefix = db.get(message.guild.id + '.prefix') || '~'
     if (!message.content.startsWith(prefix)) return;
     let args = message.content
