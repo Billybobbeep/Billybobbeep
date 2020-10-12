@@ -1,4 +1,4 @@
-module.exports = (client, message, db) => {
+module.exports = (message, db) => {
   let prefix = db.get(message.guild.id + '.prefix') || '~'
   let args = message.content
     .slice(prefix.length)

@@ -31,11 +31,15 @@ module.exports = (client, message, db) => {
         .split(/ +/g);
     if (message.content.toLowerCase().startsWith(prefix + 'setup logging')) {
       redirect = require('./loggingChannel.js');
-      redirect(client, message, db);
+      redirect(message, db);
     }
     if (message.content.toLowerCase().startsWith(prefix + 'setup muted')) {
       redirect = require('./mutedRole.js');
-      redirect(client, message, db);
+      redirect(message, db);
+    }
+    if (message.content.toLowerCase().startsWith(prefix + 'setup embed')) {
+      redirect = require('./embedColor.js');
+      redirect(message, db);
     }
 
     if (!args[1]) {

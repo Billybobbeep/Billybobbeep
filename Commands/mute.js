@@ -1,4 +1,3 @@
-const configFile = require('../config.json');
 const db = require('quick.db');
 const Discord = require('discord.js')
 module.exports = async(client, msg, args, prefix, message) => {
@@ -28,7 +27,7 @@ module.exports = async(client, msg, args, prefix, message) => {
     .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
     .setDescription()
     try {
-    LoggingChannel.send(embed)
+      LoggingChannel.send(embed)
     } catch {
       console.log(`${message.guild.name} has an invalid logging channel ID`)
     }

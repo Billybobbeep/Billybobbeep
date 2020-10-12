@@ -3,6 +3,7 @@ const db = require('quick.db');
 const embed = new Discord.MessageEmbed()
 
 module.exports = async (client, message) => {
+  if (!message.guild) return;
   embed.setTitle('Billybobbeep | Mentioned');
   embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
   embed.setFooter(`Requested by: ${message.author.tag}`);

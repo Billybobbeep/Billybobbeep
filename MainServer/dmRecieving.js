@@ -1,8 +1,11 @@
 module.exports = async (client, message, Discord) => {
 
+  if (!message.channel.type === 'dm') return;
+  if (message.author.bot) return;
+  if (message.guild) return;
   const db = require('quick.db')
   const configFile = require('../config.json')
-  let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
+  let LoggingChannel = client.channels.cache.get(db.get(configFile.ServerId + '.loggingChannel'));
 
   const embed = new Discord.MessageEmbed()
     .setTitle(`DM Recieved`)
@@ -13,10 +16,12 @@ module.exports = async (client, message, Discord) => {
       `**Author Tag:** ${message.author.tag}\n` +
       `**Author ID:** ${message.author.id}\n`)
     .setTimestamp()
-    .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
+    .setColor(`#447ba1`)
 
-  if (message.channel.type === 'dm') {
-    if (message.content.toLowerCase().startsWith('~')) return;
+  if (message.content.toLowerCase().startsWith('~')) return;
+  try {
     LoggingChannel.send(embed)
+  } catch {
+    console.log('Could not log a direct message.')
   }
 }
