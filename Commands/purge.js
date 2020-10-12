@@ -15,8 +15,7 @@ module.exports = async(client, msg, args, prefix, message) => {
             d.delete({timeout: 3000}))
         .catch(() => message.channel.send("Something went wrong, please ensure the messages are not over 2 weeks old."));
 
-if (message.guild.id !== "733442092667502613") return;
-let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
+      let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
 
 let pinned;
 if (message.pinned) {
@@ -36,5 +35,11 @@ if (message.pinned) {
                         **Pinned:** ${pinned}`)
         .setTimestamp()
         .setColor("#a9d9b7")
-        LoggingChannel.send(embed)
+        if (LoggingChannel) {
+          try {
+            LoggingChannel.send(embed)
+          } catch {
+            console.log(`${message.guild.name} has an invalid logging channel ID`)
+          }
+        }
     }

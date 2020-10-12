@@ -29,7 +29,11 @@ module.exports = async (client, msg, args, prefix, message) => {
       )
       embed.setColor('#ebc7ff')
       embed.setTimestamp()
-      LoggingChannel.send(embed)
+      try {
+        LoggingChannel.send(embed)
+      } catch {
+          console.log(`${message.guild.name} has an invalid logging channel ID`)
+      }
     }
   }).catch(err => {
     message.reply("I was unable to kick the member you provided.");

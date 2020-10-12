@@ -9,8 +9,8 @@ module.exports = (client, message, db) => {
     db.delete(message.guild.id + '.loggingChannel')
     return message.channel.send('Removed logging channel from the database.')
   }
-  console.log(args)
   let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[2])
+  if (channel.id === db.get(message.guild.id + '.loggingChannel')) return message.channel.send(`Your logging channel is ready set as ${channel}`)
   db.set(message.guild.id + '.loggingChannel', channel.id)
   message.channel.send(`Your logging channel is now set up as ${channel}`)
 }

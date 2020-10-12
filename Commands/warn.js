@@ -1,7 +1,7 @@
 const Discord = require(`discord.js`);
 const configFile = require('../config.json')
 module.exports = async(client, msg, args, prefix, message) => {
-  let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
+  let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
     if (!message.member.hasPermission("MANAGE_MESSAGES") || !message.member.hasPermission("ADMINISTRATOR")) return message.channel.send("You do not have the permission to run this command.")
 
         var user = message.mentions.users.first();
@@ -27,7 +27,13 @@ module.exports = async(client, msg, args, prefix, message) => {
         .addField('User:', user, true)
         .addField('By:', message.author, true)
         .addField('Reason:', reason)
-        await LoggingChannel.send(log);
+        if (LoggingChannel) {
+          try {
+            await LoggingChannel.send(log);
+          } catch {
+            console.log(`${message.guild.name} has an invalid logging channel ID`)
+          }
+        }
 
         await message.channel.send(`**${user}** has been warned by **${message.author}**!`);
         var log2 = new Discord.MessageEmbed()
@@ -38,4 +44,5 @@ module.exports = async(client, msg, args, prefix, message) => {
         log2.addField(`Reason:`, reason);
         log2.addField(`Guild:`, message.guild)
         user.send(log2)
+        db.add(message.guild.id + user.id + '.warnings', 1)
 }

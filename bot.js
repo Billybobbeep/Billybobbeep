@@ -213,12 +213,7 @@ module.exports = async () => {
       NewMember(member);
     } catch (err) {
       if (configFile.SendLogs === true) {
-        let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
-        LoggingChannel.send(
-          `Error whilst welcoming a new member.\n **Error:** ${err}\n **Member:** ${member}`
-        );
-      } else {
-        return;
+          console.log(`Error whilst welcoming a new member.\n **Error:** ${err}\n **Member:** ${member}`)
       }
     }
   });
@@ -230,10 +225,7 @@ module.exports = async () => {
       NewMember(member);
     } catch {
       if (configFile.SendLogs === true) {
-        LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
-        LoggingChannel.send(
-          `**Error whilst dismissing a member.**\n **Error:** ${err}\n **Member:** ${member}`
-        );
+        console.log(`**Error whilst dismissing a member.**\n **Error:** ${err}\n **Member:** ${member}`)
       } else {
         return;
       }

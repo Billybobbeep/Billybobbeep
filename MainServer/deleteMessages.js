@@ -2,7 +2,6 @@ module.exports = async client => {
   const Discord = require(`discord.js`);
   const configFile = require('../config.json');
   const db = require('quick.db');
-  let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
   const embed = new Discord.MessageEmbed()
   embed.setTitle(`Message Deleted`)
   embed.setTimestamp();
@@ -12,7 +11,8 @@ module.exports = async client => {
   let pinned;
 
   client.on('messageDelete', message => {
-  if (!mesage.guild) return;
+  if (!message.guild) return;
+  let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
   let prefix = db.get(message.guild.id + '.prefix') || '~'
     let msg = message.content.toLowerCase();
 
@@ -27,7 +27,6 @@ module.exports = async client => {
       pinned = false;
     }
 
-    if (message.guild.id != configFile.ServerId) return;
     if (message.author.bot) return;
     if (msg.startsWith(prefix + `purge`)) return;
     if (message.content === null || message.content === " " || message.content === undefined) {
@@ -40,7 +39,11 @@ module.exports = async client => {
         `**Author ID:** ${message.author.id}\n\n` +
         `**Command:** ${command}\n` +
         `**Pinned:** ${pinned}\n`)
-      return LoggingChannel.send(embed);
+        try {
+          return LoggingChannel.send(embed);
+        } catch {
+          console.log(`${message.guild.name} has an invalid logging channel ID`)
+        }
     }
 
     if (message.attachments.size > 0) {
@@ -53,7 +56,11 @@ module.exports = async client => {
         `**Author ID:** ${message.author.id}\n\n` +
         `**Command:** ${command}\n` +
         `**Pinned:** ${pinned}\n`)
-      return LoggingChannel.send(embed);
+        try {
+          return LoggingChannel.send(embed);
+        } catch {
+          console.log(`${message.guild.name} has an invalid logging channel ID`)
+        }
     }
     if (message.content.toLowerCase().includes('https://') || message.content.toLowerCase().includes('http://') || message.content.toLowerCase().includes('www.') || message.content.toLowerCase().includes('.com') || message.content.toLowerCase().includes('.co.uk')) {
       embed.setDescription(
@@ -66,7 +73,11 @@ module.exports = async client => {
         `**Author ID:** ${message.author.id}\n\n` +
         `**Command:** ${command}\n` +
         `**Pinned:** ${pinned}\n`)
-      return LoggingChannel.send(embed);
+        try {
+          return LoggingChannel.send(embed);
+      } catch {
+          console.log(`${message.guild.name} has an invalid logging channel ID`)
+        }
     }
 
     embed.setDescription(
@@ -79,6 +90,10 @@ module.exports = async client => {
       '\n\n**Command:** ' + command +
       '\n**Pinned:** ' + pinned
     )
-    LoggingChannel.send(embed);
+    try {
+      LoggingChannel.send(embed);
+    } catch {
+          console.log(`${message.guild.name} has an invalid logging channel ID`)
+        }
   });
 };

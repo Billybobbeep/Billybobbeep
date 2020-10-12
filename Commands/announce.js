@@ -1,8 +1,9 @@
 const Discord = require(`discord.js`);
-const configFile = require('../config.json');
+const db = require('quick.db');
 
 module.exports = async(client, msg, args, prefix, message) => {
-  let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
+  if (!message.guild) return;
+  let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
   const embed = new Discord.MessageEmbed()
   embed.setTitle(`Announcement Sent`)
   embed.setTimestamp()
@@ -32,7 +33,13 @@ module.exports = async(client, msg, args, prefix, message) => {
                     `**Moderator Tag:** ${message.author.tag}\n` +
                     `**Moderator ID:** ${message.author.id}\n`
                 )
-                await LoggingChannel.send(embed)
+                if (LoggingChannel) {
+                  try {
+                    await LoggingChannel.send(embed)
+                  } catch {
+                    console.log(`${message.guild.name} has an invalid logging channel ID`)
+                  }
+                }
                 q2.stop();
             })
         })

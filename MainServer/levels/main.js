@@ -58,60 +58,130 @@ module.exports = async (client, message) => {
     }
   }
   currlev = db.get(message.guild.id + '_' + message.author.id + '.level')
-  var user = message.guild.members.cache.get(message.author.id)
-  if (currlev === 1) {
-    message.member.roles.add(configFile.level1RoleId)
-  }
-  if (currlev === 5) {
-    message.member.roles.add(configFile.level5RoleId)
-  }
-  if (currlev === 10) {
-    message.member.roles.add(configFile.level10RoleId)
-  }
-  if (currlev === 15) {
-    message.member.roles.add(configFile.level15RoleId)
-  }
-  if (currlev === 20) {
-    message.member.roles.add(configFile.level20RoleId)
-  }
-  if (currlev === 25) {
-    message.member.roles.add(configFile.level25RoleId)
-  }
-  if (currlev === 30) {
-    message.member.roles.remove(configFile.level1RoleId)
-    message.member.roles.remove(configFile.level5RoleId)
-    message.member.roles.remove(configFile.level10RoleId)
-    message.member.roles.remove(configFile.level15RoleId)
-    message.member.roles.remove(configFile.level20RoleId)
-    message.member.roles.remove(configFile.level25RoleId)
-    message.member.roles.add(configFile.level30RoleId)
-  }
-  if (currlev === 35) {
-    message.member.roles.add(configFile.level35RoleId)
-  }
-  if (currlev === 40) {
-    message.member.roles.add(configFile.level40RoleId)
-  }
-  if (currlev === 45) {
-    message.member.roles.add(configFile.level45RoleId)
-  }
-  if (currlev === 50) {
-    message.member.roles.add(configFile.level50RoleId)
-  }
-  if (currlev === 55) {
-    message.member.roles.add(configFile.level55RoleId)
-  }
-  if (currlev === 75) {
-    message.member.roles.add(configFile.level75RoleId)
-  }
-  if (currlev === 100) {
-    message.member.roles.remove(configFile.level30RoleId)
-    message.member.roles.remove(configFile.level35RoleId)
-    message.member.roles.remove(configFile.level40RoleId)
-    message.member.roles.remove(configFile.level45RoleId)
-    message.member.roles.remove(configFile.level50RoleId)
-    message.member.roles.remove(configFile.level55RoleId)
-    message.member.roles.remove(configFile.level75RoleId)
-    message.member.roles.add(configFile.level100RoleId)
+  
+  let level1RoleId = db.get(message.guild.id + '.level1RoleId')
+  let level5RoleId = db.get(message.guild.id + 'level5RoleId')
+  let level10RoleId = db.get(message.guild.id + 'level10RoleId')
+  let level15RoleId = db.get(message.guild.id + 'level15RoleId')
+  let level20RoleId = db.get(message.guild.id + 'level20RoleId')
+  let level25RoleId = db.get(message.guild.id + 'level25RoleId')
+  let level30RoleId = db.get(message.guild.id + 'level30RoleId')
+  let level35RoleId = db.get(message.guild.id + 'level35RoleId')
+  let level40RoleId = db.get(message.guild.id + 'level40RoleId')
+  let level45RoleId = db.get(message.guild.id + 'level45RoleId')
+  let level50RoleId = db.get(message.guild.id + 'level50RoleId')
+  let level75RoleId = db.get(message.guild.id + 'level75RoleId')
+  let level100RoleId = db.get(message.guild.id + 'level100RoleId')
+
+  try {
+    if (currlev === 1) {
+      if (level1RoleId) {
+        message.member.roles.add(level1RoleId)
+      }
+    }
+    if (currlev === 5) {
+      if (level1RoleId) {
+        message.member.roles.remove(level1RoleId)
+      }
+      if (level5RoleId) {
+        message.member.roles.add(level5RoleId)
+      }
+    }
+    if (currlev === 10) {
+      if (level5RoleId) {
+        message.member.roles.remove(level5RoleId)
+      }
+      if (level10RoleId) {
+        message.member.roles.add(level10RoleId)
+      }
+    }
+    if (currlev === 15) {
+      if (level10RoleId) {
+        message.member.roles.remove(level10RoleId)
+      }
+      if (level15RoleId) {
+        message.member.roles.add(level15RoleId)
+      }
+    }
+    if (currlev === 20) {
+      if (level15RoleId) {
+        message.member.roles.add(level15RoleId)
+      }
+      if (level20RoleId) {
+        message.member.roles.add(level20RoleId)
+      }
+    }
+    if (currlev === 25) {
+      if (level20RoleId) {
+        message.member.roles.add(level20RoleId)
+      }
+      if (level25RoleId) {
+        message.member.roles.add(level25RoleId)
+      }
+    }
+    if (currlev === 30) {
+      if (level25RoleId) {
+      message.member.roles.remove(level25RoleId)
+      }
+      message.member.roles.add(level30RoleId)
+    }
+    if (currlev === 35) {
+      if (level30RoleId) {
+        message.member.roles.remove(level30RoleId)
+      }
+      if (level35RoleId) {
+        message.member.roles.add(level35RoleId)
+      }
+    }
+    if (currlev === 40) {
+      if (level35RoleId) {
+        message.member.roles.remove(level35RoleId)
+      }
+      if (level40RoleId) {
+        message.member.roles.add(level40RoleId)
+      }
+    }
+    if (currlev === 45) {
+      if (level40RoleId) {
+        message.member.roles.remove(level40RoleId)
+      }
+      if (level45RoleId) {
+        message.member.roles.add(level45RoleId)
+      }
+    }
+    if (currlev === 50) {
+      if (level45RoleId) {
+        message.member.roles.remove(level45RoleId)
+      }
+      if (level50RoleId) {
+        message.member.roles.add(level50RoleId)
+      }
+    }
+    if (currlev === 55) {
+      if (level50RoleId) {
+        message.member.roles.remove(level50RoleId)
+      }
+      if (level55RoleId) {
+        message.member.roles.add(level55RoleId)
+      }
+    }
+    if (currlev === 75) {
+      if (level55RoleId) {
+        message.member.roles.remove(level55RoleId)
+      }
+      if (level75RoleId) {
+        message.member.roles.add(level75RoleId)
+      }
+    }
+    if (currlev === 100) {
+      if (level75RoleId) {
+      message.member.roles.remove(level75RoleId)
+      }
+      if (level100RoleId) {
+      message.member.roles.add(level100RoleId)
+      }
+    }
+  } catch {
+    console.log(`Error with levelling system in ${message.guild.name}`)
   }
 }

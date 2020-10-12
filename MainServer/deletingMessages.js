@@ -51,7 +51,11 @@ module.exports = async (message, Discord, client) => {
       `**Author:** ${message.author}\n` +
       `**Author Tag:** ${message.author.tag}\n` +
       `**Author ID:** ${message.author.id}\n`)
-    await LoggingChannel.send(embed)
+      try {
+        await LoggingChannel.send(embed)
+      } catch {
+        console.log(`${message.guild.name} has an invalid logging channel ID`)
+      }
   }
 
   /*if (message.attachments.size > 0) {
