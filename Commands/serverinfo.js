@@ -39,7 +39,7 @@ module.exports = async(client, msg, args, prefix, message) => {
 
 		const embed = new MessageEmbed()
 			.setDescription(`**Billybobbeep | Server Information**`)
-			.setColor('#6cb0f5')
+			.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
             .setThumbnail(message.guild.iconURL({ dynamic: true }))
             .setFooter(`Requested by: ${message.author.tag}`)
 			.addField('General', [

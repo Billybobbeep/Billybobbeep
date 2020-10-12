@@ -25,7 +25,7 @@ module.exports = async(client, msg, args, prefix, message) => {
     var embed = new Discord.MessageEmbed()
     .setTitle('User Muted')
     .setTimestamp()
-    .setColor('#EEF4C4')
+    .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
     .setDescription()
     try {
     LoggingChannel.send(embed)

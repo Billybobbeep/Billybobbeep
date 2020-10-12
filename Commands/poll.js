@@ -1,5 +1,6 @@
 const Discord = require(`discord.js`);
 const configFile = require('../config.json');
+const db = require('quick.db');
 
 //[Main Varables]\\
 let title;
@@ -16,7 +17,7 @@ module.exports = async(client, msg, args, prefix, message) => {
         let embedPoll = new Discord.MessageEmbed()
             .setTitle('New Poll!')
             .setDescription(pollDescription)
-            .setColor([108, 245, 169])
+            .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
             .setFooter(`Poll created by: ${message.author.tag}`)
         let msgEmbed = await pollChannel.send(embedPoll);
         await msgEmbed.react('👍')

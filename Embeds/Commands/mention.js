@@ -1,10 +1,11 @@
 const Discord = require(`discord.js`);
 const configFile = require('../../config.json');
+const db = require('quick.db');
 
 module.exports = async(msg, args, prefix, message, client) => {
     const commandEmbed = new Discord.MessageEmbed()
     .setTitle('Billybobbeep | Mention Commands')
-    .setColor([177, 210, 240])
+    .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
     .setTimestamp()
     .setFooter('Requested by: ' + message.author.tag)
     .setDescription(

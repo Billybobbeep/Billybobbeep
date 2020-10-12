@@ -1,5 +1,6 @@
 const Discord = require(`discord.js`);
 const configFile = require('../config.json');
+const db = require('quick.db');
 
 let responsed = [
 `Hello!`,

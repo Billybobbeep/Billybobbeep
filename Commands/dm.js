@@ -7,7 +7,7 @@ if (!message.member.permissions.has("MANAGE_MESSAGES")) return message.channel.s
     const embed = new Discord.MessageEmbed()
       embed.setTitle(`DM Sent`)
       embed.setTimestamp()
-      embed.setColor('#dbbf70')
+      embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
     if (args.slice(1) === null) {
       embed.setDescription(
         `**Message:** \`This message either contained an embed or no content.\`\n` +

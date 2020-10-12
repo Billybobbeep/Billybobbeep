@@ -5,13 +5,13 @@ module.exports = async client => {
   const embed = new Discord.MessageEmbed()
   embed.setTitle(`Message Deleted`)
   embed.setTimestamp();
-  embed.setColor('#d9a9d5');
 
   let command;
   let pinned;
 
   client.on('messageDelete', message => {
   if (!message.guild) return;
+  embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
   let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
   let prefix = db.get(message.guild.id + '.prefix') || '~'
     let msg = message.content.toLowerCase();

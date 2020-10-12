@@ -1,6 +1,6 @@
 const Discord = require(`discord.js`);
 const configFile = require('../../config.json');
-
+const db = require('quick.db');
 module.exports = async(msg, args, prefix, message) => {
         const commandEmbed = new Discord.MessageEmbed()
         .setTitle("Billybobbeep | Fun Commands")
@@ -27,8 +27,8 @@ module.exports = async(msg, args, prefix, message) => {
             "*Gives you a list of fonts you can turn your message into*\n" +
             `${prefix}image\n` +
             "*Generates a random image.*\n")
-        .setColor([177, 210, 240])
+        .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
         .setFooter(`Requested by: ${message.author.tag}`)
         .setTimestamp()
-        message.channel.send(commandEmbed)
+        let message1 = await message.channel.send(commandEmbed)
 }

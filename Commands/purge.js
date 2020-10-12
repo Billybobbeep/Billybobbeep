@@ -1,5 +1,6 @@
 const Discord = require(`discord.js`);
 const configFile = require('../config.json');
+const db = require('quick.db');
 
 module.exports = async(client, msg, args, prefix, message) => {
         if (!message.member.hasPermission("MANAGE_MESSAGES") || !message.member.hasPermission("ADMINISTRATOR")) return message.channel.send("You do not have the permission to run this command.")
@@ -34,7 +35,7 @@ if (message.pinned) {
                         **Command:** true
                         **Pinned:** ${pinned}`)
         .setTimestamp()
-        .setColor("#a9d9b7")
+        .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
         if (LoggingChannel) {
           try {
             LoggingChannel.send(embed)

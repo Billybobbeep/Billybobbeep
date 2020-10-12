@@ -6,7 +6,7 @@ module.exports = async (prefix, message) => {
   embed.setTimestamp();
   embed.setTitle('Billybobbeep | Economy')
   embed.setFooter(`Requested by: ${message.author.tag}`);
-  embed.setColor('#eea990');
+  embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
 
 
 }

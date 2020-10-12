@@ -1,5 +1,6 @@
 const Discord = require(`discord.js`);
 const configFile = require('../config.json');
+const db = require('quick.db');
 
 module.exports = async(client, msg, args, prefix, message) => {
     if (!message.member.hasPermission("MANAGE_GUILD") || !message.member.hasPermission("ADMINISTRATOR")) {

@@ -1,6 +1,6 @@
 module.exports = async (client, message, Discord) => {
 
-  if (message.author.id === '731498842813366304') return;
+  const db = require('quick.db')
   const configFile = require('../config.json')
   let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
 
@@ -13,7 +13,7 @@ module.exports = async (client, message, Discord) => {
       `**Author Tag:** ${message.author.tag}\n` +
       `**Author ID:** ${message.author.id}\n`)
     .setTimestamp()
-    .setColor('#dbbf70')
+    .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
 
   if (message.channel.type === 'dm') {
     if (message.content.toLowerCase().startsWith('~')) return;

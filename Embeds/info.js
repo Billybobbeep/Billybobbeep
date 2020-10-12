@@ -3,13 +3,14 @@ const { version } = require('../package.json');
 const { utc } = require('moment');
 const os = require('os');
 const ms = require('ms');
+const db = require('quick.db');
 
 module.exports = async (client, message) => {
   const core = os.cpus()[0];
   const embed = new MessageEmbed()
     .setDescription("**Billybobbeep | Bot Info**")
     .setThumbnail(client.user.displayAvatarURL())
-    .setColor([235, 188, 245])
+    .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
     .setFooter(`Requested by: ${message.author.tag}`)
     .addField('General', [
       `**✰ Name:** ${client.user.tag} (${client.user.id})`,

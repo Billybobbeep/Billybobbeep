@@ -33,7 +33,7 @@ module.exports = async(client, msg, args, prefix, message) => {
         .setAuthor(user.tag, avatar)
         .setThumbnail(avatar)
         .setTimestamp()
-        .setColor(0x7289DA)
+        .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
         .addField("ID", user.id, true)
         .addField("Nickname", nickname, true)
         .addField("Created Account Date", `${createdate} \nCreated ${created} day(s) ago`, true)

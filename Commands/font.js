@@ -30,7 +30,9 @@
         }
 */
 const { MessageEmbed } = require("discord.js");
-const embed = new MessageEmbed
+const embed = new MessageEmbed()
+const db = require('quick.db');
+
 module.exports = async (client, msg, args, prefix, message) => {
     var lines = ['', ''];
     var starter = '➳';
@@ -40,7 +42,7 @@ module.exports = async (client, msg, args, prefix, message) => {
         embed.setDescription('Supported Fonts:\nDouble\nFancy\nHand\nCursed\nSmooth\nSmol')
         embed.setFooter(`Requested by: ${message.author.tag}`)
         embed.setTimestamp()
-        embed.setColor('5A9EAB')
+        embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
         return message.channel.send(embed)
     }
 

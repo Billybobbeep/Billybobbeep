@@ -14,7 +14,7 @@ module.exports = async (message) => {
   embed.setTitle('Billybobbeep | Levelling System')
   embed.setTimestamp()
   embed.setFooter(`Requested by: ${message.author.tag}`)
-  embed.setColor('#051094')
+  embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
   embed.setDescription(`${user.username}'s level is currently ${currLvl}`)
   message.channel.send(embed)
 }

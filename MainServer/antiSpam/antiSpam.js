@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const embed = new Discord.MessageEmbed()
 const settings = require('./settings.json');
 const configFile = require('../../config.json');
+const db = require('quick.db')
 var AntiSpam = []
 var count = 0;
 
@@ -22,7 +23,7 @@ module.exports = async (client, message) => {
   if (count > settings.messageToWarn && count < settings.messageToWarn + 2) {
     embed.setTitle('Billybobbeep | Spam Prevention');
     embed.setDescription('You have been warned for spamming in ' + message.guild.name);
-    embed.setColor('#fbc2eb');
+    embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
     embed.setTimestamp();
     await message.author.send(embed);
     message.member.roles.add(configFile.MutedRole)

@@ -1,5 +1,6 @@
 const Discord = require(`discord.js`);
 const configFile = require('../config.json');
+const db = require('quick.db');
 
 module.exports = async(client, msg, args, prefix, message) => {
 let member = message.guild.members;
@@ -19,7 +20,7 @@ let offline = member.cache.filter(m => m.user.presence.status === "offline").siz
         .addField("Idle Members:", `${idle}`, true)
         .addField("DND Members:", `${dnd}`, true)
         .addField("Bots:", `${robot}`, true)
-        .setColor([235, 188, 245])
+        .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
         .setFooter(`Requested by: ${message.author.tag}`)
         .setTimestamp()
         message.channel.send(memberEmbed)

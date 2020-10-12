@@ -2,6 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const ms = require("ms");
 const configFile = require('../config.json');
 let inProgress = false
+const db = require('quick.db');
 
 module.exports = async(client, msg, args, prefix, message) => {
   if (inProgress === true) return message.channel.send("There is already a giveaway running.")
@@ -29,7 +30,7 @@ module.exports = async(client, msg, args, prefix, message) => {
         `**Host:** ${message.author.tag}\n` + `**Prize:** ${prize}`
       )
       .setTimestamp(Date.now() + ms(args[0]))
-      .setColor([ 144, 224, 135]);
+      .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
 
     let m = await channel.send(Embed);
     m.react("🎉");
@@ -58,7 +59,7 @@ module.exports = async(client, msg, args, prefix, message) => {
         `**Host:** ${message.author.tag}\n` + `**Prize:** ${prize}\n` + `**Winner:** ${winner.tag}\n` + `\n` + `*This giveaway has now ended.*`
       )
       .setTimestamp(Date.now() + ms(args[0]))
-      .setColor([ 144, 224, 135]);
+      .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
       m.edit(WinningEmbed)
     }, ms(args[0]));
 }

@@ -1,5 +1,6 @@
 const Discord = require(`discord.js`);
 const configFile = require('../config.json');
+const db = require('quick.db');
 
 module.exports.run = async(client, msg, args, prefix, message) => {
 
@@ -126,7 +127,7 @@ var randomImage = [
 `https://cdn.discordapp.com/attachments/729336942998585346/754020113275158558/image0.jpg`,
 `https://cdn.discordapp.com/attachments/729336942998585346/754020109042974840/image0.jpg`]
 
-embed.setColor("#5ebd60")
+embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
 embed.setTitle(`Billybobbeep | Image Generator`)
         embed.setDescription(`Please note: These images may include explicit content`)
 

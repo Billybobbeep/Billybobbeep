@@ -7,7 +7,7 @@ module.exports = async(client, msg, args, prefix, message) => {
   const embed = new Discord.MessageEmbed()
   embed.setTitle(`Announcement Sent`)
   embed.setTimestamp()
-  embed.setColor('#f5d271')
+  embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
         let filter = m => m.author.id === message.author.id;
         let q1 = new Discord.MessageCollector(message.channel, filter, {
             max: 1

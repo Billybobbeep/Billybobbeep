@@ -27,7 +27,7 @@ module.exports = async (client, msg, args, prefix, message) => {
         `**Moderator Tag:** ${message.author.tag}\n` +
         `**Moderator ID:** ${message.author.id}`
       )
-      embed.setColor('#ebc7ff')
+      embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
       embed.setTimestamp()
       try {
         LoggingChannel.send(embed)

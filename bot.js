@@ -84,7 +84,7 @@ module.exports = async () => {
           `**Command:** ${command}\n\n` +
           `**Error Code:**\n` + err
         )
-        embed.setColor(`#fcb69f`)
+        embed.setColor(`#447ba1`)
         LoggingChannel.send(embed);
       } else {
         return;

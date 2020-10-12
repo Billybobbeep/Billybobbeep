@@ -34,7 +34,7 @@ module.exports = async (message, Discord, client) => {
   let args = message.content.slice(prefix.length).trim().split(/ +/g);
   embed.setTitle(`Billybobbeep | Invite Links`);
   embed.setTimestamp();
-  embed.setColor('#dbbf70');
+  embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
 
   if (message.content.toLowerCase().includes('discord.gg') || message.content.toLowerCase().includes('discord.com/invite')) {
     message.delete()

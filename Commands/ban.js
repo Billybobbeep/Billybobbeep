@@ -1,5 +1,6 @@
 const Discord = require(`discord.js`);
 const configFile = require('../config.json');
+const db = require('quick.db');
 const embed = new Discord.MessageEmbed();
 
 module.exports = async (client, msg, args, prefix, message) => {
@@ -29,7 +30,7 @@ module.exports = async (client, msg, args, prefix, message) => {
         `**Moderator ID:** ${message.author.id}\n`
       )
       embed.setTimestamp()
-      embed.setColor('#447ba1')
+      embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
       try {
         LoggingChannel.send(embed)
       } catch {

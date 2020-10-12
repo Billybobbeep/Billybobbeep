@@ -4,6 +4,7 @@ module.exports = async (client) => {
   const Discord = require('discord.js')
   var port = 3000;
   const bot = require("./bot");
+  const db = require('quick.db');
   const fs = require('fs');
 
   app.use('/style', express.static('style'));
@@ -31,7 +32,7 @@ module.exports = async (client) => {
       if (!req.query.fName || !req.query.sName || !req.query.discord || !req.query.subject || !req.query.message) res.render('general.ejs');
       const embed = new Discord.MessageEmbed()
         .setTitle('Billybobbeep | Contact Us Submissions')
-        .setColor('#5271C4')
+        .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
         .setTimestamp()
         .setDescription(
           '**First Name:** ' + req.query.fName +

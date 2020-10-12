@@ -1,5 +1,6 @@
 const Discord = require(`discord.js`);
 const configFile = require('../config.json');
+const db = require('quick.db');
 
 module.exports = async (client, prefix, message) => {
   const helpEmbed = new Discord.MessageEmbed()
@@ -17,7 +18,7 @@ module.exports = async (client, prefix, message) => {
       "*Shows a quick briefing.*\n" +
       `${prefix}setup\n` +
       "*To set up billybobbeep in your own server.*")
-    .setColor("7aa0f6")
+    .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
     .setFooter(`Requested by: ${message.author.tag}`)
     .setTimestamp()
   message.channel.send(helpEmbed)
