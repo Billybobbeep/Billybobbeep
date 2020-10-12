@@ -7,7 +7,7 @@ module.exports = (message, db) => {
 
 	if (!args[2]) {
 		db.delete(message.guild.id + '.mutedRole');
-		return message.channel.send('Removed tmuted role.');
+		return message.channel.send('Removed muted role.');
 	}
 	let role =
 		message.mentions.roles.first() || message.guild.roles.cache.get(args[2]);
