@@ -1,11 +1,9 @@
-const Discord = require(`discord.js`);
-const configFile = require('../config.json');
-
+const db = require('quick.db')
 module.exports = async(client, msg, args, prefix, message) => {
-    message.channel.send("suck");
-    message.channel.send("my");
-    message.channel.send("dick");
-    message.channel.send("you");
-    message.channel.send("stupid");
-    message.channel.send("bitch");
+  if (db.get(message.guild.id + '.cleanFilter')) {
+    return message.channel.send('This server has been set to clean content only.');
+  }
+    message.channel.send("suck\nmy");
+    message.channel.send("dick\nyou");
+    message.channel.send("stupid\nbitch");
 }

@@ -41,6 +41,10 @@ module.exports = (client, message, db) => {
       redirect = require('./embedColor.js');
       redirect(message, db);
     }
+    if (message.content.toLowerCase().startsWith(prefix + 'setup clean')) {
+      redirect = require('./cleanFilter.js');
+      redirect(message, db);
+    }
 
     if (!args[1]) {
       const embed = new MessageEmbed()

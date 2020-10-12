@@ -7,7 +7,7 @@ module.exports = (message, db) => {
     .split(/ +/g);
   var color;
 
-  if (!args[2]) {
+  if (!args[2] || args[2].toLowerCase() === 'help') {
     const embed = new MessageEmbed()
     .setTitle('Billybobbeep | Setup Command')
     .setDescription(`With this command you can change the default embed color.\n\n**Usage:**\n\`${prefix}setup embed [color]\`\n\n**Built in colors:**\nBuilt in colors usage: \`${prefix}setup embed [built-in-color-name]\`\n\n**Color List:**\nDark-Blue, Light-Blue, Green, Yellow, Orange, Red, Peach, Purple\n\nIf you would like to use your own color use the command:\n \`${prefix}setup embed [hex-code]\``)
@@ -16,7 +16,7 @@ module.exports = (message, db) => {
     .setFooter(`Requested by: ${message.author.tag}`)
     message.channel.send(embed)
   }
-  if (args[2] && !args[2].startsWith('#')) {
+  if (args[2] && !args[2].startsWith('#') && args[2].toLowerCase() !== 'help') {
     if (args[2].toLowerCase() === 'dark-blue') {
       color = '#30076f'
     } else if (args[2].toLowerCase() === 'light-blue') {
