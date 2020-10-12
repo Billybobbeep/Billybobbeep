@@ -45,6 +45,10 @@ module.exports = (client, message, db) => {
       redirect = require('./cleanFilter.js');
       redirect(message, db);
     }
+    if (message.content.toLowerCase().startsWith(prefix + 'setup lvlchannel')) {
+      redirect = require('./levelChannel.js');
+      redirect(message, db);
+    }
 
     if (!args[1]) {
       const embed = new MessageEmbed()
@@ -61,7 +65,11 @@ module.exports = (client, message, db) => {
           `*Do not set up for level ups to display in channel the message was sent in.*\n` +
           `${prefix}prefix [new prefix]\n` +
           `*Changes the default prefix for the server.*\n` +
-          `${prefix}setup embed [color]\n*Changes the default embed color*`
+          `${prefix}setup embed [color]\n*Changes the default embed color*\n` +
+          `${prefix}setup clean [on/off]\n*Ensures anything billy says is clean*\n` +
+          `${prefix}setup lvlChannel [channel]\n*Sets up a levelling output channel*\n\n` +
+          
+          `To see more information on these commnds use the command:\n\`${prefix}setup [command] help\``
         )
         .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
         .setTimestamp()
