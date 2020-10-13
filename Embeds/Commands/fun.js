@@ -66,7 +66,8 @@ module.exports = async(msg, args, prefix, message) => {
         wait()
       }
     }).catch((collected) => {
-      mainMessage.reactons.remove()
+      console.log(mainMessage)
+      mainMessage.reactions[1].remove()
     });
   }
   function wait() {

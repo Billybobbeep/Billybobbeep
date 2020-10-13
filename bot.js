@@ -83,20 +83,7 @@ member.send('Someone has clicked on the link from your stack overflow account.')
       const commandFile = require(`./Commands/${command}.js`);
       commandFile(client, msg, args, prefix, message);
     } catch (err) {
-      if (configFile.SendLogs === true) {
-        if (message.channel.type === 'dm') return;
-        let LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
-        embed.setTitle(`Command Error`)
-        embed.setDescription(
-          `**Channel:** ${message.channel}\n` +
-          `**Command:** ${command}\n\n` +
-          `**Error Code:**\n` + err
-        )
-        embed.setColor(`#447ba1`)
-        LoggingChannel.send(embed);
-      } else {
-        return;
-      }
+      console.log(err)
     }
   };
 
