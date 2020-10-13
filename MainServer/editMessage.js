@@ -21,7 +21,7 @@ module.exports = async (client) => {
           `**Author Tag:** ${oldMessage.author.tag}\n` +
           `**Author ID:** ${oldMessage.author.id}`)
         .setTimestamp()
-        .setColor("#84faaa")
+        .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
         if (LoggingChannel) {
           try {
             return LoggingChannel.send(embed)
@@ -53,7 +53,7 @@ module.exports = async (client) => {
         `**Author Tag:** ${oldMessage.author.tag}\n` +
         `**Author ID:** ${oldMessage.author.id}`)
       .setTimestamp()
-      .setColor("#84faaa")
+      .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
       if (LoggingChannel) {
         try {
           LoggingChannel.send(embed)

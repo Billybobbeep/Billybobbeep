@@ -49,6 +49,10 @@ module.exports = (client, message, db) => {
       redirect = require('./levelChannel.js');
       redirect(message, db);
     }
+    if (message.content.toLowerCase().startsWith(prefix + 'setup lvlrole')) {
+      redirect = require('./levelRoles.js');
+      redirect(message, db);
+    }
 
     if (!args[1]) {
       const embed = new MessageEmbed()
