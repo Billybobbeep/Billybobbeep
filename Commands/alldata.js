@@ -1,5 +1,6 @@
 const db = require('quick.db');
 var table = []
+
 module.exports = (client, msg, args, prefix, message) => {
   if (args[0] && args[0] === 'guild') {
     table.push('Total Guild List:')

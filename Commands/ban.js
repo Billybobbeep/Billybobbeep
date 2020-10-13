@@ -1,12 +1,11 @@
 const Discord = require(`discord.js`);
-const configFile = require('../config.json');
 const db = require('quick.db');
 const embed = new Discord.MessageEmbed();
 
 module.exports = async (client, msg, args, prefix, message) => {
-  if (msg.startsWith(prefix + "ban")) {
-    if (!message.member.hasPermission("BAN_MEMBERS") || !message.member.hasPermission("ADMINISTRATOR")) return message.channel.send("You do not have the permission to run this command.")
-    let user = message.mentions.users.first();
+
+  function banCmd() {
+    let user = message.mentions.users.first() || message.guild.members.cache.get(args[0])
 
     let member = message.guild.member(user);
     let reason = args.slice(1).join(" ");
@@ -15,30 +14,42 @@ module.exports = async (client, msg, args, prefix, message) => {
     if (user.id === message.author.id) return message.channel.send("You cannot ban yourself from the server.");
     if (user.id === client.user.id) return message.channel.send("You cannot ban me.");
     if (!reason) reason = "No reason provided";
-
-    member.ban(reason).then(() => {
+    if (user.id === undefined) {
+      user = user.user
+    }
+    member.ban({ days: 5, reason: reason}).then(() => {
       message.channel.send(`Successfully banned **${user.tag}**`);
       let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
       if (LoggingChannel) {
-      embed.setTitle('User Banned');
-      embed.setDescription(
-        `**User Tag:** ${member.tag}\n` +
-        `**User ID:** ${member.id}\n` +
-        `**Reason:** ${reason}\n\n`
-        `**Moderator:** ${message.author}\n` +
-        `**Moderator Tag:** ${message.author.tag}\n` +
-        `**Moderator ID:** ${message.author.id}\n`
-      )
-      embed.setTimestamp()
-      embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-      try {
-        LoggingChannel.send(embed)
-      } catch {
-        console.log(`${message.guild.name} has entered an invalid logging channel`)
-      }
+        embed.setTitle('User Banned');
+        embed.setDescription(
+          `**User Tag:** ${member.tag}\n` +
+          `**User ID:** ${member.id}\n` +
+          `**Reason:** ${reason}\n\n`
+            `**Moderator:** ${message.author}\n` +
+          `**Moderator Tag:** ${message.author.tag}\n` +
+          `**Moderator ID:** ${message.author.id}\n`
+        )
+        embed.setTimestamp()
+        embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
+        try {
+          LoggingChannel.send(embed)
+        } catch {
+          console.log(`${message.guild.name} has entered an invalid logging channel`)
+        }
       }
     }).catch(err => {
       message.reply("I was unable to ban the member you provided.");
+      console.log(err)
     });
+  }
+  if (message.member.hasPermission("BAN_MEMBERS")) {
+    banCmd()
+  } else if (message.member.hasPermission("ADMINISTRATOR")) {
+    banCmd()
+  } else if (message.member.roles.cache.find(role => role.id === db.get(message.guild.id + '.adminsRole')) && db.get(message.guild.id + '.adminsCanBan')) {
+    banCmd()
+  } else {
+    message.channel.send('You do not have the premissions to run this command.')
   }
 }

@@ -54,11 +54,11 @@ module.exports = async (client, msg, args, prefix, message) => {
   }
   
   if (message.member.hasPermission("MANAGE_MESSAGES") || message.member.hasPermission("ADMINISTRATOR")) {
-    warnCmd()
+    return warnCmd()
   } else {
-    if (!db.get(message.guild.id + '.adminsRole')) return (`The moderators role has not been set up in your server`)
+    if (!db.get(message.guild.id + '.adminsRole')) return message.channel.send(`The moderators role has not been set up in your server`)
     if (message.member.roles.cache.find(role => role.id === db.get(message.guild.id + '.adminsRole'))) {
-      warnCmd()
+      return warnCmd()
     } else {
       message.channel.send('You do not have the premissions to run this command.')
     }
