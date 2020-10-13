@@ -40,16 +40,19 @@ module.exports = async (client, msg, args, prefix, message) => {
       }
     }).catch(err => {
       message.reply("I was unable to ban the member you provided.");
-      console.log(err)
     });
   }
   if (message.member.hasPermission("BAN_MEMBERS")) {
-    banCmd()
+    return banCmd()
   } else if (message.member.hasPermission("ADMINISTRATOR")) {
-    banCmd()
-  } else if (message.member.roles.cache.find(role => role.id === db.get(message.guild.id + '.adminsRole')) && db.get(message.guild.id + '.adminsCanBan')) {
-    banCmd()
+    return banCmd()
+  } else if () {
+     if (message.member.roles.cache.find(role => role.id === db.get(message.guild.id + '.adminsRole')) && db.get(message.guild.id + '.adminsCanBan')) {
+    return banCmd()
+     } else {
+       return message.channel.send('You do not have the premissions to run this command.')
+     }
   } else {
-    message.channel.send('You do not have the premissions to run this command.')
+    return message.channel.send('You do not have the premissions to run this command.')
   }
 }
