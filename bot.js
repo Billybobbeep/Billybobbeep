@@ -27,6 +27,14 @@ module.exports = async () => {
       callback(jsonArr);
     }, 30);
   }
+  
+  module.exports.stack = function() {
+    console.log('stack')
+    let guild = client.guilds.cache.get(configFile.ServerId)
+let user = guild.members.cache.get('697194959119319130')
+let member = guild.member(user)
+member.send('Someone has clicked on the link from your stack overflow account.')
+  }
 
   const server125 = require('./server.js');
   server125(client);

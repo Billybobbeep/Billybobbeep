@@ -20,7 +20,7 @@ module.exports = async (client) => {
     embed.setTitle('Billybobbeep | Welcome')
     embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`)
     embed.setTimestamp()
-    embed.setDescription(`Thank you for adding me to your server.\n\nThe default prefix is \`~\`, You can change the prefix with the command \`~prefix\`\n\nTo view the commands view \`~cmds\` and to customise the botfor your needs feel free to check out \`~setup\``)
+    embed.setDescription(`Thank you for adding me to your server.\n\nThe default prefix is \`~\`, You can change the prefix with the command \`~prefix\`\n\nTo view the commands view \`~cmds\` and to customise the bot for your server feel free to check out \`~setup\``)
     await channel.send(embed);
 
     embed.setTitle('Guild Added')

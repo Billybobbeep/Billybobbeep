@@ -16,7 +16,9 @@ let user = message.mentions.users.first() || message.guild.members.cache.get(arg
       return message.channel.send('Changed ' + user.tag + '\'s nickname to default.')
     }
     let member = message.guild.members.cache.get(user.id);
-
+    if (user.tag === undefined) {
+      user = user.user
+    }
     try {
         await member.setNickname(nick);
         message.channel.send(`Changed ${user.tag}'s nickname to ${nick}`);

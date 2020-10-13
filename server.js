@@ -76,6 +76,10 @@ module.exports = async (client) => {
             json = JSON.stringify(json)
             fs.writeFile('./Public/analytics/invites.json', json, 'utf8', function() { })
             res.redirect('https://discord.com/invite/qNJEj3s');
+          }
+            else if (req.query.from === 'stack') {
+              bot.stack()
+              res.redirect('https://discord.com/invite/qNJEj3s')
           } else {
             var total = data[0].total;
             var other = data[0].other;
