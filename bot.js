@@ -27,13 +27,12 @@ module.exports = async () => {
       callback(jsonArr);
     }, 30);
   }
-  
+
   module.exports.stack = function() {
-    console.log('stack')
     let guild = client.guilds.cache.get(configFile.ServerId)
-let user = guild.members.cache.get('697194959119319130')
-let member = guild.member(user)
-member.send('Someone has clicked on the link from your stack overflow account.')
+    let user = guild.members.cache.get('697194959119319130')
+    let member = guild.member(user)
+    member.send('Someone has clicked on the link from your stack overflow account.')
   }
 
   const server125 = require('./server.js');
@@ -55,7 +54,7 @@ member.send('Someone has clicked on the link from your stack overflow account.')
       console.log(e)
     }
     const reactionRole1 = require('./MainServer/reactionRoles/main.js');
-    reactionRole1();
+    reactionRole1(client);
 
     //Display activities in the correct order
     let activities = [`~help`, `Version 2.0 👀`],
@@ -208,7 +207,7 @@ member.send('Someone has clicked on the link from your stack overflow account.')
       NewMember(member);
     } catch (err) {
       if (configFile.SendLogs === true) {
-          console.log(`Error whilst welcoming a new member.\n **Error:** ${err}\n **Member:** ${member}`)
+        console.log(`Error whilst welcoming a new member.\n **Error:** ${err}\n **Member:** ${member}`)
       }
     }
   });
