@@ -3,7 +3,6 @@ const db = require('quick.db');
 const embed = new Discord.MessageEmbed();
 
 module.exports = async (client, msg, args, prefix, message) => {
-
   function banCmd() {
     let user = message.mentions.users.first() || message.guild.members.cache.get(args[0])
 
@@ -17,7 +16,7 @@ module.exports = async (client, msg, args, prefix, message) => {
     if (user.id === undefined) {
       user = user.user
     }
-    member.ban({ days: 5, reason: reason}).then(() => {
+    member.ban({ days: 5, reason: reason }).then(() => {
       message.channel.send(`Successfully banned **${user.tag}**`);
       let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
       if (LoggingChannel) {
@@ -42,17 +41,21 @@ module.exports = async (client, msg, args, prefix, message) => {
       message.reply("I was unable to ban the member you provided.");
     });
   }
-  if (message.member.hasPermission("BAN_MEMBERS")) {
-    return banCmd()
-  } else if (message.member.hasPermission("ADMINISTRATOR")) {
-    return banCmd()
-  } else if () {
-     if (message.member.roles.cache.find(role => role.id === db.get(message.guild.id + '.adminsRole')) && db.get(message.guild.id + '.adminsCanBan')) {
-    return banCmd()
-     } else {
-       return message.channel.send('You do not have the premissions to run this command.')
-     }
-  } else {
-    return message.channel.send('You do not have the premissions to run this command.')
+
+  var debounce = false;
+
+  if (message.member.hasPermission("BAN_MEMBERS") || message.member.hasPermission("ADMINISTRATOR")) {
+    banCmd()
+    debounce = true;
+  } else if (db.get(message.guild.id + '.modRole')) {
+    if (message.member.roles.cache.find(role => role.id === db.get(message.guild.id + '.modsRole'))) {
+      if (db.get(message.guild.id + '.modsCanBan')) {
+        banCmd()
+        debounce = true;
+      }
+    } 
+    if (debounce === false) {
+      message.channel.send('You do not have the premissions to run this command.')
+    }
   }
 }

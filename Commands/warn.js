@@ -53,13 +53,17 @@ module.exports = async (client, msg, args, prefix, message) => {
     db.add(message.guild.id + '_' + user.id + '.warnings', 1)
   }
   
+  var debounce = false;
+
   if (message.member.hasPermission("MANAGE_MESSAGES") || message.member.hasPermission("ADMINISTRATOR")) {
-    return warnCmd()
-  } else {
-    if (!db.get(message.guild.id + '.adminsRole')) return message.channel.send(`The moderators role has not been set up in your server`)
-    if (message.member.roles.cache.find(role => role.id === db.get(message.guild.id + '.adminsRole'))) {
-      return warnCmd()
-    } else {
+    warnCmd()
+    debounce = true;
+  } else if (db.get(message.guild.id + '.modRole')) {
+    if (message.member.roles.cache.find(role => role.id === db.get(message.guild.id + '.modRole'))) {
+        warnCmd()
+        debounce = true;
+    } 
+    if (debounce === false) {
       message.channel.send('You do not have the premissions to run this command.')
     }
   }

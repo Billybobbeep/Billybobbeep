@@ -39,4 +39,18 @@ module.exports = async(client, msg, args, prefix, message) => {
       }
     }
   }
+  var debounce = false;
+
+  if (message.member.hasPermission("MANAGE_MESSAGES") || message.member.hasPermission("ADMINISTRATOR")) {
+    muteCmd()
+    debounce = true;
+  } else if (db.get(message.guild.id + '.modRole')) {
+    if (message.member.roles.cache.find(role => role.id === db.get(message.guild.id + '.modRole'))) {
+        muteCmd()
+        debounce = true;
+    } 
+    if (debounce === false) {
+      message.channel.send('You do not have the premissions to run this command.')
+    }
+  }
 }
