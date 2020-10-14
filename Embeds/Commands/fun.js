@@ -1,7 +1,7 @@
 const Discord = require(`discord.js`);
 const configFile = require('../../config.json');
 const db = require('quick.db');
-module.exports = async(msg, args, prefix, message) => {
+module.exports = async(client, msg, args, prefix, message) => {
   const PageOne = new Discord.MessageEmbed()
   .setTitle("Billybobbeep | Fun Commands")
   .setDescription(
@@ -66,8 +66,7 @@ module.exports = async(msg, args, prefix, message) => {
         wait()
       }
     }).catch((collected) => {
-      console.log(mainMessage)
-      mainMessage.reactions[1].remove()
+      reaction.remove()
     });
   }
   function wait() {

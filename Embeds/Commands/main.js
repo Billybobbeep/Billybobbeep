@@ -17,7 +17,7 @@ module.exports = async(msg, args, prefix, message, client) => {
     }
     if (message.content.toLowerCase() == prefix + "cmds fun" || message.content.toLowerCase() == prefix + "commands fun" || message.content.toLowerCase() == prefix + "c f") {
         const commandFile = require(`./fun.js`);
-        commandFile(msg, args, prefix, message)
+        commandFile(client, msg, args, prefix, message)
     }
     if (message.content.toLowerCase() == prefix + "cmds ping" || message.content.toLowerCase() == prefix + "commands ping" || message.content.toLowerCase() == prefix + "c p") {
         const commandFile = require(`./mention.js`);
