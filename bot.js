@@ -3,7 +3,9 @@ module.exports = async () => {
   // [Varibles] //
   const Discord = require('discord.js');
   const db = require('quick.db');
-  const client = new Discord.Client();
+  const client = new Discord.Client({
+  partials: ['MESSAGE', 'CHANNEL', 'REACTION']
+});
   const configFile = require('./config.json');
   const embed = new Discord.MessageEmbed()
 

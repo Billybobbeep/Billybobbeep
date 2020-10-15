@@ -15,7 +15,7 @@ module.exports = async (client, msg, args, prefix, message) => {
       return message.channel.send('You cannot kick yourself from the server.');
     if (user.id === client.user.id)
       return message.channel.send('You cannot kick me.');
-    if (user.id === undefined) {
+    if (user.tag === undefined || user.id === undefined) {
       user = user.user;
     }
     if (!reason) reason = 'No reason provided';
@@ -23,9 +23,7 @@ module.exports = async (client, msg, args, prefix, message) => {
     member
       .kick({ reason: reason })
       .then(() => {
-        message.channel.send(`Successfully kicked **${user.tag}**`);
-        console.log(
-          `${message.author.username} successfully kicked **${user.tag}**`
+        message.channel.send(`Successfully kicked **${user.tag}**`
         );
         if (db.get(message.guild.id + '.loggingChannel')) {
           let LoggingChannel = client.channels.cache.get(
