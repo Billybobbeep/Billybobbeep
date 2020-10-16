@@ -78,7 +78,6 @@ module.exports = async (client) => {
             res.redirect('https://discord.com/invite/qNJEj3s');
           }
             else if (req.query.from === 'stack') {
-              bot.stack()
               res.redirect('https://discord.com/invite/qNJEj3s')
           } else {
             var total = data[0].total;

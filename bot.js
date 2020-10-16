@@ -1,12 +1,10 @@
 module.exports = async () => {
-  'use strict';
   // [Varibles] //
   const Discord = require('discord.js');
   const db = require('quick.db');
   const client = new Discord.Client({
-  partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
-  disableEveryone: true
-});
+    partials: ['MESSAGE', 'CHANNEL', 'REACTION']
+  });
   const configFile = require('./config.json');
   const embed = new Discord.MessageEmbed()
 
@@ -31,13 +29,6 @@ module.exports = async () => {
     }, 30);
   }
 
-  module.exports.stack = function() {
-    let guild = client.guilds.cache.get(configFile.ServerId)
-    let user = guild.members.cache.get('697194959119319130')
-    let member = guild.member(user)
-    member.send('Someone has clicked on the link from your stack overflow account.')
-  }
-
   const server125 = require('./server.js');
   server125(client);
 
@@ -56,7 +47,7 @@ module.exports = async () => {
     reactionRole1(client);
 
     //Display activities in the correct order
-    let activities = [`~help`, `Version 2.0 👀`],
+    let activities = [`~help`, `Version 2.0 👀`]
       i = 0;
     setInterval(() => {
       client.user.setActivity(`${activities[i++ % activities.length]}`, {
@@ -80,14 +71,12 @@ module.exports = async () => {
     try {
       const commandFile = require(`./Commands/${command}.js`);
       commandFile(client, msg, args, prefix, message);
-    } catch (err) {
-      return;
+    } catch(err) {
+      console.log(err)
     }
   };
 
   client.on('message', async message => {
-    //const talk2billy = require('./MainServer/talk2billy/main.js')
-    //talk2billy(client, message)
     const AfkFile = require('./MainServer/Afk/AfkHandle.js');
     AfkFile(client, message);
     const DmLogger = require('./MainServer/dmRecieving.js');
@@ -98,8 +87,6 @@ module.exports = async () => {
     mentionsHandle(client, message);
     const levels = require('./MainServer/levels/main.js');
     levels(client, message)
-    //const antiSpam = require('./MainServer/antiSpam/antiSpam.js');
-    //antiSpam(client, message)
 
     if (
       message.channel.id === configFile.PollChannel ||
