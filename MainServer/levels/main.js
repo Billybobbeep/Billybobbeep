@@ -182,6 +182,6 @@ module.exports = async (client, message) => {
       }
     }
   } catch {
-    console.log(`Error with levelling system in ${message.guild.name}`)
+    return;
   }
 }

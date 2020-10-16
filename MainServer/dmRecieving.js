@@ -22,6 +22,6 @@ module.exports = async (client, message, Discord) => {
   try {
     LoggingChannel.send(embed)
   } catch {
-    console.log('Could not log a direct message.')
+    return;
   }
 }

@@ -54,36 +54,7 @@ module.exports = async (message, Discord, client) => {
       try {
         await LoggingChannel.send(embed)
       } catch {
-        console.log(`${message.guild.name} has an invalid logging channel ID`)
+        return;
       }
   }
-
-  /*if (message.attachments.size > 0) {
-      if (message.author.id != '724629665871822950') return;
-      var countDownDate = new Date("October 3, 2020 15:00:00").getTime();
-      var currentTime = new Date().getTime();
- 
-            var timeDifference = countDownDate - currentTime;
- 
-            var days = Math.floor(timeDifference
-                / (1000 * 60 * 60 * 24));
- 
-            var hours = Math.floor((timeDifference %
-                (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
- 
-            var minutes = Math.floor((timeDifference %
-                (1000 * 60 * 60)) / (1000 * 60));
- 
-            var seconds = Math.floor((timeDifference %
-                (1000 * 60)) / 1000);
-    if (timeDifference > 0) {
-        message.delete()
-    embed.setTitle('Image detection')
-    embed.setDescription(message.author.tag + ` attempted to send a image in ${message.channel}`);
-    await LoggingChannel.send(embed);
-    embed.setTitle('Billybobbeep | Image Detection')
-    embed.setDescription(`You cannot send images in ${message.guild} for another:\n**${days}** days, **${hours}** hours, **${minutes}** minutes and **${seconds}** seconds.\nReason: Maximum warnings.`)
-    message.author.send(embed)
-    }
-}*/
 }

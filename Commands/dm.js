@@ -38,7 +38,7 @@ let user =
         try {
           LoggingChannel.send(embed)
         } catch {
-          console.log(`${message.guild.name} has an invalid logging channel ID`)
+          return;
         }
       }
   }

@@ -40,7 +40,7 @@ module.exports = async (client, msg, args, prefix, message) => {
         try {
           await LoggingChannel.send(log);
         } catch {
-          console.log(`${message.guild.name} has an invalid logging channel ID`)
+          return;
         }
       }
       if (db.get(message.guild.id + '_' + user.id + '.warnings') < 1) {

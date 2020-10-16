@@ -34,9 +34,7 @@ module.exports = async client => {
 				try {
 					return LoggingChannel.send(embed);
 				} catch {
-					console.log(
-						`${message.guild.name} has an invalid logging channel ID`
-					);
+					return;
 				}
 			}
 		}
@@ -73,7 +71,7 @@ module.exports = async client => {
 			try {
 				LoggingChannel.send(embed);
 			} catch {
-				console.log(`${message.guild.name} has an invalid logging channel ID`);
+				return;
 			}
 		}
 	});

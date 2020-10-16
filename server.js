@@ -48,7 +48,7 @@ module.exports = async (client) => {
     app.get('/discord/invite', function(req, res) {
       fs.readFile('./Public/analytics/invites.json', 'utf8', function readFileCallback(err, data) {
         if (err) {
-          console.log(err)
+          return;
         }
         data = JSON.parse(data)
         if (!req.query.from) {

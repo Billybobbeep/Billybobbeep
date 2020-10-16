@@ -6,7 +6,6 @@ module.exports = (client) => {
 		try {
 			await reaction.fetch();
 		} catch (error) {
-			console.log('Something went wrong when fetching the message: ', error);
 			return;
 		}
 	}
