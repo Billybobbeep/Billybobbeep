@@ -4,7 +4,8 @@ module.exports = async () => {
   const Discord = require('discord.js');
   const db = require('quick.db');
   const client = new Discord.Client({
-  partials: ['MESSAGE', 'CHANNEL', 'REACTION']
+  partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+  disableEveryone: true
 });
   const configFile = require('./config.json');
   const embed = new Discord.MessageEmbed()
@@ -49,12 +50,8 @@ module.exports = async () => {
     guildManage(client)
     const deleteMessages = require('./MainServer/deleteMessages.js');
     deleteMessages(client);
-    try {
-      const editMessages = require('./MainServer/editMessage.js');
-      editMessages(client);
-    } catch (e) {
-      console.log(e)
-    }
+    const editMessages = require('./MainServer/editMessage.js');
+    editMessages(client);
     const reactionRole1 = require('./MainServer/reactionRoles/main.js');
     reactionRole1(client);
 
@@ -84,7 +81,7 @@ module.exports = async () => {
       const commandFile = require(`./Commands/${command}.js`);
       commandFile(client, msg, args, prefix, message);
     } catch (err) {
-      console.log(err)
+      return;
     }
   };
 
@@ -208,9 +205,7 @@ module.exports = async () => {
       const NewMember = require(`./MainServer/newMember.js`);
       NewMember(member);
     } catch (err) {
-      if (configFile.SendLogs === true) {
-        console.log(`Error whilst welcoming a new member.\n **Error:** ${err}\n **Member:** ${member}`)
-      }
+        return
     }
   });
 
@@ -220,11 +215,7 @@ module.exports = async () => {
       const NewMember = require(`./MainServer/removingMember.js`);
       NewMember(member);
     } catch {
-      if (configFile.SendLogs === true) {
-        console.log(`**Error whilst dismissing a member.**\n **Error:** ${err}\n **Member:** ${member}`)
-      } else {
-        return;
-      }
+       return;
     }
   });
 
