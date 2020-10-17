@@ -177,4 +177,13 @@ module.exports = (client, message, db) => {
     embed.setFooter(`TIP: Press the arrows to move between pages.`);
     msg.edit(embed)
   }
+
+  function PageThree() {
+    embed.setTitle('Setup | Page Three')
+    embed.setDescription(
+      `${prefix}setup levels\n` + "Turn levelling on or off.\n\n")
+    embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
+    embed.setFooter(`TIP: Press the arrows to move between pages.`);
+    msg.edit(embed)
+  }
 }
