@@ -16,6 +16,7 @@ module.exports = async (client, msg, args, prefix, message) => {
     } catch (err) {
       member = null;
     }
+    if (member.user.bot) return message.channel.send('You cannot warn bots.')
 
     if (!member) return message.reply('That user is not in this server.');
     if (user.id === undefined) {
@@ -23,7 +24,7 @@ module.exports = async (client, msg, args, prefix, message) => {
     }
 
     var reason = args.splice(1).join(' ');
-    if (!reason) return message.reply('You need to give a reason');
+    if (!reason) return message.reply('You need to specify a reason');
 
     var log = new Discord.MessageEmbed()
       .setTimestamp()
