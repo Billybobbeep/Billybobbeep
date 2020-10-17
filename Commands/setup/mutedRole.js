@@ -16,7 +16,7 @@ module.exports = (message, db) => {
 			.setFooter(`Requested by: ${message.author.tag}`)
 		return message.channel.send(embed)
 	}
-	if (args[2].toLowerCase === 'reset') {
+	if (args[2].toLowerCase() === 'reset') {
 		db.delete(message.guild.id + '.mutedRole');
 		return message.channel.send('Removed muted role from the database.');
 	}

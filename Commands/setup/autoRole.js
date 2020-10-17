@@ -16,7 +16,7 @@ if (!args[2] || args[2].toLowerCase() === 'help') {
         .setFooter(`Requested by: ${message.author.tag}`)
     return message.channel.send(embed)
     }
-    if (args[2].toLowerCase === 'reset') {
+    if (args[2].toLowerCase() === 'reset') {
         db.delete(message.guild.id + '.autoRole');
         return message.channel.send('Removed auto role from the database.');
     }
