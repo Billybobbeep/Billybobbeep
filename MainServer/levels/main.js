@@ -43,7 +43,7 @@ module.exports = async (client, message) => {
   if (message.author.bot) return;
   if (message.channel.id === db.get(message.guild.id + '.talk2billy')) return;
   let levelsEnabled = db.get(message.guild.id + '.levelsEnabled') || true;
-  if (!levelsEnabled) return;
+  if (!levelsEnabled || levelsEnabled === false) return;
   if (levelUpChannel) {
     levelUpChannel = db.get(message.guild.id + '.levelUpChannelId')
   }
