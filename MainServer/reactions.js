@@ -11,8 +11,4 @@ module.exports = async (message) => {
     message.react("☁");
     message.react("🦋");
   }
-  if (message.channel.id === '759782765495058443') {
-    await message.react(configFile.TickEmoji3);
-    await message.react(configFile.CrossEmoji);
-  }
 }

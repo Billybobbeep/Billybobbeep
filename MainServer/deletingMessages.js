@@ -5,36 +5,16 @@ module.exports = async (message, Discord, client) => {
   if (!message.guild) return;
   let prefix = db.get(message.guild.id + '.prefix') || '~'
   const embed = new Discord.MessageEmbed()
-  const LoggingChannel = client.channels.cache.get(configFile.LoggingChannel);
+  const LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
   if (message.author.bot) return;
-  if (message.channel.id === configFile.RolesChannel) {
-    if (message.author.id === "697194959119319130") return;
-    if (!message.author.bot) {
-      message.delete();
-      message.author.send(`You cannot talk in <#${configFile.RolesChannel}>.`)
-    }
-  }
-
-  if (message.channel.id === configFile.WelcomeChannel) {
-    if (!message.author.bot) {
-      message.delete();
-      message.author.send(`You cannot talk in <#${configFile.WelcomeChannel}>.`)
-    }
-  }
-
-  if (message.channel.id === configFile.RulesChannel) {
-    if (message.author.id === configFile.SpoinkID || message.author.id === configFile.WibWobID) return;
-    if (!message.author.bot) {
-      message.delete();
-      message.author.send(`You cannot talk in <#${configFile.RulesChannel}>.`)
-    }
-  }
 
   //Invite link detecting
   let args = message.content.slice(prefix.length).trim().split(/ +/g);
   embed.setTitle(`Billybobbeep | Invite Links`);
   embed.setTimestamp();
   embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
+  let inviteLinks = db.get(message.guild.id + '.inviteLinks') || true;
+  if (inviteLinks === false) return;
 
   if (message.content.toLowerCase().includes('discord.gg') || message.content.toLowerCase().includes('discord.com/invite')) {
     message.delete()

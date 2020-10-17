@@ -36,12 +36,12 @@ module.exports = async (client, message) => {
     xpForLevel = 105
   }
 
-  var gainedXp = Math.round(Math.random() * configFile.maxEarnedXp)
+  var gainedXp = Math.round(Math.random() * 5)
   if (gainedXp < 1) {
-    gainedXp = Math.round(Math.random() * configFile.maxEarnedXp)
+    gainedXp = Math.round(Math.random() * 5)
   }
   if (message.author.bot) return;
-  if (message.channel.id === configFile.talk2billy) return;
+  if (message.channel.id === db.get(message.guild.id + '.talk2billy')) return;
   let levelsEnabled = db.get(message.guild.id + '.levelsEnabled') || true;
   if (!levelsEnabled) return;
   if (levelUpChannel) {

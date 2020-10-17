@@ -9,7 +9,7 @@ var count = 0;
 module.exports = async (client, message) => {
   if (!message.guild) return;
   let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
-  if (message.channel.id === configFile.talk2billy) return;
+  if (message.channel.id === db.get(message.guild.id + '.talk2billy')) return;
   if (!message.guild || message.author.id === message.client.user.id || settings.ignoreBots && message.author.bot) return;
   if (message.channel.id === message.author.lastMessageChannelID) {
     AntiSpam.push(message.author.id)
@@ -26,11 +26,11 @@ module.exports = async (client, message) => {
     embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
     embed.setTimestamp();
     await message.author.send(embed);
-    message.member.roles.add(configFile.MutedRole)
+    message.member.roles.add(db.get(message.guild.id + '.mutedRole'))
     embed.setDescription(`Spam detected.\n\n**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Spam content:** ${message.content}`)
     await LoggingChannel.send(embed)
     setTimeout(() => {
-      message.member.roles.remove(configFile.MutedRole)
+      message.member.roles.remove(db.get(message.guild.id + '.mutedRole'))
     }, 30000);
   }
 }
