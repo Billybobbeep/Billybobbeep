@@ -1,7 +1,7 @@
 const db = require('quick.db');
 const fetch = require('isomorphic-fetch');
 
-module.exports = async (client, message) => {
+module.exports = async (message) => {
   if (!message.guild) return;
   let talk2billy = db.get(message.guild.id + '.talk2billy')
   if (talk2billy) {
