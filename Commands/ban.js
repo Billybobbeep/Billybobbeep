@@ -13,8 +13,8 @@ module.exports = async (client, msg, args, prefix, message) => {
     if (user.id === message.author.id) return message.channel.send("You cannot ban yourself from the server.");
     if (user.id === client.user.id) return message.channel.send("You cannot ban me.");
     if (!reason) reason = "No reason provided";
-    if (user.id === undefined) {
-      user = user.user
+    if (user.tag === undefined || user.id === undefined) {
+      user = user.user;
     }
     member.ban({ days: 5, reason: reason }).then(() => {
       message.channel.send(`Successfully banned **${user.tag}**`);
