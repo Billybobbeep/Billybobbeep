@@ -17,17 +17,15 @@ module.exports = (message, db) => {
   }
 
   if (args[2].toLowerCase() === 'reset' || args[2].toLowerCase() === 'on') {
-    if (db.get(message.guild.id + '.levelsEnabled')) {
+    if (db.get(message.guild.id + '.levelsEnabled') === false) {
       db.delete(message.guild.id + '.levelsEnabled');
       return message.channel.send('Levelling has been turned on.')
     } else {
-      return message.channel.send('Levelling is already off.')
+      return message.channel.send('Levelling is already on.');
     }
   }
 
-  if (args[2] && args[2].toLowerCase() !== 'reset' && args[2].toLowerCase() !== 'help') {
     if (args[2] === 'off' && db.get(message.guild.id + '.levelsEnabled')) return message.channel.send(`Levelling is already turned off.`)
     db.set(message.guild.id + '.levelsEnabled', false)
     message.channel.send(`Levelling has now been turned off.`)
-  }
 }
