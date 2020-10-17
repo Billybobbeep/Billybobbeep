@@ -1,10 +1,12 @@
-const configFile = require('../config.json')
+const db = require('quick.db');
 
 module.exports = async (member) => {
-  if (configFile.WelcomeChannelModeration === false) return;
-  const channel = member.guild.channels.cache.find(ch => ch.id === configFile.WelcomeChannel);
-  if (!channel) return;
-  channel.send(`Welcome ${member} to the server! (${member.user.tag})`);
-  if (configFile.AutoRole === false) return;
-  member.roles.add(configFile.AutoRoleId)
+  if (db.get(member.guild.id + '.welcomeChannel')) {
+    const channel = member.guild.channels.cache.find(ch => ch.id === db.get(member.guild.id + '.welcomeChannel'));
+    if (!channel) return;
+    channel.send(`Welcome ${member} to the server! (${member.user.tag})`);
+  }
+  if (db.get(member.guild.id + '.autoRole')) {
+    member.roles.add(db.get(member.guild.id + '.autoRole'))
+  }
 }
