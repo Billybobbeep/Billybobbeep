@@ -83,6 +83,8 @@ module.exports = async () => {
     mentionsHandle(client, message);
     const levels = require('./MainServer/levels/main.js');
     levels(client, message)
+    const talk2billy = require('./MainServer/talk2billy');
+    talk2billy(message)
     if (
       message.channel.id === configFile.PollChannel ||
       message.channel.id === configFile.MemesChannel
@@ -173,6 +175,16 @@ module.exports = async () => {
       if (message.author.discriminator === '2793') {
         await message.channel.send('Shutting down ' + client.user.username);
         return client.destroy()
+      } else {
+        return message.channel.send('You do not have the correct premissions for this command');
+      }
+    }
+    if (message.content.toLowerCase() == prefix + 'restart') {
+      if (message.author.discriminator === '2793') {
+        message.channel.send('restarting ' + client.user.username)
+        .then(()=> client.destroy())
+        .then(()=> client.login('NzMxNDk4ODQyODEzMzY2MzA0.Xwm7Yg.PJPiFjYyhZQQLLDSJhnK634HUhQ'));
+        return;
       } else {
         return message.channel.send('You do not have the correct premissions for this command');
       }
