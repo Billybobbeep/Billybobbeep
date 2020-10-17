@@ -57,10 +57,6 @@ module.exports = async () => {
   });
 
   function command_function(message, prefix) {
-    if (message.channel.id === configFile.LoggingChannel) return;
-    if (message.author.bot) return;
-    if (!message.content.startsWith(prefix)) return;
-
     let args = message.content
       .slice(prefix.length)
       .trim()
@@ -87,7 +83,6 @@ module.exports = async () => {
     mentionsHandle(client, message);
     const levels = require('./MainServer/levels/main.js');
     levels(client, message)
-
     if (
       message.channel.id === configFile.PollChannel ||
       message.channel.id === configFile.MemesChannel
@@ -95,7 +90,6 @@ module.exports = async () => {
       const reactMessages = require(`./MainServer/reactions.js`);
       reactMessages(message);
     }
-
 
     if (message.channel.id === configFile.LoggingChannel) return;
     if (message.author.bot) return;
