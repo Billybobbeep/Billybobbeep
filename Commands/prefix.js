@@ -2,7 +2,7 @@ const db = require('quick.db');
 
 module.exports = (client, msg, args, prefix, message) => {
   if (!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send('You need the `Administrator` premissions to run this command.')
-  var newPrefix = args[0]
+  var newPrefix = args[0].toLowerCase()
   if (!newPrefix && db.get(message.guild.id + '.prefix') === '~') return message.channel.send('Please specify a prefix.');
   if (!newPrefix && !db.get(message.guild.id + '.prefix')) return message.channel.send('Please specify a prefix.')
   if (!newPrefix) {
