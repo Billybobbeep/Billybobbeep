@@ -4,6 +4,8 @@ var xp = new db.table('xp');
 
 module.exports = async (client, message) => {
   if (!message.guild) return;
+  let prefix = db.get(message.guild.id + '.prefix') || '~'
+  if (message.content.startsWith(prefix)) return;
   var levelUpChannel = db.get(message.guild.id + '.levelUpChannel') || false;
 
   let xpForLevel = 30;
