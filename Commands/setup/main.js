@@ -69,6 +69,10 @@ module.exports = (client, message, db) => {
       redirect = require('./prefix.js')
       redirect(message, db, prefix, args)
     }
+    if (message.content.toLowerCase().startsWith(prefix + 'setup talk')) {
+      redirect = require('./talk2billy.js');
+      redirect(message, db);
+    }
   }
 
   async function isAdmin() {
@@ -163,7 +167,8 @@ module.exports = (client, message, db) => {
       `${prefix}setup lvlChannel\n` + "Set up a levelling channel.\n\n" +
       `${prefix}setup lvlRole\n` + "Sets up a level roles.\n\n" +
       `${prefix}setup welcomeChannel\n` + "Set up a channel to welcome new members & log members leaving.\n\n" +
-      `${prefix}setup auto\n` + "Set up a auto role.")
+      `${prefix}setup auto\n` + "Set up a auto role.\n\n" +
+      `${prefix}setup talk\n` + "Set up a talk to billy channel.")
     embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
     embed.setFooter(`TIP: Press the arrows to move between pages.`);
     msg.edit(embed)
