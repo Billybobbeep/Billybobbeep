@@ -143,8 +143,8 @@ module.exports = (client, message, db) => {
       `${prefix}setup clean\n` + "Prevent Billy sending explicit content.\n\n" +
       `${prefix}setup embed\n` + "Changes the default color of the embeds.\n\n" +
       `${prefix}setup logging\n` + "Setup a logging channel.\n\n" +
-      `${prefix}setup muted\n` + "Set up a muted role.\n" +
-      `${prefix}setup prefix` + "Change the default prefix.")
+      `${prefix}setup muted\n` + "Set up a muted role.\n\n" +
+      `${prefix}setup prefix\n` + "Change the default prefix.")
     embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
     embed.setFooter(`TIP: Press the arrows to move between pages.`);
     msg.edit(embed)
