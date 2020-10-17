@@ -16,10 +16,10 @@ module.exports = (message, db) => {
     return message.channel.send(embed)
   }
 
-  if (args[2] && args[2].toLowerCase() === 'reset' || args[2] && args[2].toLowerCase() === 'on') {
+  if (args[2].toLowerCase() === 'reset' || args[2].toLowerCase() === 'on') {
     if (db.get(message.guild.id + '.levelsEnabled')) {
-      db.delete(message.guild.id + '.levelsEnabled')
-      message.channel.send('Levelling has been turned on.')
+      db.delete(message.guild.id + '.levelsEnabled');
+      return message.channel.send('Levelling has been turned on.')
     } else {
       return message.channel.send('Levelling is already off.')
     }
