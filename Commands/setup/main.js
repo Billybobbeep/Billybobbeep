@@ -77,6 +77,10 @@ module.exports = (client, message, db) => {
       redirect = require('./talk2billy.js');
       redirect(message, db);
     }
+    if (message.content.toLowerCase().startsWith(prefix + 'setup economy')) {
+      redirect = require('./economy.js');
+      redirect(message, db);
+    }
   }
 
   async function isAdmin() {
@@ -127,6 +131,10 @@ module.exports = (client, message, db) => {
           }
           if (msg.embeds[0].title === 'Setup | Page One') {
             PageTwo()
+            reaction.users.remove(message.author.id)
+          }
+          if (msg.embeds[0].title === 'Setup | Page Two') {
+            PageThree()
             reaction.users.remove(message.author.id)
           }
 
@@ -181,7 +189,8 @@ module.exports = (client, message, db) => {
   function PageThree() {
     embed.setTitle('Setup | Page Three')
     embed.setDescription(
-      `${prefix}setup levels\n` + "Turn levelling on or off.\n\n")
+      `${prefix}setup levels\n` + "Turn levelling on or off.\n\n" +
+      `${prefix}setup economy\n` + "Turn economic commands on or off.\n\n")
     embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
     embed.setFooter(`TIP: Press the arrows to move between pages.`);
     msg.edit(embed)
