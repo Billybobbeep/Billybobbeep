@@ -61,6 +61,10 @@ module.exports = (client, message, db) => {
       redirect = require('./autoRole.js');
       redirect(message, db);
     }
+    if (message.content.toLowerCase().startsWith(prefix + 'setup lvls') || message.content.toLowerCase().startsWith(prefix + 'setup levels')) {
+      redirect = require('./lvlEn.js');
+      redirect(message, db);
+    }
     if (message.content.toLowerCase().startsWith(prefix + 'setup prefix')) {
       let args = message.content
       .slice(prefix.length)
