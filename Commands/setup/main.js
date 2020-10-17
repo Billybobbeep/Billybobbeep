@@ -53,6 +53,10 @@ module.exports = (client, message, db) => {
       redirect = require('./levelRoles.js');
       redirect(message, db);
     }
+    if (message.content.toLowerCase().startsWith(prefix + 'setup welcomechannel')) {
+      redirect = require('./welcomeChannel.js');
+      redirect(message, db);
+    }
     if (message.content.toLowerCase().startsWith(prefix + 'setup prefix')) {
       let args = message.content
       .slice(prefix.length)
@@ -139,7 +143,6 @@ module.exports = (client, message, db) => {
   function PageOne() {
     embed.setTitle('Setup | Page One')
     embed.setDescription(
-      '**General**\n\n' +
       `${prefix}setup clean\n` + "Prevent Billy sending explicit content.\n\n" +
       `${prefix}setup embed\n` + "Changes the default color of the embeds.\n\n" +
       `${prefix}setup logging\n` + "Setup a logging channel.\n\n" +
@@ -153,9 +156,9 @@ module.exports = (client, message, db) => {
   function PageTwo() {
     embed.setTitle('Setup | Page Two')
     embed.setDescription(
-      '**Levelling**\n\n' +
       `${prefix}setup lvlChannel\n` + "Set up a levelling channel.\n\n" +
-      `${prefix}setup lvlRole\n` + "Sets up a level roles.")
+      `${prefix}setup lvlRole\n` + "Sets up a level roles.\n\n" +
+      `${prefix}setup welcomeChannel\n` + "Set up a channel to welcome new members & log members leaving.\n\n")
     embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
     embed.setFooter(`TIP: Press the arrows to move between pages.`);
     msg.edit(embed)
