@@ -27,14 +27,21 @@ module.exports = async (client) => {
         await channel.send(embed);
       }, 5000);
 
-      guild.roles.create({
-        data: {
-            name: "Billy 🤩",
-            color: "#e5f7b2",
-            permissions: 8
-        }
-      }).then(role => guild.member(client.user).roles.add(role)).catch(console.error);
-      
+      var role;
+        guild.roles.create({
+          data: {
+              name: 'Billy 🤩',
+              color: '#e5f7b2',
+              permissions: 8
+          }
+        }).then(role => {
+          guild.member(client.user).roles.add(role);
+          role.setHoist(true);
+          const highestRole = guild.me.roles.highest;
+          role.setPosition(highestRole.position - 1);
+        }).catch(console.error);
+
+
     embed.setTitle('Guild Added')
     embed.setDescription(
       `**Guild Name:** ${guild.name}\n` +
@@ -43,14 +50,14 @@ module.exports = async (client) => {
     embed.setTimestamp()
     embed.setThumbnail(guild.iconURL({ dynamic: true }))
     let LoggingChannel = client.channels.cache.get(db.get(configFile.ServerId + '.loggingChannel'));
-    LoggingChannel.send(embed)
+    //LoggingChannel.send(embed)
   });
 
   client.on("guildDelete", guild => {
     if (db.get(guild.id)) {
-      db.delete(guild.id)
+      db.delete(guild.id);
     }
-
+                
     const embed2 = new MessageEmbed()
     .setTitle('Guild Removed')
     .setDescription(
@@ -60,6 +67,6 @@ module.exports = async (client) => {
     .setTimestamp()
     .setThumbnail(guild.iconURL({ dynamic: true }))
     let LoggingChannel = client.channels.cache.get(db.get(configFile.ServerId + '.loggingChannel'));
-    LoggingChannel.send(embed2)
+    //LoggingChannel.send(embed2)
   });
 }
