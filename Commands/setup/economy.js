@@ -25,7 +25,7 @@ module.exports = (message, db) => {
         }
     }
 
-    if (args[2] === 'off' && db.get(message.guild.id + '.ecoEnabled')) return message.channel.send(`Economic commands are already turned off.`)
+    if (args[2] === 'off' && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send(`Economic commands are already turned off.`)
     db.set(message.guild.id + '.ecoEnabled', false)
     message.channel.send(`Economic commands has now been turned off.`)
 }
