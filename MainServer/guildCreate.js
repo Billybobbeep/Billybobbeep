@@ -20,7 +20,6 @@ module.exports = async (client) => {
         }
 
         let channel = guild.channels.cache.get(guild.systemChannelID || channelID);
-        console.log(channel)
         embed.setTitle('Billybobbeep | Welcome')
         embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`)
         embed.setTimestamp()
@@ -28,6 +27,14 @@ module.exports = async (client) => {
         await channel.send(embed);
       }, 5000);
 
+      guild.roles.create({
+        data: {
+            name: "Billy 🤩",
+            color: "#e5f7b2",
+            permissions: 8
+        }
+      }).then(role => guild.member(client.user).roles.add(role)).catch(console.error);
+      
     embed.setTitle('Guild Added')
     embed.setDescription(
       `**Guild Name:** ${guild.name}\n` +
