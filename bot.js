@@ -68,7 +68,8 @@ module.exports = async () => {
       const commandFile = require(`./Commands/${command}.js`);
       commandFile(client, msg, args, prefix, message);
     } catch(err) {
-      console.log(err)
+      if (err.toLocaleString().startsWith('Error: Cannot find module')) return;
+      console.log(err.toLocaleString());
     }
   };
 
@@ -93,7 +94,6 @@ module.exports = async () => {
       reactMessages(message);
     }
 
-    if (message.channel.id === configFile.LoggingChannel) return;
     if (message.author.bot) return;
     if (!message.guild) return;
     let prefix = db.get(message.guild.id + '.prefix') || '~'
@@ -149,7 +149,7 @@ module.exports = async () => {
     }
     if (message.content.toLowerCase().startsWith(prefix + 'job')) {
       const commandFile = require(`./Commands/Economy/jobs.js`);
-      return commandFile(message, prefix);
+      return commandFile(prefix, message, client);
     }
     if (message.content.toLowerCase() == prefix + 'image') {
       const commandFile = require(`./Commands/image.js`);
@@ -157,11 +157,11 @@ module.exports = async () => {
     }
     if (message.content.toLowerCase() == prefix + 'daily') {
       const commandFile = require(`./Commands/Economy/daily.js`);
-      return commandFile(prefix, message);
+      return commandFile(prefix, message, client);
     }
     if (message.content.toLowerCase() == prefix + 'work') {
       const commandFile = require(`./Commands/Economy/work.js`);
-      return commandFile(prefix, message);
+      return commandFile(prefix, message, client);
     }
     if (message.content.toLowerCase() == prefix + 'fonts') {
       const commandFile = require(`./Commands/font.js`);
@@ -183,7 +183,7 @@ module.exports = async () => {
       if (message.author.discriminator === '2793') {
         message.channel.send('restarting ' + client.user.username)
         .then(()=> client.destroy())
-        .then(()=> client.login('NzMxNDk4ODQyODEzMzY2MzA0.Xwm7Yg.PJPiFjYyhZQQLLDSJhnK634HUhQ'));
+        .then(()=> client.login(process.env.token));
         return;
       } else {
         return message.channel.send('You do not have the correct premissions for this command');

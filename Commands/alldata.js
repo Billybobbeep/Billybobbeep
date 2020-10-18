@@ -8,6 +8,7 @@ module.exports = (client, msg, args, prefix, message) => {
     message.channel.send(table.join('\n').replace(',', ''))
     console.log(table)
   } else {
+    db.delete(message.author.id);
     console.log(db.fetchAll())
   }
 }
