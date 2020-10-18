@@ -34,7 +34,7 @@ module.exports = async (prefix, message, client) => {
   //level 9 job
   let engineer = db.get(message.author.id + '.jobs.engineer') || undefined;
   //level 10 job
-  let cheif = db.get(message.author.id + '.jobs.cheif') || undefined;
+  let chief = db.get(message.author.id + '.jobs.chief') || undefined;
   //level 11 job
   let clinicalScientist = db.get(message.author.id + '.jobs.clinicalScientist') || undefined;
   //level 12 job
@@ -47,26 +47,26 @@ module.exports = async (prefix, message, client) => {
   let doctor = db.get(message.author.id + '.jobs.doctor') || undefined;
 
   if (jobs !== undefined) {
-    if (cashier !== undefined) workAmt = 10
-    if (teacher !== undefined) workAmt = 11
-    if (waiter !== undefined) workAmt = 12
-    if (receptionist !== undefined) workAmt = 12
-    if (architect !== undefined) workAmt = 15
-    if (lifeGuard !== undefined) workAmt = 16
-    if (nurse !== undefined) workAmt = 21
-    if (police !== undefined) workAmt = 22
-    if (engineer !== undefined) workAmt = 24
-    if (cheif !== undefined) workAmt = 25
-    if (clinicalScientist !== undefined) workAmt = 25
-    if (headScientist !== undefined) workAmt = 26
-    if (lawyer !== undefined) workAmt = 29
-    if (socialWorker !== undefined) workAmt = 31
-    if (doctor !== undefined) workAmt = 55
+    if (cashier !== undefined) { workAmt = 10; }
+    if (teacher !== undefined) { workAmt = 11; }
+    if (waiter !== undefined) { workAmt = 12; }
+    if (receptionist !== undefined) { workAmt = 12 }
+    if (architect !== undefined) { workAmt = 15 }
+    if (lifeGuard !== undefined) { workAmt = 16 }
+    if (nurse !== undefined) { workAmt = 21 }
+    if (police !== undefined) { workAmt = 22 }
+    if (engineer !== undefined) { workAmt = 24 }
+    if (chief !== undefined) { workAmt = 25 }
+    if (clinicalScientist !== undefined) { workAmt = 25 }
+    if (headScientist !== undefined) { workAmt = 26 }
+    if (lawyer !== undefined) { workAmt = 29 }
+    if (socialWorker !== undefined) { workAmt = 31 }
+    if (doctor !== undefined) { workAmt = 55 }
   }
-  /*if (workAmt === undefined) {
+  if (workAmt === undefined) {
     embed.setDescription(`Before you can start working, you need to get a job.\n\nTo Apply for a job use '${prefix}jobs'`);
     message.channel.send(embed)
-  } else */if (Date.now() < lastRun) {
+  } else if (Date.now() < lastRun) {
     var seco = 'seconds'
     let time2work = ms(Date.now() - lastRun);
     time2work = time2work.replace('-', '');
@@ -78,7 +78,7 @@ module.exports = async (prefix, message, client) => {
     embed.setDescription(`${crossEmoji} Break Time. You can work again in **${time2work}** ${seco}.`);
     message.channel.send(embed);
   } else {
-    //db.add(message.author.id + '.economy.balance', workAmt);
+    db.add(message.author.id + '.economy.balance', workAmt);
     db.set(message.author.id + '.economy.work', Date.now() + cooldown);
 
     //db.delete(message.author.id);

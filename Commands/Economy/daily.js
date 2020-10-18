@@ -12,6 +12,7 @@ module.exports = async (prefix, message, client) => {
 
   var dailyAmt = 10;
   var cooldown = 8.64e+7;
+  let tStreak = db.get(message.author.id + '.economy.tStreak') || 1;
   let streak = db.get(message.author.id + '.economy.streak') || 0;
   let jobs = db.get(message.author.id + '.jobs') || undefined;
   let balance = db.get(message.author.id + '.economy.balance');
@@ -38,7 +39,7 @@ module.exports = async (prefix, message, client) => {
   //level 9 job
   let engineer = db.get(message.author.id + '.jobs.engineer') || undefined;
   //level 10 job
-  let cheif = db.get(message.author.id + '.jobs.cheif') || undefined;
+  let chief = db.get(message.author.id + '.jobs.chief') || undefined;
   //level 11 job
   let clinicalScientist = db.get(message.author.id + '.jobs.clinicalScientist') || undefined;
   //level 12 job
@@ -60,7 +61,7 @@ module.exports = async (prefix, message, client) => {
     if (nurse !== undefined) dailyAmt = 17.52
     if (police !== undefined) dailyAmt = 17.61
     if (engineer !== undefined) dailyAmt = 20.55
-    if (cheif !== undefined) dailyAmt = 20.76
+    if (chief !== undefined) dailyAmt = 20.76
     if (clinicalScientist !== undefined) dailyAmt = 22.45
     if (headScientist !== undefined) dailyAmt = 22.70
     if (lawyer !== undefined) dailyAmt = 25.61
@@ -71,6 +72,10 @@ module.exports = async (prefix, message, client) => {
   let nem = client.emojis.cache.get('767351869856940063');
   let sem = client.emojis.cache.get('767365396474101831');
   let semoji = `${nem}${nem}${nem}${nem}${nem}`
+  if (lastRun !== null && cooldown - (Date.now() - lastRun) <= 86400000) {
+    db.delete(message.author.id + '.economy.streak');
+    db.delete(message.author.id + '.economy.tStreak');
+  }
   if (streak === 1 || streak === 0) {
     semoji = `${sem}${nem}${nem}${nem}${nem}`
   } else if (streak === 2) { semoji = `${sem}${sem}${nem}${nem}${nem}`
@@ -90,10 +95,11 @@ module.exports = async (prefix, message, client) => {
     db.add(message.author.id + '.economy.balance', dailyAmt);
     db.set(message.author.id + '.economy.daily', Date.now());
     db.add(message.author.id + '.economy.streak', 1)
+    db.add(message.author.id + '.economy.tStreak', 1)
 
     //db.delete(message.author.id);
     embed.setDescription(`I have added **${dailyAmt}** onto your account balance.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
-    embed.setFooter(`Total Streak: ${streak}\nWallet: ${balance + dailyAmt}`)
+    embed.setFooter(`Total Streak: ${tStreak}\nWallet: ${balance + dailyAmt}`)
     message.channel.send(embed);
   }
 }
