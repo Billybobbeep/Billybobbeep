@@ -1,0 +1,15 @@
+Cashier
+Teacher
+Waiter
+Receptionist
+Architect
+Lifeguard
+Nurse
+Police
+Engineer
+Chief
+Clinical Scientist
+Head Scientist
+Lawyer
+Social Worker
+Doctor
