@@ -66,7 +66,7 @@ module.exports = async(client, msg, args, prefix, message) => {
         wait()
       }
     }).catch((collected) => {
-      reaction.remove()
+      mainMessage.reactions.removeAll()
     });
   }
   function wait() {
