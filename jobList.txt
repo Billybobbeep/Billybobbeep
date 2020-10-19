@@ -1,17 +1,17 @@
-job name - hourly pay - daily bonus
+job name		hourly pay - daily bonus - job description
 
-Cashier - 10 - 7.25
-Teacher - 11 - 8.81
-Waiter - 12 - 9.50
-Receptionist - 12 - 9.58
-Architect - 12 - 8.66
-Lifeguard - 15 - 11.40
-Nurse - 16 - 17.52
-Police - 21 - 17.61
-Engineer - 22 - 20.55
-Chief - 25 - 20.76
-Clinical Scientist - 25 - 22.45
-Head Scientist - 26 - 25.61
-Lawyer - 29 - 25.61
-Social Worker - 31 - 27.71
-Doctor - 55 - 52.25
+Cashier 		- 10 	- 7.25	-A starter minimum wage job
+Teacher 		- 11 	- 8.81	-Prepare lessons for children
+Waiter 		- 12	- 9.50	-Suggest food & beverages to customers
+Receptionist 	- 12 	- 9.58
+Architect 		- 12	- 8.66
+Lifeguard 		- 15	- 11.40
+Nurse	 	- 16	- 17.52
+Police 		- 21	- 17.61
+Engineer 		- 22 	- 20.55
+Chief 		- 25	- 20.76
+Clinical Scientist 	- 25 	- 22.45
+Head Scientist 	- 26 	- 25.61
+Lawyer 		- 29 	- 25.61
+Social Worker 	- 31 	- 27.71
+Doctor		- 55 	- 52.25
