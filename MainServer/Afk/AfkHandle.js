@@ -113,8 +113,8 @@ module.exports = async (client, message) => {
   if (message.mentions.users.first()) {
     let user = message.mentions.users.first()
 
-    if (db.get(message.author.id + '.isAFK') && db.get(message.author.id + '.isAFK') === true) {
-      embed.setDescription('The user you have pinged (' + user.tag + ') is currently AFK.\n\nReason: ' + db.get(message.author.id + '.isAFKreason').toString());
+    if (db.get(user.id + '.isAFK') && db.get(user.id + '.isAFK') === true) {
+      embed.setDescription('The user you have pinged (' + user.tag + ') is currently AFK.\n\nReason: ' + db.get(user.id + '.isAFKreason').toString());
       return message.channel.send(embed);
     }
   }
