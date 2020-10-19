@@ -82,7 +82,7 @@ module.exports = async (prefix, message, client) => {
     db.set(message.author.id + '.economy.work', Date.now() + cooldown);
 
     //db.delete(message.author.id);
-    embed.setDescription(`You earned **${workAmt}** while working!.`);
+    embed.setDescription(`You earned **$${workAmt}** while working!.`);
     message.channel.send(embed);
   }
 }

@@ -12,12 +12,13 @@ module.exports = async (prefix, message, client) => {
 
   var dailyAmt = 10;
   var cooldown = 8.64e+7;
+  var reward = 75;
   let tStreak = db.get(message.author.id + '.economy.tStreak') || 1;
   let streak = db.get(message.author.id + '.economy.streak') || 0;
   let jobs = db.get(message.author.id + '.jobs') || undefined;
   let balance = db.get(message.author.id + '.economy.balance');
-  let lastRun = db.get(message.author.id + '.economy.daily');
-  let timeObj = ms(cooldown - (Date.now() - lastRun))
+  let lastRun = db.get(message.author.id + '.economy.daily') || 0
+  let timeObj = ms(cooldown - (Date.now() - lastRun));
   timeObj = timeObj.replace('s', ' seconds').replace('m', ' minutes').replace('h', ' hours');
 
   //level 1 job
@@ -67,7 +68,6 @@ module.exports = async (prefix, message, client) => {
     if (lawyer !== undefined) dailyAmt = 25.61
     if (socialWorker !== undefined) dailyAmt = 27.71
     if (doctor !== undefined) dailyAmt = 52.25
-    if (streak === 5) dailtAmt = 75
   }
   let nem = client.emojis.cache.get('767351869856940063');
   let sem = client.emojis.cache.get('767365396474101831');
@@ -80,11 +80,12 @@ module.exports = async (prefix, message, client) => {
     semoji = `${sem}${nem}${nem}${nem}${nem}`
   } else if (streak === 2) { semoji = `${sem}${sem}${nem}${nem}${nem}`
   } else if (streak === 3) { semoji = `${sem}${sem}${sem}${nem}${nem}`
-  } else if (streak === 4) { semoji = `${sem}${sem} ${sem}${sem}${nem}`
+  } else if (streak === 4) { semoji = `${sem}${sem}${sem}${sem}${nem}`
   } else if (streak === 5) { semoji = `${sem}${sem}${sem}${sem}${sem}`
-    embed.setDescription(`You have collected your **${dailyAmt}** reward.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
-    embed.setFooter(`Total Streak: ${streak}\nWallet: ${balance + dailyAmt}`);
+    embed.setDescription(`You have collected your **${dailyAmt + reward}** reward.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
+    embed.setFooter(`Total Streak: ${tStreak}\nWallet: $${balance + dailyAmt + reward}`);
     message.channel.send(embed);
+    db.set(message.author.id + '.economy.daily', Date.now());
     return db.delete(message.author.id + '.economy.streak');
   }
 
@@ -98,8 +99,8 @@ module.exports = async (prefix, message, client) => {
     db.add(message.author.id + '.economy.tStreak', 1)
 
     //db.delete(message.author.id);
-    embed.setDescription(`I have added **${dailyAmt}** onto your account balance.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
-    embed.setFooter(`Total Streak: ${tStreak}\nWallet: ${balance + dailyAmt}`)
+    embed.setDescription(`I have added **$${dailyAmt}** onto your account balance.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
+    embed.setFooter(`Total Streak: ${tStreak}\nWallet: $${balance + dailyAmt}`)
     message.channel.send(embed);
   }
 }
