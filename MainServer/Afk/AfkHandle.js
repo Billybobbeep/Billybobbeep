@@ -110,17 +110,12 @@ module.exports = async (client, message) => {
   }
 
   //Let know that a user is AFK
-  /*if (message.mentions.users.first()) {
-    var currAFK = []
+  if (message.mentions.users.first()) {
     let user = message.mentions.users.first()
-    var allD = db.fetchAll()
-    allD.forEach(a => {
-      if (a.data.isAFK) {
-        currAFK.push(a.ID)
-      }
-    });
-    if (currAFK.findIndex(user.id.toLocaleString())) { message.channel.send('true') }
-    //embed.setDescription('The user you have pinged (' + user.tag + ') is currently AFK.');
-    //return message.channel.send(embed)
-  }*/
+
+    if (db.get(message.author.id + '.isAFK') && db.get(message.author.id + '.isAFK') === true) {
+      embed.setDescription('The user you have pinged (' + user.tag + ') is currently AFK.\n\nReason: ' + db.get(message.author.id + '.isAFKreason').toString());
+      return message.channel.send(embed);
+    }
+  }
 }
