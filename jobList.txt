@@ -9,9 +9,9 @@ Lifeguard 		- 16	- 11.40	-To supervise all individuals using the swimming pool a
 Nurse	 	- 21	- 17.52	-Help out patients in the hospital
 Police 		- 22	- 17.61	-Participate in raids & arrests
 Engineer 		- 24 	- 20.55	-Fix any vehicle that comes in for a repair
-Chief 		- 25	- 20.76
-Clinical Scientist 	- 25 	- 22.45
-Head Scientist 	- 26 	- 25.61
-Lawyer 		- 29 	- 25.61
-Social Worker 	- 31 	- 27.71
-Doctor		- 55 	- 52.25
+Chief 		- 25	- 20.76	-Cook foods as requested
+Clinical Scientist 	- 25 	- 22.45	-Research different parts of the body
+Head Scientist 	- 26 	- 25.61	-Research different parts of the body
+Lawyer 		- 29 	- 25.61	-Show and explain different ways a person is or isn't guilty
+Social Worker 	- 31 	- 27.71	-Give good and clear advice on certain problems a person may have
+Doctor		- 55 	- 52.25	-Treat and care for patients
