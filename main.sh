@@ -1,1 +1,1 @@
-echo node index.js
+npm install quick.db && node index.js
