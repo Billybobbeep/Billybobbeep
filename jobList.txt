@@ -3,12 +3,12 @@ job name		hourly pay - daily bonus - job description
 Cashier 		- 10 	- 7.25	-A starter minimum wage job
 Teacher 		- 11 	- 8.81	-Prepare lessons for children
 Waiter 		- 12	- 9.50	-Suggest food & beverages to customers
-Receptionist 	- 12 	- 9.58
-Architect 		- 12	- 8.66
-Lifeguard 		- 15	- 11.40
-Nurse	 	- 16	- 17.52
-Police 		- 21	- 17.61
-Engineer 		- 22 	- 20.55
+Receptionist 	- 12 	- 9.58	-Welcome, assist and direct visitors correctly
+Architect 		- 15	- 8.66	-To develop new building designs
+Lifeguard 		- 16	- 11.40	-To supervise all individuals using the swimming pool and for the safe activities around
+Nurse	 	- 21	- 17.52	-Help out patients in the hospital
+Police 		- 22	- 17.61	-Participate in raids & arrests
+Engineer 		- 24 	- 20.55	-Fix any vehicle that comes in for a repair
 Chief 		- 25	- 20.76
 Clinical Scientist 	- 25 	- 22.45
 Head Scientist 	- 26 	- 25.61
