@@ -10,10 +10,18 @@ module.exports = async (message) => {
   if (message.content.startsWith(db.get(message.guild.id + '.prefix'))) return;
   if (talk2billy) {
     if (message.channel.id !== talk2billy) return;
+    let msg = message.content.toLowerCase()
+    if (msg.startsWith('call') || msg.startsWith('emergency')) {
+      return message.channel.send('I am not responsible for any form of emergency call.\nIf you need any service from the emergency services, please call them yourself or ask another guild member to do it for you.')
+    }
     if (message.attachments.size < 1) {
       const response = await fetch('https://some-random-api.ml/chatbot?message=' + args[0].replace(' ', '%20'));
       const text = await response.text();
+      if (text.startsWith('<!DOCTYPE html>')) {
+        message.channel.send('This channel is causing issues for me. Please try again later.')
+      } else {
       message.channel.send(text.replace('response', '').replace(':', '').replace('{', '').replace('}', '').replace('??', '?').replace('???', '?').replace('""', '').replace('"', '').replace('"', '').replace('error', ''));
+      }
     } else {
       var table = ['Whale', 'Racoon', 'Kangaroo', 'Koala', 'Birb', 'Fox', 'Panda', 'Cat', 'Dog']
       var res = Math.floor(Math.random() * table.length)
