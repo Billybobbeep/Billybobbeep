@@ -1,1 +1,1 @@
-npm install quick.db && node index.js
+node index.js
