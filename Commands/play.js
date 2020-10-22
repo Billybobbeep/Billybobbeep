@@ -16,7 +16,7 @@ module.exports = async (message, args, prefix, client) => {
     "I don't have permissions to speak in a voice channel"
    );
    if (!args[1]) return message.channel.send('Please provide a youtube link to play.');
-   if (!args[1].toLowerCase().includes('youtube.com/')) return message.channel.send('Please provide a valid youtube link.')
+   if (!args[1].toLowerCase().includes('you')) return message.channel.send('Please provide a valid youtube link.')
 
   try {
     var connection = await voiceChannel.join();
