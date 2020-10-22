@@ -1,7 +1,7 @@
 module.exports = async () => {
   // [Varibles] //
   const Discord = require('discord.js');
-  const db = require('quick.db');
+  const db = require('./databaseManager/index.js');
   const client = new Discord.Client({
     partials: ['MESSAGE', 'CHANNEL', 'REACTION']
   });
@@ -191,7 +191,7 @@ module.exports = async () => {
     }
     if (message.content.toLowerCase().startsWith(prefix + 'play') || message.content.toLowerCase().startsWith(prefix + 'stop') || message.content.toLowerCase().startsWith(prefix + 'tts')) {
       const commandFile = require(`./Commands/play.js`);
-      return commandFile(message, args, prefix);
+      return commandFile(message, args, prefix, client);
     }
     command_function(message, prefix)
   });

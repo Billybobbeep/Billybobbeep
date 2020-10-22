@@ -1,7 +1,7 @@
 module.exports = async client => {
   
 	const Discord = require(`discord.js`);
-	const db = require('quick.db');
+	const db = require('../databaseManager/index.js');
 
 	client.on('messageUpdate', async (oldMessage, newMessage) => {
 		if (oldMessage.author.bot) return;

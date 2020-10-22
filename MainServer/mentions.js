@@ -1,7 +1,6 @@
 const Discord = require(`discord.js`);
-const db = require('quick.db');
-const embed = new Discord.MessageEmbed()
-
+const db = require('../databaseManager/index.js');
+const embed = new Discord.MessageEmbed();
 module.exports = async (client, message) => {
   if (!message.guild) return;
   embed.setTitle('Billybobbeep | Mentioned');

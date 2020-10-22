@@ -4,7 +4,7 @@ module.exports = async (client) => {
   const Discord = require('discord.js')
   var port = 3000;
   const bot = require("./bot");
-  const db = require('quick.db');
+  const db = require('./databaseManager/index.js');
   const fs = require('fs');
 
   app.use('/style', express.static('style'));

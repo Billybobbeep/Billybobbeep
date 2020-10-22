@@ -1,4 +1,4 @@
-const db = require('quick.db');
+const db = require('../databaseManager/index.js');
 var table = []
 
 module.exports = (client, msg, args, prefix, message) => {

@@ -3,7 +3,7 @@ module.exports = async (client, message, Discord) => {
   if (!message.channel.type === 'dm') return;
   if (message.author.bot) return;
   if (message.guild) return;
-  const db = require('quick.db')
+  const db = require('../databaseManager/index.js');
   const configFile = require('../config.json')
   let LoggingChannel = client.channels.cache.get(db.get(configFile.ServerId + '.loggingChannel'));
 

@@ -1,4 +1,4 @@
-const db = require('quick.db');
+const db = require('../databaseManager/index.js');
 const Discord = require('discord.js');
 var embed = new Discord.MessageEmbed();
 

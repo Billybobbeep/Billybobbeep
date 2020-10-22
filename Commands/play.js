@@ -1,6 +1,6 @@
 const ytdl = require('ytdl-core');
 
-module.exports = async (message, args, prefix) => {
+module.exports = async (message, args, prefix, client) => {
 
  if (message.content.startsWith(`${prefix}play`)) {
   const voiceChannel = message.member.voice.channel;
@@ -16,7 +16,7 @@ module.exports = async (message, args, prefix) => {
     "I don't have permissions to speak in a voice channel"
    );
    if (!args[1]) return message.channel.send('Please provide a youtube link to play.');
-   if (!args[1].toLowerCase().startsWith('https://www.youtube.com/')) return message.channel.send('Please provide a valid youtube link.')
+   if (!args[1].toLowerCase().startsWith('https://www.youtube.com/') || !args[1].toLowerCase().startsWith('www.youtube.com/') || !args[1].toLowerCase().startsWith('youtube.com/')) return message.channel.send('Please provide a valid youtube link.')
 
   try {
     var connection = await voiceChannel.join();
@@ -32,7 +32,7 @@ module.exports = async (message, args, prefix) => {
    .on('finish', () => {
     voiceChannel.leave();
    }).on('error', (error) => {
-    message.channel.send('There was an error: ' + error);
+    message.channel.send('There was an error: ' + error.toString().replace('error:', ''));
    });
   dispatcher.setVolumeLogarithmic(5 / 5);
  } else if (message.content.startsWith(`${prefix}stop`)) {
@@ -46,8 +46,8 @@ module.exports = async (message, args, prefix) => {
             fs.mkdirSync('./temp');
         }
         function makeid(length) {
-            var result           = '';
-            var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var result = '';
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             var charactersLength = characters.length;
             for ( var i = 0; i < length; i++ ) {
                result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -88,6 +88,8 @@ module.exports = async (message, args, prefix) => {
     const permissions = voiceChannel.permissionsFor(message.client.user);
     if (!permissions.has('CONNECT')) return message.channel.send('I don\'t have permissions to connect to a voice channel.');
     if (!permissions.has('SPEAK')) return message.channel.send('I don\'t have permissions to speak in a voice channel');
+    let member = message.guild.members.cache.get(client.user.id);
+    if (member.voice.channel) return message.channel.send('You cannot send TTS messages whilst I am playing music in a voice channel.');
     connect(voiceChannel, args.slice(1).join(" "))
     }
 }

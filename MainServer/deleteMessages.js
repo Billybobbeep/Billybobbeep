@@ -1,7 +1,7 @@
 module.exports = async client => {
   const Discord = require(`discord.js`);
   const configFile = require('../config.json');
-  const db = require('quick.db');
+  const db = require('../databaseManager/index.js');
   const embed = new Discord.MessageEmbed()
   embed.setTitle(`Message Deleted`)
   embed.setTimestamp();

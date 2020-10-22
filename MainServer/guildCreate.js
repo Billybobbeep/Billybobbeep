@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js')
-const db = require('quick.db');
+const db = require('../databaseManager/index.js');
 const configFile = require('../config.json')
 const embed = new MessageEmbed()
 

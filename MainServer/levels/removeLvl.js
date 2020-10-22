@@ -1,5 +1,4 @@
-const db = require('quick.db');
-
+const db = require('../../databaseManager/index.js');
 module.exports = async (client, message, prefix) => {
 
   let args = message.content.slice(prefix.length).trim().split(/ +/g);

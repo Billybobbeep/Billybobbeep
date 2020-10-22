@@ -1,5 +1,5 @@
 const Discord = require(`discord.js`);
-const db = require('quick.db')
+const db = require('../databaseManager/index.js');
 module.exports = async (client, msg, args, prefix, message) => {
   var user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
   if (!user) return message.channel.send('Please specify a user.');

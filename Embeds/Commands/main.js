@@ -1,6 +1,6 @@
 const Discord = require(`discord.js`);
 const configFile = require('../../config.json');
-const db = require('quick.db');
+const db = require('../../databaseManager/index.js');
 
 module.exports = async(msg, args, prefix, message, client) => {
     if (msg.startsWith(prefix + "cmds") || msg.startsWith(prefix + "commands")) {

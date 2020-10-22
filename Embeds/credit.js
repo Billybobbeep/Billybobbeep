@@ -1,5 +1,5 @@
 const Discord = require(`discord.js`);
-const db = require('quick.db');
+const db = require('../databaseManager/index.js');
 
 module.exports = async (message) => {
   const embed = new Discord.MessageEmbed()

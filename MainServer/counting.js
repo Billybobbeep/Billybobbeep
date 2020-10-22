@@ -1,1 +1,1 @@
-const db = require('quick.db');
+const db = require('../databaseManager/index.js');

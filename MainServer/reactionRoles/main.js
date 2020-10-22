@@ -1,5 +1,4 @@
-const db = require('quick.db');
-
+const db = require('../../databaseManager/index.js');
 module.exports = (client) => {
   client.on('messageReactionAdd', async (reaction, user) => {
     if (reaction.partial) {

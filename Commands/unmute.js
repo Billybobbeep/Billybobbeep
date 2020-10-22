@@ -1,5 +1,5 @@
 const configFile = require('../config.json');
-const db = require('quick.db');
+const db = require('../databaseManager/index.js');
 
 module.exports = async(client, msg, args, prefix, message) => {
   function unmuteCmd() {

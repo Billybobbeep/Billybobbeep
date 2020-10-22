@@ -1,5 +1,5 @@
 const Discord = require(`discord.js`);
-const db = require('quick.db');
+const db = require('../../databaseManager/index.js');
 const ms = require('ms');
 
 module.exports = async (prefix, message, client) => {
