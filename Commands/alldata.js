@@ -8,7 +8,11 @@ module.exports = (client, msg, args, prefix, message) => {
     message.channel.send(table.join('\n').replace(',', ''))
     console.log(table)
   } else {
-    db.delete(message.author.id);
+    //db.delete(message.author.id);
     console.log(db.fetchAll())
+    message.channel.send('All of the data from the database is currently in the terminal', {
+      tts: true,
+      disableMentions: true
+     }).then(msg => { setTimeout(() => { msg.delete()}, 6000)});
   }
 }
