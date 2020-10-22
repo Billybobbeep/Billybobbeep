@@ -45,7 +45,7 @@ module.exports = async (prefix, message, client) => {
 
     if (!args[1] || args[1] && args[1] === 'info') {
         embed.setTitle(`Economy | Jobs`)
-        embed.setDescription('The billybobbeep job command is used to view all of the jobs avalable & apply for new jobs.\n\n' +
+        embed.setDescription('The job command is used to view all of the jobs available & apply for new jobs.\n\n' +
         'To see all of the jobs available, please see the next few pages.\n\n' + 'To see more information on any job use the command: ' +
         `\`${prefix}jobs [job] info\``);
         let msg = await message.channel.send(embed)
