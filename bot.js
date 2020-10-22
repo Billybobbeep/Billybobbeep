@@ -189,6 +189,10 @@ module.exports = async () => {
         return message.channel.send('You do not have the correct premissions for this command');
       }
     }
+    if (message.content.toLowerCase().startsWith(prefix + 'play') || message.content.toLowerCase().startsWith(prefix + 'stop') || message.content.toLowerCase().startsWith(prefix + 'tts')) {
+      const commandFile = require(`./Commands/play.js`);
+      return commandFile(message, args, prefix);
+    }
     command_function(message, prefix)
   });
 
