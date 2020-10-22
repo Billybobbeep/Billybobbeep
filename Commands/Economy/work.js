@@ -1,9 +1,9 @@
 const Discord = require(`discord.js`);
 const db = require('quick.db');
 const ms = require('ms');
+const embed = new Discord.MessageEmbed();
 
 module.exports = async (prefix, message, client) => {
-  const embed = new Discord.MessageEmbed();
   embed.setTimestamp();
   embed.setFooter(`${message.author.username}`);
   embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
@@ -14,6 +14,7 @@ module.exports = async (prefix, message, client) => {
   var cooldown = 15000;
   let jobs = db.get(message.author.id + '.jobs') || undefined;
   let lastRun = db.get(message.author.id + '.economy.work');
+  let decimal = Math.round(Math.random() * 89) + 10
 
   //level 1 job
   let cashier = db.get(message.author.id + '.jobs.cashier') || undefined;
@@ -78,11 +79,95 @@ module.exports = async (prefix, message, client) => {
     embed.setDescription(`${crossEmoji} Break Time. You can work again in **${time2work}** ${seco}.`);
     message.channel.send(embed);
   } else {
+    if (teacher !== undefined) {
+      embed.setDescription(`What subject would you like to teach?\n\n📕English\n📗Math\n📙Science`);
+      let msg = await message.channel.send(embed);
+      const congratsEmbed = new Discord.MessageEmbed()
+      .setDescription(`You earned **$${workAmt}.${decimal}** while working!`)
+      .setAuthor(message.author.username)
+      .setThumbnail(message.author.displayAvatarURL())
+      reactionCollection(msg, '📕', '📗', '📙', workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
+    }
+    else if (waiter !== undefined) {
+      
+    }
+    else if (receptionist !== undefined) {
+      
+    }
+    else if (architect !== undefined) {
+      
+    }
+    else if (lifeGuard !== undefined) {
+      
+    }
+    else if (nurse !== undefined) {
+      
+    }
+    else if (police !== undefined) {
+      
+    }
+    else if (engineer !== undefined) {
+      
+    }
+    else if (chief !== undefined) {
+      
+    }
+    else if (clinicalScientist !== undefined) {
+      
+    }
+    else if (headScientist !== undefined) {
+      
+    }
+    else if (lawyer !== undefined) {
+      
+    }
+    else if (socialWorker !== undefined) {
+      
+    }
+    else if (doctor !== undefined) {
+      
+    }
+
     db.add(message.author.id + '.economy.balance', workAmt);
     db.set(message.author.id + '.economy.work', Date.now() + cooldown);
 
     //db.delete(message.author.id);
-    embed.setDescription(`You earned **$${workAmt}** while working!.`);
+    embed.setDescription(`You earned **$${workAmt}.${decimal}** while working!`);
     message.channel.send(embed);
   }
+}
+
+async function reactionCollection(msg, emoji1, emoji2, emoji3, amt, edit1, edit2, edit3) {
+  await msg.react(emoji1)
+  await msg.react(emoji2)
+  await msg.react(emoji3)
+
+  const filter = (reaction, user) => {
+    return (
+      [emoji1, emoji2, emoji3].includes(reaction.emoji.name) && user.id === message.author.id
+    );
+  }
+
+  msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+    .then((collected) => {
+      const reaction = collected.first();
+
+      if (reaction.emoji.name === emoji1) {
+        if (edit1 !== undefined) {
+          msg.edit(edit1)
+        }
+      } else if (reaction.emoji.name === emoji2) {
+        if (edit2 !== undefined) {
+          msg.edit(edit2)
+        }
+      } else if (reaction.emoji.name === emoji3) {
+        if (edit3 !== undefined) {
+          msg.edit(edit3)
+        }
+      }
+    }).catch(() => {
+      msg.reactions.removeAll()
+      embed.setDescription(`${crossEmoji} You have failed your work. -$${amt / 2}`);
+      msg.edit(embed)
+    });
 }

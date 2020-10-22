@@ -5,7 +5,6 @@ module.exports = async (prefix, message, client) => {
     const embed = new Discord.MessageEmbed();
     embed.setFooter(`${message.author.username}`);
     embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
-
     if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server.')
 
     //level 1 job
@@ -80,6 +79,7 @@ module.exports = async (prefix, message, client) => {
             msg.reactions.removeAll()
         });
     }
+    reactions()
   }
   
     function wait() {
@@ -98,42 +98,100 @@ module.exports = async (prefix, message, client) => {
         `\`${prefix}jobs [job] info\``);
         msg.edit(embed)
     }
-    wait()
-
 
     if (args[1]) {
-        embed.setTitle(`${args[1]} | Job Description`)
-        embed.setFooter(`If you would like to apply for this job enter the command ${prefix}apply ${args[1]}`)
+        embed.setTitle(`${args[1][0].toUpperCase() + args[1].toLowerCase().substring(1)} | Job Description`)
+        embed.setFooter(`If you would like to apply for this job enter the command '${prefix}apply ${args[1].toLowerCase()}'`)
         if (args[1].toLowerCase() === 'cashier') {
-
+            embed.addField('Level Required', '0', true)
+            embed.addField('Hourly Pay', '$10', true)
+            embed.addField('Maximum Promotions', '5', true)
+            embed.addField('Job Description', 'A starter minimum wage job.')
+            message.channel.send(embed)
         } else if (args[1].toLowerCase() === 'teacher') {
-
+            embed.addField('Level Required', '3', true)
+            embed.addField('Hourly Pay', '$11', true)
+            embed.addField('Maximum Promotions', '3', true)
+            embed.addField('Job Description', 'Prepare lessons for children.')
+            message.channel.send(embed)
         } else if (args[1].toLowerCase() === 'waiter') {
-        
+            embed.addField('Level Required', '7', true)
+            embed.addField('Hourly Pay', '$12', true)
+            embed.addField('Maximum Promotions', '5', true)
+            embed.addField('Job Description', 'Suggest food & beverages to customers.')
+            message.channel.send(embed)
         } else if (args[1].toLowerCase() === 'receptionist') {
-
+            embed.addField('Level Required', '15', true)
+            embed.addField('Hourly Pay', '$12', true)
+            embed.addField('Maximum Promotions', '7', true)
+            embed.addField('Job Description', 'Welcome, assist and direct visitors correctly.')
+            message.channel.send(embed)
         } else if (args[1].toLowerCase() === 'architect') {
-
+            embed.addField('Level Required', '25', true)
+            embed.addField('Hourly Pay', '$15', true)
+            embed.addField('Maximum Promotions', '2', true)
+            embed.addField('Job Description', 'To develop new building designs.')
+            message.channel.send(embed)
         } else if (args[1].toLowerCase() === 'lifeguard') {
-   
+            embed.addField('Level Required', '40', true)
+            embed.addField('Hourly Pay', '$16', true)
+            embed.addField('Maximum Promotions', '4', true)
+            embed.addField('Job Description', 'To supervise all individuals using the swimming pool and for the safe activities around.')
+            message.channel.send(embed)
         } else if (args[1].toLowerCase() === 'nurse') {
-
+            embed.addField('Level Required', '55', true)
+            embed.addField('Hourly Pay', '$21', true)
+            embed.addField('Maximum Promotions', '7', true)
+            embed.addField('Job Description', 'To supervise all individuals using the swimming pool and for the safe activities around.')
+            message.channel.send(embed)
         } else if (args[1].toLowerCase() === 'police') {
-        
+            embed.addField('Level Required', '60', true)
+            embed.addField('Hourly Pay', '$22', true)
+            embed.addField('Maximum Promotions', '10', true)
+            embed.addField('Job Description', 'Participate in raids & arrests.')
+            message.channel.send(embed)
         } else if (args[1].toLowerCase() === 'engineer') {
-        
+            embed.addField('Level Required', '75', true)
+            embed.addField('Hourly Pay', '$24', true)
+            embed.addField('Maximum Promotions', '2', true)
+            embed.addField('Job Description', 'Fix any vehicle that comes in for a repair.')
+            message.channel.send(embed)
         } else if (args[1].toLowerCase() === 'chief') {
-        
-        } else if (args[1].toLowerCase() === 'clinical scientist') {
-        
-        } else if (args[1].toLowerCase() === 'head scientist') {
-
+            embed.addField('Level Required', '90', true)
+            embed.addField('Hourly Pay', '$25', true)
+            embed.addField('Maximum Promotions', '15', true)
+            embed.addField('Job Description', 'Cook foods as requested.')
+            message.channel.send(embed)
+        } else if (args[1].toLowerCase() === 'clinical-scientist') {
+            embed.addField('Level Required', '105', true)
+            embed.addField('Hourly Pay', '$25', true)
+            embed.addField('Maximum Promotions', '3', true)
+            embed.addField('Job Description', 'Research different parts of the body.')
+            message.channel.send(embed)
+        } else if (args[1].toLowerCase() === 'head-scientist') {
+            embed.addField('Level Required', '110', true)
+            embed.addField('Hourly Pay', '$26', true)
+            embed.addField('Maximum Promotions', '3', true)
+            embed.addField('Job Description', 'Research different parts of the body.')
+            message.channel.send(embed)
         } else if (args[1].toLowerCase() === 'lawyer') {
-
+            embed.addField('Level Required', '130', true)
+            embed.addField('Hourly Pay', '$29', true)
+            embed.addField('Maximum Promotions', '5', true)
+            embed.addField('Job Description', 'Show and explain different ways a person is or isn\'t guilty.')
+            message.channel.send(embed)
         } else if (args[1].toLowerCase() === 'social worker') {
-
+            embed.addField('Level Required', '155', true)
+            embed.addField('Hourly Pay', '$31', true)
+            embed.addField('Maximum Promotions', '0', true)
+            embed.addField('Job Description', 'Give good and clear advice on certain problems a person may have.')
+            message.channel.send(embed)
         } else if (args[1].toLowerCase() === 'doctor') {
-
+            embed.addField('Level Required', '180', true)
+            embed.addField('Hourly Pay', '$55', true)
+            embed.addField('Maximum Promotions', '20', true)
+            embed.addField('Job Description', 'Treat and care for patients.')
+            message.channel.send(embed)
         } else {
             message.channel.send(`${args[1]} is not a valid job, please make sure you have spelt it correctly and try again.`)
         }
