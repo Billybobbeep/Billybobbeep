@@ -1,2 +1,2 @@
-language = "bash"
-run = "bash main.sh"
+language = "node"
+run = "node index.js"
