@@ -23,17 +23,17 @@ module.exports = async (client, message) => {
   } else if (currlev >= 90 && currlev < 100) {
     xpForLevel = 60
   } else if (currlev >= 100 && currlev < 110) {
-    xpForLevel = 65
-  } else if (currlev >= 110 && currlev < 120) {
-    xpForLevel = 70
-  } else if (currlev >= 120 && currlev < 140) {
-    xpForLevel = 80
-  } else if (currlev >= 140 && currlev < 160) {
-    xpForLevel = 90
-  } else if (currlev >= 160 && currlev < 180) {
     xpForLevel = 100
+  } else if (currlev >= 110 && currlev < 120) {
+    xpForLevel = 110
+  } else if (currlev >= 120 && currlev < 140) {
+    xpForLevel = 120
+  } else if (currlev >= 140 && currlev < 160) {
+    xpForLevel = 130
+  } else if (currlev >= 160 && currlev < 180) {
+    xpForLevel = 140
   } else if (currlev >= 180) {
-    xpForLevel = 105
+    xpForLevel = 150
   }
 
   var gainedXp = Math.round(Math.random() * 5)
