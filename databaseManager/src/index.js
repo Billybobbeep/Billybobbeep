@@ -1,5 +1,5 @@
 // Require Database
-const Database = require("../../better-sqlite3/index.js");
+const Database = require("../../better-sqlite3/lib/index.js");
 const util = require("util");
 let db;
 
