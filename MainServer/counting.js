@@ -1,1 +1,0 @@
-const db = require('../databaseManager/index.js');
