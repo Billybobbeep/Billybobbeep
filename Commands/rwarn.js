@@ -69,7 +69,7 @@ module.exports = async (client, msg, args, prefix, message) => {
   var debounce = false;
 
   if (message.member.hasPermission("MANAGE_MESSAGES") || message.member.hasPermission("ADMINISTRATOR")) {
-    rwarn()
+    rwarnCmd()
     debounce = true;
   } else if (db.get(message.guild.id + '.modRole')) {
     if (message.member.roles.cache.find(role => role.id === db.get(message.guild.id + '.modRole'))) {
