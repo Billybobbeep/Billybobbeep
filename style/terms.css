@@ -20,6 +20,12 @@ body {
     width: 100%;
     z-index: 2;
 }
+#form2 {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+}
 input {
     padding: 10px;
     /*margin:10px;*/
