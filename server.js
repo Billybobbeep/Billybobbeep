@@ -100,7 +100,7 @@ module.exports = async (client) => {
       });
     });
     app.get('/terms', (req, res) => {
-
+      res.sendFile(__dirname + '/Public/terms.html');
     });
 
     app.use(function(req, res) {
