@@ -12,8 +12,12 @@ module.exports = async (client) => {
 
   function listen() {
 
-    app.all('/', function(req, res) {
+    app.get('/', function(req, res) {
       res.redirect("/home");
+    });
+    app.get('/:name', function(req, res, next) {
+      console.log('New user to the site: \'' + req.url + '\'')
+      next()
     });
     app.get('/home', function(req, res) {
       res.sendFile(__dirname + "/Public/index.html");
@@ -94,6 +98,9 @@ module.exports = async (client) => {
           }
         }
       });
+    });
+    app.get('/terms', (req, res) => {
+
     });
 
     app.use(function(req, res) {
