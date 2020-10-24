@@ -1,5 +1,5 @@
 const db = require('../databaseManager/index.js');
-const fetch = require('isomorphic-fetch');
+const fetch = require('node-fetch');
 const Discord = require('discord.js');
 
 module.exports = async (message) => {
