@@ -26,13 +26,13 @@ module.exports = async (message) => {
       var table = ['Whale', 'Racoon', 'Kangaroo', 'Koala', 'Birb', 'Fox', 'Panda', 'Cat', 'Dog']
       var res = Math.floor(Math.random() * table.length)
       const response = await fetch('https://some-random-api.ml/img/' + table[res].replace(' ', '%20'));
-      const text = await response.text();
+      var text = await response.text();
       text = message.channel.send(text.replace('link', '').replace(':', '').replace('{', '').replace('}', '').replace('??', '?').replace('???', '?').replace('""', '').replace('"', '').replace('"', '').replace('error', ''));
-      if (text.startsWith('https://')) {
+      if (text.toLocaleString().startsWith('https://')) {
         const attachment = new Discord.MessageAttachment(text)
         message.channel.send(attachment)
       } else {
-        message.channel.send(text)
+        message.channel.send(text.toLocaleString())
       }
     }
   }
