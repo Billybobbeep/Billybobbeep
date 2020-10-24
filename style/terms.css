@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap');
+body {
+    background-color: white;
+}
+.text {
+    color:rgb(250, 250, 250);
+    font-family: 'Shadows Into Light', cursive;
+    font-size: 1.5em;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+#form {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+}
+input {
+    padding: 10px;
+    /*margin:10px;*/
+    /*width: 50%;*/
+    background-color:rgba(136, 133, 133, 0.5);
+    color: white;
+    border: none;
+    outline: none;
+}
+#agree.closed {
+    bottom: -120px;
+    -webkit-transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-out;
+    -o-transition: all 0.5s ease-out;
+    transition: all 0.5s ease-out;
+}
+.container {
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 15px;
+    padding-right: 35px;
+    position: relative;
+    border-radius: 50px;
+    z-index: 1;
+}
+.btnContainer {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    margin-top: 10px;
+}
+.container .btn {
+    display: inline-block;
+    justify-content: space-around;
+    margin-left: 30px;
+    margin-top: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.85);
+    border-color: grey;
+    color: white;
+    font-size: 20px;
+    font-weight: lighter;
+    border: none;
+    outline: none;
+}
+footer .container {
+    position: fixed;
+    width: 75%;
+    height: 15%;
+    border-radius: 5px;
+    background-color: rgba(black,black,black, 0.8);
+}

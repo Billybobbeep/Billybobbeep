@@ -6,6 +6,7 @@ module.exports = async (client) => {
   const bot = require("./bot");
   const db = require('./databaseManager/index.js');
   const fs = require('fs');
+  const { parse } = require('querystring');
 
   app.use('/style', express.static('style'));
   app.set('view engine', 'ejs');
@@ -102,9 +103,29 @@ module.exports = async (client) => {
     app.get('/terms', (req, res) => {
       res.sendFile(__dirname + '/Public/terms.html');
     });
+    app.post('/terms/accept', (req, res) => {
+      var data;
+      var body = '';
+      req.on('data', chunk => {
+        body += chunk.toString();
+      });
+      req.on('end', () => {
+        data = parse(body);
+      });
+      setTimeout(() => {
+        let channel = client.channels.cache.get('769590641931714602');
+        let accEmbed = new Discord.MessageEmbed({
+          data : {
+              title: "bloop"
+          }
+        });
+      channel.send(accEmbed)
+      console.log(data)
+      }, 50);
+    });
 
     app.use(function(req, res) {
-      res.status(404)
+      res.status(404);
       res.sendFile(__dirname + '/Public/error404.html');
     });
 

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="/style/terms.css" rel="stylesheet">
+        <link href="/style/image/sloosh.png" rel="icon">
+        <title>Terms | Billybobbeep</title>
+        <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    </head>
+    <body id="body">
+        <div class="container" id="agree">
+            <span class="text">If the agree to the moderator rules, please continue by clicking the 'agree' button below.</span><br>
+            <div class="btnContainer">
+                <button class="btn" id="accBtn">Agree</button>
+                <button class="btn" id="decBtn">Decline</button>
+            </div>
+        </div>
+        <div id="form">
+            <span class="text">To continue please enter your Discord username and tag.</span>
+            <form id="agreeForm" method="post" action="/terms/agree">
+                <input type="text" name="discordTag">
+                <br>
+                <br>
+                <input type="submit" value="Login">
+              </form>
+        </div>
+        <div id="already">
+
+        </div>
+    </body>
+    <script src="/style/terms.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</html>
