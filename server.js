@@ -37,7 +37,7 @@ module.exports = async (client) => {
       if (!req.query.fName || !req.query.sName || !req.query.discord || !req.query.subject || !req.query.message) res.render('general.ejs');
       const embed = new Discord.MessageEmbed()
         .setTitle('Billybobbeep | Contact Us Submissions')
-        .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
+        .setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`)
         .setTimestamp()
         .setDescription(
           '**First Name:** ' + req.query.fName +
@@ -103,7 +103,8 @@ module.exports = async (client) => {
     app.get('/terms', (req, res) => {
       res.sendFile(__dirname + '/Public/terms.html');
     });
-    app.post('/terms/accept', (req, res) => {
+    app.post('/terms', (req, res) => {
+      var users = new Set()
       var data;
       var body = '';
       req.on('data', chunk => {
@@ -113,16 +114,36 @@ module.exports = async (client) => {
         data = parse(body);
       });
       setTimeout(() => {
-        let channel = client.channels.cache.get('769590641931714602');
-        let accEmbed = new Discord.MessageEmbed({
-          data : {
-              title: "bloop"
+        if (req.query.denied) {
+          let channel = client.channels.cache.get('769590641931714602');
+          let accEmbed = new Discord.MessageEmbed();
+          accEmbed.setTitle(`${data.discordTag} denied the terms`);
+          accEmbed.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
+          accEmbed.setTimestamp()
+          try {
+            channel.send(accEmbed)
+          } catch {
+            return res.render('general.ejs');
           }
-        });
-      channel.send(accEmbed)
-      console.log(data)
-      }, 50);
-    });
+          users.add(data.discordTag)
+          res.render('terms.ejs', { message : 'You have denied the terms.'});
+        } else {
+          if (users.has([data.discordTag])) res.render('terms.ejs', { message : 'You have agreed to the terms.'});
+          let channel = client.channels.cache.get('769590641931714602');
+          let accEmbed = new Discord.MessageEmbed();
+          accEmbed.setTitle(`${data.discordTag} accepted the terms`);
+          accEmbed.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
+          accEmbed.setTimestamp()
+          try {
+            channel.send(accEmbed)
+          } catch {
+            return res.render('general.ejs');
+          }
+          users.add(data.discordTag)
+          res.render('terms.ejs', { message : 'You have agreed to the terms.'});
+        }
+        }, 50);
+      });
 
     app.use(function(req, res) {
       res.status(404);

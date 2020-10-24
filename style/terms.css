@@ -11,6 +11,9 @@ body {
     justify-content: center;
     margin: auto;
 }
+#already {
+    background-color: rgba(0, 0, 0, 0.85);
+}
 #form {
     overflow: hidden;
     height: 100%;

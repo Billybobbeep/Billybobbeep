@@ -16,15 +16,24 @@
         </div>
         <div id="form">
             <span class="text">To continue please enter your Discord username and tag.</span>
-            <form id="agreeForm" method="post" action="/terms/agree">
+            <form id="agreeForm" method="post">
                 <input type="text" name="discordTag">
                 <br>
                 <br>
-                <input type="submit" value="Login">
+                <input type="submit" value="Continue">
+              </form>
+        </div>
+        <div id="form2">
+            <span class="text">To continue please enter your Discord username and tag.</span>
+            <form id="denyForm" method="post">
+                <input type="text" name="discordTag">
+                <br>
+                <br>
+                <input type="submit" value="Continue">
               </form>
         </div>
         <div id="already">
-
+            <span class="text">You have accepted the terms.</span>
         </div>
     </body>
     <script src="/style/terms.js"></script>

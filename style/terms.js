@@ -1,4 +1,5 @@
 if (window.localStorage) {
+    localStorage.clear()
     if (!localStorage.getItem("userAgreed")) {
         $("#agree").show();
         $("#form").hide();
@@ -10,8 +11,14 @@ if (window.localStorage) {
     }
 }
 
+$("#decBtn").on("click", async function(event) {
+    event.preventDefault();
+    await $("#agree").addClass('closed');
+    await $("#agree").hide();
+    window.location.replace('/terms?denied=true')
+});
+
 $("#accBtn").on("click", async function(event) {
-    console.log('accept')
     event.preventDefault();
     // Make a server call if you want to handle it in server side here
     await $("#agree").addClass('closed');
@@ -23,7 +30,7 @@ $("#accBtn").on("click", async function(event) {
 function loginCheck(event) {
     var discordTag = this.elements.discordTag.value;
     if (discordTag.toString().includes('#')) {
-        localStorage.setItem("userAgreed", true);
+        localStorage.setItem('userAgreed', true);
         return true;
     } else {
         event.preventDefault();
