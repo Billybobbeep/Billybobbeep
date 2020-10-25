@@ -49,6 +49,8 @@ module.exports = async (message, args, prefix, client) => {
             queue.shift();
             if (queue.length > 0) {
                 playNext(); 
+            } else {
+                voiceChannel.leave()
             }
         })
         .on('error', (error) => {
