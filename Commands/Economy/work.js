@@ -89,25 +89,67 @@ module.exports = async (prefix, message, client) => {
       reactionCollection(msg, '📕', '📗', '📙', workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
     }
     else if (waiter !== undefined) {
-      
+      var usedNo = []
+      var numbers = ['1', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+      var  emojis = ['0️⃣', '1️⃣', '12️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣']
+      var no1 = Math.floor(Math.random() * emojis.length);
+      if (usedNo.length === numbers.length) usedNo = []
+      usedNo.push(numbers[no1]);
+      var no2 = Math.floor(Math.random() * emojis.length);
+      if (usedNo.includes(numbers[no2])) no2 = Math.floor(Math.random() * emojis.length);
+      usedNo.push(numbers[no2]);
+      var no3 = Math.floor(Math.random() * emojis.length);
+      if (usedNo.includes(numbers[no3])) no3 = Math.floor(Math.random() * emojis.length);
+      usedNo.push(numbers[no3]);
+      embed.setDescription(`Select a table number:\n\n${emojis[no1]}-${numbers[no1]}\n${emojis[no2]}-${number[no2]}\n${emojis[no3]}-${numbers[no3]}`);
+      let msg = await message.channel.send(embed);
+      const congratsEmbed = new Discord.MessageEmbed()
+      .setDescription(`You earned **$${workAmt}.${decimal}** while working!`)
+      .setAuthor(message.author.username)
+      .setThumbnail(message.author.displayAvatarURL())
+      reactionCollection(msg, emojis[no1], emoji[no2], emoji, workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
     }
     else if (receptionist !== undefined) {
-      
-    }
-    else if (architect !== undefined) {
-      
+      embed.setDescription(`What would you like to do?\n\n📞Answer the phone\n💻Book an appointment\n💰Count the daily earnings`);
+      let msg = await message.channel.send(embed);
+      var count = Math.round(Math.random() * 15);
+      const congratsEmbed1 = new Discord.MessageEmbed()
+      .setDescription(`You answered the phone ${count} times and earned **$${workAmt}.${decimal}**!`)
+      .setAuthor(message.author.username)
+      .setThumbnail(message.author.displayAvatarURL())
+      const congratsEmbed2 = new Discord.MessageEmbed()
+      .setDescription(`You booked an appointment and earned **$${workAmt}.${decimal}**!`)
+      .setAuthor(message.author.username)
+      .setThumbnail(message.author.displayAvatarURL())
+      const congratsEmbed3 = new Discord.MessageEmbed()
+      .setDescription(`You countded your daily earnings and it came to a total of **$${workAmt}.${decimal}**!`)
+      .setAuthor(message.author.username)
+      .setThumbnail(message.author.displayAvatarURL())
+      reactionCollection(msg, '📞', '💻', '💰', workAmt, congratsEmbed1, congratsEmbed2, congratsEmbed3);
     }
     else if (lifeGuard !== undefined) {
-      
-    }
-    else if (nurse !== undefined) {
-      
-    }
-    else if (police !== undefined) {
-      
+      const congratsEmbed = new Discord.MessageEmbed()
+      .setDescription(`You went to work and earnt **$${workAmt}.${decimal}**!`)
+      .setAuthor(message.author.username)
+      .setThumbnail(message.author.displayAvatarURL())
+      message.channel.send(congratsEmbed);
     }
     else if (engineer !== undefined) {
-      
+      embed.setDescription(`What car would you like to fix?\n\n🚗Regular Car\n🚓Police Car\n🏎Race Car`);
+      let msg = await message.channel.send(embed);
+      const congratsEmbed1 = new Discord.MessageEmbed()
+      .setDescription(`You earnt **$${workAmt}.${decimal}** whilst fixing the 🚗Regular Car!`)
+      .setAuthor(message.author.username)
+      .setThumbnail(message.author.displayAvatarURL())
+      const congratsEmbed2 = new Discord.MessageEmbed()
+      .setDescription(`You earnt **$${workAmt}.${decimal}** whilst fixing the 🚓Police Car!`)
+      .setAuthor(message.author.username)
+      .setThumbnail(message.author.displayAvatarURL())
+      const congratsEmbed3 = new Discord.MessageEmbed()
+      .setDescription(`You earnt **$${workAmt}.${decimal}** whilst fixing the 🏎Race Car!`)
+      .setAuthor(message.author.username)
+      .setThumbnail(message.author.displayAvatarURL())
+      reactionCollection(msg, '🚗', '🚓', '🏎', workAmt, congratsEmbed1, congratsEmbed2, congratsEmbed3);
     }
     else if (chief !== undefined) {
       
@@ -126,14 +168,14 @@ module.exports = async (prefix, message, client) => {
     }
     else if (doctor !== undefined) {
       
+    } else {
+      db.add(message.author.id + '.economy.balance', workAmt);
+      db.set(message.author.id + '.economy.work', Date.now() + cooldown);
+
+      //db.delete(message.author.id);
+      embed.setDescription(`You earned **$${workAmt}.${decimal}** while working!`);
+      message.channel.send(embed);
     }
-
-    db.add(message.author.id + '.economy.balance', workAmt);
-    db.set(message.author.id + '.economy.work', Date.now() + cooldown);
-
-    //db.delete(message.author.id);
-    embed.setDescription(`You earned **$${workAmt}.${decimal}** while working!`);
-    message.channel.send(embed);
   }
 }
 
@@ -167,7 +209,9 @@ async function reactionCollection(msg, emoji1, emoji2, emoji3, amt, edit1, edit2
       }
     }).catch(() => {
       msg.reactions.removeAll()
-      embed.setDescription(`${crossEmoji} You have failed your work. -$${amt / 2}`);
+      amt = amt / 2
+      embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
+      db.subtract(message.author.id + '.economy.balance', amt)
       msg.edit(embed)
     });
 }
