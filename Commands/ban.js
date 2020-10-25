@@ -50,6 +50,7 @@ module.exports = async (client, msg, args, prefix, message) => {
   } else if (db.get(message.guild.id + '.modRole')) {
     if (message.member.roles.cache.find(role => role.id === db.get(message.guild.id + '.modsRole'))) {
       if (db.get(message.guild.id + '.modsCanBan')) {
+        if (message.guild.id === '733442092667502613') return;
         banCmd()
         debounce = true;
       }
