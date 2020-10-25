@@ -18,14 +18,11 @@ module.exports = async (message, args, prefix, client) => {
    if (!args[1]) return message.channel.send('Please provide a youtube link to play.');
    if (!args[1].toLowerCase().includes('you')) return message.channel.send('Please provide a valid youtube link.')
 
-  try {
-    var connection = await voiceChannel.join();
+   var queue = []
+
+    /*var connection = await voiceChannel.join();
     message.channel.send('Now Playing: ' + args[1]);
     connection.voice.setSelfDeaf(true);
-  } catch (error) {
-    console.log(error)
-    return message.channel.send(`There was an error connecting to the voice channel ${error}`);
-  }
 
   const dispatcher = connection
    .play(ytdl(args[1]))
@@ -33,8 +30,39 @@ module.exports = async (message, args, prefix, client) => {
     voiceChannel.leave();
    }).on('error', (error) => {
     message.channel.send('There was an error: ' + error.toString().replace('error:', ''));
+    voiceChannel.leave()
    });
-  dispatcher.setVolumeLogarithmic(5 / 5);
+  dispatcher.setVolumeLogarithmic(5 / 5);*/
+
+    if (queue.length < 1) {
+        queue.push(args[1]);
+        playNext();
+    } else { queue.push(args[1]); }
+
+    async function playNext() {
+        var connection = await voiceChannel.join();
+        message.channel.send('Now Playing: ' + queue[0]);
+        connection.voice.setSelfDeaf(true);
+        const dispatcher = connection
+        .play(ytdl(queue[0]))
+        .on('finish', () => {
+            queue.shift();
+            if (queue.length > 0) {
+                playNext(); 
+            }
+        })
+        .on('error', (error) => {
+            message.channel.send('There was an error: ' + error.toString().replace('error:', ''));
+            if (queue.length > 0) {
+                playNext(); 
+            } else {
+                voiceChannel.leave();
+            }
+        });
+        connection.voice.setSelfDeaf(true);
+        dispatcher.setVolumeLogarithmic(5 / 5);
+    }
+
  } else if (message.content.startsWith(`${prefix}stop`)) {
   if (!message.member.voice.channel) return message.channel.send('You need to be in a voice channel to stop the song.');
   message.member.voice.channel.leave();
