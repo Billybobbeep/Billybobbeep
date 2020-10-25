@@ -10,6 +10,7 @@ module.exports = async client => {
   let pinned;
 
   client.on('messageDelete', message => {
+  if (!message || !message.author.id) return;
   if (!message.guild) return;
   if (message.author.bot) return;
   embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
