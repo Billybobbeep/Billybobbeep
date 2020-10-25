@@ -17,7 +17,7 @@ if (!message.member.permissions.has("MANAGE_MESSAGES")) return message.channel.s
         `**Moderator ID:** ${message.author.id}\n`)
     } else {
       embed.setDescription(
-        `**Message:** ${args.slice(1)}\n` +
+        `**Message:** ${args.slice(1).join(" ")}\n` +
         `**Message ID:** ${message.id}\n\n` +
         `**Moderator:** ${message.author}\n` +
         `**Moderator Tag:** ${message.author.tag}\n` +
