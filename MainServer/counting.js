@@ -1,4 +1,5 @@
 module.exports = (client, message) => {
+    if (!message.guild) return;
     const db = require('../databaseManager/index.js');
     var currentNo = new db.table('counting');
     let TE = client.emojis.cache.get('736952966447366154')
@@ -8,8 +9,7 @@ module.exports = (client, message) => {
     if (isNaN(message.content)) return;
     if (!currentNo.get(message.guild.id)) currentNo.add(message.guild.id, '0');
     var curr = currentNo.get(message.guild.id);
-    console.log(message.content)
-    if (message.content === curr + 1) {
+    if (message.content.toString() === (curr + 1).toString()) {
         message.react(TE)
         currentNo.add(message.guild.id, 1);
     } else {
