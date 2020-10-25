@@ -11,12 +11,12 @@ module.exports = async client => {
 
   client.on('messageDelete', message => {
   if (!message.guild) return;
+  if (message.author.bot) return;
   embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
   let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
-  let prefix = db.get(message.guild.id + '.prefix') || '~'
-  let msg = message.content.toLowerCase();
+  let prefix = db.get(message.guild.id + '.prefix') || '~';
 
-  if (msg.startsWith(prefix)) {
+  if (message.content.startsWith(prefix)) {
     command = true;
   } else {
     command = false;
@@ -27,8 +27,7 @@ module.exports = async client => {
     pinned = false;
   }
 
-  if (message.author.bot) return;
-  if (msg.startsWith(prefix + `purge`)) return;
+  if (message.content.toLowerCase().startsWith(prefix + `purge`)) return;
   if (message.content === null || message.content === " " || message.content === undefined) {
     embed.setDescription(
       `**Content:** *This message provided no text.*\n` +
