@@ -76,6 +76,8 @@ module.exports = async () => {
   client.on('message', async message => {
     const AfkFile = require('./MainServer/Afk/AfkHandle.js');
     AfkFile(client, message);
+    const counting = require('./MainServer/counting.js');
+    counting(client, message);
     const DmLogger = require('./MainServer/dmRecieving.js');
     DmLogger(client, message, Discord);
     const reactMessages = require(`./MainServer/deletingMessages.js`);
