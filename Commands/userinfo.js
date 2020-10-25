@@ -4,9 +4,9 @@ const db = require('../databaseManager/index.js');
 
 module.exports = async(client, msg, args, prefix, message) => {
     if (msg.startsWith(prefix + 'userinfo')) {
-        let user = message.mentions.users.first() || message.author || message.guild.members.cache.get(args[0]);
-        const moment = require('moment')
-
+        let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]) || message.author;
+        const moment = require('moment');
+        if (!user.avatarURL) user = user.user
         if (user.presence.status === "dnd") user.presence.status = "Do Not Disturb";
         if (user.presence.status === "idle") user.presence.status = "Idle";
         if (user.presence.status === "offline") user.presence.status = "Offline";
