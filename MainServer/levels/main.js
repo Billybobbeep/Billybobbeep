@@ -7,7 +7,7 @@ module.exports = async (client, message) => {
   let prefix = db.get(message.guild.id + '.prefix') || '~'
   if (message.content.startsWith(prefix)) return;
   var levelUpChannel = db.get(message.guild.id + '.levelUpChannel') || false;
-  if (isNaN(message.content)) return;
+  if (!isNaN(message.content)) return;
   let xpForLevel = 30;
   var currlev = db.get(message.guild.id + '_' + message.author.id + '.level')
   if (currlev > 20 && currlev < 30) {
