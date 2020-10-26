@@ -9,7 +9,10 @@ module.exports = async client => {
   let command;
   let pinned;
 
-  client.on('messageDelete', message => {
+  client.on('messageDelete', async message => {
+    if (message.particle) {
+      await message.fetch()
+    }
   if (!message.guild) return;
   if (message.author.bot) return;
   if (!message || !message.author.id) return;
