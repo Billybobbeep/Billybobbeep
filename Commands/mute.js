@@ -13,16 +13,19 @@ module.exports = async(client, msg, args, prefix, message) => {
     if (!user) {
       return message.channel.send('Please specify a user to mute.')
     }
+    if (!user.tag) {
+      user = user.user
+    }
     if (user.id === message.author.id)return message.channel.send('You cannot mute yourself.')
-    if (!reason) return message.channel.send('Please specify a reason.')
+    if (!reason) return message.channel.send('Please specify a reason.');
+    let member = message.guild.members.cache.get(user.id);
+    if (!member) return message.channel.send(`Could not find the member you provided.`);
     embed.setTimestamp()
     embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
     embed.setDescription(`You have been muted in ${message.guild.name}\nReason: ${reason}`)
     await user.send(embed)
     if (!message.guild.roles.fetch(r => r.id === db.get(message.guild.id + '.mutedRole')))
-    message.guild.member.cache
-      .find(member => member.id === user.id)
-      .roles.add(db.get(message.guild.id + '.mutedRole'));
+    member.roles.add(db.get(message.guild.id + '.mutedRole'));
     message.channel.send('Successfully muted <@!' + user + '>.')
     
     if (db.get(message.guild.id + '.loggingChannel')) {
@@ -30,7 +33,7 @@ module.exports = async(client, msg, args, prefix, message) => {
       embed.setTitle('User Muted')
       embed.setTimestamp()
       embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-      embed.setDescription(`**User:** ${user}\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Moderator:** ${message.author}\n**Moderator Tag:** ${message.author.tag}\n**Moderator ID:** ${message.author.id}`)
+      embed.setDescription(`**User:** ${user}\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n**Reason:** ${reason}\n\n**Moderator:** ${message.author}\n**Moderator Tag:** ${message.author.tag}\n**Moderator ID:** ${message.author.id}`)
       try {
         LoggingChannel.send(embed)
       } catch {
