@@ -48,12 +48,12 @@ module.exports = async (client, message) => {
       message.content.toLowerCase().startsWith(`greetings`)
     ) {
       if (args[0].toLowerCase() == 'welcome') {
-        message.channel.send('greetings, <@' + message.author.id + '>')
+        message.channel.send('Greetings, <@' + message.author.id + '>')
       } else {
         if (args.includes(',') || args.includes('.') || args.includes('?') || args.includes('/') || args.includes('\\') || args.includes('@') || args.includes('|') || args.includes('-') || args.includes(':') || args.includes(';') || args.includes('.')) {
-          return message.channel.send(args[0] + ' <@' + message.author.id + '>')
+          return message.channel.send(args[0][0].toUpperCase() + args[0].toLowerCase().substring(1) + ' <@' + message.author.id + '>')
         } else {
-          return message.channel.send(args[0] + `, <@${message.author.id}>`)
+          return message.channel.send(args[0][0].toUpperCase() + args[0].toLowerCase().substring(1) + `, <@${message.author.id}>`)
         }
       }
     }
