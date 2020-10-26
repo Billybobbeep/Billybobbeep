@@ -4,6 +4,7 @@ const ms = require('ms');
 const embed = new Discord.MessageEmbed();
 
 module.exports = async (prefix, message, client) => {
+  let crossEmoji = client.emojis.cache.get('736952985330122772');
   embed.setTimestamp();
   embed.setFooter(`${message.author.username}`);
   embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
@@ -74,12 +75,12 @@ module.exports = async (prefix, message, client) => {
     if (time2work.endsWith('ms')) time2work = '1s';
     if (time2work === '1s') seco = 'second';
     time2work.replace('s', '')
-    let crossEmoji = client.emojis.cache.get('736952985330122772');
 
     embed.setDescription(`${crossEmoji} Break Time. You can work again in **${time2work}** ${seco}.`);
     message.channel.send(embed);
   } else {
     if (teacher !== undefined) {
+      db.set(message.author.id + '.economy.work', Date.now() + cooldown);
       embed.setDescription(`What subject would you like to teach?\n\n📕English\n📗Math\n📙Science`);
       let msg = await message.channel.send(embed);
       const congratsEmbed = new Discord.MessageEmbed()
@@ -89,6 +90,7 @@ module.exports = async (prefix, message, client) => {
       reactionCollection(msg, '📕', '📗', '📙', workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
     }
     else if (waiter !== undefined) {
+      db.set(message.author.id + '.economy.work', Date.now() + cooldown);
       var usedNo = []
       var numbers = ['1', '1', '2', '3', '4', '5', '6', '7', '8', '9']
       var  emojis = ['0️⃣', '1️⃣', '12️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣']
@@ -110,6 +112,7 @@ module.exports = async (prefix, message, client) => {
       reactionCollection(msg, emojis[no1], emoji[no2], emoji, workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
     }
     else if (receptionist !== undefined) {
+      db.set(message.author.id + '.economy.work', Date.now() + cooldown);
       embed.setDescription(`What would you like to do?\n\n📞Answer the phone\n💻Book an appointment\n💰Count the daily earnings`);
       let msg = await message.channel.send(embed);
       var count = Math.round(Math.random() * 15);
@@ -128,6 +131,7 @@ module.exports = async (prefix, message, client) => {
       reactionCollection(msg, '📞', '💻', '💰', workAmt, congratsEmbed1, congratsEmbed2, congratsEmbed3);
     }
     else if (lifeGuard !== undefined) {
+      db.set(message.author.id + '.economy.work', Date.now() + cooldown);
       const congratsEmbed = new Discord.MessageEmbed()
       .setDescription(`You went to work and earnt **$${workAmt}.${decimal}**!`)
       .setAuthor(message.author.username)
@@ -135,6 +139,7 @@ module.exports = async (prefix, message, client) => {
       message.channel.send(congratsEmbed);
     }
     else if (engineer !== undefined) {
+      db.set(message.author.id + '.economy.work', Date.now() + cooldown);
       embed.setDescription(`What car would you like to fix?\n\n🚗Regular Car\n🚓Police Car\n🏎Race Car`);
       let msg = await message.channel.send(embed);
       const congratsEmbed1 = new Discord.MessageEmbed()
@@ -152,22 +157,10 @@ module.exports = async (prefix, message, client) => {
       reactionCollection(msg, '🚗', '🚓', '🏎', workAmt, congratsEmbed1, congratsEmbed2, congratsEmbed3);
     }
     else if (chief !== undefined) {
-      
-    }
-    else if (clinicalScientist !== undefined) {
-      
-    }
-    else if (headScientist !== undefined) {
-      
-    }
-    else if (lawyer !== undefined) {
-      
-    }
-    else if (socialWorker !== undefined) {
-      
-    }
-    else if (doctor !== undefined) {
-      
+      db.set(message.author.id + '.economy.work', Date.now() + cooldown);
+      embed.setDescription(`To begin working click the green circle below.`);
+      let msg = await message.channel.send(embed)
+      chiefReact(workAmt, msg, '🟢');
     } else {
       db.add(message.author.id + '.economy.balance', workAmt);
       db.set(message.author.id + '.economy.work', Date.now() + cooldown);
@@ -177,41 +170,130 @@ module.exports = async (prefix, message, client) => {
       message.channel.send(embed);
     }
   }
-}
 
-async function reactionCollection(msg, emoji1, emoji2, emoji3, amt, edit1, edit2, edit3) {
-  await msg.react(emoji1)
-  await msg.react(emoji2)
-  await msg.react(emoji3)
+  async function reactionCollection(msg, emoji1, emoji2, emoji3, amt, edit1, edit2, edit3) {
+    await msg.react(emoji1)
+    await msg.react(emoji2)
+    await msg.react(emoji3)
 
-  const filter = (reaction, user) => {
-    return (
-      [emoji1, emoji2, emoji3].includes(reaction.emoji.name) && user.id === message.author.id
-    );
+    const filter = (reaction, user) => {
+      return (
+        [emoji1, emoji2, emoji3].includes(reaction.emoji.name) && user.id === message.author.id
+      );
+    }
+
+    msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+      .then((collected) => {
+        const reaction = collected.first();
+
+        if (reaction.emoji.name === emoji1) {
+          if (edit1 !== undefined) {
+            msg.reactions.removeAll()
+            return msg.edit(edit1);
+          }
+        } else if (reaction.emoji.name === emoji2) {
+          if (edit2 !== undefined) {
+            msg.reactions.removeAll()
+            return msg.edit(edit2)
+          }
+        } else if (reaction.emoji.name === emoji3) {
+          if (edit3 !== undefined) {
+            msg.reactions.removeAll()
+            return msg.edit(edit3);
+          }
+        }
+      }).catch(() => {
+        msg.reactions.removeAll()
+        amt = amt / 2
+        embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
+        db.subtract(message.author.id + '.economy.balance', amt);
+        msg.edit(embed)
+      });
   }
 
-  msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-    .then((collected) => {
-      const reaction = collected.first();
+  async function chiefReact(amt, msg, emoji1, emoji2, emoji3) {
+    if (emoji1) {
+      await msg.react(emoji1);
+    }
+    if (emoji2) {
+      await msg.react(emoji2);
+    }
+    if (emoji3) {
+      await msg.react(emoji3);
+    }
+    const filter = (reaction, user) => {
+      return (
+        [emoji1, emoji2, emoji3].includes(reaction.emoji.name) && user.id === message.author.id
+      );
+    }
 
-      if (reaction.emoji.name === emoji1) {
-        if (edit1 !== undefined) {
-          msg.edit(edit1)
+    msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+      .then((collected) => {
+        const reaction = collected.first();
+
+        if (reaction.emoji.name === '🟢') {
+          msg.reactions.removeAll()
+          mainChief('start', msg)
         }
-      } else if (reaction.emoji.name === emoji2) {
-        if (edit2 !== undefined) {
-          msg.edit(edit2)
+        if (reaction.emoji.name === emoji1) {
+          msg.reactions.removeAll()
+          return mainChief('1', msg, emoji1, amt);
+        } else if (reaction.emoji.name === emoji2) {
+          msg.reactions.removeAll()
+          return mainCihef('2', msg, emoji2, amt);
+        } else if (reaction.emoji.name === emoji3) {
+          msg.reactions.removeAll()
+          return mainChief('3', msg, emoji3, amt);
         }
-      } else if (reaction.emoji.name === emoji3) {
-        if (edit3 !== undefined) {
-          msg.edit(edit3)
+      }).catch(() => {
+        msg.reactions.removeAll()
+        amt = amt / 2
+        if (db.get(message.author.id + '.economy.balance').toString().startsWith('-')) {
+          embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
+          db.delete(message.author.id + '.jobs')
+          db.add(message.author.id + '.economy.timesFired', 1);
+          db.set(message.author.id + '.economy.canApplyAgain', Date.now() + 300000)
         }
+        embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt}**`);
+        db.subtract(message.author.id + '.economy.balance', amt);
+        msg.edit(embed)
+      });
+  }
+
+  function mainChief(reaction, msg, emoji, amt) {
+    var emojis = ['🍳', '🥐', '🥑', '🥒', '🥓', '🥔', '🥕', '🥖', '🥗', '🥘', '🥚', '🥜', '🥝', '🥞', '🦐', '🦑'];
+    var names = ['Fry Eggs', 'Croissants', 'Avocado', 'Cucumber', 'Bacon Strips', 'Potatoes', 'Carrots', 'Bread Sticks', 'Salad', 'Curry', 'Boiled Eggs', 'Special Nut Dish', 'Kiwi', 'Pancakes', 'Shrimp', 'Octopus'];
+    if (reaction === 'start') {
+      var no1 = Math.floor(Math.random() * emojis.length);
+      var no2 = Math.floor(Math.random() * emojis.length);
+      var no3 = Math.floor(Math.random() * emojis.length);
+      if (no1 === no2) no2 = Math.floor(Math.random() * emojis.length);
+      if (no2 === no3) no3 = Math.floor(Math.random() * emojis.length);
+      if (no3 === no1) no1 = Math.floor(Math.random() * emojis.length);
+      embed.setDescription(`What would you like to prepare first?\n${emojis[no1]} - ${names[no1]}\n${emojis[no2]} - ${names[no2]}\n${emojis[no3]} - ${names[no3]}`);
+      msg.edit(embed);
+      chiefReact(amt, msg, emojis[no1], emojis[no2], emojis[no3]);
+    }
+    if (reaction === '1' || reaction === '2' || reaction === '3') {
+      var name;
+      var count = 0;
+      emojis.forEach(result => {
+        count++;
+        if (emoji === result) {
+          name = names[count]
+        }
+      });
+      if (name.toString().endsWith('s')) {
+        embed.setDescription(`Preparing some ${name}...`);
+      } else {
+        embed.setDescription(`Preparing a ${name}...`);
       }
-    }).catch(() => {
-      msg.reactions.removeAll()
-      amt = amt / 2
-      embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
-      db.subtract(message.author.id + '.economy.balance', amt)
-      msg.edit(embed)
-    });
+      msg.edit(embed);
+      setTimeout(() => {
+        var string = '';
+        if (name.toString().endsWith('s')) string = 'some'; else string = 'a';
+        embed.setDescription(`You have successfully prepared ${string} ${name} and earned **$${amt}**!`);
+      }, 300);
+    }
+  }
 }
