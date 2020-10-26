@@ -19,8 +19,7 @@ module.exports = async(msg, args, prefix, message, client) => {
       `ola <@${client.user.id}>\n` +
       `howdy <@${client.user.id}>\n` +
       `welcome <@${client.user.id}>\n` +
-      `greetings <@${client.user.id}>\n\n` +
-      `**Please Note:** These new commands are still is v2.0 BETA so bugs may occur.`
+      `greetings <@${client.user.id}>\n\n`
     )
     message.channel.send(commandEmbed)
 }

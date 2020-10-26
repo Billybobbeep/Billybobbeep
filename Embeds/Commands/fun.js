@@ -1,49 +1,65 @@
 const Discord = require(`discord.js`);
 const configFile = require('../../config.json');
 const db = require('../../databaseManager/index.js');
-module.exports = async(client, msg, args, prefix, message) => {
+module.exports = async(message, prefix) => {
   const PageOne = new Discord.MessageEmbed()
-  .setTitle("Billybobbeep | Fun Commands")
+  .setTitle('Billybobbeep | General Commands')
   .setDescription(
-      `${prefix}say [message]\n` +
-      "*Repeats what you said.*\n" +
       `${prefix}members\n` +
-      "*Quickly find how many members are in your server.*\n" +
-      `${prefix}announce\n` +
-      "*Gives you options to announce a message in another channel.*\n" +
+      '*Quickly find how many members are in your server.*\n\n' +
       `${prefix}spoink\n` +
-      "*Well I guess you will just have to use it and find out. 👁👄👁*\n" +
+      '*Well I guess you will just have to use it and find out. 👁👄👁*\n\n' +
       `${prefix}wibbleywobbley\n` +
-      "*It\'s 15 inches long. :woman_fairy::sparkles::bouquet:*\n" +
+      '*It\'s 15 inches long. :woman_fairy::sparkles::bouquet:*\n\n' +
       `${prefix}ping\n` +
-      "*Gives you the reaction/delay time between the bot and the server.*\n" +
+      '*Gives you the reaction/delay time between the bot and the server.*\n\n' +
       `${prefix}userinfo\n` +
-      "*Provides info about a user in the server.*\n" +
-      `${prefix}secret\n` +
-      "*Repeats what you say in a secret message format.*\n" +
+      '*Provides info about a user in the server.*\n\n' +
       `${prefix}rolldice\n` +
-      "*Rolls a dice and gives you the number.*\n" +
-      `${prefix}font\n` +
-      "*Gives you a list of fonts you can turn your message into*\n" +
-      `${prefix}image\n` +
-      "*Generates a random image.*\n\n" +
-      "TIP: Press the arrows to switch pages")
+      '*Rolls a dice and gives you the number.*')
   .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-  .setFooter(`Requested by: ${message.author.tag}`)
-  .setTimestamp()
+  .setFooter('TIP: Press the arrows to switch pages')
 
   const PageTwo = new Discord.MessageEmbed()
-  .setTitle("Billybobbeep | Fun Commands")
+  .setTitle('Billybobbeep | Economy Commands')
   .setDescription(
-      "TIP: Press the arrows to switch pages")
+    `${prefix}daily\n` +
+    '*Collect your daily bonus.*\n\n' +
+    `${prefix}work` +
+    '*Go to work to earn money.*\n\n' +
+    `${prefix}jobs\n` +
+    '*View the list of available jobs.*\n\n' +
+    `${prefix}apply [job name]\n` +
+    '*Apply for a job.*\n')
   .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-  .setFooter(`Requested by: ${message.author.tag}`)
-  .setTimestamp()
+  .setFooter('TIP: Press the arrows to switch pages')
 
-  let mainMessage = await message.channel.send(PageOne)
+  const PageThree = new Discord.MessageEmbed()
+  .setTitle('Billybobbeep | Message Commands')
+  .setDescription(
+    `${prefix}say [message]\n` +
+    '*Repeats what you just said.*\n\n' +
+    `${prefix}announce\n` +
+    '*Provides you with options to announce a message in another channel.*\n\n' +
+    `${prefix}secret\n` +
+    '*Repeats what you say in a secret message format.*')
+  .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
+  .setFooter('TIP: Press the arrows to switch pages')
+
+  const PageFour = new Discord.MessageEmbed()
+  .setTitle('Billybobbeep | Generator Commands')
+  .setDescription(
+    `${prefix}font\n` +
+    '*Gives you a list of fonts you can turn your message into.*\n\n' +
+    `${prefix}image\n` +
+    '*Generates a random image.*')
+  .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
+  .setFooter('TIP: Press the arrows to switch pages')
+
+  let msg = await message.channel.send(PageOne)
   
-  await mainMessage.react('◀')
-  await mainMessage.react('▶')
+  await msg.react('◀')
+  await msg.react('▶')
 
   function reactions() {
     const filter = (reaction, user) => {
@@ -52,21 +68,36 @@ module.exports = async(client, msg, args, prefix, message) => {
       );
     }
 
-    mainMessage.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+    msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
     .then((collected) => {
       const reaction = collected.first();
 
       if (reaction.emoji.name === '▶') {
-        mainMessage.edit(PageTwo);
-        reaction.users.remove(message.author.id)
+        if (msg.embeds[0].title === PageOne.title) {
+          msg.edit(PageTwo);
+          reaction.users.remove(message.author.id);
+        } else if (msg.embeds[0].title === PageTwo.title) {
+          msg.edit(PageThree);
+          reaction.users.remove(message.author.id);
+        } else if (msg.embeds[0].title === PageThree.title) {
+          msg.edit(PageFour);
+          reaction.users.remove(message.author.id);
+        }
         wait()
       } else {
-        mainMessage.edit(PageOne);
-        reaction.users.remove(message.author.id)
+        if (msg.embeds[0].title === PageTwo.title) {
+          msg.edit(PageOne)
+          reaction.users.remove(message.author.id)
+        } else if (msg.embeds[0].title === PageThree.title) {
+          msg.edit(PageTwo)
+          reaction.users.remove(message.author.id)
+        } else if (msg.embeds[0].title === PageFour.title) {
+          msg.edit(PageThree)
+        }
         wait()
       }
     }).catch((collected) => {
-      mainMessage.reactions.removeAll()
+      msg.reactions.removeAll()
     });
   }
   function wait() {
