@@ -18,7 +18,7 @@ module.exports = async (client, message) => {
     .trim()
     .split(/ +/g);
   embed.setTitle('Billybobbeep | AFK Handling');
-  embed.setColor(ranColor);
+  embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
   embed.setTimestamp();
   embed.setFooter(`Requested by: ${message.author.tag}`);
 
