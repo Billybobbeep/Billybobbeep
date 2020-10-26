@@ -49,7 +49,7 @@ module.exports = async (client, msg, args, prefix, message) => {
       .addField('Total Warnings', db.get(message.guild.id + '_' + user.id + '.warnings') - 1, true)
     if (LoggingChannel) {
       try {
-        //await LoggingChannel.send(log);
+        await LoggingChannel.send(log);
       } catch {
         return;
       }

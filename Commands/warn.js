@@ -34,13 +34,13 @@ module.exports = async (client, msg, args, prefix, message) => {
       .addField('By:', message.author.tag, true)
       .addField('Reason:', reason)
       .addField('Total Warnings', `${db.get(message.guild.id + '_' + user.id + '.warnings') || 0 + 1}`, true)
-    /*if (LoggingChannel) {
+    if (LoggingChannel) {
       try {
         await LoggingChannel.send(log);
       } catch {
         return;
       }
-    }*/
+    }
 
     await message.channel.send(`**${user}** has been warned by **${message.author}**!`);
     var log2 = new Discord.MessageEmbed()
