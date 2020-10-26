@@ -120,6 +120,7 @@ module.exports = async (message, args, prefix, client) => {
     if (!permissions.has('SPEAK')) return message.channel.send('I don\'t have permissions to speak in a voice channel');
     let member = message.guild.members.cache.get(client.user.id);
     if (member.voice.channel) return message.channel.send('You cannot send TTS messages whilst I am playing music in a voice channel.');
+    message.react('🔊');
     connect(voiceChannel, args.slice(1).join(" "))
     }
 }
