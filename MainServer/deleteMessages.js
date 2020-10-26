@@ -10,6 +10,7 @@ module.exports = async client => {
   let pinned;
 
   client.on('messageDelete', message => {
+    console.log(message.author)
   if (!message || !message.author.id) return;
   if (!message.guild) return;
   if (message.author.bot) return;
