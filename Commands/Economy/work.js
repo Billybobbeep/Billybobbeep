@@ -2,7 +2,7 @@ const Discord = require(`discord.js`);
 const db = require('../../databaseManager/index.js');
 const ms = require('ms');
 const embed = new Discord.MessageEmbed();
-
+const xp = new db.table('workXp');
 module.exports = async (prefix, message, client) => {
   let crossEmoji = client.emojis.cache.get('736952985330122772');
   embed.setTimestamp();
@@ -16,6 +16,7 @@ module.exports = async (prefix, message, client) => {
   let jobs = db.get(message.author.id + '.jobs') || undefined;
   let lastRun = db.get(message.author.id + '.economy.work');
   let decimal = Math.round(Math.random() * 89) + 10
+  var gainedXp = 1
 
   //level 1 job
   let cashier = db.get(message.author.id + '.jobs.cashier') || undefined;
@@ -49,21 +50,21 @@ module.exports = async (prefix, message, client) => {
   let doctor = db.get(message.author.id + '.jobs.doctor') || undefined;
 
   if (jobs !== undefined) {
-    if (cashier !== undefined) { workAmt = 10; }
-    if (teacher !== undefined) { workAmt = 11; }
-    if (waiter !== undefined) { workAmt = 12; }
-    if (receptionist !== undefined) { workAmt = 12 }
-    if (architect !== undefined) { workAmt = 15 }
-    if (lifeGuard !== undefined) { workAmt = 16 }
-    if (nurse !== undefined) { workAmt = 21 }
-    if (police !== undefined) { workAmt = 22 }
-    if (engineer !== undefined) { workAmt = 24 }
-    if (chief !== undefined) { workAmt = 25 }
-    if (clinicalScientist !== undefined) { workAmt = 25 }
-    if (headScientist !== undefined) { workAmt = 26 }
-    if (lawyer !== undefined) { workAmt = 29 }
-    if (socialWorker !== undefined) { workAmt = 31 }
-    if (doctor !== undefined) { workAmt = 55 }
+    if (cashier !== undefined) { workAmt = 10; gainedXp = 1; }
+    if (teacher !== undefined) { workAmt = 11; gainedXp = 1; }
+    if (waiter !== undefined) { workAmt = 12; gainedXp = 1; }
+    if (receptionist !== undefined) { workAmt = 12; gainedXp = 2; }
+    if (architect !== undefined) { workAmt = 15; gainedXp = 2; }
+    if (lifeGuard !== undefined) { workAmt = 16; gainedXp = 2; }
+    if (nurse !== undefined) { workAmt = 21; gainedXp = 3; }
+    if (police !== undefined) { workAmt = 22;  gainedXp = 3; }
+    if (engineer !== undefined) { workAmt = 24; gainedXp = 3; }
+    if (chief !== undefined) { workAmt = 25; gainedXp = 4; }
+    if (clinicalScientist !== undefined) { workAmt = 25; gainedXp = 4; }
+    if (headScientist !== undefined) { workAmt = 26; gainedXp = 4; }
+    if (lawyer !== undefined) { workAmt = 29; gainedXp = 4; }
+    if (socialWorker !== undefined) { workAmt = 31; gainedXp = 5; }
+    if (doctor !== undefined) { workAmt = 55; gainedXp = 5; }
   }
   if (workAmt === undefined) {
     embed.setDescription(`Before you can start working, you need to get a job.\n\nTo Apply for a job use '${prefix}jobs'`);
@@ -80,7 +81,6 @@ module.exports = async (prefix, message, client) => {
     message.channel.send(embed);
   } else {
     if (teacher !== undefined) {
-      db.set(message.author.id + '.economy.work', Date.now() + cooldown);
       embed.setDescription(`What subject would you like to teach?\n\n📕English\n📗Math\n📙Science`);
       let msg = await message.channel.send(embed);
       const congratsEmbed = new Discord.MessageEmbed()
@@ -90,10 +90,9 @@ module.exports = async (prefix, message, client) => {
       reactionCollection(msg, '📕', '📗', '📙', workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
     }
     else if (waiter !== undefined) {
-      db.set(message.author.id + '.economy.work', Date.now() + cooldown);
       var usedNo = []
       var numbers = ['1', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-      var  emojis = ['0️⃣', '1️⃣', '12️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣']
+      var  emojis = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣']
       var no1 = Math.floor(Math.random() * emojis.length);
       if (usedNo.length === numbers.length) usedNo = []
       usedNo.push(numbers[no1]);
@@ -112,7 +111,6 @@ module.exports = async (prefix, message, client) => {
       reactionCollection(msg, emojis[no1], emoji[no2], emoji, workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
     }
     else if (receptionist !== undefined) {
-      db.set(message.author.id + '.economy.work', Date.now() + cooldown);
       embed.setDescription(`What would you like to do?\n\n📞Answer the phone\n💻Book an appointment\n💰Count the daily earnings`);
       let msg = await message.channel.send(embed);
       var count = Math.round(Math.random() * 15);
@@ -131,7 +129,6 @@ module.exports = async (prefix, message, client) => {
       reactionCollection(msg, '📞', '💻', '💰', workAmt, congratsEmbed1, congratsEmbed2, congratsEmbed3);
     }
     else if (lifeGuard !== undefined) {
-      db.set(message.author.id + '.economy.work', Date.now() + cooldown);
       const congratsEmbed = new Discord.MessageEmbed()
       .setDescription(`You went to work and earnt **$${workAmt}.${decimal}**!`)
       .setAuthor(message.author.username)
@@ -139,7 +136,6 @@ module.exports = async (prefix, message, client) => {
       message.channel.send(congratsEmbed);
     }
     else if (engineer !== undefined) {
-      db.set(message.author.id + '.economy.work', Date.now() + cooldown);
       embed.setDescription(`What car would you like to fix?\n\n🚗Regular Car\n🚓Police Car\n🏎Race Car`);
       let msg = await message.channel.send(embed);
       const congratsEmbed1 = new Discord.MessageEmbed()
@@ -157,18 +153,18 @@ module.exports = async (prefix, message, client) => {
       reactionCollection(msg, '🚗', '🚓', '🏎', workAmt, congratsEmbed1, congratsEmbed2, congratsEmbed3);
     }
     else if (chief !== undefined) {
-      db.set(message.author.id + '.economy.work', Date.now() + cooldown);
       embed.setDescription(`To begin working click the green circle below.`);
       let msg = await message.channel.send(embed)
       chiefReact(workAmt, msg, '🟢');
     } else {
       db.add(message.author.id + '.economy.balance', workAmt);
-      db.set(message.author.id + '.economy.work', Date.now() + cooldown);
 
       //db.delete(message.author.id);
       embed.setDescription(`You earned **$${workAmt}.${decimal}** while working!`);
       message.channel.send(embed);
     }
+    xp.add(message.author.id, gainedXp);
+    db.set(message.author.id + '.economy.work', Date.now() + cooldown);
   }
 
   async function reactionCollection(msg, emoji1, emoji2, emoji3, amt, edit1, edit2, edit3) {
