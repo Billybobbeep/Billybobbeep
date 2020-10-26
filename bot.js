@@ -69,7 +69,7 @@ module.exports = async () => {
       commandFile(client, msg, args, prefix, message);
     } catch(err) {
       if (err.toLocaleString().startsWith('Error: Cannot find module')) return;
-      console.log(err.toLocaleString());
+      console.log(err);
     }
   };
 
@@ -85,9 +85,9 @@ module.exports = async () => {
     const mentionsHandle = require('./MainServer/mentions.js');
     mentionsHandle(client, message);
     const levels = require('./MainServer/levels/main.js');
-    levels(client, message)
+    levels(client, message);
     const talk2billy = require('./MainServer/talk2billy');
-    talk2billy(message)
+    talk2billy(message);
     if (
       message.channel.id === configFile.PollChannel ||
       message.channel.id === configFile.MemesChannel
@@ -152,6 +152,10 @@ module.exports = async () => {
     if (message.content.toLowerCase().startsWith(prefix + 'job')) {
       const commandFile = require(`./Commands/Economy/jobs.js`);
       return commandFile(prefix, message, client);
+    }
+    if (message.content.toLowerCase() === prefix + 'wallet' || message.content.toLowerCase() === prefix + 'wal') {
+      const commandFile = require(`./Commands/Economy/wallet.js`);
+      return commandFile(client, message, prefix);
     }
     if (message.content.toLowerCase() == prefix + 'image') {
       const commandFile = require(`./Commands/image.js`);
