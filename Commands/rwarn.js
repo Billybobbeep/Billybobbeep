@@ -21,6 +21,9 @@ module.exports = async (client, msg, args, prefix, message) => {
     } catch (err) {
       member = null;
     }
+    if (user.tag === undefined) {
+      user = user.user
+    }
 
     if (!member) return message.reply('That user is not in this server.');
 

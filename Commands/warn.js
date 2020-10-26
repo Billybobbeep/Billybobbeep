@@ -19,7 +19,7 @@ module.exports = async (client, msg, args, prefix, message) => {
     if (member.user.bot) return message.channel.send('You cannot warn bots.')
 
     if (!member) return message.reply('That user is not in this server.');
-    if (user.id === undefined) {
+    if (user.tag === undefined) {
       user = user.user
     }
 
