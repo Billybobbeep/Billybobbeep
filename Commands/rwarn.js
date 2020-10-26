@@ -25,13 +25,15 @@ module.exports = async (client, msg, args, prefix, message) => {
     if (!member) return message.reply('That user is not in this server.');
 
     var reason = args.splice(1).join(' ');
+    let tw = db.get(message.guild.id + '_' + user.id + '.warnings')
     if (!reason) return message.reply('Please provide a reason');
     message.channel.send(`Removed \`1\` warnings from ${user}`);
 
     reasons = db.get(message.guild.id + '_' + user.id + '.warnReasons');
     console.log(reasons)
-    reasons.splice(reasons.length, 1);
-    if (reasons.length < 1) {
+    reasons.splice((reasons.length - 1).toString(), 1);
+    console.log(reasons)
+    if (tw < 2) {
       db.delete(message.guild.id + '_' + user.id + '.warnReasons');
     } else {
       db.set(message.guild.id + '_' + user.id + '.warnReasons', reasons);
