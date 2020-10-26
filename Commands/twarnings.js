@@ -4,7 +4,7 @@ module.exports = async (client, msg, args, prefix, message) => {
   var user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
   if (!user) return message.channel.send('Please specify a user.');
 
-  let tWarnings = db.get(message.guild.id + user.id + '.warnings') || 0
+  let tWarnings = db.get(message.guild.id + '_' + user.id + '.warnings') || 0
   
   const embed = new Discord.MessageEmbed()
   .setTitle('Billybobbeep | Warning Commands')
