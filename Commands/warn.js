@@ -25,7 +25,7 @@ module.exports = async (client, msg, args, prefix, message) => {
 
     var reason = args.splice(1).join(' ');
     if (!reason) return message.reply('You need to specify a reason');
-
+    db.push(message.guild.id + '_' + user.id + '.warnReasons', reason);
     var log = new Discord.MessageEmbed()
       .setTimestamp()
       .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
@@ -34,13 +34,13 @@ module.exports = async (client, msg, args, prefix, message) => {
       .addField('By:', message.author.tag, true)
       .addField('Reason:', reason)
       .addField('Total Warnings', `${db.get(message.guild.id + '_' + user.id + '.warnings') || 0 + 1}`, true)
-    if (LoggingChannel) {
+    /*if (LoggingChannel) {
       try {
         await LoggingChannel.send(log);
       } catch {
         return;
       }
-    }
+    }*/
 
     await message.channel.send(`**${user}** has been warned by **${message.author}**!`);
     var log2 = new Discord.MessageEmbed()
