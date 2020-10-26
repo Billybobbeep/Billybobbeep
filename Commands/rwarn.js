@@ -1,5 +1,6 @@
 const Discord = require(`discord.js`);
 const db = require('../databaseManager/index.js');
+var reasons = []
 
 module.exports = async (client, msg, args, prefix, message) => {
   function rwarnCmd() {
@@ -44,7 +45,7 @@ module.exports = async (client, msg, args, prefix, message) => {
         }
       }
       if (db.get(message.guild.id + '_' + user.id + '.warnings') < 1) {
-        return message.channel.send(`${user.username}`)
+        return message.channel.send(`${user.username} does not have any warnings to remove.`)
       }
       if (db.get(message.guild.id + '_' + user.id + '.warnings') == 1) {
         db.delete(message.guild.id + '_' + user.id + '.warnings')
