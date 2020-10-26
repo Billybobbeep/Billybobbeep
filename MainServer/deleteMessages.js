@@ -10,11 +10,12 @@ module.exports = async client => {
   let pinned;
 
   client.on('messageDelete', async message => {
-    if (message.particle) {
-      await message.fetch()
-    }
   if (!message.guild) return;
+  try {
   if (message.author.bot) return;
+  } catch {
+    return
+  }
   if (!message || !message.author.id) return;
   embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
   let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
