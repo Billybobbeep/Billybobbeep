@@ -10,10 +10,9 @@ module.exports = async client => {
   let pinned;
 
   client.on('messageDelete', message => {
-    console.log(message.author)
-  if (!message || !message.author.id) return;
   if (!message.guild) return;
   if (message.author.bot) return;
+  if (!message || !message.author.id) return;
   embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
   let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
   let prefix = db.get(message.guild.id + '.prefix') || '~';
