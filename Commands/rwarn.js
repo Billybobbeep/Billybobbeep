@@ -27,7 +27,7 @@ module.exports = async (client, msg, args, prefix, message) => {
 
       var reason = args.splice(1).join(' ');
       if (!reason) return message.reply('Please provide a reason');
-
+      message.channel.send(`Removed \`1\` warnings from ${user}`)
       var log = new Discord.MessageEmbed()
         .setTimestamp()
         .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
@@ -52,20 +52,6 @@ module.exports = async (client, msg, args, prefix, message) => {
         db.subtract(message.guild.id + '_' + user.id + '.warnings', 1)
       }
     }
-
-
-
-    if (message.member.hasPermission("MANAGE_MESSAGES") || message.member.hasPermission("ADMINISTRATOR")) {
-      warnCmd()
-    } else {
-      if (!db.get(message.guild.id + '.adminsRole')) return (`The moderators role has not been set up in your server`)
-      if (message.member.roles.cache.find(role => role.id === db.get(message.guild.id + '.adminsRole'))) {
-        warnCmd()
-      } else {
-        message.channel.send('You do not have the premissions to run this command.')
-      }
-    }
-  }
   var debounce = false;
 
   if (message.member.hasPermission("MANAGE_MESSAGES") || message.member.hasPermission("ADMINISTRATOR")) {
@@ -79,5 +65,6 @@ module.exports = async (client, msg, args, prefix, message) => {
     if (debounce === false) {
       message.channel.send('You do not have the premissions to run this command.')
     }
+  }
   }
 }
