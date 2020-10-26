@@ -12,7 +12,7 @@ module.exports = async (client, msg, args, prefix, message) => {
 
     var member;
 
-    if (db.get(message.guild.id + '_' + user.id + '.warnings') < 1) {
+    if (db.get(message.guild.id + '_' + user.id + '.warnings') < 1 || !db.get(message.guild.id + '_' + user.id + '.warnings')) {
       return message.channel.send(`${user} does not have any warnings.`)
     }
 
@@ -30,9 +30,12 @@ module.exports = async (client, msg, args, prefix, message) => {
 
     reasons = db.get(message.guild.id + '_' + user.id + '.warnReasons');
     console.log(reasons)
-    const index = reasons.indexOf('--test--');
-    console.log(index)
-    reasons.splice(index, 1);
+    reasons.splice(reasons.length, 1);
+    if (reasons.length < 1) {
+      db.delete(message.guild.id + '_' + user.id + '.warnReasons');
+    } else {
+      db.set(message.guild.id + '_' + user.id + '.warnReasons', reasons);
+    }
 
     var log = new Discord.MessageEmbed()
       .setTimestamp()
@@ -57,6 +60,7 @@ module.exports = async (client, msg, args, prefix, message) => {
     } else {
       db.subtract(message.guild.id + '_' + user.id + '.warnings', 1)
     }
+  }
   var debounce = false;
 
   if (message.member.hasPermission("MANAGE_MESSAGES") || message.member.hasPermission("ADMINISTRATOR")) {
@@ -70,6 +74,5 @@ module.exports = async (client, msg, args, prefix, message) => {
     if (debounce === false) {
       message.channel.send('You do not have the premissions to run this command.')
     }
-  }
   }
 }
