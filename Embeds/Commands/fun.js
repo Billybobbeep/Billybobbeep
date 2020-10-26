@@ -25,7 +25,7 @@ module.exports = async(message, prefix) => {
   .setDescription(
     `${prefix}daily\n` +
     '*Collect your daily bonus.*\n\n' +
-    `${prefix}work` +
+    `${prefix}work\n` +
     '*Go to work to earn money.*\n\n' +
     `${prefix}jobs\n` +
     '*View the list of available jobs.*\n\n' +
