@@ -4,8 +4,29 @@ module.exports = async client => {
 	const db = require('../databaseManager/index.js');
 
 	client.on('messageUpdate', async (oldMessage, newMessage) => {
-		if (oldMessage.author.bot) return;
 		if (!newMessage) return;
+		if (newMessage.type === 'PINS_ADD' || oldMessage.type === 'PINS_ADD') {
+			const embed = new Discord.MessageEmbed()
+			.setTitle(`Message Pinned`)
+			.setDescription(
+				`**Message:** ${oldMessage.content}\n` +
+				`**Channel:** ${oldMessage.channel}\n` +
+				`**Message ID:** ${newMessage.id}\n\n` +
+				`**Author:** ${oldMessage.author}\n` +
+				`**Author Tag:** ${oldMessage.author.tag}\n` +
+				`**Author ID:** ${oldMessage.author.id}`
+			)
+			.setTimestamp()
+			.setColor(`${db.get(oldMessage.guild.id + '.embedColor') || '#447ba1'}`);
+			if (LoggingChannel) {
+				try {
+					LoggingChannel.send(embed);
+				} catch {
+					return;
+				}
+			}
+		}
+		if (oldMessage.author.bot) return;
 		if (!oldMessage.guild) return;
 
 		let LoggingChannel = client.channels.cache.get(
