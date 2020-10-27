@@ -23,9 +23,7 @@ if (!message.member.permissions.has("MANAGE_MESSAGES")) return message.channel.s
         `**Moderator Tag:** ${message.author.tag}\n` +
         `**Moderator ID:** ${message.author.id}\n`)
     }
-let user =
-    message.mentions.members.first() ||
-    message.guild.members.cache.get(args[0]);
+let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
     if (!user) return message.channel.send(`Please specify a user.`);
     if (!args.slice(1).join(" ")) return message.channel.send("Please specify a message.");
 
