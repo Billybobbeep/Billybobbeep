@@ -26,13 +26,12 @@ if (!message.member.permissions.has("MANAGE_MESSAGES")) return message.channel.s
 let user =
     message.mentions.members.first() ||
     message.guild.members.cache.get(args[0]);
-    if (!user)
-      return message.channel.send(`You did not mention a user.`);
+    if (!user) return message.channel.send(`Please specify a user.`);
     if (!args.slice(1).join(" ")) return message.channel.send("Please specify a message.");
 
     user.user
       .send(args.slice(1).join(" "))
-      .catch(() => message.channel.send("An errror accured whilst running the command."))
+      .catch(() => { return message.channel.send('The user does not have their DM\'s turned on.') })
       .then(() => message.channel.send(`Message sent to ${user.user.tag}.`))
       if (LoggingChannel) {
         try {
