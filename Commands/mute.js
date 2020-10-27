@@ -1,6 +1,7 @@
 const db = require('../databaseManager/index.js');
 const Discord = require('discord.js');
-var embed = new Discord.MessageEmbed();
+var embed1 = new Discord.MessageEmbed();
+var embed2 = new Discord.MessageEmbed();
 const ms = require('ms');
 module.exports = async(client, msg, args, prefix, message) => {
   async function muteCmd() {
@@ -21,23 +22,31 @@ module.exports = async(client, msg, args, prefix, message) => {
     if (user.id === message.author.id)return message.channel.send('You cannot mute yourself.')
     if (!reason) return message.channel.send('Please specify a reason.');
     let member = message.guild.members.cache.get(user.id);
-    if (!member) return message.channel.send(`Could not find the member you provided.`);
-    embed.setTimestamp()
-    embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-    embed.setDescription(`You have been muted in ${message.guild.name}\nReason: ${reason}`)
-    await user.send(embed)
+    if (!member) return message.channel.send(`I could not find the member you provided.`);
+    embed1.setTimestamp()
+    embed1.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
+    embed1.setTitle('You have been muted');
+    embed1.addField(`Responsible Moderator:`, message.author.tag);
+    embed1.addField(`Reason:`, reason);
+    embed1.addField(`Guild:`, message.guild.name);
+    embed1.addField(`Time:`, ms(time));
+    try {
+    await user.send(embed1)
+    } catch {
+      message.channel.send('The user has not been notfied as they do not have their DM\'s turned on.')
+    }
     if (!message.guild.roles.fetch(r => r.id === db.get(message.guild.id + '.mutedRole'))) return message.channel.send('Please setup a muted role in your server to use this command.');
     member.roles.add(message.guild.roles.cache.find(role => role.id === db.get(message.guild.id + '.mutedRole')));
     message.channel.send('Successfully muted <@!' + user + '>.')
     
     if (db.get(message.guild.id + '.loggingChannel')) {
-      let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'))
-      embed.setTitle('User Muted')
-      embed.setTimestamp()
-      embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-      embed.setDescription(`**User:** ${user}\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Time:** ${ms(time)}\n**Reason:** ${reason}\n\n**Moderator:** ${message.author}\n**Moderator Tag:** ${message.author.tag}\n**Moderator ID:** ${message.author.id}`)
+      let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
+      embed2.setTitle('User Muted');
+      embed2.setTimestamp();
+      embed2.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
+      embed2.setDescription(`**User:** ${user}\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Time:** ${ms(time)}\n**Reason:** ${reason}\n\n**Moderator:** ${message.author}\n**Moderator Tag:** ${message.author.tag}\n**Moderator ID:** ${message.author.id}`);
       try {
-        LoggingChannel.send(embed)
+        LoggingChannel.send(embed2)
       } catch {
         return;
       }
