@@ -245,10 +245,31 @@ module.exports = async (prefix, message, client) => {
         msg.reactions.removeAll()
         amt = amt / 2
         if (db.get(message.author.id + '.economy.balance').toString().startsWith('-')) {
-          embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
-          db.delete(message.author.id + '.jobs')
-          db.add(message.author.id + '.economy.timesFired', 1);
-          db.set(message.author.id + '.economy.canApplyAgain', Date.now() + 300000)
+          if (
+            db.get(message.author.id + '.economy.timesFired') === 2 ||
+            db.get(message.author.id + '.economy.timesFired') === 4 ||
+            db.get(message.author.id + '.economy.timesFired') === 6 ||
+            db.get(message.author.id + '.economy.timesFired') === 8
+            ) {
+              db.add(message.author.id + '.economy.timesFired', 1);
+              db.set(message.author.id + '.economy.lastFired', Date.now());
+              embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
+              db.delete(message.author.id + '.jobs');
+              db.add(message.author.id + '.economy.timesFired', 1);
+              db.set(message.author.id + '.economy.lastFired', Date.now());
+          } else if (db.get(message.author.id + '.economy.timesFired') === 10) {
+            db.delete(message.author.id + '.economy.timesFired');
+            db.set(message.author.id + '.economy.lastFired', Date.now());
+            embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
+            db.delete(message.author.id + '.jobs')
+            db.add(message.author.id + '.economy.timesFired', 1);
+            db.set(message.author.id + '.economy.lastFired', Date.now());
+          } else {
+            embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
+            db.delete(message.author.id + '.jobs')
+            db.add(message.author.id + '.economy.timesFired', 1);
+            db.set(message.author.id + '.economy.lastFired', Date.now())
+          }
         }
         embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt}**`);
         db.subtract(message.author.id + '.economy.balance', amt);
