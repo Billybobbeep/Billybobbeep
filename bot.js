@@ -36,7 +36,10 @@ module.exports = async () => {
   client.once('ready', async () => {
     const serverStatsFile = require('./MainServer/serverstats.js');
     serverStatsFile(client);
-
+    var timeOutFunctions = require('./MainServer/timeOut.js');
+    timeOutFunctions(db, client);
+    var ban_logs = require('./MainServer/logging.js');
+    ban_logs(client);
     var guildManage = require('./MainServer/guildCreate.js');
     guildManage(client)
     const deleteMessages = require('./MainServer/deleteMessages.js');
@@ -169,6 +172,10 @@ module.exports = async () => {
       const commandFile = require(`./Commands/Economy/work.js`);
       return commandFile(prefix, message, client);
     }
+    if (message.content.toLowerCase() == prefix + 'apply') {
+      const commandFile = require(`./Commands/Economy/apply.js`);
+      return commandFile(message, prefix, client);
+    }
     if (message.content.toLowerCase() == prefix + 'fonts') {
       const commandFile = require(`./Commands/font.js`);
       return commandFile(client, msg, args, prefix, message);
@@ -194,6 +201,10 @@ module.exports = async () => {
       } else {
         return message.channel.send('You do not have the correct premissions for this command');
       }
+    }
+    if (message.content.toLowerCase() === prefix + 'dnd') {
+      client.user.setStatus('dnd');
+      message.channel.send('dnd')
     }
     if (message.content.toLowerCase().startsWith(prefix + 'play') || message.content.toLowerCase().startsWith(prefix + 'stop') || message.content.toLowerCase().startsWith(prefix + 'tts')) {
       const commandFile = require(`./Commands/play.js`);
