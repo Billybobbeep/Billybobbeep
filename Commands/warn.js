@@ -50,7 +50,11 @@ module.exports = async (client, msg, args, prefix, message) => {
     log2.addField(`Responsible Moderator:`, message.author.tag, true);
     log2.addField(`Reason:`, reason);
     log2.addField(`Guild:`, message.guild)
-    user.send(log2)
+    try {
+      user.send(log2)
+    } catch {
+      message.channel.send('The user has not been notfied as they do not have their DM\'s turned on.')
+    }
     db.add(message.guild.id + '_' + user.id + '.warnings', 1)
   }
   
