@@ -1,10 +1,8 @@
 const Discord = require(`discord.js`);
 const db = require('../../databaseManager/index.js');
 const ms = require('ms');
-
 module.exports = async (prefix, message, client) => {
   const embed = new Discord.MessageEmbed();
-  embed.setTitle('Billybobbeep | Economy');
   embed.setFooter(`${message.author.username}`);
   embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
 
