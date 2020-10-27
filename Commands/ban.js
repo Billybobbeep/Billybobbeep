@@ -7,12 +7,12 @@ module.exports = async (client, msg, args, prefix, message) => {
     let user = message.mentions.users.first() || message.guild.members.cache.get(args[0])
 
     let member = message.guild.member(user);
-    let reason = args.slice(1).join(" ");
+    let reason = args.slice(1).join(' ');
 
-    if (!user) return message.channel.send("Please mention a user to ban.");
-    if (user.id === message.author.id) return message.channel.send("You cannot ban yourself from the server.");
-    if (user.id === client.user.id) return message.channel.send("You cannot ban me.");
-    if (!reason) reason = "No reason provided";
+    if (!user) return message.channel.send('Please specify a user to ban.');
+    if (user.id === message.author.id) return message.channel.send('You cannot ban yourself from the server.');
+    if (user.id === client.user.id) return message.channel.send('You cannot ban me.');
+    if (!reason) return message.channel.send('You must provide a reason.')
     if (user.tag === undefined || user.id === undefined) {
       user = user.user;
     }
@@ -25,7 +25,7 @@ module.exports = async (client, msg, args, prefix, message) => {
           `**User Tag:** ${member.tag}\n` +
           `**User ID:** ${member.id}\n` +
           `**Reason:** ${reason}\n\n`
-            `**Moderator:** ${message.author}\n` +
+          `**Moderator:** ${message.author}\n` +
           `**Moderator Tag:** ${message.author.tag}\n` +
           `**Moderator ID:** ${message.author.id}\n`
         )
@@ -38,13 +38,13 @@ module.exports = async (client, msg, args, prefix, message) => {
         }
       }
     }).catch(err => {
-      message.reply("I was unable to ban the member you provided.");
+      message.reply('I was unable to ban the member you provided.');
     });
   }
 
   var debounce = false;
 
-  if (message.member.hasPermission("BAN_MEMBERS") || message.member.hasPermission("ADMINISTRATOR")) {
+  if (message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
     banCmd()
     debounce = true;
   } else if (db.get(message.guild.id + '.modRole')) {
