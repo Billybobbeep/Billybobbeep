@@ -66,11 +66,19 @@ module.exports = async (client, message) => {
       if (message.author.id === user.id) {
         embed.setDescription(`You have marked your self as AFK in ${message.guild}\nReason: ${reason}`)
         embed.setFooter(`When you are back please run the command '${db.get(message.guild.id + '.prefix') || '~'}back me' in ${message.guild}`)
-        return user.send(embed)
+        try {
+          return user.send(embed)
+        } catch {
+          message.channel.send('You must have your DM\'s turned on to use this command.')
+        }
       } else {
         embed.setDescription(`${message.author.tag} has marked you as AFK in ${message.guild}\nReason: ${reason}`)
         embed.setFooter(`When you are back please run the command '${db.get(message.guild.id + '.prefix') || '~'}back me' in ${message.guild}`)
-        return user.send(embed)
+        try {
+          return user.send(embed)
+        } catch {
+          message.channel.send('You must have your DM\'s turned on to use this command.')
+        }
       }
     }
   }
