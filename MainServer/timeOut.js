@@ -35,7 +35,7 @@ function mute(db, client) {
     });
 }
 
-function remove(table, db, guild, user, time) {
+function remove(table, db, guild, user, time, client) {
     let clientGuild = client.guilds.cache.get(guild);
     let member = guild.members.cache.get(user);
     console.log(table)
