@@ -237,10 +237,10 @@ module.exports = async (client, msg, args, prefix, message) => {
         message.reply('Please specify a message.')
     } else {
         try {
-            for (var i = 0; i < args.slice(1).join(" ").length; i++) {
-                var letter = args.slice(1).join(" ")[i].toLowerCase();
+            for (var i = 0; i < args.slice(1).join(' ').length; i++) {
+                var letter = args.slice(1).join(' ')[i].toLowerCase();
                 for (var j = 0; j < 1; j++) {
-                    lines[j] += letters[letter] + ' ';
+                    lines[j] += letters[letter] + '';
                 }
             }
         message.channel.send(starter + lines.join("\n"))

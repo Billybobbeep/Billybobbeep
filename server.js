@@ -17,8 +17,11 @@ module.exports = async (client) => {
       console.log('New user to the site: \'' + req.url + '\'')
       next()
     });
-    app.get('/api/database/:name/:id/get', (req, res) => {
-      if (req.params.name !== 'users') res.redirect('/home'); if (req.params.id !== 'rPUqgbgzBjTGfgZTZeHsDedGJVDUuEXWwKSxfZRymTVPttdLhDABAateSAuENZZVzwJsVheQTNbuZpRXtCqnqLRrsmASjQKQrJmTuFWNhFYQNFVXKkGjrgYYbEDZUjytDEZAXpAUejNQcachyvyHxEvSrfydQznwQQsGnPHnPNUnbFVtRNDXbHgHFqkkkqZsUjRSGsNWbzfwbXNZBmYTTXykCYxyRyEkdPCygqrDgksQsARDNxtZYkSwgWnjZRxBWKSgLWDMRQakwrHeJTPYtpLezdMksCbrWESccSCuxVtjtkeQyTjLaDcmaWbKbTjYNXGhAvMnpgnDLmHTZDhguJvRmnUTZbFBPHStTTqCZYNMBFHhNHDxzfdSknNzLkGbKxVkpQPXarYPbxVCsekhUTqQEpHJkfYBrPNgFhNqxLXUKuVaJAKahvSLfUkrWbawjATxHfgdDvRTjALZuTzkZVJcwsfZYwGdnGbYMLFhsduygNzkhkVgJYLuCWAbKYJKHyWEVqUUpsxwePmBrXJqVprZahWnSeUEprLrnXEagGSgGUZbHZkSMZagLfxaSPQxfgtzcchxEGzWPPxedueZugADeUQEufSsXSghktkXWuudggkVSwErYQhwVsRkMBEqZYUJMKmAskKYkpqTrFKTNZjgJcvrtBscXTWevaWLcTevNLNRcpcNPkYXJwKatDhNYMHaHZRrJYyrLHrKVuNtNtpCCyUSdEdRJTzcVphCgVqffzdbgHxKLxPbCkBqnwZpjXSRjVLarGpRZupwqbKPDkxFfsArhhspZPqyHBnTqvAcEaPGXTzQeCtXMRzvnadfykTafvNujCUBTXTsBbPtTJxAxcagyujMkBzDwqvZEWXfjfzmMCTbETRhrLduWcNNgKZhrwMgGRqPHHGyxRGCHkvRmPNMnpemXBrmUsBeznCBuSPaeCAZdGaGfjLkHmcEPHhXKQHRtSpUraympWASNhAvBKKtQZqLARfUQZYQhMZkhvKANExwqBggpATAugTs') res.redirect('/home'); if (req.query.bot != 'true') res.redirect('/home'); if (req.query.type != 'bot') res.redirect('/home'); bot.data(function(data) { res.send(data); });
+    app.post('/api/database/:name/:id/get', (req, res) => {
+      var key = 'rPUqgbgzBjTGfgZTZeHsDedGJVDUuEXWwKSxfZRymTVPttdLhDABAateSAuENZZVzwJsVheQTNbuZpRXtCqnqLRrsmASjQKQrJmTuFWNhFYQNFVXKkGjrgYYbEDZUjytDEZAXpAUejNQcachyvyHxEvSrfydQznwQQsGnPHnPNUnbFVtRNDXbHgHFqkkkqZsUjRSGsNWbzfwbXNZBmYTTXykCYxyRyEkdPCygqrDgksQsARDNxtZYkSwgWnjZRxBWKSgLWDMRQakwrHeJTPYtpLezdMksCbrWESccSCuxVtjtkeQyTjLaDcmaWbKbTjYNXGhAvMnpgnDLmHTZDhguJvRmnUTZbFBPHStTTqCZYNMBFHhNHDxzfdSknNzLkGbKxVkpQPXarYPbxVCsekhUTqQEpHJkfYBrPNgFhNqxLXUKuVaJAKahvSLfUkrWbawjATxHfgdDvRTjALZuTzkZVJcwsfZYwGdnGbYMLFhsduygNzkhkVgJYLuCWAbKYJKHyWEVqUUpsxwePmBrXJqVprZahWnSeUEprLrnXEagGSgGUZbHZkSMZagLfxaSPQxfgtzcchxEGzWPPxedueZugADeUQEufSsXSghktkXWuudggkVSwErYQhwVsRkMBEqZYUJMKmAskKYkpqTrFKTNZjgJcvrtBscXTWevaWLcTevNLNRcpcNPkYXJwKatDhNYMHaHZRrJYyrLHrKVuNtNtpCCyUSdEdRJTzcVphCgVqffzdbgHxKLxPbCkBqnwZpjXSRjVLarGpRZupwqbKPDkxFfsArhhspZPqyHBnTqvAcEaPGXTzQeCtXMRzvnadfykTafvNujCUBTXTsBbPtTJxAxcagyujMkBzDwqvZEWXfjfzmMCTbETRhrLduWcNNgKZhrwMgGRqPHHGyxRGCHkvRmPNMnpemXBrmUsBeznCBuSPaeCAZdGaGfjLkHmcEPHhXKQHRtSpUraympWASNhAvBKKtQZqLARfUQZYQhMZkhvKANExwqBggpATAugTs'
+      if (req.params.name !== 'all') res.json('Error: Invalid database');
+      if (req.params.id !== key) res.json('Error: Invalid key');
+      bot.data(function(data) { res.send(data); });
     });
     app.get('/api/chatbot', async function(req, res) {
       let message = req.query.message;
@@ -26,13 +29,13 @@ module.exports = async (client) => {
       if (!message) {
         res.json('missing message query')
       }
-      if (message.toLowerCase() === 'hello' || message.toLowerCase() === 'hi') reply = message;
+      if (message.toLowerCase() === 'hello' || message.toLowerCase() === 'hi' || message.toLowerCase() === 'hiya') reply = message.toLowerCase();
       if (message.toLowerCase().includes('test')) reply = 'test command';
       if (message.toLowerCase().includes('ily')) reply = 'ily2';
       if (reply === 'undefined') {
         let response = await fetch('https://some-random-api.ml/chatbot?message=' + message);
         reply = await response.text();
-        if (reply.toLowerCase().startsWith('<doctype html>')) res.json('This channel is causing issues for me. Please try again later.');
+        if (reply.toLowerCase().startsWith('<!doctype html>')) res.json('This channel is causing issues for me. Please try again later.');
         reply = reply.replace('response', '').replace('{', '').replace('}', '').replace('??', '?').replace('???', '?').replace('""', '').replace('"', '').replace('"', '').replace('error', '').replace(')', '').replace(':', '');
       }
       if (req.query.cap && req.query.cap === 'no' && req.query.punc && req.query.punc === 'no') {
@@ -41,30 +44,38 @@ module.exports = async (client) => {
         res.json(reply[0].toUpperCase() + reply.substring(1).toLowerCase());
       } else if (req.query.cap && req.query.cap === 'yes' && req.query.punc && req.query.punc === 'yes') {
         reply = reply[0].toUpperCase() + reply.substring(1).toLowerCase();
-        if (!message.endsWith('?') && !message.endsWith('!') && !message.endsWith('.') && !message.endsWith('/')) {
+        if (message.endsWith('?') || message.endsWith('!') || message.endsWith('.') || message.endsWith('/')) {
+          reply = reply;
+        } else {
           reply = reply + '.'
         }
-        res.json(reply)
+        res.json(reply.replace('?.', '?').replace('..', '.').replace('!.', '!'));
       } else if (req.query.cap && req.query.cap === 'no' && req.query.punc && req.query.punc === 'yes') {
         reply = reply.toLowerCase();
-        if (!message.endsWith('?') && !message.endsWith('!') && !message.endsWith('.') && !message.endsWith('/')) {
+        if (message.endsWith('?') || message.endsWith('!') || message.endsWith('.') || message.endsWith('/')) {
+          reply = reply;
+        } else {
           reply = reply + '.'
         }
-        res.json(reply);
+        res.json(reply.replace('?.', '?').replace('..', '.').replace('!.', '!'));
       } else if (req.query.cap && req.query.cap === 'full' && req.query.punc && req.query.punc === 'yes') {
         reply = reply.toUpperCase();
-        if (!message.endsWith('?') && !message.endsWith('!') && !message.endsWith('.') && !message.endsWith('/')) {
+        if (message.endsWith('?') || message.endsWith('!') || message.endsWith('.') || message.endsWith('/')) {
+          reply = reply;
+        } else {
           reply = reply + '.'
         }
-        res.json(reply)
+        res.json(reply.replace('?.', '?').replace('..', '.').replace('!.', '!'));
       } else if (req.query.cap && req.query.cap === 'full' && req.query.punc && req.query.punc === 'no') {
         res.json(reply.toUpperCase());
       } else {
         reply = reply[0].toUpperCase() + reply.substring(1).toLowerCase();
-        if (!message.endsWith('?') && !message.endsWith('!') && !message.endsWith('.') && !message.endsWith('/')) {
+        if (message.endsWith('?') || message.endsWith('!') || message.endsWith('.') || message.endsWith('/')) {
+          reply = reply;
+        } else {
           reply = reply + '.'
         }
-        res.json(reply)
+        res.json(reply.replace('?.', '?').replace('..', '.').replace('!.', '!'));
       }
     });
     app.get('/', function(req, res) {

@@ -54,7 +54,7 @@ module.exports = async client => {
     embed.setDescription(
       `**Content:** *This message contained an image.*\n` +
       `**Message ID:** ${message.id}\n` +
-      `**Channel:** ${message.channel}\n\n` +
+      `**Channel:** <#${message.channel.id}>\n\n` +
       `**Author:** ${message.author}\n` +
       `**Author Tag:** ${message.author.tag}\n` +
       `**Author ID:** ${message.author.id}\n\n` +
