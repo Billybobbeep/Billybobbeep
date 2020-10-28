@@ -51,7 +51,7 @@ module.exports = async(client, msg, args, prefix, message) => {
         return;
       }
     }
-    db.push('mutedMembers', message.guild.id + '_' + user.id + '_' + ms(time))
+    db.push('mutedMembers', message.guild.id + '_' + user.id + '_' + (Date.Now() + time))
   }
   var debounce = false;
 
