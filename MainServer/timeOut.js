@@ -25,7 +25,7 @@ function mute(db, client) {
         guild = client.guilds.cache.get(guild)
         let member = guild.members.cache.get(user);
         if (!member) return remove(MM, db, guild, user, time);
-        if (member.roles.cache.find(role => role.id === db.get(guild.id + db.get(message.guild.id + '.mutedRole')))) {
+        if (member.roles.cache.find(role => role.id === db.get(guild.id + db.get(guild + '.mutedRole')))) {
             if (Date.now() > ms(time)) {
                 remove(MM, db, guild, user, time)
             }
@@ -36,13 +36,14 @@ function mute(db, client) {
 }
 
 function remove(table, db, guild, user, time) {
+    let clientGuild = client.guilds.cache.get(guild);
     let member = guild.members.cache.get(user);
     console.log(table)
     table.splice(table.indexOf(guild.id.toString() + '_' + user.toString() + '_' + time.toString()), 1);
     db.set('mutedMembers', table);
     console.log(table);
     if (!member) return;
-    if (member.roles.cache.find(role => role.id === db.get(guild.id + db.get(message.guild.id + '.mutedRole')))) {
-        member.roles.remove(message.guild.roles.cache.find(role => role.id === db.get(message.guild.id + '.mutedRole')));
+    if (member.roles.cache.find(role => role.id === db.get(guild.id + db.get(guild.id + '.mutedRole')))) {
+        member.roles.remove(clientGuild.roles.cache.find(role => role.id === db.get(guild.id + '.mutedRole')));
     }
 }
