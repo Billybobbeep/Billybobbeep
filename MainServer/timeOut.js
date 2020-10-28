@@ -24,13 +24,13 @@ function mute(db, client) {
         
         guild = client.guilds.cache.get(guild)
         let member = guild.members.cache.get(user);
-        if (!member) return remove(MM, db, guild, user, time);
+        if (!member) return remove(MM, db, guild, user, time, client);
         if (member.roles.cache.find(role => role.id === db.get(guild.id + db.get(guild + '.mutedRole')))) {
             if (Date.now() > ms(time)) {
-                remove(MM, db, guild, user, time)
+                remove(MM, db, guild, user, time, client);
             }
         } else {
-            remove(MM, db, guild, user, time);
+            remove(MM, db, guild, user, time, client);
         }
     });
 }
