@@ -51,7 +51,7 @@ module.exports = async(client, msg, args, prefix, message) => {
         return;
       }
     }
-    setTimeout(() => { member.roles.remove(message.guild.roles.cache.find(role => role.id === db.get(message.guild.id + '.mutedRole'))); }, time)
+    db.push('mutedMembers', message.guild.id + '_' + user.id + '_' + ms(time))
   }
   var debounce = false;
 
