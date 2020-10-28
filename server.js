@@ -7,18 +7,68 @@ module.exports = async (client) => {
   const db = require('./databaseManager/index.js');
   const fs = require('fs');
   const { parse } = require('querystring');
+  const fetch = require('node-fetch');
 
   app.use('/style', express.static('style'));
   app.set('view engine', 'ejs');
 
   function listen() {
-
-    app.get('/', function(req, res) {
-      res.redirect("/home");
-    });
-    app.get('/:name', function(req, res, next) {
+    app.use(function(req, res, next) {
       console.log('New user to the site: \'' + req.url + '\'')
       next()
+    });
+    app.get('/api/database/:name/:id/get', (req, res) => {
+      if (req.params.name !== 'users') res.redirect('/home'); if (req.params.id !== 'rPUqgbgzBjTGfgZTZeHsDedGJVDUuEXWwKSxfZRymTVPttdLhDABAateSAuENZZVzwJsVheQTNbuZpRXtCqnqLRrsmASjQKQrJmTuFWNhFYQNFVXKkGjrgYYbEDZUjytDEZAXpAUejNQcachyvyHxEvSrfydQznwQQsGnPHnPNUnbFVtRNDXbHgHFqkkkqZsUjRSGsNWbzfwbXNZBmYTTXykCYxyRyEkdPCygqrDgksQsARDNxtZYkSwgWnjZRxBWKSgLWDMRQakwrHeJTPYtpLezdMksCbrWESccSCuxVtjtkeQyTjLaDcmaWbKbTjYNXGhAvMnpgnDLmHTZDhguJvRmnUTZbFBPHStTTqCZYNMBFHhNHDxzfdSknNzLkGbKxVkpQPXarYPbxVCsekhUTqQEpHJkfYBrPNgFhNqxLXUKuVaJAKahvSLfUkrWbawjATxHfgdDvRTjALZuTzkZVJcwsfZYwGdnGbYMLFhsduygNzkhkVgJYLuCWAbKYJKHyWEVqUUpsxwePmBrXJqVprZahWnSeUEprLrnXEagGSgGUZbHZkSMZagLfxaSPQxfgtzcchxEGzWPPxedueZugADeUQEufSsXSghktkXWuudggkVSwErYQhwVsRkMBEqZYUJMKmAskKYkpqTrFKTNZjgJcvrtBscXTWevaWLcTevNLNRcpcNPkYXJwKatDhNYMHaHZRrJYyrLHrKVuNtNtpCCyUSdEdRJTzcVphCgVqffzdbgHxKLxPbCkBqnwZpjXSRjVLarGpRZupwqbKPDkxFfsArhhspZPqyHBnTqvAcEaPGXTzQeCtXMRzvnadfykTafvNujCUBTXTsBbPtTJxAxcagyujMkBzDwqvZEWXfjfzmMCTbETRhrLduWcNNgKZhrwMgGRqPHHGyxRGCHkvRmPNMnpemXBrmUsBeznCBuSPaeCAZdGaGfjLkHmcEPHhXKQHRtSpUraympWASNhAvBKKtQZqLARfUQZYQhMZkhvKANExwqBggpATAugTs') res.redirect('/home'); if (req.query.bot != 'true') res.redirect('/home'); if (req.query.type != 'bot') res.redirect('/home'); bot.data(function(data) { res.send(data); });
+    });
+    app.get('/api/chatbot', async function(req, res) {
+      let message = req.query.message;
+      var reply = 'undefined';
+      if (!message) {
+        res.json('missing message query')
+      }
+      if (message.toLowerCase() === 'hello' || message.toLowerCase() === 'hi') reply = message;
+      if (message.toLowerCase().includes('test')) reply = 'test command';
+      if (message.toLowerCase().includes('ily')) reply = 'ily2';
+      if (reply === 'undefined') {
+        let response = await fetch('https://some-random-api.ml/chatbot?message=' + message);
+        reply = await response.text();
+        if (reply.toLowerCase().startsWith('<doctype html>')) res.json('This channel is causing issues for me. Please try again later.');
+        reply = reply.replace('response', '').replace('{', '').replace('}', '').replace('??', '?').replace('???', '?').replace('""', '').replace('"', '').replace('"', '').replace('error', '').replace(')', '').replace(':', '');
+      }
+      if (req.query.cap && req.query.cap === 'no' && req.query.punc && req.query.punc === 'no') {
+        res.json(reply.toLowerCase());
+      } else if (req.query.cap && req.query.cap === 'yes' && req.query.punc && req.query.punc === 'no') {
+        res.json(reply[0].toUpperCase() + reply.substring(1).toLowerCase());
+      } else if (req.query.cap && req.query.cap === 'yes' && req.query.punc && req.query.punc === 'yes') {
+        reply = reply[0].toUpperCase() + reply.substring(1).toLowerCase();
+        if (!message.endsWith('?') && !message.endsWith('!') && !message.endsWith('.') && !message.endsWith('/')) {
+          reply = reply + '.'
+        }
+        res.json(reply)
+      } else if (req.query.cap && req.query.cap === 'no' && req.query.punc && req.query.punc === 'yes') {
+        reply = reply.toLowerCase();
+        if (!message.endsWith('?') && !message.endsWith('!') && !message.endsWith('.') && !message.endsWith('/')) {
+          reply = reply + '.'
+        }
+        res.json(reply);
+      } else if (req.query.cap && req.query.cap === 'full' && req.query.punc && req.query.punc === 'yes') {
+        reply = reply.toUpperCase();
+        if (!message.endsWith('?') && !message.endsWith('!') && !message.endsWith('.') && !message.endsWith('/')) {
+          reply = reply + '.'
+        }
+        res.json(reply)
+      } else if (req.query.cap && req.query.cap === 'full' && req.query.punc && req.query.punc === 'no') {
+        res.json(reply.toUpperCase());
+      } else {
+        reply = reply[0].toUpperCase() + reply.substring(1).toLowerCase();
+        if (!message.endsWith('?') && !message.endsWith('!') && !message.endsWith('.') && !message.endsWith('/')) {
+          reply = reply + '.'
+        }
+        res.json(reply)
+      }
+    });
+    app.get('/', function(req, res) {
+      res.redirect("/home");
     });
     app.get('/home', function(req, res) {
       res.sendFile(__dirname + "/Public/index.html");
@@ -28,9 +78,6 @@ module.exports = async (client) => {
     });
     app.get('/home/analytics', (req, res) => {
       res.sendFile(__dirname + '/Public/analytics.html')
-    });
-    app.get('/home/database/:name/:id/get', (req, res) => {
-      if (req.params.name != 'users') res.redirect('/home'); if (req.params.id != 'rPUqgbgzBjTGfgZTZeHsDedGJVDUuEXWwKSxfZRymTVPttdLhDABAateSAuENZZVzwJsVheQTNbuZpRXtCqnqLRrsmASjQKQrJmTuFWNhFYQNFVXKkGjrgYYbEDZUjytDEZAXpAUejNQcachyvyHxEvSrfydQznwQQsGnPHnPNUnbFVtRNDXbHgHFqkkkqZsUjRSGsNWbzfwbXNZBmYTTXykCYxyRyEkdPCygqrDgksQsARDNxtZYkSwgWnjZRxBWKSgLWDMRQakwrHeJTPYtpLezdMksCbrWESccSCuxVtjtkeQyTjLaDcmaWbKbTjYNXGhAvMnpgnDLmHTZDhguJvRmnUTZbFBPHStTTqCZYNMBFHhNHDxzfdSknNzLkGbKxVkpQPXarYPbxVCsekhUTqQEpHJkfYBrPNgFhNqxLXUKuVaJAKahvSLfUkrWbawjATxHfgdDvRTjALZuTzkZVJcwsfZYwGdnGbYMLFhsduygNzkhkVgJYLuCWAbKYJKHyWEVqUUpsxwePmBrXJqVprZahWnSeUEprLrnXEagGSgGUZbHZkSMZagLfxaSPQxfgtzcchxEGzWPPxedueZugADeUQEufSsXSghktkXWuudggkVSwErYQhwVsRkMBEqZYUJMKmAskKYkpqTrFKTNZjgJcvrtBscXTWevaWLcTevNLNRcpcNPkYXJwKatDhNYMHaHZRrJYyrLHrKVuNtNtpCCyUSdEdRJTzcVphCgVqffzdbgHxKLxPbCkBqnwZpjXSRjVLarGpRZupwqbKPDkxFfsArhhspZPqyHBnTqvAcEaPGXTzQeCtXMRzvnadfykTafvNujCUBTXTsBbPtTJxAxcagyujMkBzDwqvZEWXfjfzmMCTbETRhrLduWcNNgKZhrwMgGRqPHHGyxRGCHkvRmPNMnpemXBrmUsBeznCBuSPaeCAZdGaGfjLkHmcEPHhXKQHRtSpUraympWASNhAvBKKtQZqLARfUQZYQhMZkhvKANExwqBggpATAugTs') res.redirect('/home'); if (req.query.bot != 'true') res.redirect('/home'); if (req.query.type != 'bot') res.redirect('/home'); bot.data(function(data) { res.send(data); });
     });
     app.get('/contact/submit', (req, res) => {
       if (!req.query) res.render('general.ejs');
