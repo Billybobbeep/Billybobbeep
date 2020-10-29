@@ -66,7 +66,7 @@ module.exports = async (message, db) => {
             if (debounce === false) {
                 message.channel.send(`You do not have a valid API key.\nTo get an API key use: \`${db.get(message.guild.id + '.prefix') || '~'}generate key\``);
             } else {
-                let newKey = makeid(13);
+                let newKey = makeid(22);
                 db.push('apiKey', message.author.id + '_' + newKey);
                 message.channel.send(`Regenerating API key...`).then(msg => msg.edit(`Check your DMs!`)).then(() => message.author.send(`Your new API key is: \`${newKey}\``));
             }
