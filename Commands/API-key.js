@@ -1,6 +1,7 @@
 module.exports = async (message, db) => {
     const Discord = require('discord.js');
     var embed = new Discord.MessageEmbed();
+    var currKey = db.get('apiKey');
     function makeid(length) {
         var result = '';
         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -22,7 +23,6 @@ module.exports = async (message, db) => {
         }
         message.channel.send('Check your DMs.');
     }
-    var currKey = db.get('apiKey');
     function generate() {
         if (!currKey || currKey.length < 0 || currKey === '[]') {
             generateKey()
@@ -43,14 +43,40 @@ module.exports = async (message, db) => {
                 }
             });
             if (debounce === false) {
-                generateKey()
+                
             }
         }
     }
     function regenerate() {
-
+        var table = []
+        var count = 0;
+        var debounce = false;
+        if (currKey.length > 0) {
+            currKey.forEach(result => {
+                table.push(result);
+                result = result.replace('_', ' ');
+                result = result.split(/ +/g);
+                if (result[0] === message.author.id) {
+                    table.splice(count, 1);
+                    db.set('apiKey', table);
+                    debounce = true;
+                }
+                count++;
+            });
+            if (debounce === false) {
+                message.channel.send(`You do not have a valid API key.\nTo get an API key use: \`${db.get(message.guild.id + '.prefix') || '~'}generate key\``);
+            } else {
+                let newKey = makeid(13);
+                db.push('apiKey', message.author.id + '_' + newKey);
+                message.channel.send(`Regenerating API key...`).then(msg => msg.edit(`Check your DMs!`)).then(() => message.author.send(`Your new API key is: \`${newKey}\``));
+            }
+        } else {
+            message.channel.send(`You do not have a valid API key.\nTo get an API key use: \`${db.get(message.guild.id + '.prefix') || '~'}generate key\``);
+        }
     }
-    if (message.content.toLowerCase().startsWith('regenerate')) {
+
+
+    if (message.content.toLowerCase().includes('regenerate')) {
         regenerate()
     } else {
         generate()
