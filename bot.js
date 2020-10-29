@@ -177,7 +177,7 @@ module.exports = async (client) => {
       const commandFile = require(`./Commands/setup/main.js`);
       return commandFile(client, message, db);
     }
-    if (message.content.toLowerCase() === prefix + 'generate api' || message.content.toLowerCase() === prefix + 'generate key') {
+    if (message.content.toLowerCase() === prefix + 'regenerate key' || message.content.toLowerCase() === prefix + 'generate key') {
       const commandFile = require(`./Commands/API-key`);
       return commandFile(message, db);
     }

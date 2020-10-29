@@ -1,5 +1,4 @@
 module.exports = async (message, db) => {
-    const hash = require('password-hash');
     const Discord = require('discord.js');
     var embed = new Discord.MessageEmbed();
     function makeid(length) {
@@ -24,26 +23,36 @@ module.exports = async (message, db) => {
         message.channel.send('Check your DMs.');
     }
     var currKey = db.get('apiKey');
-    if (!currKey || currKey.length < 0 || currKey === '[]') {
-        generateKey()
-    }
-    if (currKey && currKey.length > 0 && currKey !== '[]') {
-        var debounce = false;
-        currKey.forEach(result => {
-            result = result.replace('_', ' ');
-            result = result.split(/ +/g);
-            if (result[0] === message.author.id) {
-                try {
-                    message.author.send(`Your API key is \`${result[1]}\``);
-                } catch {
-                    return message.channel.send(`You cannot use this command when your DMs are turned off.`);
-                }
-                message.channel.send('It appears you already have an API key.\nCheck your DMs');
-                debounce = true;
-            }
-        });
-        if (debounce === false) {
+    function generate() {
+        if (!currKey || currKey.length < 0 || currKey === '[]') {
             generateKey()
         }
+        if (currKey && currKey.length > 0 && currKey !== '[]') {
+            var debounce = false;
+            currKey.forEach(result => {
+                result = result.replace('_', ' ');
+                result = result.split(/ +/g);
+                if (result[0] === message.author.id) {
+                    try {
+                        message.author.send(`Your API key is \`${result[1]}\``);
+                    } catch {
+                        return message.channel.send(`You cannot use this command when your DMs are turned off.`);
+                    }
+                    message.channel.send('It appears you already have an API key.\nCheck your DMs');
+                    debounce = true;
+                }
+            });
+            if (debounce === false) {
+                generateKey()
+            }
+        }
+    }
+    function regenerate() {
+
+    }
+    if (message.content.toLowerCase().startsWith('regenerate')) {
+        regenerate()
+    } else {
+        generate()
     }
 }
