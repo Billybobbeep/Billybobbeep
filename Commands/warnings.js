@@ -9,24 +9,25 @@ module.exports = async (client, msg, args, prefix, message) => {
   if (user.username === undefined) {
     user = user.user
   }
+  if (user.bot) return message.channel.send(`Bots cannot be warned.`);
   if (tWarnings > 0) {
     reasons = reasons = db.get(message.guild.id + '_' + user.id + '.warnReasons');
     const embed = new Discord.MessageEmbed()
     .setDescription(`${user.username} has **${tWarnings}** warnings.`)
     .setTimestamp()
     .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-    .setAuthor(`${message.author.tag}`)
+    .setAuthor(`${user.tag}`)
     reasons.forEach(result => {
       count++;
       embed.addField(`Case #${count}`, result)
     });
-    message.channel.send(embed)
+    message.channel.send(embed);
   } else {
     const embed = new Discord.MessageEmbed()
     .setDescription(`${user.username} has **${tWarnings}** warnings.`)
     .setTimestamp()
     .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-    .setAuthor(`${message.author.tag}`)
+    .setAuthor(`${user.tag}`)
     message.channel.send(embed);
   }
 }

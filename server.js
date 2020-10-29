@@ -17,14 +17,75 @@ module.exports = async (client) => {
       console.log('New user to the site: \'' + req.url + '\'')
       next()
     });
-    app.post('/api/database/:name/:id/get', (req, res) => {
+    app.post('/api/:key/database/:name/:id/get', (req, res) => {
       var key = 'rPUqgbgzBjTGfgZTZeHsDedGJVDUuEXWwKSxfZRymTVPttdLhDABAateSAuENZZVzwJsVheQTNbuZpRXtCqnqLRrsmASjQKQrJmTuFWNhFYQNFVXKkGjrgYYbEDZUjytDEZAXpAUejNQcachyvyHxEvSrfydQznwQQsGnPHnPNUnbFVtRNDXbHgHFqkkkqZsUjRSGsNWbzfwbXNZBmYTTXykCYxyRyEkdPCygqrDgksQsARDNxtZYkSwgWnjZRxBWKSgLWDMRQakwrHeJTPYtpLezdMksCbrWESccSCuxVtjtkeQyTjLaDcmaWbKbTjYNXGhAvMnpgnDLmHTZDhguJvRmnUTZbFBPHStTTqCZYNMBFHhNHDxzfdSknNzLkGbKxVkpQPXarYPbxVCsekhUTqQEpHJkfYBrPNgFhNqxLXUKuVaJAKahvSLfUkrWbawjATxHfgdDvRTjALZuTzkZVJcwsfZYwGdnGbYMLFhsduygNzkhkVgJYLuCWAbKYJKHyWEVqUUpsxwePmBrXJqVprZahWnSeUEprLrnXEagGSgGUZbHZkSMZagLfxaSPQxfgtzcchxEGzWPPxedueZugADeUQEufSsXSghktkXWuudggkVSwErYQhwVsRkMBEqZYUJMKmAskKYkpqTrFKTNZjgJcvrtBscXTWevaWLcTevNLNRcpcNPkYXJwKatDhNYMHaHZRrJYyrLHrKVuNtNtpCCyUSdEdRJTzcVphCgVqffzdbgHxKLxPbCkBqnwZpjXSRjVLarGpRZupwqbKPDkxFfsArhhspZPqyHBnTqvAcEaPGXTzQeCtXMRzvnadfykTafvNujCUBTXTsBbPtTJxAxcagyujMkBzDwqvZEWXfjfzmMCTbETRhrLduWcNNgKZhrwMgGRqPHHGyxRGCHkvRmPNMnpemXBrmUsBeznCBuSPaeCAZdGaGfjLkHmcEPHhXKQHRtSpUraympWASNhAvBKKtQZqLARfUQZYQhMZkhvKANExwqBggpATAugTs'
       if (req.params.name !== 'all') res.json('Error: Invalid database');
       if (req.params.id !== key) res.json('Error: Invalid key');
+      key = req.params.key;
+      var debounce = false;
+      if (key !== undefined) {
+        let keys = db.get('apiKey');
+        if (!keys || keys === '[]') {
+          res.json('An invalid API key was sent.');
+          res.status(404);
+          debounce = true;
+        } else if (keys.length < 1) {
+          res.json('An invalid API key was sent.');
+          res.status(404);
+          debounce = true;
+        } else {
+          keys.forEach(result => {
+            result = result.replace('_', ' ');
+            result = result.split(/ +/g);
+            if (req.params.key === result[1]) {
+              debounce = '1';
+            }
+          });
+          if (debounce !== '1') {
+            res.json('An invalid API key was sent.');
+            res.status(404);
+            debounce = true;
+          }
+        }
+      }
+      if (debounce === true) return;
       bot.data(function(data) { res.send(data); });
     });
-    app.get('/api/chatbot', async function(req, res) {
+    app.get('/api/:key/chatbot', async function(req, res) {
       let message = req.query.message;
+      let key = req.params.key;
+      var debounce = false;
+      if (!key) {
+        res.json('An invalid API key was sent.');
+        res.status(404);
+        debounce = true;
+      }
+      if (key !== undefined) {
+        let keys = db.get('apiKey');
+        if (!keys || keys === '[]') {
+          res.json('An invalid API key was sent.');
+          res.status(404);
+          debounce = true;
+        } else if (keys.length < 1) {
+          res.json('An invalid API key was sent.');
+          res.status(404);
+          debounce = true;
+        } else {
+          keys.forEach(result => {
+            result = result.replace('_', ' ');
+            result = result.split(/ +/g);
+            if (req.params.key === result[1]) {
+              debounce = '1';
+            }
+          });
+          if (debounce !== '1') {
+            res.json('An invalid API key was sent.');
+            res.status(404);
+            debounce = true;
+          }
+        }
+      }
+      if (debounce === true) return;
       var reply = 'undefined';
       if (!message) {
         res.json('missing message query')
@@ -204,8 +265,13 @@ module.exports = async (client) => {
       });
 
     app.use(function(req, res) {
-      res.status(404);
-      res.sendFile(__dirname + '/Public/error404.html');
+      if (req.url.toLowerCase().startsWith('/api')) {
+        res.status(404);
+        res.json('An invalid API key was sent.')
+      } else {
+        res.status(404);
+        res.sendFile(__dirname + '/Public/error404.html');
+      }
     });
 
     app.listen(port, () => { console.log("Billybobbeep is online") });

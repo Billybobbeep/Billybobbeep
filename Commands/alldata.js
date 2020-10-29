@@ -1,5 +1,6 @@
 const db = require('../databaseManager/index.js');
 var table = []
+const ms = require('ms')
 
 module.exports = (client, msg, args, prefix, message) => {
   if (args[0] && args[0] === 'guild') {
@@ -9,10 +10,10 @@ module.exports = (client, msg, args, prefix, message) => {
     console.log(table)
   } else {
     //db.delete(message.author.id);
-    console.log(db.fetchAll())
+    console.log(db.fetchAll());
+    console.log(db.get(message.author.id + '.economy.streak'));
     message.channel.send('All of the data from the database is currently in the terminal', {
-      tts: true,
-      disableMentions: true
+      tts: true
      }).then(msg => { setTimeout(() => { msg.delete()}, 6000)});
   }
 }

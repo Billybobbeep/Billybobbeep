@@ -8,7 +8,8 @@ module.exports = async (client, msg, args, prefix, message) => {
     var user = message.mentions.users.first();
     if (!user) return message.channel.send('Please specify a user.');
 
-    if (user.id === message.author.id) return message.channel.send('You cannot remove your own warnings')
+    if (user.id === message.author.id) return message.channel.send('You cannot remove your own warnings');
+    if (user.bot) return message.channel.send(`Bots cannot be warned.`);
 
     var member;
 

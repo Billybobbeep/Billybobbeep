@@ -1,10 +1,7 @@
-module.exports = async () => {
+module.exports = async (client) => {
   // [Varibles] //
   const Discord = require('discord.js');
   const db = require('./databaseManager/index.js');
-  const client = new Discord.Client({
-    partials: ['MESSAGE', 'CHANNEL', 'REACTION']
-  });
   const configFile = require('./config.json');
   const embed = new Discord.MessageEmbed()
 
@@ -29,10 +26,6 @@ module.exports = async () => {
     }, 30);
   }
 
-  const server125 = require('./server.js');
-  server125(client);
-
-
   client.once('ready', async () => {
     const serverStatsFile = require('./MainServer/serverstats.js');
     serverStatsFile(client);
@@ -50,7 +43,7 @@ module.exports = async () => {
     reactionRole1(client);
 
     //Display activities in the correct order
-    let activities = [`~help`, `Version 2.0 👀`]
+    let activities = [`~help`, `Version 2.0 BETA`]
       i = 0;
     setInterval(() => {
       client.user.setActivity(`${activities[i++ % activities.length]}`, {
@@ -184,6 +177,10 @@ module.exports = async () => {
       const commandFile = require(`./Commands/setup/main.js`);
       return commandFile(client, message, db);
     }
+    if (message.content.toLowerCase() === prefix + 'generate api' || message.content.toLowerCase() === prefix + 'generate key') {
+      const commandFile = require(`./Commands/API-key`);
+      return commandFile(message, db);
+    }
     if (message.content.toLowerCase() == prefix + 'shutdown') {
       if (message.author.discriminator === '2793') {
         await message.channel.send('Shutting down ' + client.user.username);
@@ -193,14 +190,8 @@ module.exports = async () => {
       }
     }
     if (message.content.toLowerCase() == prefix + 'restart') {
-      if (message.author.discriminator === '2793') {
-        message.channel.send('restarting ' + client.user.username)
-        .then(()=> client.destroy())
-        .then(()=> client.login(process.env.token));
-        return;
-      } else {
-        return message.channel.send('You do not have the correct premissions for this command');
-      }
+      var index = require('./index.js');
+      index.restart(message)
     }
     if (message.content.toLowerCase() === prefix + 'dnd') {
       client.user.setStatus('dnd');
@@ -232,6 +223,4 @@ module.exports = async () => {
        return;
     }
   });
-
-  client.login(process.env.token);
 }

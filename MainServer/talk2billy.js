@@ -3,6 +3,7 @@ const fetch = require('node-fetch');
 const Discord = require('discord.js');
 
 module.exports = async (message) => {
+  if (message.channel.type === 'dm') return;
   if (!db.get(message.guild.id + '.talk2billy')) return;
   let args = message.content.split(/ +/g);
   if (!message.guild) return;
@@ -16,7 +17,7 @@ module.exports = async (message) => {
       return message.channel.send('I am not responsible for any form of emergency call.\nIf you need any service from the emergency services, please call them yourself or ask another guild member to do it for you.')
     }
     if (message.attachments.size < 1) {
-      const response = await fetch('https://some-random-api.ml/chatbot?message=' + args.join('%20').replace(' ', '%20'));
+      const response = await fetch('http://localhost:3000/api/wlQSlcdVuCjYP4UMDaNoPF/chatbot?message=' + args.join('%20').replace(' ', '%20') + '&punc=yes&cap=yes');
       const text = await response.text();
       if (text.startsWith('<!DOCTYPE html>')) {
         message.channel.send('This channel is causing issues for me. Please try again later.')
