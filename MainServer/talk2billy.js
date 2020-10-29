@@ -3,6 +3,7 @@ const fetch = require('node-fetch');
 const Discord = require('discord.js');
 
 module.exports = async (message) => {
+  if (!db.get(message.guild.id + '.talk2billy')) return;
   let args = message.content.split(/ +/g);
   if (!message.guild) return;
   if (message.author.bot) return;

@@ -12,7 +12,7 @@ module.exports = async (prefix, message, client) => {
   var cooldown = 8.64e+7;
   var reward = 75;
   let tStreak = db.get(message.author.id + '.economy.tStreak') || 1;
-  let streak = db.get(message.author.id + '.economy.streak') || 0;
+  let streak = db.get(message.author.id + '.economy.streak') || 1;
   let jobs = db.get(message.author.id + '.jobs') || undefined;
   let balance = db.get(message.author.id + '.economy.balance');
   let lastRun = db.get(message.author.id + '.economy.daily') || 0
@@ -74,27 +74,26 @@ module.exports = async (prefix, message, client) => {
     db.delete(message.author.id + '.economy.streak');
     db.delete(message.author.id + '.economy.tStreak');
   }
-  if (streak === 1 || streak === 0) {
-    semoji = `${sem}${nem}${nem}${nem}${nem}`
-  } else if (streak === 2) { semoji = `${sem}${sem}${nem}${nem}${nem}`
-  } else if (streak === 3) { semoji = `${sem}${sem}${sem}${nem}${nem}`
-  } else if (streak === 4) { semoji = `${sem}${sem}${sem}${sem}${nem}`
-  } else if (streak === 5) { semoji = `${sem}${sem}${sem}${sem}${sem}`
+  if (streak === 1) semoji = `${sem}${nem}${nem}${nem}${nem}`
+  else if (streak === 2) semoji = `${sem}${sem}${nem}${nem}${nem}`
+  else if (streak === 3) semoji = `${sem}${sem}${sem}${nem}${nem}`
+  else if (streak === 4) semoji = `${sem}${sem}${sem}${sem}${nem}`
+  else if (streak === 5) { semoji =  `${sem}${sem}${sem}${sem}${sem}`
     embed.setDescription(`You have collected your **${dailyAmt + reward}** reward.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
     embed.setFooter(`Total Streak: ${tStreak}\nWallet: $${balance + dailyAmt + reward}`);
     message.channel.send(embed);
     db.set(message.author.id + '.economy.daily', Date.now());
-    return db.delete(message.author.id + '.economy.streak');
+    db.delete(message.author.id + '.economy.streak');
   }
 
   if (lastRun !== null && cooldown - (Date.now() - lastRun) > 0) {
     embed.setDescription(`You have already collected your daily allowance today.\nTime Left: **${timeObj}**`);
     message.channel.send(embed);
   } else {
+    db.add(message.author.id + '.economy.streak', 1);
+    db.add(message.author.id + '.economy.tStreak', 1);
     db.add(message.author.id + '.economy.balance', dailyAmt);
     db.set(message.author.id + '.economy.daily', Date.now());
-    db.add(message.author.id + '.economy.streak', 1)
-    db.add(message.author.id + '.economy.tStreak', 1)
 
     //db.delete(message.author.id);
     embed.setDescription(`I have added **$${dailyAmt}** onto your account balance.\n\n**__Daily streak progress__**\n${semoji}\n\n`);

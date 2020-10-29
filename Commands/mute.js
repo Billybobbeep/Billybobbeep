@@ -29,7 +29,7 @@ module.exports = async(client, msg, args, prefix, message) => {
     embed1.addField(`Responsible Moderator:`, message.author.tag);
     embed1.addField(`Reason:`, reason);
     embed1.addField(`Guild:`, message.guild.name);
-    embed1.addField(`Time:`, ms(time));
+    embed1.addField(`Time:`, ms(time).replace('m', ' minute(s)').replace('h', ' hours'));
     try {
     await user.send(embed1)
     } catch {
@@ -44,12 +44,12 @@ module.exports = async(client, msg, args, prefix, message) => {
       embed2.setTitle('User Muted');
       embed2.setTimestamp();
       embed2.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
-      embed2.setDescription(`**User:** ${user}\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Time:** ${ms(time)}\n**Reason:** ${reason}\n\n**Moderator:** ${message.author}\n**Moderator Tag:** ${message.author.tag}\n**Moderator ID:** ${message.author.id}`);
-      try {
+      embed2.setDescription(`**User:** ${user}\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Time:** ${ms(time).replace('m', ' minute(s)').replace('h', ' hours')}\n**Reason:** ${reason}\n\n**Moderator:** ${message.author}\n**Moderator Tag:** ${message.author.tag}\n**Moderator ID:** ${message.author.id}`);
+      /*try {
         LoggingChannel.send(embed2)
       } catch {
         return;
-      }
+      }*/
     }
     db.push('mutedMembers', message.guild.id + '_' + user.id + '_' + (Date.now() + time))
   }

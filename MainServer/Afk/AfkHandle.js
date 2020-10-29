@@ -64,7 +64,7 @@ module.exports = async (client, message) => {
       db.set(user.id + '.isAFKreason', reason)
       message.channel.send(embed);
       if (message.author.id === user.id) {
-        embed.setDescription(`You have marked your self as AFK in ${message.guild}\nReason: ${reason}`)
+        embed.setDescription(`You have marked yourself as AFK in ${message.guild}\nReason: ${reason}`)
         embed.setFooter(`When you are back please run the command '${db.get(message.guild.id + '.prefix') || '~'}back me' in ${message.guild}`)
         try {
           return user.send(embed)
