@@ -33,7 +33,10 @@ module.exports = async(msg, args, prefix, message) => {
         '*Requires:* Manage Server premissions.\n' +
         `${prefix}dm [user] [message]\n` +
         '*Sends a DM to a user.*\n' +
-        '*Requires:* Manage Message premissions.')
+        '*Requires:* Manage Message premissions.\n\n' +
+        `${prefix}logs\n` +
+        '*View recent mod logs.*\n' +
+        '*Requires:* View audit log premissions.')
         .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
         .setFooter(`Requested by: ${message.author.tag}`)
         .setTimestamp()
