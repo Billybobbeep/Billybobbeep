@@ -182,8 +182,104 @@ module.exports = (client) => {
                   role => role.id === '736222535611318363'
                 )
               );
-          }
+      }
+    }
+      
+      
+
+
+      if (reaction.message.id === '771833349567676476') {
+        let msg = await reaction.message.channel.messages.fetch(
+          '771833349567676476'
+        );
+        if (reaction.emoji.id == '771826679722410044') {
+          await reaction.message.guild.members.cache
+            .find(member => member.id === user.id)
+            .roles.add(
+              reaction.message.guild.roles.cache.find(
+                role => role.id === '771817187693821982'
+              )
+            );
+        }
+        if (reaction.emoji.id == '734494044230516767') {
+          await reaction.message.guild.members.cache
+            .find(member => member.id === user.id)
+            .roles.add(
+              reaction.message.guild.roles.cache.find(
+                role => role.id === '771816718577827880'
+              )
+            );
+        }
+        if (reaction.emoji.name == '771827072888209419') {
+          await reaction.message.guild.members.cache
+            .find(member => member.id === user.id)
+            .roles.add(
+              reaction.message.guild.roles.cache.find(
+                role => role.id === '771817303267344404'
+              )
+            );
+        }
+        if (reaction.emoji.name == '🔊') {
+          await reaction.message.guild.members.cache
+            .find(member => member.id === user.id)
+            .roles.add(
+              reaction.message.guild.roles.cache.find(
+                role => role.id === '771817305918144522'
+              )
+            );
+        }
+        if (reaction.emoji.id== '771828077093191732') {
+          await reaction.message.guild.members.cache
+            .find(member => member.id === user.id)
+            .roles.add(
+              reaction.message.guild.roles.cache.find(
+                role => role.id === '771817700804395010'
+              )
+            );
+        }
+        if (reaction.emoji.name == '✨') {
+          await reaction.message.guild.members.cache
+            .find(member => member.id === user.id)
+            .roles.add(reaction.message.guild.roles.cache.find(role => role.id === '771818226614534154'));
         }
       }
+    }
+  });
+
+
+  client.on('messageReactionRemove', async (reaction, user) => {
+    if (reaction.message.id === '771833349567676476') {
+      if (reaction.emoji.id == '771826679722410044') {
+        await reaction.message.guild.members.cache
+          .find(member => member.id === user.id)
+          .roles.remove(
+            reaction.message.guild.roles.cache.find(role => role.id === '771817187693821982'));
+      }
+      if (reaction.emoji.id == '734494044230516767') {
+        await reaction.message.guild.members.cache
+          .find(member => member.id === user.id)
+          .roles.remove(reaction.message.guild.roles.cache.find(role => role.id === '771816718577827880'));
+      }
+      if (reaction.emoji.name == '771827072888209419') {
+        await reaction.message.guild.members.cache
+          .find(member => member.id === user.id)
+          .roles.remove(reaction.message.guild.roles.cache.find(role => role.id === '771817303267344404'));
+      }
+      if (reaction.emoji.name == '🔊') {
+        await reaction.message.guild.members.cache
+          .find(member => member.id === user.id)
+          .roles.remove(reaction.message.guild.roles.cache.find(role => role.id === '771817305918144522'));
+      }
+      if (reaction.emoji.id== '771828077093191732') {
+        await reaction.message.guild.members.cache
+          .find(member => member.id === user.id)
+          .roles.remove(reaction.message.guild.roles.cache.find(role => role.id === '771817700804395010'));
+      }
+      if (reaction.emoji.name == '✨') {
+        await reaction.message.guild.members.cache
+          .find(member => member.id === user.id)
+          .roles.remove(reaction.message.guild.roles.cache.find(role => role.id === '771818226614534154'));
+      }
+    }
   });
 }
