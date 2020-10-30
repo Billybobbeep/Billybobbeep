@@ -36,6 +36,9 @@ module.exports = async(msg, args, prefix, message) => {
         '*Requires:* Manage Message premissions.\n\n' +
         `${prefix}logs\n` +
         '*View recent mod logs.*\n' +
+        '*Requires:* View audit log premissions.\n' +
+        `${prefix}logs help\n` +
+        '*Help embed for the mod logs.*\n' +
         '*Requires:* View audit log premissions.')
         .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
         .setFooter(`Requested by: ${message.author.tag}`)
