@@ -52,7 +52,11 @@ module.exports = async(message, prefix) => {
     `${prefix}font\n` +
     '*Gives you a list of fonts you can turn your message into.*\n\n' +
     `${prefix}image\n` +
-    '*Generates a random image.*')
+    '*Generates a random image.*\n\n' +
+    `${prefix}generate key\n` +
+    '*Request a key for the billybobbeep API services.*\n\n' +
+    `${prefix}regenerate key\n` +
+    '*Request a new API key.*')
   .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
   .setFooter('TIP: Press the arrows to switch pages')
 
@@ -86,13 +90,14 @@ module.exports = async(message, prefix) => {
         wait()
       } else {
         if (msg.embeds[0].title === PageTwo.title) {
-          msg.edit(PageOne)
-          reaction.users.remove(message.author.id)
+          msg.edit(PageOne);
+          reaction.users.remove(message.author.id);
         } else if (msg.embeds[0].title === PageThree.title) {
-          msg.edit(PageTwo)
-          reaction.users.remove(message.author.id)
+          msg.edit(PageTwo);
+          reaction.users.remove(message.author.id);
         } else if (msg.embeds[0].title === PageFour.title) {
-          msg.edit(PageThree)
+          msg.edit(PageThree);
+          reaction.users.remove(message.author.id);
         }
         wait()
       }
