@@ -1,4 +1,4 @@
-module.exports = async client => {
+module.exports = async (message, client) => {
   const Discord = require(`discord.js`);
   const db = require('../../data/databaseManager/index.js');
   const embed = new Discord.MessageEmbed()
@@ -8,13 +8,8 @@ module.exports = async client => {
   let command;
   let pinned;
 
-  client.on('messageDelete', async message => {
   if (!message.guild) return;
-  try {
   if (message.author.bot) return;
-  } catch {
-    return
-  }
   if (!message || !message.author.id) return;
   embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
   let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
@@ -32,7 +27,7 @@ module.exports = async client => {
   }
 
   if (message.content.toLowerCase().startsWith(prefix + `purge`)) return;
-  if (message.content === null || message.content === " " || message.content === undefined) {
+  if (message.content === null || message.content === ' ' || message.content === undefined) {
     embed.setDescription(
       `**Content:** *This message provided no text.*\n` +
       `**Message ID:** ${message.id}\n` +
@@ -98,5 +93,4 @@ module.exports = async client => {
   } catch {
     return;
   }
-});
-};
+}

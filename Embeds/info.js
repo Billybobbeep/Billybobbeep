@@ -36,4 +36,4 @@ module.exports = async (client, message) => {
     ])
     .setTimestamp();
   message.channel.send(embed);
-};
+}

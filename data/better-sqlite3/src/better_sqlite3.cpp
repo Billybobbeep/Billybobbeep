@@ -370,7 +370,7 @@ void Database::ThrowSqliteError (Addon * addon, char const * message, int code)
                 v8::Local<v8::Value> args[2] = {
                         StringFromUtf8(isolate, message, -1),
                         addon->cs.Code(isolate, code)
-                };
+                }
                 isolate->ThrowException(v8::Local<v8::Function>::New(isolate, addon->SqliteError)
                         ->NewInstance( isolate -> GetCurrentContext ( ) , 2, args)
                         .ToLocalChecked());
@@ -1656,7 +1656,7 @@ Binder::Result Binder::BindArgs (v8::FunctionCallbackInfo <v8 :: Value> const & 
                         count += 1;
                 }
 
-                return { count, bound_object };
+                return { count, bound_object }
 }
 #line 32 "./src/better_sqlite3.lzz"
 Addon::Addon (v8::Isolate * isolate)

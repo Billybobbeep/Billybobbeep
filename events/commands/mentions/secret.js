@@ -1,8 +1,9 @@
-module.exports = async (client, message, args) => {
+module.exports = async (message, args) => {
   if (!args[2]) {
     embed.setDescription('Please specify a message to send');
-    return message.channel.send(embed)
+    message.channel.send(embed)
+  } else {
+    await message.delete();
+    await message.channel.send('||' + args.slice(2).join(" ") + '||');
   }
-  await message.delete();
-  await message.channel.send('||' + args.slice(2).join(" ") + '||');
 }

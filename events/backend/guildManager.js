@@ -3,7 +3,7 @@ const db = require('../../data/databaseManager/index.js');
 const configFile = require('../../structure/config.json');
 const embed = new MessageEmbed()
 
-module.exports.guildAdded = async (client, guild) => {
+module.exports.add = async (guild, client) => {
       setTimeout(async function() {
         let channelID;
         let channels = guild.channels.cache;
@@ -51,7 +51,7 @@ module.exports.guildAdded = async (client, guild) => {
     LoggingChannel.send(embed)
   }
 
-module.exports.guildDelete = guild => {
+module.exports.remove = (guild, client) => {
   if (db.get(guild.id)) db.delete(guild.id);
               
   const embed = new MessageEmbed()

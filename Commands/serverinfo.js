@@ -6,7 +6,7 @@ const filterLevels = {
 	DISABLED: 'Off',
 	MEMBERS_WITHOUT_ROLES: 'No Role',
 	ALL_MEMBERS: 'Everyone'
-};
+}
 
 const verificationLevels = {
 	NONE: 'None',
@@ -14,7 +14,7 @@ const verificationLevels = {
 	MEDIUM: 'Medium',
 	HIGH: 'High',
 	VERY_HIGH: 'Very high'
-};
+}
 
 const regions = {
 	brazil: 'Brazil',
@@ -30,7 +30,7 @@ const regions = {
 	'us-east': 'US East',
 	'us-west': 'US West',
 	'us-south': 'US South'
-};
+}
 
 module.exports = async(client, msg, args, prefix, message) => {
 		const roles = message.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
@@ -78,4 +78,4 @@ module.exports = async(client, msg, args, prefix, message) => {
 			.setTimestamp();
 		message.channel.send(embed);
 
-};
+}

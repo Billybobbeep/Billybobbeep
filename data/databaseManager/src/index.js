@@ -17,7 +17,7 @@ var methods = {
     has: require("./methods/has.js"),
     all: require("./methods/all.js"),
     type: require("./methods/type"),
-};
+}
 
 module.exports = {
     /**
@@ -231,7 +231,7 @@ module.exports = {
                 { id: key, ops: ops || {} },
                 this.tableName
             );
-        };
+        }
 
         this.get = function (key, ops) {
             if (!key)
@@ -243,7 +243,7 @@ module.exports = {
                 { id: key, ops: ops || {} },
                 this.tableName
             );
-        };
+        }
 
         this.set = function (key, value, ops) {
             if (!key)
@@ -259,7 +259,7 @@ module.exports = {
                 { stringify: true, id: key, data: value, ops: ops || {} },
                 this.tableName
             );
-        };
+        }
 
         this.add = function (key, value, ops) {
             if (!key)
@@ -275,7 +275,7 @@ module.exports = {
                 { id: key, data: value, ops: ops || {} },
                 this.tableName
             );
-        };
+        }
 
         this.subtract = function (key, value, ops) {
             if (!key)
@@ -291,7 +291,7 @@ module.exports = {
                 { id: key, data: value, ops: ops || {} },
                 this.tableName
             );
-        };
+        }
 
         this.push = function (key, value, ops) {
             if (!key)
@@ -307,7 +307,7 @@ module.exports = {
                 { stringify: true, id: key, data: value, ops: ops || {} },
                 this.tableName
             );
-        };
+        }
 
         this.delete = function (key, ops) {
             if (!key)
@@ -319,7 +319,7 @@ module.exports = {
                 { id: key, ops: ops || {} },
                 this.tableName
             );
-        };
+        }
 
         this.has = function (key, ops) {
             if (!key)
@@ -331,7 +331,7 @@ module.exports = {
                 { id: key, ops: ops || {} },
                 this.tableName
             );
-        };
+        }
 
         this.includes = function (key, ops) {
             if (!key)
@@ -343,23 +343,23 @@ module.exports = {
                 { id: key, ops: ops || {} },
                 this.tableName
             );
-        };
+        }
 
         this.fetchAll = function (ops) {
             return arbitrate("all", { ops: ops || {} }, this.tableName);
-        };
+        }
 
         this.all = function (ops) {
             return arbitrate("all", { ops: ops || {} }, this.tableName);
-        };
+        }
     },
-};
+}
 
 function arbitrate(method, params, tableName) {
     // Configure Options
     let options = {
         table: tableName || params.ops.table || "json",
-    };
+    }
 
     // Access Database
     db.prepare(

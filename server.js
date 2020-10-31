@@ -1,9 +1,9 @@
 module.exports = async (client) => {
-  const express = require("express");
+  const express = require('express');
   const app = express();
   const Discord = require('discord.js')
   var port = 3000;
-  const bot = require("./bot");
+  const bot = require('./utils/data.js');
   const db = require('./data/databaseManager/index.js');
   const fs = require('fs');
   const { parse } = require('querystring');
@@ -69,7 +69,7 @@ module.exports = async (client) => {
         let response = await fetch('https://some-random-api.ml/chatbot?message=' + message);
         reply = await response.text();
         if (reply.toLowerCase().startsWith('<!doctype html>')) res.json('This channel is causing issues for me. Please try again later.');
-        reply = reply.replace('response', '').replace('{', '').replace('}', '').replace('??', '?').replace('???', '?').replace('""', '').replace('"', '').replace('"', '').replace('error', '').replace(')', '').replace(':', '');
+        reply = reply.replace('response', '').replace('{', '').replace('}', '').replace('??', '?').replace('???', '?').replace('"', '').replace('"', '').replace('"', '').replace('error', '').replace(')', '').replace(':', '');
       }
       if (req.query.cap && req.query.cap === 'no' && req.query.punc && req.query.punc === 'no') {
         res.json(reply.toLowerCase());
@@ -112,13 +112,13 @@ module.exports = async (client) => {
       }
     });
     app.get('/', function(req, res) {
-      res.redirect("/home");
+      res.redirect('/home');
     });
     app.get('/home', function(req, res) {
-      res.sendFile(__dirname + "/Public/index.html");
+      res.sendFile(__dirname + '/Public/index.html');
     });
     app.get('/home/status', function(req, res) {
-      res.sendFile(__dirname + "/Public/status.html");
+      res.sendFile(__dirname + '/Public/status.html');
     });
     app.get('/home/analytics', (req, res) => {
       res.sendFile(__dirname + '/Public/analytics.html')
@@ -151,10 +151,10 @@ module.exports = async (client) => {
           var total = data[0].total;
           var website = data[0].website;
           var json = [{
-            "total": total + 1,
-            "spoink": data[0].spoink,
-            "other": data[0].other,
-            "website": website + 1
+            'total': total + 1,
+            'spoink': data[0].spoink,
+            'other': data[0].other,
+            'website': website + 1
           }]
           json = JSON.stringify(json)
           fs.writeFile('./Public/analytics/invites.json', json, 'utf8', function() { })
@@ -164,10 +164,10 @@ module.exports = async (client) => {
             var total = data[0].total;
             var spoink = data[0].spoink;
             var json = [{
-              "total": total + 1,
-              "spoink": spoink + 1,
-              "other": data[0].other,
-              "website": data[0].website
+              'total': total + 1,
+              'spoink': spoink + 1,
+              'other': data[0].other,
+              'website': data[0].website
             }]
             json = JSON.stringify(json)
             fs.writeFile('./Public/analytics/invites.json', json, 'utf8', function() { })
@@ -179,10 +179,10 @@ module.exports = async (client) => {
             var total = data[0].total;
             var other = data[0].other;
             var json = [{
-              "total": total + 1,
-              "spoink": data[0].spoink,
-              "other": other + 1,
-              "website": data[0].website
+              'total': total + 1,
+              'spoink': data[0].spoink,
+              'other': other + 1,
+              'website': data[0].website
             }]
             json = JSON.stringify(json)
             fs.writeFile('./Public/analytics/invites.json', json, 'utf8', function() { })
@@ -246,7 +246,7 @@ module.exports = async (client) => {
       }
     });
 
-    app.listen(port, () => { console.log("Billybobbeep is online") });
+    app.listen(port, () => { console.log('Billybobbeep is online') });
 
   }
 

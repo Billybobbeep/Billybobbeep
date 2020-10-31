@@ -27,4 +27,4 @@ if (!args[2] || args[2].toLowerCase() === 'help') {
     if (role.id === db.get(message.guild.id + '.autoRole')) return message.channel.send(`Your auto role is already set as ${role}`)
     db.set(message.guild.id + '.autoRole', role.id);
     message.channel.send(`Your auto role is now set up as ${role}`);
-};
+}

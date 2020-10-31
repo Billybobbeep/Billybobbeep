@@ -1,7 +1,7 @@
 const db = require('../../databaseManager/index.js');
 var xp = new db.table('xp');
 
-module.exports = async (client, message) => {
+module.exports = async (message, client) => {
   if (!message.guild) return;
   let prefix = db.get(message.guild.id + '.prefix') || '~'
   if (message.content.startsWith(prefix)) return;

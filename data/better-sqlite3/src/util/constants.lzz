@@ -147,4 +147,4 @@ private:
 	}
 
 	std::unordered_map<int, CopyablePersistent<v8::String> > codes;
-};
+}

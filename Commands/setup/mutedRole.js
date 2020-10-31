@@ -27,4 +27,4 @@ module.exports = (message, db) => {
 	if (role.id === db.get(message.guild.id + '.mutedRole')) return message.channel.send(`Your muted role is already set as ${role}`)
 	db.set(message.guild.id + '.mutedRole', role.id);
 	message.channel.send(`Your muted role is now set up as ${role}`);
-};
+}

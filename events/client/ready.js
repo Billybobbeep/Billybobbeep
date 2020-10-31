@@ -4,4 +4,6 @@ module.exports = (client) => {
     setInterval(() => {
       client.user.setActivity(`${activities[i++ % activities.length]}`, {type: 'LISTENING'});
     }, 10000);
+
+    require('../backend/timeOut.js')(client);
 }

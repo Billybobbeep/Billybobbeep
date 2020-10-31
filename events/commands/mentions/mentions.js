@@ -1,7 +1,7 @@
 const Discord = require(`discord.js`);
 const db = require('../../../databaseManager/index.js');
 const embed = new Discord.MessageEmbed();
-module.exports = async (client, message) => {
+module.exports = async (message, client) => {
   if (!message.guild) return;
   embed.setTitle('Billybobbeep | Mentioned');
   embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
@@ -65,21 +65,21 @@ module.exports = async (client, message) => {
     if (messagedUser.tag === client.user.tag) {
       if (message.content.toLowerCase().startsWith('<@!' + client.user.id + '> say') ||
         message.content.toLowerCase().startsWith('<@' + client.user.id + '> say')) {
-        const commandFile = require('./say.js')
-        commandFile(client, message, args)
+        require('./say.js')(message, args, client)
         return;
       }
     }
-  }
-  if (message.mentions.users.first()) {
-    let messagedUser = message.mentions.users.first();
-    if (messagedUser.tag === client.user.tag) {
-      if (message.content.toLowerCase().startsWith('<@!' + client.user.id + '> secret') ||
-        message.content.toLowerCase().startsWith('<@' + client.user.id + '> secret')) {
-        const commandFile = require('./secret.js')
-        commandFile(client, message, args)
-        return;
-      }
+    if (message.content.toLowerCase().startsWith('<@!' + client.user.id + '> secret') ||
+      message.content.toLowerCase().startsWith('<@' + client.user.id + '> secret')) {
+      require('./secret.js')(message, args, client)
+      return;
+    }
+    if (message.content.toLowerCase().startsWith('<@!' + client.user.id + '> help') ||
+      message.content.toLowerCase().startsWith('<@' + client.user.id + '> help') ||
+      message.content.toLowerCase().startsWith('help <@' + client.user.id + '>') ||
+      message.content.toLowerCase().startsWith('help <@!' + client.user.id + '>')) {
+      require('../../../Embeds/help')(message, client)
+      return;
     }
   }
 

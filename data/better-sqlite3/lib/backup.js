@@ -7,7 +7,7 @@ const fsAccess = promisify(fs.access);
 
 module.exports = (createBackup) => {
 	return async function backup(filename, options) {
-		if (options == null) options = {};
+		if (options == null) options = {}
 		if (typeof filename !== 'string') throw new TypeError('Expected first argument to be a string');
 		if (typeof options !== 'object') throw new TypeError('Expected second argument to be an options object');
 
@@ -28,8 +28,8 @@ module.exports = (createBackup) => {
 
 		const newFile = await fsAccess(filename).then(() => false, () => true);
 		return runBackup(createBackup.call(this, attachedName, filename, newFile), handler || null);
-	};
-};
+	}
+}
 
 const runBackup = (backup, handler) => {
 	let rate = 0;

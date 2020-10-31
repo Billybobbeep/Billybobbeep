@@ -37,4 +37,4 @@ module.exports = (message, db) => {
 	if (role.id === db.get(message.guild.id + `.level${args[2]}RoleId`)) return message.channel.send(`Your level ${args[2]} role is already set as ${role}`)
 	db.set(message.guild.id + `.level${args[2]}RoleId`, role.id);
 	message.channel.send(`Your level ${args[2]} role is now set up as ${role}`);
-};
+}

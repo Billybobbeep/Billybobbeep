@@ -1,4 +1,5 @@
 module.exports = (client) => {
+    let db = require('../../data/databaseManager/index.js');
     setInterval(() => {
         mute(db, client)
     }, 300000);

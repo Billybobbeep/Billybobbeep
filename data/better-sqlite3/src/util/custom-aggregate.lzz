@@ -103,4 +103,4 @@ private:
 	const CopyablePersistent<v8::Function> inverse;
 	const CopyablePersistent<v8::Function> result;
 	const CopyablePersistent<v8::Value> start;
-};
+}

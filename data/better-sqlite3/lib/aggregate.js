@@ -23,8 +23,8 @@ module.exports = (createAggregate) => {
 		}
 
 		return createAggregate.call(this, start, step, inverse, result, name, argCount, safeIntegers, deterministic);
-	};
-};
+	}
+}
 
 const getFunctionOption = (options, key, required) => {
 	const value = key in options ? options[key] : null;
@@ -32,9 +32,9 @@ const getFunctionOption = (options, key, required) => {
 	if (value != null) throw new TypeError(`Expected the "${key}" option to be a function`);
 	if (required) throw new TypeError(`Missing required option "${key}"`);
 	return null;
-};
+}
 
 const getLength = ({ length }) => {
 	if (Number.isInteger(length) && length >= 0) return length;
 	throw new TypeError('Expected function.length to be a positive integer');
-};
+}
