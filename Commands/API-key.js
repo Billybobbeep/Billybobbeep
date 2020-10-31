@@ -2,6 +2,7 @@ module.exports = async (message, db) => {
     const Discord = require('discord.js');
     var embed = new Discord.MessageEmbed();
     var currKey = db.get('apiKey');
+
     function makeid(length) {
         var result = '';
         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -11,6 +12,7 @@ module.exports = async (message, db) => {
         }
         return result;
     }
+
     function generateKey() {
         var string = 'You have requested a Billybobbeep API key.'
         var result = makeid(22)
@@ -23,6 +25,7 @@ module.exports = async (message, db) => {
         }
         message.channel.send('Check your DMs.');
     }
+
     function generate() {
         if (!currKey || currKey.length < 0 || currKey === '[]') {
             generateKey()
@@ -43,7 +46,8 @@ module.exports = async (message, db) => {
                 }
             });
             if (debounce === false) {
-                
+                console.log('3')
+                generateKey()
             }
         }
     }
@@ -75,10 +79,10 @@ module.exports = async (message, db) => {
         }
     }
 
-
     if (message.content.toLowerCase().includes('regenerate')) {
         regenerate()
     } else {
+        console.log('1')
         generate()
     }
 }

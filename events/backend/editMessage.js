@@ -1,7 +1,7 @@
 module.exports = async client => {
   
 	const Discord = require(`discord.js`);
-	const db = require('../databaseManager/index.js');
+	const db = require('../../data/databaseManager/index.js');
 
 	client.on('messageUpdate', async (oldMessage, newMessage) => {
 		if (!newMessage) return;

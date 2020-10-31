@@ -1,7 +1,7 @@
 module.exports = async (client) => {
   // [Varibles] //
   const Discord = require('discord.js');
-  const db = require('./databaseManager/index.js');
+  const db = require('./data/databaseManager/index.js');
   const configFile = require('./config.json');
   const embed = new Discord.MessageEmbed()
 
@@ -27,19 +27,19 @@ module.exports = async (client) => {
   }
 
   client.once('ready', async () => {
-    const serverStatsFile = require('./MainServer/serverstats.js');
+    const serverStatsFile = require('./events/backend/serverstats.js');
     serverStatsFile(client);
-    var timeOutFunctions = require('./MainServer/timeOut.js');
+    var timeOutFunctions = require('./events/backend/timeOut.js');
     timeOutFunctions(db, client);
-    var ban_logs = require('./MainServer/logging.js');
+    var ban_logs = require('./events/backend/logging.js');
     ban_logs(client);
-    var guildManage = require('./MainServer/guildCreate.js');
+    var guildManage = require('./events/backend/guildCreate.js');
     guildManage(client)
-    const deleteMessages = require('./MainServer/deleteMessages.js');
+    const deleteMessages = require('./events/backend/deleteMessages.js');
     deleteMessages(client);
-    const editMessages = require('./MainServer/editMessage.js');
+    const editMessages = require('./events/backend/editMessage.js');
     editMessages(client);
-    const reactionRole1 = require('./MainServer/reactionRoles/main.js');
+    const reactionRole1 = require('./events/backend/reactionRoles/main.js');
     reactionRole1(client);
 
     //Display activities in the correct order
@@ -70,25 +70,25 @@ module.exports = async (client) => {
   };
 
   client.on('message', async message => {
-    const AfkFile = require('./MainServer/Afk/AfkHandle.js');
+    const AfkFile = require('./events/commands/Afk/AfkHandle.js');
     AfkFile(client, message);
-    const counting = require('./MainServer/counting.js');
+    const counting = require('./events/commands/counting.js');
     counting(client, message);
-    const DmLogger = require('./MainServer/dmRecieving.js');
+    const DmLogger = require('./events/backend/dmRecieving.js');
     DmLogger(client, message, Discord);
-    const reactMessages = require(`./MainServer/deletingMessages.js`);
+    const reactMessages = require(`./events/backend/deletingMessages.js`);
     reactMessages(message, Discord, client);
-    const mentionsHandle = require('./MainServer/mentions.js');
+    const mentionsHandle = require('./events/commands/mentions/mentions.js');
     mentionsHandle(client, message);
-    const levels = require('./MainServer/levels/main.js');
+    const levels = require('./events/backend/levels/main.js');
     levels(client, message);
-    const talk2billy = require('./MainServer/talk2billy');
+    const talk2billy = require('./events/commands/talk2billy');
     talk2billy(message);
     if (
       message.channel.id === configFile.PollChannel ||
       message.channel.id === configFile.MemesChannel
     ) {
-      const reactMessages = require(`./MainServer/reactions.js`);
+      const reactMessages = require(`./events/backend/reactions.js`);
       reactMessages(message);
     }
 
@@ -106,7 +106,7 @@ module.exports = async (client) => {
       return commandFile(client, msg, args, prefix, message);
     }
     if (message.content.toLowerCase().startsWith(prefix + 'cl') || message.content.toLowerCase().startsWith(prefix + 'currlvl') || message.content.toLowerCase().startsWith(prefix + 'currentlvl')) {
-      const commandFile = require('./MainServer/levels/currLvl.js')
+      const commandFile = require('./events/backend/levels/currLvl.js')
       commandFile(message)
     }
     if (message.content.toLowerCase() == prefix + 'credit' || message.content.toLowerCase() == prefix + 'credits') {
@@ -125,13 +125,9 @@ module.exports = async (client) => {
       const commandFile = require(`./Embeds/Commands/main.js`);
       return commandFile(msg, args, prefix, message, client);
     }
-    if (message.content.toLowerCase() == prefix + 'pronounrole') {
-      const commandFile = require(`./MainServer/reactionRoles/pronoun.js`);
-      return commandFile(message);
-    }
-    if (message.content.toLowerCase() == prefix + 'countryrole') {
-      const commandFile = require(`./MainServer/reactionRoles/country.js`);
-      return commandFile(message);
+    if (message.content.toLowerCase() == prefix + 'rr') {
+      const commandFile = require(`./events/backend/reactionRoles/personality.js`);
+      return commandFile(client, message);
     }
     if (message.content.toLowerCase() == prefix + 'info') {
       const commandFile = require(`./Embeds/info.js`);
@@ -142,7 +138,7 @@ module.exports = async (client) => {
       return commandFile(client, prefix, message);
     }
     if (message.content.toLowerCase().startsWith(prefix + 'removelevel') || message.content.toLowerCase().startsWith(prefix + 'removelvl') || message.content.toLowerCase().startsWith(prefix + 'rl')) {
-      const commandFile = require(`./MainServer/levels/removeLvl.js`);
+      const commandFile = require(`./events/backend/levels/removeLvl.js`);
       return commandFile(client, message, prefix);
     }
     if (message.content.toLowerCase().startsWith(prefix + 'job')) {
@@ -177,6 +173,10 @@ module.exports = async (client) => {
       const commandFile = require(`./Commands/setup/main.js`);
       return commandFile(client, message, db);
     }
+    if (message.content.toLowerCase().startsWith(prefix + 'logs')) {
+      const commandFile = require(`./Commands/audit-logs.js`);
+      return commandFile(client, message);
+    }
     /*if (message.content.toLowerCase() === prefix + 'regenerate key' || message.content.toLowerCase() === prefix + 'generate key') {
       const commandFile = require(`./Commands/API-key`);
       return commandFile(message, db);
@@ -207,7 +207,7 @@ module.exports = async (client) => {
   // Welcomes new members
   client.on('guildMemberAdd', member => {
     try {
-      const NewMember = require(`./MainServer/newMember.js`);
+      const NewMember = require(`./events/backend/welcome.js`);
       NewMember(member);
     } catch (err) {
         return
@@ -217,7 +217,7 @@ module.exports = async (client) => {
   //Logs members leaving
   client.on('guildMemberRemove', member => {
     try {
-      const NewMember = require(`./MainServer/removingMember.js`);
+      const NewMember = require(`./events/backend/goodbye.js`);
       NewMember(member);
     } catch {
        return;

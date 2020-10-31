@@ -1,5 +1,5 @@
 const Discord = require(`discord.js`);
-const db = require('../databaseManager/index.js');
+const db = require('../../../databaseManager/index.js');
 const embed = new Discord.MessageEmbed();
 module.exports = async (client, message) => {
   if (!message.guild) return;
@@ -65,7 +65,7 @@ module.exports = async (client, message) => {
     if (messagedUser.tag === client.user.tag) {
       if (message.content.toLowerCase().startsWith('<@!' + client.user.id + '> say') ||
         message.content.toLowerCase().startsWith('<@' + client.user.id + '> say')) {
-        const commandFile = require('./mentions/say.js')
+        const commandFile = require('./say.js')
         commandFile(client, message, args)
         return;
       }
@@ -76,7 +76,7 @@ module.exports = async (client, message) => {
     if (messagedUser.tag === client.user.tag) {
       if (message.content.toLowerCase().startsWith('<@!' + client.user.id + '> secret') ||
         message.content.toLowerCase().startsWith('<@' + client.user.id + '> secret')) {
-        const commandFile = require('./mentions/secret.js')
+        const commandFile = require('./secret.js')
         commandFile(client, message, args)
         return;
       }

@@ -1,4 +1,4 @@
-const db = require('../databaseManager/index.js');
+const db = require('../../data/databaseManager/index.js');
 const fetch = require('node-fetch');
 const Discord = require('discord.js');
 
@@ -17,7 +17,7 @@ module.exports = async (message) => {
       return message.channel.send('I am not responsible for any form of emergency call.\nIf you need any service from the emergency services, please call them yourself or ask another guild member to do it for you.')
     }
     if (message.attachments.size < 1) {
-      const response = await fetch('http://localhost:3000/api/wlQSlcdVuCjYP4UMDaNoPF/chatbot?message=' + args.join('%20').replace(' ', '%20') + '&punc=yes&cap=yes');
+      const response = await fetch('http://billybobbeep.tyler2p.repl.co/api/QCZCCgUy9UfxdHowD35ueM/chatbot?message=' + args.join('%20').replace(' ', '%20') + '&punc=yes&cap=yes');
       const text = await response.text();
       if (text.startsWith('<!DOCTYPE html>')) {
         message.channel.send('This channel is causing issues for me. Please try again later.')

@@ -1,5 +1,5 @@
 const Discord = require(`discord.js`);
-const db = require('../databaseManager/index.js');
+const db = require('../data/databaseManager/index.js');
 var reasons = [];
 module.exports = async (client, msg, args, prefix, message) => {
   var user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);

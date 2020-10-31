@@ -1,5 +1,5 @@
 const Discord = require(`discord.js`);
-const db = require('../databaseManager/index.js');
+const db = require('../data/databaseManager/index.js');
 
 module.exports = async(client, msg, args, prefix, message) => {
 if (!message.member.permissions.has(['MANAGE_MESSAGES', 'ADMINISTRATOR'])) return message.channel.send('You do not have the permissions to do this.');

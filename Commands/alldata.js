@@ -1,4 +1,4 @@
-const db = require('../databaseManager/index.js');
+const db = require('../data/databaseManager/index.js');
 var table = []
 const ms = require('ms')
 

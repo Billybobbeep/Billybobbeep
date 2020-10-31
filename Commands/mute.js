@@ -1,4 +1,4 @@
-const db = require('../databaseManager/index.js');
+const db = require('../data/databaseManager/index.js');
 const Discord = require('discord.js');
 var embed1 = new Discord.MessageEmbed();
 var embed2 = new Discord.MessageEmbed();

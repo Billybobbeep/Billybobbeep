@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const ms = require("ms");
 const configFile = require('../config.json');
 let inProgress = false
-const db = require('../databaseManager/index.js');
+const db = require('../data/databaseManager/index.js');
 
 module.exports = async(client, msg, args, prefix, message) => {
   if (inProgress === true) return message.channel.send("There is already a giveaway running.")

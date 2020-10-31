@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
-const db = require('../databaseManager/index.js');
+const db = require('../data/databaseManager/index.js');
 
 const filterLevels = {
 	DISABLED: 'Off',

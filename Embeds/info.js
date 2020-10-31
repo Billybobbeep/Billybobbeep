@@ -3,7 +3,7 @@ const { version } = require('../package.json');
 const { utc } = require('moment');
 const os = require('os');
 const ms = require('ms');
-const db = require('../databaseManager/index.js');
+const db = require('../data/databaseManager/index.js');
 
 module.exports = async (client, message) => {
   const core = os.cpus()[0];

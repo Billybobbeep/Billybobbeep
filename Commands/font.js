@@ -31,7 +31,7 @@
 */
 const { MessageEmbed } = require("discord.js");
 const embed = new MessageEmbed()
-const db = require('../databaseManager/index.js');
+const db = require('../data/databaseManager/index.js');
 
 module.exports = async (client, msg, args, prefix, message) => {
     var lines = ['', ''];

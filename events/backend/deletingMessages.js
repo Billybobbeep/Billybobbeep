@@ -1,5 +1,5 @@
 const configFile = require('../config.json')
-const db = require('../databaseManager/index.js');
+const db = require('../../data/databaseManager/index.js');
 
 module.exports = async (message, Discord, client) => {
   if (!message.guild) return;

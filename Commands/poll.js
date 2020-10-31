@@ -1,6 +1,6 @@
 const Discord = require(`discord.js`);
 const configFile = require('../config.json');
-const db = require('../databaseManager/index.js');
+const db = require('../data/databaseManager/index.js');
 
 //[Main Varables]\\
 let title;

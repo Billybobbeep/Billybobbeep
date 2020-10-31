@@ -1,6 +1,6 @@
 module.exports = (client, message) => {
     if (!message.guild) return;
-    const db = require('../databaseManager/index.js');
+    const db = require('../../data/databaseManager/index.js');
     var currentNo = new db.table('counting');
     let TE = client.emojis.cache.get('736952966447366154')
     let CE = client.emojis.cache.get('736952985330122772')

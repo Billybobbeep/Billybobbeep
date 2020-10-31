@@ -1,6 +1,6 @@
 const Discord = require(`discord.js`);
 const configFile = require('../config.json');
-const db = require('../databaseManager/index.js');
+const db = require('../data/databaseManager/index.js');
 
 module.exports = async (client, prefix, message) => {
   const helpEmbed = new Discord.MessageEmbed()
