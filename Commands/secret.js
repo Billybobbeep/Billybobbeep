@@ -1,5 +1,5 @@
 const Discord = require(`discord.js`);
-const configFile = require('../config.json');
+const configFile = require('../structure/config.json');
 
 module.exports = async (client, msg, args, prefix, message) => {
   let secretMessage = args.join(" ");

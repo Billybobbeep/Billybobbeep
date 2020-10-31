@@ -1,5 +1,5 @@
 const Discord = require(`discord.js`);
-const configFile = require('../config.json');
+const configFile = require('../structure/config.json');
 const db = require('../data/databaseManager/index.js');
 
 module.exports = (client, msg, args, prefix, message) => {

@@ -1,16 +1,13 @@
-const { MessageEmbed } = require("discord.js");
-const ms = require("ms");
-const configFile = require('../config.json');
-let inProgress = false
+const { MessageEmbed } = require('discord.js');
+const ms = require('ms');
 const db = require('../data/databaseManager/index.js');
 
 module.exports = async(client, msg, args, prefix, message) => {
-  if (inProgress === true) return message.channel.send("There is already a giveaway running.")
     if (!args[0]) return message.channel.send(`Please specify a time.`);
     if (
-      !args[0].endsWith("d") &&
-      !args[0].endsWith("h") &&
-      !args[0].endsWith("m")
+      !args[0].endsWith('d') &&
+      !args[0].endsWith('h') &&
+      !args[0].endsWith('m')
     )
       return message.channel.send(
         `You did not use the correct formatting for the time.`
@@ -21,7 +18,7 @@ module.exports = async(client, msg, args, prefix, message) => {
       return message.channel.send(
         `I could not find that channel in the server.`
       );
-    let prize = args.slice(2).join(" ");
+    let prize = args.slice(2).join(' ');
     if (!prize) return message.channel.send(`Please specify a time.`);
     message.channel.send(`*Giveaway created in ${channel}.*`);
     let Embed = new MessageEmbed()
@@ -33,25 +30,18 @@ module.exports = async(client, msg, args, prefix, message) => {
       .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
 
     let m = await channel.send(Embed);
-    m.react("🎉");
-    inProgress = true
+    m.react('🎉');
     setTimeout(() => {
-      if (m.reactions.cache.get("🎉").count <= 1) {
-        message.channel.send(`Reactions: ${m.reactions.cache.get("🎉").count}`);
-        return message.channel.send(
-          `Not enough people reacted for me to start draw a winner!`
-        );
-        inProgress = false
+      if (m.reactions.cache.get('🎉').count <= 1) {
+        message.channel.send(`Reactions: ${m.reactions.cache.get('🎉').count}`);
+        return message.channel.send(`Not enough people reacted for me to start draw a winner!`);
       }
 
       let winner = m.reactions.cache
-        .get("🎉")
+        .get('🎉')
         .users.cache.filter((u) => !u.bot)
         .random();
-      channel.send(
-        `${winner} has won the giveaway!`
-      );
-      inProgress = false
+      channel.send(`${winner} has won the giveaway!`);
       m.reactions.removeAll();
       let WinningEmbed = new MessageEmbed()
       .setTitle(`${prize}`)

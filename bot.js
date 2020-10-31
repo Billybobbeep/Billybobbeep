@@ -2,7 +2,7 @@ module.exports = async (client) => {
   // [Varibles] //
   const Discord = require('discord.js');
   const db = require('./data/databaseManager/index.js');
-  const configFile = require('./config.json');
+  const configFile = require('./structure/config.json');
   const embed = new Discord.MessageEmbed()
 
   /////////////////////////////
@@ -33,7 +33,7 @@ module.exports = async (client) => {
     timeOutFunctions(db, client);
     var ban_logs = require('./events/backend/logging.js');
     ban_logs(client);
-    var guildManage = require('./events/backend/guildCreate.js');
+    var guildManage = require('./events/backend/guildManager.js');
     guildManage(client)
     const deleteMessages = require('./events/backend/deleteMessages.js');
     deleteMessages(client);
