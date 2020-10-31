@@ -9,8 +9,11 @@ let color;
 let channel;
 let autherValid;
 
-module.exports = async(client, msg, args, prefix, message) => {
-    if (msg.startsWith(prefix + "poll")) {
+mmodule.exports = {
+    name: 'poll',
+    description: 'Send a poll.',
+    guildOnly: true,
+    execute (message, prefix, client) {
         let pollChannel = message.mentions.channels.first();
         let pollDescription = args.slice(1).join(' ')
 

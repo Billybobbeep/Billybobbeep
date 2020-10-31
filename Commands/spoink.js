@@ -1,8 +1,11 @@
 const Discord = require(`discord.js`);
 const configFile = require('../structure/config.json');
 
-module.exports = async(client, msg, args, prefix, message) => {
-    if (msg.startsWith(prefix + "spoink")) {
+module.exports = {
+    name: 'spoink',
+    description: ';).',
+    guildOnly: true,
+    execute (message, prefix, client) {
         message.channel.send(":eyes:")
         message.channel.send(":nose:")
         message.channel.send(":lips:")

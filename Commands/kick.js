@@ -1,7 +1,11 @@
 const Discord = require(`discord.js`);
 const configFile = require('../structure/config.json');
 const db = require('../data/databaseManager/index.js');
-module.exports = async (client, msg, args, prefix, message) => {
+module.exports = {
+  name: 'kick',
+  description: 'Kick a member.',
+  guildOnly: true,
+  execute (message, prefix, client) {
   function kickCmd() {
     let user =
       message.mentions.users.first() ||
@@ -70,4 +74,5 @@ module.exports = async (client, msg, args, prefix, message) => {
       message.channel.send('You do not have the premissions to run this command.')
     }
   }
+}
 }

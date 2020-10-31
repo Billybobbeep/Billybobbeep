@@ -32,7 +32,11 @@ const regions = {
 	'us-south': 'US South'
 }
 
-module.exports = async(client, msg, args, prefix, message) => {
+module.exports = {
+	name: 'serverinfo',
+	description: 'View this servers info.',
+	guildOnly: true,
+	execute (message, prefix, client) {
 		const roles = message.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
 		const members = message.guild.members.cache;
 		const channels = message.guild.channels.cache;
@@ -77,5 +81,5 @@ module.exports = async(client, msg, args, prefix, message) => {
             //.addField(`Roles [${roles.length - 1}]`, roles.length < 10 ? roles.join(', ') : roles.length > 10 ? this.client.utils.trimArray(roles) : 'None')
 			.setTimestamp();
 		message.channel.send(embed);
-
+	}
 }

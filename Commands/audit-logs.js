@@ -146,8 +146,13 @@ function bot_logs(client, message, action1, action2, action3) {
 
 
 
-module.exports = async (client, message) => {
-    if (message.member.roles.cache.has(['VIEW_AUDIT_LOG', 'ADMINISTRATOR']) && !message.member.roles.cache.find(role => role.id === db.get(message.guild.id + '.modRole')))
-        return message.channel.send(`You must have the \`View Audit Log\` premissions to use this command.`)
-    else handling(client, message)
+module.exports = {
+    name: 'logs',
+    description: 'View recent logs.',
+    guildOnly: true,
+    execute (message, prefix, client) {
+        if (message.member.roles.cache.has(['VIEW_AUDIT_LOG', 'ADMINISTRATOR']) && !message.member.roles.cache.find(role => role.id === db.get(message.guild.id + '.modRole')))
+            return message.channel.send(`You must have the \`View Audit Log\` premissions to use this command.`)
+        else handling(client, message);
+    }
 }

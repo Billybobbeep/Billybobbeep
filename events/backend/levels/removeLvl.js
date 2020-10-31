@@ -1,4 +1,4 @@
-const db = require('../../databaseManager/index.js');
+const db = require('../../../data/databaseManager/index.js');
 
 module.exports = async (client, message, prefix) => {
   let args = message.content.slice(prefix.length).trim().split(/ +/g);

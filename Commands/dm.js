@@ -1,7 +1,11 @@
 const Discord = require(`discord.js`);
 const db = require('../data/databaseManager/index.js');
 
-module.exports = async(client, msg, args, prefix, message) => {
+module.exports = {
+  name: 'dm',
+  description: 'DM a user.',
+  guildOnly: true,
+  execute (message, prefix, client) {
 if (!message.member.permissions.has(['MANAGE_MESSAGES', 'ADMINISTRATOR'])) return message.channel.send('You do not have the permissions to do this.');
   let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
   let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]);

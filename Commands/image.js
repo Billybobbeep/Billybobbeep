@@ -2,7 +2,11 @@ const Discord = require(`discord.js`);
 const configFile = require('../structure/config.json');
 const db = require('../data/databaseManager/index.js');
 
-module.exports.run = async(client, msg, args, prefix, message) => {
+module.exports = {
+  name: 'image',
+  description: 'Generate a random image.',
+  guildOnly: true,
+  execute (message, prefix, client) {
 
 const embed = new Discord.MessageEmbed()
 
@@ -157,4 +161,5 @@ function Generator2(lastImage) {
     Generator(lastImage)
     message.channel.send(embed)
   }
+}
 }

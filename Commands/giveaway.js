@@ -2,7 +2,11 @@ const { MessageEmbed } = require('discord.js');
 const ms = require('ms');
 const db = require('../data/databaseManager/index.js');
 
-module.exports = async(client, msg, args, prefix, message) => {
+module.exports = {
+  name: 'giveaway',
+  description: 'Start a giveaway.',
+  guildOnly: true,
+  execute (message, prefix, client) {
     if (!args[0]) return message.channel.send(`Please specify a time.`);
     if (
       !args[0].endsWith('d') &&
@@ -52,4 +56,5 @@ module.exports = async(client, msg, args, prefix, message) => {
       .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
       m.edit(WinningEmbed)
     }, ms(args[0]));
+}
 }

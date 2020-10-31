@@ -1,6 +1,6 @@
-const db = require('../../data/databaseManager/index.js');
+const db = require('../../../data/databaseManager/index.js');
 
-module.exports.add = (reaction, user, client) => {
+module.exports.add = async (reaction, user, client) => {
     if (reaction.partial) {
 		try {
 			await reaction.fetch();
@@ -234,7 +234,7 @@ module.exports.add = (reaction, user, client) => {
     }
   }
 
-module.exports.remove = (reaction, user, client) => {
+module.exports.remove = async (reaction, user, client) => {
   if (reaction.message.id === '771833349567676476') {
     if (reaction.emoji.id == '771826679722410044') {
       await reaction.message.guild.members.cache

@@ -2,8 +2,11 @@ const Discord = require(`discord.js`);
 const configFile = require('../structure/config.json');
 const db = require('../data/databaseManager/index.js');
 
-module.exports = async(client, msg, args, prefix, message) => {
-    if (msg.startsWith(prefix + 'userinfo')) {
+module.exports = {
+    name: 'userinfo',
+    description: 'View a users info.',
+    guildOnly: true,
+    execute (message, prefix, client) {
         let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]) || message.author;
         const moment = require('moment');
         if (!user) return message.channel.send('Please specify a user.')

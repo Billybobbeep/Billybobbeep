@@ -33,7 +33,11 @@ const { MessageEmbed } = require("discord.js");
 const embed = new MessageEmbed()
 const db = require('../data/databaseManager/index.js');
 
-module.exports = async (client, msg, args, prefix, message) => {
+module.exports = {
+    name: 'font',
+    description: 'Put your message into a new font.',
+    guildOnly: true,
+    execute (message, prefix, client) {
     var lines = ['', ''];
     var starter = '➳';
     
@@ -248,4 +252,5 @@ module.exports = async (client, msg, args, prefix, message) => {
             return message.channel.send('You have entered some invalid arguments.');
         }
     }
+}
 }

@@ -5,4 +5,15 @@ module.exports = async (client) => {
   const fs = require('fs');
 
   require('./utils/events.js')(client);
+
+  client.commands = new Discord.Collection();
+
+  const commandFolders = fs.readdirSync('./commands').filter(file => !file.endsWith('.js'));
+  for (const folder of commandFolders) {
+    const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
+    for (const file of commandFiles) {
+      const command = require(`./commands/${folder}/${file}`);
+      client.commands.set(command.name, command);
+    }
+  }
 }

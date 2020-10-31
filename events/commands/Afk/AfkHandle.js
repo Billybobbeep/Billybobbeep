@@ -1,7 +1,7 @@
 const Discord = require(`discord.js`);
-const configFile = require('../../structure/config.json');
+const configFile = require('../../../structure/config.json');
 const embed = new Discord.MessageEmbed();
-const db = require('../../databaseManager/index.js');
+const db = require('../../../data/databaseManager/index.js');
 
 module.exports = async (client, message) => {
   if (!message.guild) return;

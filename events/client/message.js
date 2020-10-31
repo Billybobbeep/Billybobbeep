@@ -1,4 +1,5 @@
-const configFile = require('../../structure/config.json')
+const configFile = require('../../structure/config.json');
+const db = require('../../data/databaseManager/index.js');
 function redirect(message, client) {
     if (message.channel.id === configFile.PollChannel || message.channel.id === configFile.MemesChannel)
         require(`./events/commands/reactions.js`)(message);
@@ -12,14 +13,21 @@ function redirect(message, client) {
         require('../commands/talk2billy')(message);
     }
 }
-function handle() {
-
+function handle(message, client) {
+    let prefix = db.get(message.guild.id + '.prefix') || '~';
+    let args = message.content.slice(prefix.length).trim().split(/ +/g);
+    let command = args[0].toLowerCase();
+    if (!message.content.startsWWith(prefix)) return;
+    client.commands.get(command).execute(message, prefix, client);
 }
 
 module.exports = (message, client) => {
-    if (message.content === '~middle') {
+    if (message.content.toLowerCase() === '~middle') {
         let emj = client.emojis.cache.get('772154941489545216')
         message.channel.send(emj)
     }
     redirect(message, client)
+    if (message.guild) {
+        handle(message, client)
+    }
 }
