@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 const embed = new Discord.MessageEmbed()
 const settings = require('./settings.json');
-const configFile = require('../../../config.json');
 const db = require('../../../databaseManager/index.js');
 var AntiSpam = []
 var count = 0;

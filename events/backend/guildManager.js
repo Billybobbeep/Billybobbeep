@@ -1,11 +1,9 @@
 const { MessageEmbed } = require('discord.js')
-const db = require('../data/databaseManager/index.js');
-const configFile = require('../config.json')
+const db = require('../../data/databaseManager/index.js');
+const configFile = require('../../structure/config.json');
 const embed = new MessageEmbed()
 
-module.exports = async (client) => {
-  
-    client.on("guildCreate", async guild => {
+module.exports.guildAdded = async (client, guild) => {
       setTimeout(async function() {
         let channelID;
         let channels = guild.channels.cache;
@@ -50,23 +48,20 @@ module.exports = async (client) => {
     embed.setTimestamp()
     embed.setThumbnail(guild.iconURL({ dynamic: true }))
     let LoggingChannel = client.channels.cache.get(db.get(configFile.ServerId + '.loggingChannel'));
-    //LoggingChannel.send(embed)
-  });
+    LoggingChannel.send(embed)
+  }
 
-  client.on("guildDelete", guild => {
-    if (db.get(guild.id)) {
-      db.delete(guild.id);
-    }
-                
-    const embed2 = new MessageEmbed()
-    .setTitle('Guild Removed')
-    .setDescription(
-      `**Guild Name:** ${guild.name}\n` +
-      `**Guild ID:** ${guild.id}`)
-    .setColor('#447ba1')
-    .setTimestamp()
-    .setThumbnail(guild.iconURL({ dynamic: true }))
-    let LoggingChannel = client.channels.cache.get(db.get(configFile.ServerId + '.loggingChannel'));
-    //LoggingChannel.send(embed2)
-  });
+module.exports.guildDelete = guild => {
+  if (db.get(guild.id)) db.delete(guild.id);
+              
+  const embed = new MessageEmbed()
+  .setTitle('Guild Removed')
+  .setDescription(
+    `**Guild Name:** ${guild.name}\n` +
+    `**Guild ID:** ${guild.id}`)
+  .setColor('#447ba1')
+  .setTimestamp()
+  .setThumbnail(guild.iconURL({ dynamic: true }))
+  let LoggingChannel = client.channels.cache.get(db.get(configFile.ServerId + '.loggingChannel'));
+  LoggingChannel.send(embed)
 }

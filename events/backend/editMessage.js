@@ -1,5 +1,4 @@
 module.exports = async client => {
-  
 	const Discord = require(`discord.js`);
 	const db = require('../../data/databaseManager/index.js');
 

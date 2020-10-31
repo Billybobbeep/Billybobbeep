@@ -1,5 +1,4 @@
 const db = require('../../databaseManager/index.js');
-const configFile = require('../../config.json');
 var xp = new db.table('xp');
 
 module.exports = async (client, message) => {

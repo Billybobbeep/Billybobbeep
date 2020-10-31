@@ -1,4 +1,4 @@
-module.exports = (db, client) => {
+module.exports = (client) => {
     setInterval(() => {
         mute(db, client)
     }, 300000);

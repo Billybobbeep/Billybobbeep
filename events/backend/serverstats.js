@@ -1,6 +1,4 @@
-const configFile = require('../config.json');
-const Discord = require('discord.js');
-const client = new Discord.Client();
+const configFile = require('../../structure/config.json');
 
 let countChannel = {
   total: configFile.TotalUserVoiceId,

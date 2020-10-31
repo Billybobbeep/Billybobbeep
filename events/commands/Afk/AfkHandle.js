@@ -1,5 +1,5 @@
 const Discord = require(`discord.js`);
-const configFile = require('../../config.json');
+const configFile = require('../../structure/config.json');
 const embed = new Discord.MessageEmbed();
 const db = require('../../databaseManager/index.js');
 

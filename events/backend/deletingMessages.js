@@ -1,4 +1,3 @@
-const configFile = require('../config.json')
 const db = require('../../data/databaseManager/index.js');
 
 module.exports = async (message, Discord, client) => {

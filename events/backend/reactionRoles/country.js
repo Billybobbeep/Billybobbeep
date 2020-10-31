@@ -1,6 +1,6 @@
 const Discord = require(`discord.js`);
-const configFile = require('../../config.json');
 const db = require('../../databaseManager/index.js');
+
 module.exports = async (message) => {
     const commandEmbed = new Discord.MessageEmbed()
       .setTitle("Region Roles")

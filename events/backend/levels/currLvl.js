@@ -1,4 +1,4 @@
-const db = require('../../databaseManager/index.js');
+const db = require('../../../databaseManager/index.js');
 const Discord = require('discord.js')
 
 module.exports = async (message) => {

@@ -1,4 +1,4 @@
-const configFile = require('../config.json')
+const configFile = require('../structure/config.json')
 
 module.exports = async (message) => {
   //Reacts to any messages sent in the poll channel

@@ -1,4 +1,5 @@
 const db = require('../../databaseManager/index.js');
+
 module.exports = (client) => {
   client.on('messageReactionAdd', async (reaction, user) => {
     if (reaction.partial) {
@@ -11,9 +12,6 @@ module.exports = (client) => {
     if (reaction.message)
       if (user.id != client.user.id) {
         if (reaction.message.id === '736185637459198062') {
-          let msg = await reaction.message.channel.messages.fetch(
-            '736185637459198062' //pronoun embed
-          );
           if (
             reaction.message.guild.members.cache
               .find(member => member.id === user.id)
@@ -92,9 +90,6 @@ module.exports = (client) => {
         }
 
         if (reaction.message.id === '736221636277174372') {
-          let msg = await reaction.message.channel.messages.fetch(
-            '736221636277174372'
-          );
           if (
             reaction.message.guild.members.cache
               .find(member => member.id === user.id)
@@ -189,9 +184,6 @@ module.exports = (client) => {
 
 
       if (reaction.message.id === '771833349567676476') {
-        let msg = await reaction.message.channel.messages.fetch(
-          '771833349567676476'
-        );
         if (reaction.emoji.id == '771826679722410044') {
           await reaction.message.guild.members.cache
             .find(member => member.id === user.id)

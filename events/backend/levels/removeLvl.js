@@ -1,6 +1,6 @@
 const db = require('../../databaseManager/index.js');
-module.exports = async (client, message, prefix) => {
 
+module.exports = async (client, message, prefix) => {
   let args = message.content.slice(prefix.length).trim().split(/ +/g);
   let user = message.guild.members.cache.get(args[1]) || message.mentions.users.first()
   if (!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send('You do not have premission to run this command.')
