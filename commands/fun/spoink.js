@@ -1,5 +1,5 @@
 const Discord = require(`discord.js`);
-const configFile = require('../structure/config.json');
+const configFile = require('../../structure/config.json');
 
 module.exports = {
     name: 'spoink',

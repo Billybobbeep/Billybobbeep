@@ -1,6 +1,7 @@
 const db = require('../../data/databaseManager/index.js');
+const Discord = require('discord.js');
 
-module.exports = async (message, Discord, client) => {
+module.exports = async (message, client) => {
   if (!message.guild) return;
   let prefix = db.get(message.guild.id + '.prefix') || '~'
   const embed = new Discord.MessageEmbed()

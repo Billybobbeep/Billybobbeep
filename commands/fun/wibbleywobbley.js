@@ -1,4 +1,4 @@
-const db = require('../data/databaseManager/index.js');
+const db = require('../../data/databaseManager/index.js');
 module.exports = {
   name: 'wibbleywobbley',
   description: ';)',

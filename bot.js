@@ -14,6 +14,11 @@ module.exports = async (client) => {
     for (const file of commandFiles) {
       const command = require(`./commands/${folder}/${file}`);
       client.commands.set(command.name, command);
+      if (command.alias) {
+        command.alias.forEach(e => {
+          client.commands.set(e, command);
+        });
+      }
     }
   }
 }

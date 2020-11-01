@@ -4,7 +4,7 @@ module.exports = {
   guildOnly: true,
   spoinkOnly: true,
   execute (message, prefix, client) {
-    const db = require('../data/databaseManager/index.js');
+    const db = require('../../data/databaseManager/index.js');
     var table = [];
     const ms = require('ms');
     if (args[0] && args[0] === 'guild') {

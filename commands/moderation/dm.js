@@ -1,5 +1,5 @@
 const Discord = require(`discord.js`);
-const db = require('../data/databaseManager/index.js');
+const db = require('../../data/databaseManager/index.js');
 
 module.exports = {
   name: 'dm',
@@ -47,3 +47,4 @@ if (!message.member.permissions.has(['MANAGE_MESSAGES', 'ADMINISTRATOR'])) retur
         }
       }
   }
+}

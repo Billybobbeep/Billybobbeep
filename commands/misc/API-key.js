@@ -6,7 +6,7 @@ module.exports = {
         const Discord = require('discord.js');
         var embed = new Discord.MessageEmbed();
         var currKey = db.get('apiKey');
-        const db = require('../data/databaseManager/index.js');
+        const db = require('../../data/databaseManager/index.js');
 
         function makeid(length) {
             var result = '';

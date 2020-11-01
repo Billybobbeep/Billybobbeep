@@ -1,6 +1,6 @@
 const Discord = require(`discord.js`);
-const configFile = require('../structure/config.json');
-const db = require('../data/databaseManager/index.js');
+const configFile = require('../../structure/config.json');
+const db = require('../../data/databaseManager/index.js');
 
 //[Main Varables]\\
 let title;
@@ -9,11 +9,11 @@ let color;
 let channel;
 let autherValid;
 
-mmodule.exports = {
+module.exports = {
     name: 'poll',
     description: 'Send a poll.',
     guildOnly: true,
-    execute (message, prefix, client) {
+    async execute (message, prefix, client) {
         let pollChannel = message.mentions.channels.first();
         let pollDescription = args.slice(1).join(' ')
 

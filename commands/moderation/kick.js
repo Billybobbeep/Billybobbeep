@@ -1,6 +1,6 @@
 const Discord = require(`discord.js`);
-const configFile = require('../structure/config.json');
-const db = require('../data/databaseManager/index.js');
+const configFile = require('../../structure/config.json');
+const db = require('../../data/databaseManager/index.js');
 module.exports = {
   name: 'kick',
   description: 'Kick a member.',

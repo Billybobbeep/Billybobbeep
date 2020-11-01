@@ -18,7 +18,8 @@ function handle(message, client) {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     let command = args[0].toLowerCase();
     if (!message.content.startsWith(prefix)) return;
-    client.commands.get(command).execute(message, prefix, client);
+    if (client.commands.get(command))
+        client.commands.get(command).execute(message, prefix, client);
 }
 
 module.exports = (message, client) => {
@@ -26,6 +27,7 @@ module.exports = (message, client) => {
         let emj = client.emojis.cache.get('772154941489545216')
         message.channel.send(emj)
     }
+    if (message.author.bot) return;
     redirect(message, client)
     if (message.guild) {
         handle(message, client)

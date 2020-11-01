@@ -1,5 +1,5 @@
 const Discord = require(`discord.js`);
-const db = require('../data/databaseManager/index.js');
+const db = require('../../data/databaseManager/index.js');
 module.exports = {
   name: 'warn',
   description: 'Warn a user.',
