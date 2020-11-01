@@ -9,13 +9,8 @@ const token = require('./structure/auth.json').token;
 
 client.login(token);
 
-const mainFile = require(`./bot.js`);
-mainFile(client)
-
-const server = require('./server.js');
-server(client);
-
-require('./data/database/index.js');
+require(`./bot.js`)(client);
+require('./server.js')(client);
 
 module.exports.restart = (message) => {
     if (message.author.discriminator === '2793') {

@@ -1,5 +1,5 @@
 module.exports = async (message, client) => {
-  const Discord = require(`discord.js`);
+  const Discord = require('discord.js');
   const db = require('../data/databaseManager/index.js');
   let prefix = db.get(message.guild.id + '.prefix') || '~';
 

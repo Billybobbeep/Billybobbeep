@@ -1,5 +1,5 @@
 module.exports = (newMessage, oldMessage, client) => {
-	const Discord = require(`discord.js`);
+	const Discord = require('discord.js');
 	const db = require('../../data/databaseManager/index.js');
 
 	if (!newMessage) return;

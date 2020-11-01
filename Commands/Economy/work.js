@@ -3,7 +3,7 @@ module.exports = {
   description: 'Go to work.',
   guildOnly: true,
   async execute (message, prefix, client) {
-    const Discord = require(`discord.js`);
+    const Discord = require('discord.js');
     const db = require('../../data/databaseManager/index.js');
     const ms = require('ms');
     const embed = new Discord.MessageEmbed();
@@ -258,22 +258,20 @@ module.exports = {
               ) {
                 db.add(message.author.id + '.economy.timesFired', 1);
                 db.set(message.author.id + '.economy.lastFired', Date.now());
-                embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
+                embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
                 db.delete(message.author.id + '.jobs');
                 db.add(message.author.id + '.economy.timesFired', 1);
                 db.set(message.author.id + '.economy.lastFired', Date.now());
             } else if (db.get(message.author.id + '.economy.timesFired') === 10) {
               db.delete(message.author.id + '.economy.timesFired');
               db.set(message.author.id + '.economy.lastFired', Date.now());
-              embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
-              db.delete(message.author.id + '.jobs')
+              embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
+              db.delete(message.author.id + '.jobs');
               db.add(message.author.id + '.economy.timesFired', 1);
               db.set(message.author.id + '.economy.lastFired', Date.now());
             } else {
               embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
-              db.delete(message.author.id + '.jobs')
-              db.add(message.author.id + '.economy.timesFired', 1);
-              db.set(message.author.id + '.economy.lastFired', Date.now())
+              db.delete(message.author.id + '.jobs');
             }
           }
           embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt}**`);

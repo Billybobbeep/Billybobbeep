@@ -3,8 +3,8 @@ module.exports = {
   description: 'Collect your daily reward.',
   guildOnly: true,
   execute (message, prefix, client) {
-    const Discord = require(`discord.js`);
-    const db = require('../../databaseManager/index.js');
+    const Discord = require('discord.js');
+    const db = require('../../data/databaseManager/index.js');
     const ms = require('ms');
     const embed = new Discord.MessageEmbed();
     embed.setFooter(`${message.author.username}`);

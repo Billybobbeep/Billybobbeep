@@ -1,4 +1,4 @@
-const Discord = require(`discord.js`);
+const Discord = require('discord.js');
 const configFile = require('../../../structure/config.json');
 const embed = new Discord.MessageEmbed();
 const db = require('../../../data/databaseManager/index.js');

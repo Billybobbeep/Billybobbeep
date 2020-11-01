@@ -3,7 +3,7 @@ module.exports = {
     description: 'View how much money you have.',
     guildOnly: true,
     execute (message, prefix, client) {
-        const Discord = require(`discord.js`);
+        const Discord = require('discord.js');
         const db = require('../../data/databaseManager/index.js');
         const embed = new Discord.MessageEmbed();
 
