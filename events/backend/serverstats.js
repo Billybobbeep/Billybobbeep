@@ -7,7 +7,7 @@ let countChannel = {
   serverID: configFile.ServerId
 }
 
-module.exports.add = (client) => {
+module.exports.add = (member, client) => {
     if (member.guild.id !== countChannel.serverID) return;
 
     client.channels.cache.get(countChannel.total).setName(`➳𝓣𝓸𝓽𝓪𝓵 𝓤𝓼𝓮𝓻𝓼: ${member.guild.memberCount}`);
@@ -15,7 +15,7 @@ module.exports.add = (client) => {
     client.channels.cache.get(countChannel.bots).setName(`➳𝓑𝓸𝓽𝓼: ${member.guild.members.cache.filter(m => m.user.bot).size}`);
 }
 
-module.exports.remove = (client) => {
+module.exports.remove = (member, client) => {
   if (member.guild.id !== countChannel.serverID) return;
 
   client.channels.cache.get(countChannel.total).setName(`➳𝓣𝓸𝓽𝓪𝓵 𝓤𝓼𝓮𝓻𝓼: ${member.guild.memberCount}`);
