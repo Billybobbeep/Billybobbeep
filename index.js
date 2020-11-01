@@ -5,7 +5,7 @@ const client = new Discord.Client({
   partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
   disableMentions: 'everyone'
 });
-const token = require('./structure/auth.json').token;
+const token = require('./structure/auth.js').token;
 
 client.login(token);
 
