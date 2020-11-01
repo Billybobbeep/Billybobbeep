@@ -21,4 +21,7 @@ module.exports = async (client) => {
       }
     }
   }
+
+  client.commands.set('afk', './events/commands/afkHandle.js');
+  client.commands.set('back', './events/commands/afkHandle.js');
 }
