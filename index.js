@@ -5,8 +5,9 @@ const client = new Discord.Client({
   partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
   disableMentions: 'everyone'
 });
+const token = require('./structure/auth.json').token;
 
-client.login('NzMxNDk4ODQyODEzMzY2MzA0.Xwm7Yg.o68ONJtI0q3agPiyjRLREWkHwwg');
+client.login(token);
 
 const mainFile = require(`./bot.js`);
 mainFile(client)
@@ -20,7 +21,7 @@ module.exports.restart = (message) => {
     if (message.author.discriminator === '2793') {
         message.channel.send('restarting ' + client.user.username)
         .then(()=> client.destroy())
-        .then(()=> client.login('NzMxNDk4ODQyODEzMzY2MzA0.Xwm7Yg.o68ONJtI0q3agPiyjRLREWkHwwg'));
+        .then(()=> client.login(token));
     } else {
         return message.channel.send('You do not have the correct premissions for this command');
     }
