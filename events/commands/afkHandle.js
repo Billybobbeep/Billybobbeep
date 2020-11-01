@@ -6,7 +6,7 @@ const db = require('../../data/databaseManager/index.js');
 module.exports = {
   commands: ['afk', 'back'],
   guildOnly: true,
-  execute (client, message) {
+  execute (message, prefix, client) {
     if (!message.guild) return;
     let prefix = db.get(message.guild.id + '.prefix') || '~'
     let reason = ''

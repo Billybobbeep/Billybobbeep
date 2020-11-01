@@ -7,7 +7,6 @@ function redirect(message, client) {
     else {
         if (message.guild) {
             require('../backend/levels/main.js')(message, client);
-            require('../commands/afkHandle.js').execute(message, client);
             //require('../commands/counting.js').execute(message, client);
             require('../backend/deletingMessages.js')(message, client);
             require('../commands/mentions/mentions.js')(message, client);
