@@ -1,1 +1,3 @@
-.structure\auth.json
+.auth.js
+!auth.js
+auth.js
