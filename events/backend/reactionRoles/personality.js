@@ -1,5 +1,5 @@
 const Discord = require(`discord.js`);
-const db = require('../../databaseManager/index.js');
+const db = require('../../data/databaseManager/index.js');
 
 module.exports = async (client, message) => {
     const introvert = client.emojis.cache.get('734494044230516767');

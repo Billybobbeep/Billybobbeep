@@ -1,6 +1,6 @@
 const Discord = require(`discord.js`);
 const configFile = require('../../structure/config.json');
-const db = require('../../databaseManager/index.js');
+const db = require('../../data/databaseManager/index.js');
 module.exports = async(msg, args, prefix, message) => {
         if (msg.startsWith(prefix + "cmds help") || msg.startsWith(prefix + "commands help") || msg.startsWith(prefix + "c h") || msg.startsWith(prefix + "cmds mod") || msg.startsWith(prefix + "commands mod") || msg.startsWith(prefix + "c m") || msg.startsWith(prefix + "commands moderation") || msg.startsWith(prefix + "cmds moderation") || msg.startsWith(prefix + "cmds fun") || msg.startsWith(prefix + "commands fun") || msg.startsWith(prefix + "c f") || msg.startsWith(prefix + "c p") || msg.startsWith(prefix + "cmds ping") || msg.startsWith(prefix + "commands ping")) return;
         

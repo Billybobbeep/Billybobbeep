@@ -3,7 +3,7 @@ module.exports = {
     description: 'View avalable jobs.',
     guildOnly: true,
     async execute (message, prefix, client) {
-        const db = require('../../databaseManager/index.js');
+        const db = require('../../data/databaseManager/index.js');
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();
         embed.setFooter(`${message.author.username}`);

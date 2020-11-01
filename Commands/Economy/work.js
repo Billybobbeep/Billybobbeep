@@ -4,7 +4,7 @@ module.exports = {
   guildOnly: true,
   async execute (message, prefix, client) {
     const Discord = require(`discord.js`);
-    const db = require('../../databaseManager/index.js');
+    const db = require('../../data/databaseManager/index.js');
     const ms = require('ms');
     const embed = new Discord.MessageEmbed();
     const xp = new db.table('workXp');

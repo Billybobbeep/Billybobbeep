@@ -1,6 +1,6 @@
 const Discord = require(`discord.js`);
 const configFile = require('../../structure/config.json');
-const db = require('../../databaseManager/index.js');
+const db = require('../../data/databaseManager/index.js');
 module.exports = async(msg, args, prefix, message) => {
         const commandEmbed = new Discord.MessageEmbed()
         .setTitle('Billybobbeep | Moderation Commands')
