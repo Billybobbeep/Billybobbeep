@@ -17,7 +17,7 @@ function handle(message, client) {
     let prefix = db.get(message.guild.id + '.prefix') || '~';
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     let command = args[0].toLowerCase();
-    if (!message.content.startsWWith(prefix)) return;
+    if (!message.content.startsWith(prefix)) return;
     client.commands.get(command).execute(message, prefix, client);
 }
 
