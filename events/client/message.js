@@ -4,13 +4,16 @@ function redirect(message, client) {
     if (message.channel.id === configFile.PollChannel || message.channel.id === configFile.MemesChannel)
         require(`./events/commands/reactions.js`)(message);
     else {
-        require('../backend/levels/main.js')(message, client);
-        require('../commands/Afk/AfkHandle.js')(message, client);
-        //require('../commands/counting.js')(message, client);
-        require('../backend/dmRecieving.js')(message, client);
-        require(`../backend/deletingMessages.js`)(message, client);
-        require('../commands/mentions/mentions.js')(message, client);
-        //require('../commands/talk2billy')(message);
+        if (message.guild) {
+            require('../backend/levels/main.js')(message, client);
+            require('../commands/afkHandle.js').execute(message, client);
+            //require('../commands/counting.js').execute(message, client);
+            require(`../backend/deletingMessages.js`)(message, client);
+            require('../commands/mentions/mentions.js')(message, client);
+            //require('../commands/talk2billy')(message);
+        } else {
+            require('../backend/dmRecieving.js')(message, client);
+        }
     }
 }
 function handle(message, client) {
@@ -18,8 +21,10 @@ function handle(message, client) {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     let command = args[0].toLowerCase();
     if (!message.content.startsWith(prefix)) return;
-    if (client.commands.get(command))
+    if (client.commands.get(command)) {
+        if (client.commands.get(command).guildOnly && client.commands.get(command).guildOnly === true && !message.guild) return;
         client.commands.get(command).execute(message, prefix, client);
+    }
 }
 
 module.exports = (message, client) => {
