@@ -1,12 +1,17 @@
 {
   "name": "billybobbeep",
   "version": "2.0.0",
-  "main": "bot.js",
+  "main": "index.js",
   "author": "Spoink",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "#"
+    "url": "https://github.com/Tyler2P/Billybobbeep"
+  },
+  "scripts": {
+    "start": "nodemon index.js",
+    "restart": "npm stop && npm start",
+    "stop": "echo stopped"
   },
   "description": "",
   "dependencies": {
@@ -23,5 +28,8 @@
     "quick.db": "^7.1.3",
     "say": "^0.16.0",
     "ytdl-core": "^3.4.1"
+  },
+  "engines": {
+    "node": "14.x"
   }
 }
