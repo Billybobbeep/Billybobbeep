@@ -8,21 +8,17 @@ module.exports = {
   description: 'Mute a member.',
   guildOnly: true,
   execute (message, prefix, client) {
+    let args = message.content.slice(prefix.length).trim().split(/ +/g);
+    console.log(args)
     async function muteCmd() {
       let user = message.mentions.users.first() || message.guild.members.cache.get(args[0])
       let reason = args.slice(2).join(" ");
-      let time = args[1] || undefined
+      let time = args[1] || undefined;
       if (time === undefined) return message.channel.send('Please specify a time.');
       if (time.endsWith('h') || time.endsWith('m')) time = ms(time); else return message.channel.send('The time can only be in hours or minutes.');
-      if (!db.get(message.guild.id + '.mutedRole')) {
-        return message.channel.send('Please setup a muted role in your server to use this command.')
-      }
-      if (!user) {
-        return message.channel.send('Please specify a user to mute.')
-      }
-      if (!user.tag) {
-        user = user.user
-      }
+      if (!db.get(message.guild.id + '.mutedRole')) return message.channel.send('Please setup a muted role in your server to use this command.')
+      if (!user) return message.channel.send('Please specify a user to mute.')
+      if (!user.tag) user = user.user
       if (user.id === message.author.id)return message.channel.send('You cannot mute yourself.')
       if (!reason) return message.channel.send('Please specify a reason.');
       let member = message.guild.members.cache.get(user.id);

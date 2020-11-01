@@ -7,6 +7,7 @@ module.exports = {
     description: 'View a users info.',
     guildOnly: true,
     execute (message, prefix, client) {
+        let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]) || message.author;
         const moment = require('moment');
         if (!user) return message.channel.send('Please specify a user.')

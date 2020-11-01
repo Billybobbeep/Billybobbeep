@@ -6,6 +6,7 @@ module.exports = {
   description: 'Repeat what you just said in a spoiler format.',
   guildOnly: true,
   execute (message, prefix, client) {
+    let args = message.content.slice(prefix.length).trim().split(/ +/g);
     let secretMessage = args.join(" ");
     if (message.content.includes('||')) return message.channel.send('You cannot include `||` in your message.');
     if (message.content.toLowerCase().includes('/spoiler')) return message.chanel.send('You cannot include `/spoiler` in your message.');

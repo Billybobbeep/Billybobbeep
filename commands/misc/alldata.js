@@ -4,6 +4,7 @@ module.exports = {
   guildOnly: true,
   spoinkOnly: true,
   execute (message, prefix, client) {
+    let args = message.content.slice(prefix.length).trim().split(/ +/g);
     const db = require('../../data/databaseManager/index.js');
     var table = [];
     const ms = require('ms');

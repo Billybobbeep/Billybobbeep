@@ -6,6 +6,7 @@ module.exports = {
   guildOnly: true,
   execute (message, prefix, client) {
     if (!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send('You need the `Administrator` premissions to run this command.');
+    let args = message.content.slice(prefix.length).trim().split(/ +/g);
     var newPrefix = args[0].toLowerCase()
     if (!newPrefix && db.get(message.guild.id + '.prefix') === '~') return message.channel.send('Please specify a prefix.');
     if (!newPrefix && !db.get(message.guild.id + '.prefix')) return message.channel.send('Please specify a prefix.');

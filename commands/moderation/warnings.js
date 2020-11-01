@@ -6,6 +6,7 @@ module.exports = {
   description: 'View a users warnings.',
   guildOnly: true,
   execute (message, prefix, client) {
+    let args = message.content.slice(prefix.length).trim().split(/ +/g);
     var user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
     if (!user) return message.channel.send('Please specify a user.');
     let tWarnings = db.get(message.guild.id + '_' + user.id + '.warnings') || 0

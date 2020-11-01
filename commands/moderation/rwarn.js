@@ -7,6 +7,7 @@ module.exports = {
   description: 'Remove a users warning.',
   guildOnly: true,
   execute (message, prefix, client) {
+    let args = message.content.slice(prefix.length).trim().split(/ +/g);
     async function rwarnCmd() {
       let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
       var user = message.mentions.users.first();

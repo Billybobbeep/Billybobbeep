@@ -41,10 +41,7 @@ module.exports = {
         //level 15 job
         let doctor = db.get(message.author.id + '.jobs.doctor') || undefined;
 
-        let args = message.content
-            .slice(prefix.length)
-            .trim()
-            .split(/ +/g);
+        let args = message.content.slice(prefix.length).trim().split(/ +/g);
 
         if (!args[1] || args[1] && args[1] === 'info') {
             embed.setTitle(`Economy | Jobs`)

@@ -9,6 +9,7 @@ module.exports = {
   description: 'Unmute a member.',
   guildOnly: true,
   execute (message, prefix, client) {
+    let args = message.content.slice(prefix.length).trim().split(/ +/g);
     async function unmuteCmd() {
       let user = message.mentions.users.first() || message.guild.members.cache.get(args[0])
       let reason = args.slice(1).join(" ");

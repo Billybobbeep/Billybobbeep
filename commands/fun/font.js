@@ -38,6 +38,7 @@ module.exports = {
     description: 'Put your message into a new font.',
     alias: ['fonts'],
     execute (message, prefix, client) {
+        let args = message.content.slice(prefix.length).trim().split(/ +/g);
         var lines = ['', ''];
         var starter = '➳';
         

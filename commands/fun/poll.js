@@ -14,6 +14,7 @@ module.exports = {
     description: 'Send a poll.',
     guildOnly: true,
     async execute (message, prefix, client) {
+        let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let pollChannel = message.mentions.channels.first();
         let pollDescription = args.slice(1).join(' ')
 

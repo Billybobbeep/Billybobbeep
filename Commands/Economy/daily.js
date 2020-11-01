@@ -74,15 +74,16 @@ module.exports = {
     let nem = client.emojis.cache.get('767351869856940063');
     let sem = client.emojis.cache.get('767365396474101831');
     let semoji = `${nem}${nem}${nem}${nem}${nem}`
-    if (lastRun !== null && cooldown - (Date.now() - lastRun) <= 86400000) {
+    /*if (lastRun !== null && cooldown - (Date.now() - lastRun) <= 86400000) {
       db.delete(message.author.id + '.economy.streak');
       db.delete(message.author.id + '.economy.tStreak');
-    }
+    }*/
     if (streak === 1) semoji = `${sem}${nem}${nem}${nem}${nem}`
     else if (streak === 2) semoji = `${sem}${sem}${nem}${nem}${nem}`
     else if (streak === 3) semoji = `${sem}${sem}${sem}${nem}${nem}`
     else if (streak === 4) semoji = `${sem}${sem}${sem}${sem}${nem}`
-    else if (streak === 5) { semoji =  `${sem}${sem}${sem}${sem}${sem}`
+    else if (streak === 5) {
+      semoji =  `${sem}${sem}${sem}${sem}${sem}`
       embed.setDescription(`You have collected your **${dailyAmt + reward}** reward.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
       embed.setFooter(`Total Streak: ${tStreak}\nWallet: $${balance + dailyAmt + reward}`);
       message.channel.send(embed);

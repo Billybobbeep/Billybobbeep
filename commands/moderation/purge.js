@@ -7,6 +7,7 @@ module.exports = {
   description: 'Announce a message in a different channel.',
   guildOnly: true,
   execute (message, prefix, client) {
+    let args = message.content.slice(prefix.length).trim().split(/ +/g);
     function purgeCmd() {
       if (isNaN(args[0])) return message.channel.send("You have entered an invalid number.")
       if (args[0] > 100) return message.channel.send("Please enter a number below 100.")

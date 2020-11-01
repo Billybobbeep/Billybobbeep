@@ -6,6 +6,7 @@ module.exports = {
     description: 'Repeat what you just said.',
     guildOnly: true,
     execute (message, prefix, client) { 
+        let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let wantToSay = args.join(" ");
         if (!args[0]) return message.channel.send('You must specify a message to send.');
         message.channel.send(wantToSay, { disableMentions: 'everyone' });

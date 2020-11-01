@@ -5,6 +5,7 @@ module.exports = {
   description: 'Warn a user.',
   guildOnly: true,
   execute (message, prefix, client) {
+    let args = message.content.slice(prefix.length).trim().split(/ +/g);
     let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
 
     async function warnCmd() {

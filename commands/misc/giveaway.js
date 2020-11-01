@@ -7,6 +7,7 @@ module.exports = {
   description: 'Start a giveaway.',
   guildOnly: true,
   async execute (message, prefix, client) {
+    let args = message.content.slice(prefix.length).trim().split(/ +/g);
     if (!args[0]) return message.channel.send(`Please specify a time.`);
     if (
       !args[0].endsWith('d') &&
