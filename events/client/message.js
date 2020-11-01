@@ -6,11 +6,11 @@ function redirect(message, client) {
     else {
         require('../backend/levels/main.js')(message, client);
         require('../commands/Afk/AfkHandle.js')(message, client);
-        require('../commands/counting.js')(message, client);
+        //require('../commands/counting.js')(message, client);
         require('../backend/dmRecieving.js')(message, client);
         require(`../backend/deletingMessages.js`)(message, client);
         require('../commands/mentions/mentions.js')(message, client);
-        require('../commands/talk2billy')(message);
+        //require('../commands/talk2billy')(message);
     }
 }
 function handle(message, client) {
