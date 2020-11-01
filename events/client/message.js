@@ -1,5 +1,6 @@
 const configFile = require('../../structure/config.json');
 const db = require('../../data/databaseManager/index.js');
+
 function redirect(message, client) {
     if (message.channel.id === configFile.PollChannel || message.channel.id === configFile.MemesChannel)
         require(`./events/commands/reactions.js`)(message);
@@ -16,6 +17,7 @@ function redirect(message, client) {
         }
     }
 }
+
 function handle(message, client) {
     let prefix = db.get(message.guild.id + '.prefix') || '~';
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -34,7 +36,5 @@ module.exports = (message, client) => {
     }
     if (message.author.bot) return;
     redirect(message, client)
-    if (message.guild) {
-        handle(message, client)
-    }
+    handle(message, client)
 }
