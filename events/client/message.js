@@ -6,11 +6,11 @@ function redirect(message, client) {
         require('../commands/reactions.js')(message);
     else {
         if (message.guild) {
+            require('../backend/deletingMessages.js')(message, client);
             require('../backend/levelling.js')(message, client);
             //require('../commands/counting.js').execute(message, client);
-            require('../backend/deletingMessages.js')(message, client);
-            require('../commands/mentions/mentions.js')(message, client);
             //require('../commands/talk2billy')(message);
+            require('../commands/mentions/mentions.js')(message, client);
             require('../backend/antiSpam.js').execute(message);
         } else {
             require('../backend/dmRecieving.js')(message, client);
