@@ -1,16 +1,21 @@
 const configFile = require('../../structure/config.json');
 const db = require('../../data/databaseManager/index.js');
+const antiSpam = require('../backend/antiSpam/antiSpam.js')
 
 function redirect(message, client) {
     if (message.channel.id === configFile.PollChannel || message.channel.id === configFile.MemesChannel)
         require('../commands/reactions.js')(message);
     else {
         if (message.guild) {
-            require('../backend/levels/main.js')(message, client);
+            require('../backend/levelling.js')(message, client);
             //require('../commands/counting.js').execute(message, client);
             require('../backend/deletingMessages.js')(message, client);
             require('../commands/mentions/mentions.js')(message, client);
             //require('../commands/talk2billy')(message);
+            new antiSpam({
+                warnThreshold: 3,
+                muteThreshold: 4
+            })
         } else {
             require('../backend/dmRecieving.js')(message, client);
         }

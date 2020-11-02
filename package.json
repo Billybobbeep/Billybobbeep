@@ -18,6 +18,7 @@
     "@discordjs/opus": "^0.3.2",
     "discord.js": "^12.3.1",
     "ejs": "^3.1.5",
+    "events": "^3.2.0",
     "express": "^4.17.1",
     "ffmpeg-static": "^4.2.7",
     "moment": "^2.29.1",

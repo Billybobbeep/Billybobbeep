@@ -1,4 +1,4 @@
-const db = require('../../../data/databaseManager/index.js');
+const db = require('../../data/databaseManager/index.js');
 var xp = new db.table('xp');
 
 module.exports = async (message, client) => {

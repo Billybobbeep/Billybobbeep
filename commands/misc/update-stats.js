@@ -2,6 +2,7 @@ module.exports = {
     name: 'updatestats',
     description: 'Update the member stats',
     execute (message, prefix, client) {
+        const configFile = require('../../structure/config.json');
         let countChannel = {
             total: configFile.TotalUserVoiceId,
             member: configFile.MembersVoiceId,
