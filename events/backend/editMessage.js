@@ -6,9 +6,7 @@ module.exports = (newMessage, oldMessage, client) => {
 	if (oldMessage.author.bot) return;
 	if (!oldMessage.guild) return;
 
-	let LoggingChannel = client.channels.cache.get(
-		db.get(oldMessage.guild.id + '.loggingChannel')
-	);
+	let LoggingChannel = client.channels.cache.get(db.get(oldMessage.guild.id + '.loggingChannel'));
 
 	if (
 		newMessage.content === null ||
@@ -19,12 +17,12 @@ module.exports = (newMessage, oldMessage, client) => {
 			.setTitle(`Message Edited`)
 			.setDescription(
 				`**Old Content:** ${oldMessage.content}\n` +
-					`**New Content:** *This message provided no text.*\n` +
-					`**Channel:** ${oldMessage.channel}\n` +
-					`**Message ID:** ${newMessage.id}\n\n` +
-					`**Author:** ${oldMessage.author}\n` +
-					`**Author Tag:** ${oldMessage.author.tag}\n` +
-					`**Author ID:** ${oldMessage.author.id}`
+				`**New Content:** *This message provided no text.*\n` +
+				`**Channel:** ${oldMessage.channel}\n` +
+				`**Message ID:** ${newMessage.id}\n\n` +
+				`**Author:** ${oldMessage.author}\n` +
+				`**Author Tag:** ${oldMessage.author.tag}\n` +
+				`**Author ID:** ${oldMessage.author.id}`
 			)
 			.setTimestamp()
 			.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
@@ -56,12 +54,12 @@ module.exports = (newMessage, oldMessage, client) => {
 		.setTitle(`Message Edited`)
 		.setDescription(
 			`**Old Content:** ${oldMessage.content}\n` +
-				`**New Content:** ${newMessage.content}\n` +
-				`**Channel:** ${oldMessage.channel}\n` +
-				`**Message ID:** ${newMessage.id}\n\n` +
-				`**Author:** ${oldMessage.author}\n` +
-				`**Author Tag:** ${oldMessage.author.tag}\n` +
-				`**Author ID:** ${oldMessage.author.id}`
+			`**New Content:** ${newMessage.content}\n` +
+			`**Channel:** ${oldMessage.channel}\n` +
+			`**Message ID:** ${newMessage.id}\n\n` +
+			`**Author:** ${oldMessage.author}\n` +
+			`**Author Tag:** ${oldMessage.author.tag}\n` +
+			`**Author ID:** ${oldMessage.author.id}`
 		)
 		.setTimestamp()
 		.setColor(`${db.get(oldMessage.guild.id + '.embedColor') || '#447ba1'}`);

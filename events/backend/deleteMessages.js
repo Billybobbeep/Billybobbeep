@@ -9,7 +9,11 @@ module.exports = async (message, client) => {
   let pinned;
 
   if (!message.guild) return;
-  if (message.author.bot) return;
+  try {
+    if (message.author.bot) return;
+  } catch {
+    console.error('.');
+  }
   if (!message || !message.author.id) return;
   embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
   let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));

@@ -11,5 +11,5 @@ module.exports = (client) => {
     client.on('guildDelete', (guild) => events('guildManager').remove(guild, client));
     client.on('messageDelete', (message) => events('deleteMessages')(message, client));
     client.on('messageReactionAdd', (reaction, user) => require('../events/backend/reactionRoles/main.js').add(reaction, user, client));
-    client.on('messageUpdate', (newMessage, oldMessage) => events('editMessage')(newMessage, oldMessage, client));
+    client.on('messageUpdate', (oldMessage, newMessage) => events('editMessage')(newMessage, oldMessage, client));
 }
