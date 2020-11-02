@@ -1,6 +1,5 @@
 const configFile = require('../../structure/config.json');
 const db = require('../../data/databaseManager/index.js');
-const antiSpam = require('../backend/antiSpam/antiSpam.js')
 
 function redirect(message, client) {
     if (message.channel.id === configFile.PollChannel || message.channel.id === configFile.MemesChannel)
@@ -12,10 +11,7 @@ function redirect(message, client) {
             require('../backend/deletingMessages.js')(message, client);
             require('../commands/mentions/mentions.js')(message, client);
             //require('../commands/talk2billy')(message);
-            new antiSpam({
-                warnThreshold: 3,
-                muteThreshold: 4
-            })
+            require('../backend/antiSpam.js').execute(message);
         } else {
             require('../backend/dmRecieving.js')(message, client);
         }
