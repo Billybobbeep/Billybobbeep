@@ -30,10 +30,11 @@ module.exports = {
             muted: [],
             warned: []
         }
+        message(message)
 
-//        Script
-//      -----------
-        async function message() {
+        //        Script
+        //      -----------
+        async function message(message) {
             console.log(message)
             console.log('1');
             if (!message.guild) return false;
@@ -77,19 +78,19 @@ module.exports = {
 
             const userCanBeMuted = muteEnabled && !cache.muted.includes(message.author.id) && !debounce
             if (userCanBeMuted && (spamMatches.length >= muteThreshold)) {
-                muteUser()
+                muteUser(message)
                 debounce = true
             } else if (userCanBeMuted && (duplicateMatches.length >= maxDuplicatesMute)) {
-                muteUser()
+                muteUser(message)
                 debounce = true
             }
 
             const userCanBeWarned = warnEnabled && !cache.warned.includes(message.author.id) && !debounce
             if (userCanBeWarned && (spamMatches.length >= warnThreshold)) {
-                warnUser()
+                warnUser(message)
                 debounce = true
             } else if (userCanBeWarned && (duplicateMatches.length >= maxDuplicatesWarn)) {
-                warnUser()
+                warnUser(message)
                 debounce = true
             }
 
@@ -142,14 +143,14 @@ module.exports = {
             }
         }
 
-        function warnUser() {
+        function warnUser(message) {
             cache.warnedUsers.push(message.author.id);
             db.push(message.guild.id + '_' + message.author.id + '.warnReasons', 'Automatic Warning - Spamming.');
             db.add(message.guild.id + '_' + message.author.id + '.warnings', 1);
             log(message, 'warn');
         }
 
-        async function muteUser() {
+        async function muteUser(message) {
             cache.muted.push(message.author.id);
             const member = message.member || await message.guild.members.fetch(message.author);
             const role = message.guild.roles.cache.find(role => role.id === db.get(message.guild.id + '.mutedRole'));
@@ -170,6 +171,5 @@ module.exports = {
                 warned: []
             }
         }
-        message()
     }
 }
