@@ -9,15 +9,14 @@ module.exports = async (message, client) => {
   let pinned;
 
   if (!message.guild) return;
-  try {
-    if (message.author.bot) return;
-  } catch {
-    console.error('.');
-  }
+  try { if (message.author.bot) return; } catch { return }
+
   if (!message || !message.author.id) return;
   embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
   let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
   let prefix = db.get(message.guild.id + '.prefix') || '~';
+  var attachments = message.attachment ? message.attachments.map(attachment => attachment.url) : null;
+  var content = message.content.length ? message.content : '*This message contained no content.*';
 
   if (message.content.startsWith(prefix)) {
     command = true;
@@ -31,24 +30,8 @@ module.exports = async (message, client) => {
   }
 
   if (message.content.toLowerCase().startsWith(prefix + `purge`)) return;
-  if (message.content === null || message.content === ' ' || message.content === undefined) {
-    embed.setDescription(
-      `**Content:** *This message provided no text.*\n` +
-      `**Message ID:** ${message.id}\n` +
-      `**Channel:** ${message.channel}\n\n` +
-      `**Author:** ${message.author}\n` +
-      `**Author Tag:** ${message.author.tag}\n` +
-      `**Author ID:** ${message.author.id}\n\n` +
-      `**Command:** ${command}\n` +
-      `**Pinned:** ${pinned}\n`)
-      try {
-        return LoggingChannel.send(embed);
-      } catch {
-        return;
-      }
-  }
 
-  if (message.attachments.size > 0) {
+  /*if (message.attachments.size > 0) {
     embed.setDescription(
       `**Content:** *This message contained an image.*\n` +
       `**Message ID:** ${message.id}\n` +
@@ -63,8 +46,9 @@ module.exports = async (message, client) => {
       } catch {
         return;
       }
-  }
-  if (message.content.toLowerCase().includes('https://') || message.content.toLowerCase().includes('http://') || message.content.toLowerCase().includes('www.') || message.content.toLowerCase().includes('.com') || message.content.toLowerCase().includes('.co.uk')) {
+  }*/
+  
+  /*if (message.content.toLowerCase().includes('https://') || message.content.toLowerCase().includes('http://') || message.content.toLowerCase().includes('www.') || message.content.toLowerCase().includes('.com') || message.content.toLowerCase().includes('.co.uk')) {
     embed.setDescription(
       `**Content:** *This message contained an embeded link.*\n` +
       `**Link**: ${message.content}\n` +
@@ -80,21 +64,25 @@ module.exports = async (message, client) => {
     } catch {
         return;
       }
-  }
+  }*/
 
   embed.setDescription(
-    '**Content:** ' + message.content +
+    '**Content:** ' + content +
     '\n**Message ID:** ' + message.id +
     '\n**Channel:** ' + message.channel +
     `\n\n**Author:** ${message.author}` +
     '\n**Author Tag:** ' + message.author.tag +
     '\n**Author ID:** ' + message.author.id +
     '\n\n**Command:** ' + command +
-    '\n**Pinned:** ' + pinned
-  )
-  try {
-    LoggingChannel.send(embed);
-  } catch {
-    return;
+    '\n**Pinned:** ' + pinned +
+    `${attachments ? `\n**Attachments:** ${attachments.join('\n')}` : ''}`
+  );
+
+  if (LoggingChannel) {
+    try {
+      LoggingChannel.send(embed);
+    } catch {
+      return;
+    }
   }
 }
