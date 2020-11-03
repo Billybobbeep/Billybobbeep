@@ -20,7 +20,7 @@ module.exports = {
     embed.setTimestamp()
     embed.setFooter(`Requested by: ${message.author.tag}`)
     embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-    embed.setDescription(`${user.username}'s level is currently ${currLvl}`)
+    embed.setDescription(`${user.username[0].toUpperCase()}${(user.username).substring(1).toLowerCase()}'s level is currently ${currLvl}`)
     message.channel.send(embed)
   }
 }
