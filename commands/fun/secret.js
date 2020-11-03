@@ -7,10 +7,10 @@ module.exports = {
   guildOnly: true,
   execute (message, prefix, client) {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
-    let secretMessage = args.join(" ");
+    let secretMessage = args.join(' ');
     if (message.content.includes('||')) return message.channel.send('You cannot include `||` in your message.');
     if (message.content.toLowerCase().includes('/spoiler')) return message.chanel.send('You cannot include `/spoiler` in your message.');
-    if (!args[0]) return message.channel.send('You must specify a message to send.');
+    if (!args[1]) return message.channel.send('You must specify a message to send.');
     message.channel.send(`||${secretMessage}||`);
     message.delete();
   }
