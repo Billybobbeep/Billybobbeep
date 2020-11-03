@@ -15,12 +15,12 @@ module.exports = {
     if (user.username === undefined) {
       user = user.user
     }
-    const embed = new Discord.MessageEmbed()
-    embed.setTitle('Billybobbeep | Levelling System')
-    embed.setTimestamp()
-    embed.setFooter(`Requested by: ${message.author.tag}`)
-    embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-    embed.setDescription(`${user.username[0].toUpperCase()}${(user.username).substring(1).toLowerCase()}'s level is currently ${currLvl}`)
-    message.channel.send(embed)
+    const embed = new Discord.MessageEmbed();
+    embed.setTitle('Billybobbeep | Levelling System');
+    embed.setTimestamp();
+    embed.setFooter(`Requested by: ${message.author.tag}`);
+    embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
+    embed.setDescription(`${user.username[0].toUpperCase()}${(user.username).substring(1).toLowerCase()}'s level is currently ${currLvl}`);
+    message.channel.send(embed);
   }
 }
