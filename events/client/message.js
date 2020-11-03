@@ -3,7 +3,7 @@ const db = require('../../data/databaseManager/index.js');
 
 function redirect(message, client) {
     if (message.channel.id === configFile.PollChannel || message.channel.id === configFile.MemesChannel)
-        require('../commands/reactions.js')(message);
+        require('../backend/reactions.js')(message);
     else {
         if (message.guild) {
             require('../backend/deletingMessages.js')(message, client);
