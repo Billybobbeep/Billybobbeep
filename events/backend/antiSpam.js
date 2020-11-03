@@ -1,7 +1,10 @@
 module.exports = {
     name: 'Anti Spam',
     description: 'A backend module to monitor all messages sent.',
-       execute (message) {
+    execute (message) {
+        /**
+         * @param {string} message
+        */
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();
         const db = require('../../data/databaseManager/index.js');
@@ -171,3 +174,4 @@ module.exports = {
             }
         }
     }
+}
