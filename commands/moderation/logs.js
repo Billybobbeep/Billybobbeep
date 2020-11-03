@@ -45,7 +45,7 @@ function filter_flags(client, message, prefix) {
     if (message.content.toLowerCase().includes('--filter-logs-bot')) {
 
     } else if (message.content.toLowerCase().includes('--filter-logs-audit')) {
-        let actions = args.find(f => f.startsWith('--filter-action-')) || 'Not filtered'
+        let actions = args.find(f => f.startsWith('--filter-action-') || f.startsWith('--filter-actions-')) || 'Not filtered'
         if (actions !== 'Not filtered') {
             actions = actions.substring(16);
             actions = actions.replace('-', ' ').replace('-', ' ').split(/ +/g);
@@ -54,25 +54,111 @@ function filter_flags(client, message, prefix) {
             let FA = '';
             let SA = '';
             let TA = '';
-            if (actions[0].toLowerCase() === 'emoji_update')
-                FA = ['EMOJI_DELETE', 'EMOJI_UPDATE', ' EMOJI_CREATE'];
-            else if (actions[0].toLowerCase() === 'role_update')
-                FA = 'ROLE_UPDATE';
-            else if (actions[0].toLowerCase() === 'member_role_update')
-                FA = 'MEMBER_ROLE_UPDATE';
-            else if (actions[0].toLowerCase() === 'channel_update')
-                FA = ['CHANNEL_CREATE', 'CHANNEL_DELETE'];
-            else if (actions[0].toLowerCase() === 'bulk_delete')
-                FA = 'MESSAGE_BULK_DELETE';
-            else if (actions[0].toLowerCase() === 'ban_add')
-                FA = 'MEMBER_BAN_ADD';
-            else if (actions[0].toLowerCase() === 'ban_remove')
-                FA = 'MEMBER_BAN_REMOVE';
-            else if (actions[0].toLowerCase() === 'kick_add')
-                FA = 'MEMBER_KICK';
-            else if (actions[0].toLowerCase() === 'bot_add')
-                FA = 'BOT_ADD';
-            else return message.channel.send(`**${actions[0][0].toUpperCase() + actions[0].substring(1).toLowerCase()}** is not a valid action.`);
+            if (actions[0]) {
+                if (actions[0].toLowerCase() === 'emoji_update')
+                    FA = ['EMOJI_DELETE', 'EMOJI_UPDATE', ' EMOJI_CREATE'];
+                else if (actions[0].toLowerCase() === 'role_update')
+                    FA = 'ROLE_UPDATE';
+                else if (actions[0].toLowerCase() === 'member_role_update')
+                    FA = 'MEMBER_ROLE_UPDATE';
+                else if (actions[0].toLowerCase() === 'channel_update')
+                    FA = ['CHANNEL_CREATE', 'CHANNEL_DELETE'];
+                else if (actions[0].toLowerCase() === 'bulk_delete')
+                    FA = 'MESSAGE_BULK_DELETE';
+                else if (actions[0].toLowerCase() === 'ban_add')
+                    FA = 'MEMBER_BAN_ADD';
+                else if (actions[0].toLowerCase() === 'ban_remove')
+                    FA = 'MEMBER_BAN_REMOVE';
+                else if (actions[0].toLowerCase() === 'kick_add')
+                    FA = 'MEMBER_KICK';
+                else if (actions[0].toLowerCase() === 'bot_add')
+                    FA = 'BOT_ADD';
+                else return message.channel.send(`**${actions[0][0].toUpperCase() + actions[0].substring(1).toLowerCase()}** is not a valid action.`);
+            } else 
+                return message.channel.send(`You have entered an invalid action.`)
+            
+            if (actions[1]) {
+                if (actions[1].toLowerCase() === 'emoji_update')
+                    SA = ['EMOJI_DELETE', 'EMOJI_UPDATE', ' EMOJI_CREATE'];
+                else if (actions[1].toLowerCase() === 'role_update')
+                    SA = 'ROLE_UPDATE';
+                else if (actions[1].toLowerCase() === 'member_role_update')
+                    SA = 'MEMBER_ROLE_UPDATE';
+                else if (actions[1].toLowerCase() === 'channel_update')
+                    SA = ['CHANNEL_CREATE', 'CHANNEL_DELETE'];
+                else if (actions[1].toLowerCase() === 'bulk_delete')
+                    SA = 'MESSAGE_BULK_DELETE';
+                else if (actions[1].toLowerCase() === 'ban_add')
+                    SA = 'MEMBER_BAN_ADD';
+                else if (actions[1].toLowerCase() === 'ban_remove')
+                    SA = 'MEMBER_BAN_REMOVE';
+                else if (actions[1].toLowerCase() === 'kick_add')
+                    SA = 'MEMBER_KICK';
+                else if (actions[1].toLowerCase() === 'bot_add')
+                    SA = 'BOT_ADD';
+                else return message.channel.send(`**${actions[1][0].toUpperCase() + actions[1].substring(1).toLowerCase()}** is not a valid action.`);
+            }
+
+            if (actions[2]) {
+                if (actions[2].toLowerCase() === 'emoji_update')
+                    TA = ['EMOJI_DELETE', 'EMOJI_UPDATE', ' EMOJI_CREATE'];
+                else if (actions[2].toLowerCase() === 'role_update')
+                    TA = 'ROLE_UPDATE';
+                else if (actions[2].toLowerCase() === 'member_role_update')
+                    TA = 'MEMBER_ROLE_UPDATE';
+                else if (actions[2].toLowerCase() === 'channel_update')
+                    TA = ['CHANNEL_CREATE', 'CHANNEL_DELETE'];
+                else if (actions[2].toLowerCase() === 'bulk_delete')
+                    TA = 'MESSAGE_BULK_DELETE';
+                else if (actions[2].toLowerCase() === 'ban_add')
+                    TA = 'MEMBER_BAN_ADD';
+                else if (actions[2].toLowerCase() === 'ban_remove')
+                    TA = 'MEMBER_BAN_REMOVE';
+                else if (actions[2].toLowerCase() === 'kick_add')
+                    TA = 'MEMBER_KICK';
+                else if (actions[2].toLowerCase() === 'bot_add')
+                    TA = 'BOT_ADD';
+                else return message.channel.send(`**${actions[2][0].toUpperCase() + actions[2].substring(1).toLowerCase()}** is not a valid action.`);
+            }
+
+            if (FA !== '' && SA !== '') if (FA === SA) return message.channel.send(`You have filtered the action **${actions[0]}** more than once.\nYou can only filter an action once.`);
+            if (SA !== '' && TA !== '') if (SA === TA) return message.channel.send(`You have filtered the action **${actions[1]}** more than once.\nYou can only filter an action once.`);
+            if (TA !== '' && FA !== '') if (TA === FA) return message.channel.send(`You have filtered the action **${actions[2]}** more than once.\nYou can only filter an action once.`);
+
+            audit_logs(client, message, (FA || undefined), (SA || undefined), (TA || undefined));
+        }
+
+        actions = args.find(f => f.startsWith('--remove-action-') || f.startsWith('--remove-actions-')) || 'Not filtered';
+        if (actions !== 'Not filtered') {
+            actions = actions.substring(16);
+            actions = actions.replace('-', ' ').replace('-', ' ').split(/ +/g);
+            if (actions[2] && actions[2].includes('-')) return message.channel.send(`You can only select up to \`3\` actions to remove.`);
+            
+            let FA = '';
+            let SA = '';
+            let TA = '';
+            if (actions[0]) {
+                if (actions[0].toLowerCase() === 'emoji_update')
+                    FA = ['EMOJI_DELETE', 'EMOJI_UPDATE', ' EMOJI_CREATE'];
+                else if (actions[0].toLowerCase() === 'role_update')
+                    FA = 'ROLE_UPDATE';
+                else if (actions[0].toLowerCase() === 'member_role_update')
+                    FA = 'MEMBER_ROLE_UPDATE';
+                else if (actions[0].toLowerCase() === 'channel_update')
+                    FA = ['CHANNEL_CREATE', 'CHANNEL_DELETE'];
+                else if (actions[0].toLowerCase() === 'bulk_delete')
+                    FA = 'MESSAGE_BULK_DELETE';
+                else if (actions[0].toLowerCase() === 'ban_add')
+                    FA = 'MEMBER_BAN_ADD';
+                else if (actions[0].toLowerCase() === 'ban_remove')
+                    FA = 'MEMBER_BAN_REMOVE';
+                else if (actions[0].toLowerCase() === 'kick_add')
+                    FA = 'MEMBER_KICK';
+                else if (actions[0].toLowerCase() === 'bot_add')
+                    FA = 'BOT_ADD';
+                else return message.channel.send(`**${actions[0][0].toUpperCase() + actions[0].substring(1).toLowerCase()}** is not a valid action.`);
+            } else 
+                return message.channel.send(`You have entered an invalid action.`)
             
             if (actions[1]) {
                 if (actions[1].toLowerCase() === 'emoji_update')
@@ -132,7 +218,7 @@ function audit_logs(client, message, action1, action2, action3) {
         if (action1 !== undefined && action2 !== undefined && action3 !== undefined) log = log.filter(e => e.executor.id !== client.user.id).filter(e => e.action === action1 || e.action === action3);
         else log = log.filter(e => e.executor.id !== client.user.id)
         log = log.sort((a, b) => b.createdAt - a.createdAt);
-        console.log(log[1])
+        console.log(log)
         
         /*for (i <= 10; i++;) {
             console.log(log)
