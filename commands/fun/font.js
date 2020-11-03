@@ -52,8 +52,8 @@ module.exports = {
         }
 
         if (message.content.toLowerCase() === prefix + 'font' || message.content.toLowerCase() === prefix + 'fonts') return mainEmbed()
-        if (!args[0]) return message.channel.send('Please specify a font.')
-        if (args[0].toLowerCase() === 'fancy') {
+        if (!args[1]) return message.channel.send('Please specify a font.')
+        if (args[1].toLowerCase() === 'fancy') {
             var letters = {
                 a : '𝓪',
                 b : '𝓫',
@@ -83,7 +83,7 @@ module.exports = {
                 z : '𝔃',
                 ' ' : ' '
             }
-        } else if (args[0].toLowerCase() === 'double') {
+        } else if (args[1].toLowerCase() === 'double') {
             var letters = {
                 a : '𝕒',
                 b : '𝕓',
@@ -114,7 +114,7 @@ module.exports = {
                 ' ' : ' '
             }
         }
-        else if (args[0].toLowerCase() === 'hand') {
+        else if (args[1].toLowerCase() === 'hand') {
             var letters = {
                 a : '𝒶',
                 b : '𝒷',
@@ -144,7 +144,7 @@ module.exports = {
                 z : '𝓏',
                 ' ' : ' '
             }
-        } else if (args[0].toLowerCase() === 'cursed') {
+        } else if (args[1].toLowerCase() === 'cursed') {
             var letters = {
                 a : 'a̸̟̲͙͓̮͔̻̍͒͗̒̒́̈́',
                 b : 'b̴͓̘̽̊͂͗',
@@ -174,7 +174,7 @@ module.exports = {
                 z : 'z̶̘̙̰̪̣̻͉͂͒ͅ',
                 ' ' : ' '
             }
-        }else if (args[0].toLowerCase() === 'smooth') {
+        }else if (args[1].toLowerCase() === 'smooth') {
             var letters = {
                 a : 'ᗩ',
                 b : 'ᗷ',
@@ -204,7 +204,7 @@ module.exports = {
                 z : 'ᘔ',
                 ' ' : ' '
             }
-        } else if (args[0].toLowerCase() === 'smol') {
+        } else if (args[1].toLowerCase() === 'smol') {
             var letters = {
                 a : 'α',
                 b : 'в',
@@ -238,12 +238,12 @@ module.exports = {
             return message.channel.send('You have entered an invalid font.')
         }
 
-        if (!args[1]) {
+        if (!args[2]) {
             message.reply('Please specify a message.')
         } else {
             try {
-                for (var i = 0; i < args.slice(1).join(' ').length; i++) {
-                    var letter = args.slice(1).join(' ')[i].toLowerCase();
+                for (var i = 0; i < args.slice(2).join(' ').length; i++) {
+                    var letter = args.slice(2).join(' ')[i].toLowerCase();
                     for (var j = 0; j < 1; j++) {
                         lines[j] += letters[letter] + '';
                     }
