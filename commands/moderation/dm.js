@@ -6,17 +6,17 @@ module.exports = {
   description: 'DM a user.',
   guildOnly: true,
   execute (message, prefix, client) {
-    if (!message.member.permissions.has(['MANAGE_MESSAGES', 'ADMINISTRATOR'])) return message.channel.send('You do not have the permissions to do this.');
+    if (!message.member.permissions.has(['MANAGE_MESSAGES', 'ADMINISTRATOR'])) return message.channel.send('You do not have the permissions to use this command.');
     let args = message.content.slice(prefix.length).trim().split(/ +/g);  
     let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
-    let user = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+    let user = message.mentions.members.first() || message.guild.members.cache.get(args[1]);
     if (!user) return message.channel.send(`Please specify a user.`);
-    if (!args.slice(1).join(' ')) return message.channel.send('Please specify a message.');
+    if (!args.slice(2).join(' ')) return message.channel.send('Please specify a message.');
       const embed = new Discord.MessageEmbed()
         embed.setTitle(`DM Sent`)
         embed.setTimestamp()
         embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-      if (args.slice(1) === null) {
+      if (args.slice(2) === null) {
         embed.setDescription(
           `**Message:** \`This message contained an embed.\`\n` +
           `**Message ID:** ${message.id}\n` +

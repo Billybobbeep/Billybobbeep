@@ -3,18 +3,18 @@ const configFile = require('../../structure/config.json');
 const db = require('../../data/databaseManager/index.js');
 
 module.exports = {
-  name: 'announce',
-  description: 'Announce a message in a different channel.',
+  name: 'purge',
+  description: 'Delete alot of messages at once.',
   guildOnly: true,
   execute (message, prefix, client) {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     function purgeCmd() {
-      if (isNaN(args[0])) return message.channel.send("You have entered an invalid number.")
-      if (args[0] > 100) return message.channel.send("Please enter a number below 100.")
-      if (args[0] < 2) return message.channel.send("Please enter a number more than 1.")
+      if (isNaN(args[1])) return message.channel.send('You have entered an invalid number.');
+      if (args[1] > 100) return message.channel.send('Please enter a number below 100.');
+      if (args[1] < 2) return message.channel.send('Please enter a number more than 1.');
       var msg1;
       message.delete()
-      message.channel.bulkDelete(args[0])
+      message.channel.bulkDelete(args[1])
         .then(messages => {
           async function main() {
             msg1 = await message.channel.send(`Deleted ${messages.size}/${args[0]} messages.`);
@@ -42,11 +42,11 @@ module.exports = {
           }
           main()
         })
-        .catch((error) => console.log(error))//message.channel.send("Something went wrong, please ensure the messages are not over 2 weeks old."));
+        .catch(() => message.channel.send('Something went wrong, please ensure the messages are not over 2 weeks old.'));
     }
     var debounce = false;
 
-    if (message.member.hasPermission("MANAGE_MESSAGES") || message.member.hasPermission("ADMINISTRATOR")) {
+    if (message.member.hasPermission('MANAGE_MESSAGES') || message.member.hasPermission('ADMINISTRATOR')) {
       purgeCmd()
       debounce = true;
     } else if (db.get(message.guild.id + '.modRole')) {

@@ -9,7 +9,7 @@ module.exports = {
     let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
 
     async function warnCmd() {
-      var user = message.mentions.users.first() || message.guild.members.cache.get(args[0])
+      var user = message.mentions.users.first() || message.guild.members.cache.get(args[1])
       if (!user) return message.channel.send('Please specify a user to warn.');
 
       if (user.id === message.author.id) return message.channel.send('You cannot warn yourself.');
@@ -29,7 +29,7 @@ module.exports = {
         user = user.user
       }
 
-      var reason = args.splice(1).join(' ');
+      var reason = args.splice(2).join(' ');
       if (!reason) return message.reply('You need to specify a reason');
       db.push(message.guild.id + '_' + user.id + '.warnReasons', reason);
       var log = new Discord.MessageEmbed()

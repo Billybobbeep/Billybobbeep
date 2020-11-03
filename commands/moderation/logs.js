@@ -45,6 +45,7 @@ function filter_flags(client, message, prefix) {
     if (message.content.toLowerCase().includes('--filter-logs-bot')) {
 
     } else if (message.content.toLowerCase().includes('--filter-logs-audit')) {
+        var debounce = false;
         let actions = args.find(f => f.startsWith('--filter-action-') || f.startsWith('--filter-actions-')) || 'Not filtered'
         if (actions !== 'Not filtered') {
             actions = actions.substring(16);
@@ -125,7 +126,8 @@ function filter_flags(client, message, prefix) {
             if (SA !== '' && TA !== '') if (SA === TA) return message.channel.send(`You have filtered the action **${actions[1]}** more than once.\nYou can only filter an action once.`);
             if (TA !== '' && FA !== '') if (TA === FA) return message.channel.send(`You have filtered the action **${actions[2]}** more than once.\nYou can only filter an action once.`);
 
-            audit_logs(client, message, (FA || undefined), (SA || undefined), (TA || undefined));
+            audit_logs(client, message, (FA || undefined), (SA || undefined), (TA || undefined), 'filter-action');
+            debounce = true;
         }
 
         actions = args.find(f => f.startsWith('--remove-action-') || f.startsWith('--remove-actions-')) || 'Not filtered';
@@ -207,8 +209,14 @@ function filter_flags(client, message, prefix) {
             if (FA !== '' && SA !== '') if (FA === SA) return message.channel.send(`You have filtered the action **${actions[0]}** more than once.\nYou can only filter an action once.`);
             if (SA !== '' && TA !== '') if (SA === TA) return message.channel.send(`You have filtered the action **${actions[1]}** more than once.\nYou can only filter an action once.`);
             if (TA !== '' && FA !== '') if (TA === FA) return message.channel.send(`You have filtered the action **${actions[2]}** more than once.\nYou can only filter an action once.`);
+
+            audit_logs(client, message, (FA || undefined), (SA || undefined), (TA || undefined), 'remove-action');
+            debounce = true;
         }
     } else return message.channel.send(`You have entered an invalid log flag.`);
+
+    if (debounce === false)
+        audit_logs(client, message, undefined, undefined, undefined, 'none');
 }
 function audit_logs(client, message, action1, action2, action3) {
     message.guild.fetchAuditLogs().then(logs => {
@@ -218,12 +226,11 @@ function audit_logs(client, message, action1, action2, action3) {
         if (action1 !== undefined && action2 !== undefined && action3 !== undefined) log = log.filter(e => e.executor.id !== client.user.id).filter(e => e.action === action1 || e.action === action3);
         else log = log.filter(e => e.executor.id !== client.user.id)
         log = log.sort((a, b) => b.createdAt - a.createdAt);
-        console.log(log)
-        
-        /*for (i <= 10; i++;) {
-            console.log(log)
-        }
-        console.log(log);*/
+        log.forEach(r => {
+            setTimeout(() => {
+                console.log(r)
+            }, 1000);
+        });
     });
 }
 function bot_logs(client, message, action1, action2, action3) {

@@ -9,10 +9,10 @@ module.exports = {
   execute (message, prefix, client) {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     function banCmd() {
-      let user = message.mentions.users.first() || message.guild.members.cache.get(args[0])
+      let user = message.mentions.users.first() || message.guild.members.cache.get(args[1])
 
       let member = message.guild.member(user);
-      let reason = args.slice(1).join(' ');
+      let reason = args.slice(2).join(' ');
 
       if (!user) return message.channel.send('Please specify a user to ban.');
       if (user.id === message.author.id) return message.channel.send('You cannot ban yourself from the server.');

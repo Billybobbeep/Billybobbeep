@@ -9,10 +9,10 @@ module.exports = {
   guildOnly: true,
   execute (message, prefix, client) {
     async function nicknameCmd() {
-      let user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
-      if (!user) return message.channel.send("Please mention a user.");
+      let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
+      if (!user) return message.channel.send('Please mention a user.');
 
-      let nick = args.slice(1).join(" ");
+      let nick = args.slice(2).join(' ');
       let member = message.guild.members.cache.get(user.id);
       if (!nick) {
       await member.setNickname('')
@@ -26,12 +26,12 @@ module.exports = {
           message.channel.send(`Changed ${user.tag}'s nickname to ${nick}`);
       }
       catch {
-          message.channel.send("I do not have the premissions to change this users nickname.")
+          message.channel.send('I do not have the premissions to change this users nickname.')
       }
     }
     var debounce = false;
 
-    if (message.member.hasPermission("MANAGE_GUILD") || message.member.hasPermission("ADMINISTRATOR")) {
+    if (message.member.hasPermission('MANAGE_GUILD') || message.member.hasPermission('ADMINISTRATOR')) {
       nicknameCmd()
       debounce = true;
     } else if (db.get(message.guild.id + '.modRole')) {

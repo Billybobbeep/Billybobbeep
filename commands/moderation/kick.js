@@ -10,10 +10,10 @@ module.exports = {
     function kickCmd() {
       let user =
         message.mentions.users.first() ||
-        message.guild.members.cache.get(args[0]);
+        message.guild.members.cache.get(args[1]);
 
       let member = message.guild.member(user);
-      let reason = args.slice(1).join(' ');
+      let reason = args.slice(2).join(' ');
 
       if (!user) return message.channel.send('Please mention a user to kick.');
       if (user.id === message.author.id)

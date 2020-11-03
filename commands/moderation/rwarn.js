@@ -10,7 +10,7 @@ module.exports = {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     async function rwarnCmd() {
       let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
-      var user = message.mentions.users.first();
+      var user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
       if (!user) return message.channel.send('Please specify a user.');
 
       if (user.id === message.author.id) return message.channel.send('You cannot remove your own warnings');
@@ -33,7 +33,7 @@ module.exports = {
 
       if (!member) return message.reply('That user is not in this server.');
 
-      var reason = args.splice(1).join(' ');
+      var reason = args.splice(2).join(' ');
       let tw = db.get(message.guild.id + '_' + user.id + '.warnings')
       if (!reason) return message.reply('Please provide a reason');
       message.channel.send(`Removed \`1\` warnings from ${user}`);
@@ -63,12 +63,11 @@ module.exports = {
           return;
         }
       }
-      if (db.get(message.guild.id + '_' + user.id + '.warnings') < 1) {
-        return message.channel.send(`${user.username} does not have any warnings to remove.`)
-      }
-      if (db.get(message.guild.id + '_' + user.id + '.warnings') == 1) {
-        db.delete(message.guild.id + '_' + user.id + '.warnings')
-      } else {
+      if (db.get(message.guild.id + '_' + user.id + '.warnings') < 1)
+        message.channel.send(`${user.username} does not have any warnings to remove.`);
+      else if (db.get(message.guild.id + '_' + user.id + '.warnings') == 1)
+        db.delete(message.guild.id + '_' + user.id + '.warnings');
+      else {
         db.subtract(message.guild.id + '_' + user.id + '.warnings', 1)
       }
     }

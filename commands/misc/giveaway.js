@@ -8,16 +8,16 @@ module.exports = {
   guildOnly: true,
   async execute (message, prefix, client) {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
-    if (!args[0]) return message.channel.send(`Please specify a time.`);
+    if (!args[1]) return message.channel.send(`Please specify a time.`);
     if (
-      !args[0].endsWith('d') &&
-      !args[0].endsWith('h') &&
-      !args[0].endsWith('m')
+      !args[1].endsWith('d') &&
+      !args[1].endsWith('h') &&
+      !args[1].endsWith('m')
     )
       return message.channel.send(
         `You did not use the correct formatting for the time.`
       );
-    if (isNaN(args[0][0])) return message.channel.send(`You did not specify a valid time.`);
+    if (isNaN(args[1][0])) return message.channel.send(`You did not specify a valid time.`);
     let channel = message.mentions.channels.first();
     if (!channel)
       return message.channel.send(
@@ -31,7 +31,7 @@ module.exports = {
       .setDescription(
         `**Host:** ${message.author.tag}\n` + `**Prize:** ${prize}`
       )
-      .setTimestamp(Date.now() + ms(args[0]))
+      .setTimestamp(Date.now() + ms(args[1]))
       .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
 
     let m = await channel.send(Embed);
@@ -53,9 +53,9 @@ module.exports = {
       .setDescription(
         `**Host:** ${message.author.tag}\n` + `**Prize:** ${prize}\n` + `**Winner:** ${winner.tag}\n` + `\n` + `*This giveaway has now ended.*`
       )
-      .setTimestamp(Date.now() + ms(args[0]))
+      .setTimestamp(Date.now() + ms(args[1]))
       .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
       m.edit(WinningEmbed)
-    }, ms(args[0]));
+    }, ms(args[1]));
   }
 }
