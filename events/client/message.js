@@ -11,7 +11,7 @@ function redirect(message, client) {
             //require('../commands/counting.js').execute(message, client);
             //require('../commands/talk2billy')(message);
             require('../commands/mentions/mentions.js')(message, client);
-            require('../backend/antiSpam.js').execute(message);
+            require('../backend/antiSpam.js')(message);
         } else {
             require('../backend/dmRecieving.js')(message, client);
         }

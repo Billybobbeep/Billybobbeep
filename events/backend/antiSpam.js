@@ -1,11 +1,11 @@
-module.exports = {
-    name: 'Anti Spam',
-    description: 'A backend module to monitor all messages sent.',
-    execute (message) {
+//module.exports = {
+//    name: 'Anti Spam',
+//    description: 'A backend module to monitor all messages sent.',
+///    execute (message) {
+    module.exports = (message) => {
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();
         const db = require('../../data/databaseManager/index.js');
-        
         
 //        Settings
 //      ------------
@@ -30,11 +30,11 @@ module.exports = {
             muted: [],
             warned: []
         }
-        message(message)
+        message()
 
         //        Script
         //      -----------
-        async function message(message) {
+        async function message() {
             console.log(message)
             console.log('1');
             if (!message.guild) return false;
@@ -172,4 +172,3 @@ module.exports = {
             }
         }
     }
-}
