@@ -17,6 +17,7 @@ module.exports = {
     if (user.bot) return message.channel.send(`Bots cannot be warned.`);
     if (tWarnings > 0) {
       reasons = reasons = db.get(message.guild.id + '_' + user.id + '.warnReasons');
+      if (!reasons) return noWarnings()
       const embed = new Discord.MessageEmbed()
       .setDescription(`${user.username} has **${tWarnings}** warnings.`)
       .setTimestamp()
@@ -28,6 +29,10 @@ module.exports = {
       });
       message.channel.send(embed);
     } else {
+      noWarnings()
+    }
+
+    function noWarnings() {
       const embed = new Discord.MessageEmbed()
       .setDescription(`${user.username} has **${tWarnings}** warnings.`)
       .setTimestamp()
