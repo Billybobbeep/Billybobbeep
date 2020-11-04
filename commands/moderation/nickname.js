@@ -9,6 +9,7 @@ module.exports = {
   guildOnly: true,
   execute (message, prefix, client) {
     async function nicknameCmd() {
+      let args = message.content.slice(prefix.length).trim().split(/ +/g);
       let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
       if (!user) return message.channel.send('Please mention a user.');
 
@@ -25,8 +26,9 @@ module.exports = {
           await member.setNickname(nick);
           message.channel.send(`Changed ${user.tag}'s nickname to ${nick}`);
       }
-      catch {
-          message.channel.send('I do not have the premissions to change this users nickname.')
+      catch(error) {
+          message.channel.send('I do not have the premissions to change this users nickname.');
+          console.log(error);
       }
     }
     var debounce = false;
