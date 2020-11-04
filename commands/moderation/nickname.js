@@ -17,14 +17,14 @@ module.exports = {
       let member = message.guild.members.cache.get(user.id);
       if (!nick) {
       await member.setNickname('')
-      return message.channel.send('Removed ' + user.tag + '\'s nickname.')
+      return message.channel.send('Removed **' + user.tag + '\'s** nickname.')
       }
       if (user.tag === undefined) {
       user = user.user
       }
       try {
           await member.setNickname(nick);
-          message.channel.send(`Changed ${user.tag}'s nickname to ${nick}`);
+          message.channel.send(`Changed **${user.tag}'s** nickname to ${nick}`);
       }
       catch(error) {
           message.channel.send('I do not have the premissions to change this users nickname.');
