@@ -18,12 +18,10 @@ module.exports = async (message, client) => {
   let prefix = db.get(message.guild.id + '.prefix') || '~';
   var content = message.content.length ? message.content : '*This message contained no content.*';
   message.attachments ? message.attachments.forEach(attachment => attachments.push(attachment.proxyURL)) : attachments.push('Null');
-  if (!attachments.includes('Null')) {
+  if (!attachments.includes('Null'))
     attachments = attachments.join('\n');
-    console.log(message.attachments)
-  } else {
+  else
     attachments = '*This message did not contain any attachments.*';
-  }
 
   let deleted;
   message.guild.fetchAuditLogs().then(logs => {
@@ -46,41 +44,6 @@ module.exports = async (message, client) => {
   }
 
   if (message.content.toLowerCase().startsWith(prefix + `purge`)) return;
-
-  /*if (message.attachments.size > 0) {
-    embed.setDescription(
-      `**Content:** *This message contained an image.*\n` +
-      `**Message ID:** ${message.id}\n` +
-      `**Channel:** <#${message.channel.id}>\n\n` +
-      `**Author:** ${message.author}\n` +
-      `**Author Tag:** ${message.author.tag}\n` +
-      `**Author ID:** ${message.author.id}\n\n` +
-      `**Command:** ${command}\n` +
-      `**Pinned:** ${pinned}\n`)
-      try {
-        return LoggingChannel.send(embed);
-      } catch {
-        return;
-      }
-  }*/
-  
-  /*if (message.content.toLowerCase().includes('https://') || message.content.toLowerCase().includes('http://') || message.content.toLowerCase().includes('www.') || message.content.toLowerCase().includes('.com') || message.content.toLowerCase().includes('.co.uk')) {
-    embed.setDescription(
-      `**Content:** *This message contained an embeded link.*\n` +
-      `**Link**: ${message.content}\n` +
-      `**Message ID:** ${message.id}\n` +
-      `**Channel:** ${message.channel}\n\n` +
-      `**Author:** ${message.author}\n` +
-      `**Author Tag:** ${message.author.tag}\n` +
-      `**Author ID:** ${message.author.id}\n\n` +
-      `**Command:** ${command}\n` +
-      `**Pinned:** ${pinned}\n`)
-      try {
-        return LoggingChannel.send(embed);
-    } catch {
-        return;
-      }
-  }*/
 
   embed.setDescription(
     '**Content:** ' + content +

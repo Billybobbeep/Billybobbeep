@@ -6,7 +6,7 @@ module.exports = async (message, client) => {
   const db = require('../../data/databaseManager/index.js');
   let LoggingChannel = client.channels.cache.get(db.get(configFile.ServerId + '.loggingChannel'));
 
-  const embed = Discord.MessageEmbed();
+  const embed = new Discord.MessageEmbed();
   embed.setTitle(`DM Recieved`);
   embed.setDescription(
     `**Content:** ${message}\n` +
