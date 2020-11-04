@@ -3,7 +3,13 @@ module.exports = (newMessage, oldMessage, client) => {
 	const db = require('../../data/databaseManager/index.js');
 
 	if (!newMessage) return;
+	if (!oldMessage) return;
+	if (!oldMessage.author) return;
+	try {
 	if (oldMessage.author.bot) return;
+	} catch {
+		console.log('bot');
+	}
 	if (!oldMessage.guild) return;
 
 	let LoggingChannel = client.channels.cache.get(db.get(oldMessage.guild.id + '.loggingChannel'));

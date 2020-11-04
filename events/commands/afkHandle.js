@@ -8,7 +8,6 @@ module.exports = {
   guildOnly: true,
   execute (message, prefix, client) {
     if (!message.guild) return;
-    let prefix = db.get(message.guild.id + '.prefix') || '~'
     let reason = ''
     let user;
     let use;

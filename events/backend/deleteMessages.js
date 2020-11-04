@@ -7,6 +7,7 @@ module.exports = async (message, client) => {
 
   let command;
   let pinned;
+  var attachments = [];
 
   if (!message.guild) return;
   try { if (message.author.bot) return; } catch { return }
@@ -15,8 +16,23 @@ module.exports = async (message, client) => {
   embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
   let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
   let prefix = db.get(message.guild.id + '.prefix') || '~';
-  var attachments = message.attachment ? message.attachments.map(attachment => attachment.url) : null;
   var content = message.content.length ? message.content : '*This message contained no content.*';
+  message.attachments ? message.attachments.forEach(attachment => attachments.push(attachment.proxyURL)) : attachments.push('Null');
+  if (!attachments.includes('Null')) {
+    attachments = attachments.join('\n');
+    console.log(message.attachments)
+  } else {
+    attachments = '*This message did not contain any attachments.*';
+  }
+
+  let deleted;
+  message.guild.fetchAuditLogs().then(logs => {
+    let log = logs.entries
+      .filter(e => e.action === 'MESSAGE_DELETE')
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .first()
+    deleted = log.executor.username + '#' + log.executor.discriminator;
+  });
 
   if (message.content.startsWith(prefix)) {
     command = true;
@@ -69,13 +85,14 @@ module.exports = async (message, client) => {
   embed.setDescription(
     '**Content:** ' + content +
     '\n**Message ID:** ' + message.id +
-    '\n**Channel:** ' + message.channel +
-    `\n\n**Author:** ${message.author}` +
+    '\n**Channel:** <#' + message.channel +
+    `>\n\n**Author:** ${message.author}` +
     '\n**Author Tag:** ' + message.author.tag +
     '\n**Author ID:** ' + message.author.id +
+ //   '\n**Deleted By:** ' + deleted +
     '\n\n**Command:** ' + command +
     '\n**Pinned:** ' + pinned +
-    `${attachments ? `\n**Attachments:** ${attachments.join('\n')}` : ''}`
+    `${attachments ? `\n**Attachments:\n** ${attachments}` : ''}`
   );
 
   if (LoggingChannel) {
