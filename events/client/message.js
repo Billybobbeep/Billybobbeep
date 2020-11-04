@@ -19,7 +19,11 @@ function redirect(message, client) {
 }
 
 function handle(message, client) {
-    let prefix = db.get(message.guild.id + '.prefix') || '~';
+    if (message.guild)
+        var prefix = db.get(message.guild.id + '.prefix') || '~';
+    else
+        var prefix = '~';
+
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     let command = args[0].toLowerCase();
     if (!message.content.startsWith(prefix)) return;
