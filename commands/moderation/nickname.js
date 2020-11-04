@@ -28,7 +28,6 @@ module.exports = {
       }
       catch(error) {
           message.channel.send('I do not have the premissions to change this users nickname.');
-          console.log(error);
       }
     }
     var debounce = false;

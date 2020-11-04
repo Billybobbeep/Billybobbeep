@@ -227,9 +227,7 @@ function audit_logs(client, message, action1, action2, action3) {
         else log = log.filter(e => e.executor.id !== client.user.id)
         log = log.sort((a, b) => b.createdAt - a.createdAt);
         log.forEach(r => {
-            setTimeout(() => {
-                console.log(r)
-            }, 1000);
+            
         });
     });
 }

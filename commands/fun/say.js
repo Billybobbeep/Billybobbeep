@@ -11,6 +11,5 @@ module.exports = {
         if (!args[0]) return message.channel.send('You must specify a message to send.');
         message.channel.send(wantToSay, { disableMentions: 'everyone' });
         message.delete();
-        console.log(args)
     }
 }

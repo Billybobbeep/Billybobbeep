@@ -28,7 +28,7 @@ module.exports = {
         let user1;
         if (user.tag === undefined) user1 = user.user; else user1 = user
         embed.setDescription(
-          `**Message:** ${args.slice(1).join(' ')}\n` +
+          `**Message:** ${args.slice(2).join(' ')}\n` +
           `**Message ID:** ${message.id}\n` +
           `**Sent To:** ${user1.tag}\n\n` +
           `**Moderator:** ${message.author}\n` +
@@ -37,7 +37,7 @@ module.exports = {
       }
 
       user.user
-        .send(args.slice(1).join(' '))
+        .send(args.slice(2).join(' '))
         .catch(() => { return message.channel.send('The user does not have their DM\'s turned on.') })
         .then(() => message.channel.send(`Message sent to ${user.user.tag}.`))
         if (LoggingChannel) {

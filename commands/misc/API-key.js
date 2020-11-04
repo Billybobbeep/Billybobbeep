@@ -51,7 +51,6 @@ module.exports = {
                     }
                 });
                 if (debounce === false) {
-                    console.log('3')
                     generateKey()
                 }
             }
@@ -87,7 +86,6 @@ module.exports = {
         if (message.content.toLowerCase().includes('regenerate')) {
             regenerate()
         } else {
-            console.log('1')
             generate()
         }
     }
