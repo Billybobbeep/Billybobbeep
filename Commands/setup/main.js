@@ -16,6 +16,8 @@ module.exports = {
         `Commands:\n` +
         `${prefix}setup muted [role]\n` +
         `*Sets up the muted role to use mute commands.*\n` +
+        `${prefix}setup mod [role]\n` +
+        `*Sets up a moderators role for moderators to use moderator commands.*\n` +
         `${prefix}setup logging [channel]\n` +
         `*Sets up a logging channel.*\n` +
         `${prefix}setup level [channel]\n` +
@@ -39,6 +41,10 @@ module.exports = {
       }
       if (message.content.toLowerCase().startsWith(prefix + 'setup muted')) {
         redirect = require('./mutedRole.js');
+        redirect(message, db);
+      }
+      if (message.content.toLowerCase().startsWith(prefix + 'setup mod')) {
+        redirect = require('./modRole.js');
         redirect(message, db);
       }
       if (message.content.toLowerCase().startsWith(prefix + 'setup embed')) {
@@ -171,6 +177,7 @@ module.exports = {
         `${prefix}setup embed\n` + "Changes the default color of the embeds.\n\n" +
         `${prefix}setup logging\n` + "Setup a logging channel.\n\n" +
         `${prefix}setup muted\n` + "Set up a muted role.\n\n" +
+        `${prefix}setup mod [role]\n` + `Set up a moderators role for moderators to use moderator commands.\n\n` +
         `${prefix}setup prefix\n` + "Change the default prefix.")
       embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
       embed.setFooter(`TIP: Press the arrows to move between pages.`);
