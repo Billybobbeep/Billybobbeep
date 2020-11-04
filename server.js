@@ -8,6 +8,7 @@ module.exports = async (client) => {
   const fs = require('fs');
   const { parse } = require('querystring');
   const fetch = require('node-fetch');
+  const logging = require('./utils/functions').logging;
 
   app.use('/style', express.static('style'));
   app.set('view engine', 'ejs');
@@ -137,8 +138,7 @@ module.exports = async (client) => {
           '\n**Subject:** ' + req.query.subject +
           '\n**Message:** ' + req.query.message
         )
-      let LoggingChannel = client.channels.cache.get('738097180451274784');
-      LoggingChannel.send(embed)
+      LoggingChannel.send(embed, messaage, client)
       res.render('success.ejs');
     });
     app.get('/discord/invite', function(req, res) {
