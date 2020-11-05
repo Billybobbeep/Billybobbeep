@@ -138,7 +138,7 @@ module.exports = async (client) => {
           '\n**Subject:** ' + req.query.subject +
           '\n**Message:** ' + req.query.message
         )
-      LoggingChannel.send(embed, messaage, client)
+      logging(embed, undefined, client)
       res.render('success.ejs');
     });
     app.get('/discord/invite', function(req, res) {
