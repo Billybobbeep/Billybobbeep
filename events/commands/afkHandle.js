@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const configFile = require('../../structure/config.json');
 const embed = new Discord.MessageEmbed();
 const db = require('../../data/databaseManager/index.js');
+const mentions = require('./mentions/mentions');
 
 module.exports = {
   commands: ['afk', 'back'],
@@ -20,7 +21,7 @@ module.exports = {
     embed.setTitle('Billybobbeep | AFK Handling');
     embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
     embed.setTimestamp();
-    embed.setFooter(`Requested by: ${message.author.tag}`);
+    embed.setFooter(`${message.author.tag}`);
 
     if (message.content.toLowerCase().startsWith(prefix + 'afk')) {
       if (message.guild === null) {
@@ -116,14 +117,31 @@ module.exports = {
         }
       }
     }
-
-    //Let know that a user is AFK
+  },
+  mentions(message) {
+    embed.setTitle('Billybobbeep | AFK Handling');
+    embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
+    embed.setTimestamp();
+    embed.setFooter(`${message.author.tag}`);
     if (message.mentions.users.first()) {
-      let user = message.mentions.users.first()
-
-      if (db.get(user.id + '.isAFK') && db.get(user.id + '.isAFK') === true) {
-        embed.setDescription('The user you have pinged (' + user.tag + ') is currently AFK.\n\nReason: ' + db.get(user.id + '.isAFKreason').toString());
-        return message.channel.send(embed);
+      var users = [];
+      var user = {};
+      message.mentions.users.forEach(u => {
+        if (db.get(u.id + '.isAFK') && db.get(u.id + '.isAFK') === true) {
+          users.push(u.id);
+          user[u.id] = {
+            reason: db.get(u.id + '.isAFKreason'),
+            username: u.username,
+            discriminator: u.discriminator
+          }
+        }
+      });
+      if (users.length > 0) {
+        embed.setDescription('The following users you have pinged are marked as AFK.');
+        users.forEach(u => {
+          embed.addField(user[u.id].username + '#' + user[u.id].discriminator, user[u.id].reason);
+        });
+        message.channel.send(embed);
       }
     }
   }
