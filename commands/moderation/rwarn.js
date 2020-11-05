@@ -1,15 +1,14 @@
-const Discord = require('discord.js');
-const db = require('../../data/databaseManager/index.js');
-var reasons = []
-
 module.exports = {
   name: 'rwarn',
   description: 'Remove a users warning.',
   guildOnly: true,
   execute (message, prefix, client) {
+    const Discord = require('discord.js');
+    const db = require('../../data/databaseManager/index.js');
+    var reasons = [];
+    const logging = require('../../utils/functions.js').logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     async function rwarnCmd() {
-      let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
       var user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
       if (!user) return message.channel.send('Please specify a user.');
 
@@ -56,13 +55,7 @@ module.exports = {
         .addField('By:', message.author, true)
         .addField('Reason:', reason)
         .addField('Total Warnings', db.get(message.guild.id + '_' + user.id + '.warnings') - 1, true)
-      if (LoggingChannel) {
-        try {
-          await LoggingChannel.send(log);
-        } catch {
-          return;
-        }
-      }
+      await logging(log, message, client);
       if (db.get(message.guild.id + '_' + user.id + '.warnings') < 1)
         message.channel.send(`${user.username} does not have any warnings to remove.`);
       else if (db.get(message.guild.id + '_' + user.id + '.warnings') == 1)

@@ -1,7 +1,6 @@
 module.exports = {
   name: 'invite',
   description: 'Generate a bot invite.',
-  guildOnly: false,
   execute (message, prefix, client) {
     client.generateInvite({
         permissions: ['ADMINISTRATOR']

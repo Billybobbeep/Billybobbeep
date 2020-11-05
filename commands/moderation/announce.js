@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const db = require('../../data/databaseManager/index.js');
+const logging = require('../../utils/functions.js').logging;
 
 module.exports = {
   name: 'announce',
@@ -7,7 +8,6 @@ module.exports = {
   guildOnly: true,
   execute (message, prefix, client) {
     if (!message.guild) return;
-    let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
     const embed = new Discord.MessageEmbed()
     embed.setTitle(`Announcement Sent`)
     embed.setTimestamp()
@@ -37,13 +37,7 @@ module.exports = {
                 `**Moderator Tag:** ${message.author.tag}\n` +
                 `**Moderator ID:** ${message.author.id}\n`
             )
-            if (LoggingChannel) {
-              try {
-                await LoggingChannel.send(embed)
-              } catch {
-                return;
-              }
-            }
+            logging(embed, message, client);
             q2.stop();
         });
     });

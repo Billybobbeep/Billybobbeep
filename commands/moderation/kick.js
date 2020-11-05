@@ -1,11 +1,12 @@
-const Discord = require('discord.js');
-const configFile = require('../../structure/config.json');
-const db = require('../../data/databaseManager/index.js');
 module.exports = {
   name: 'kick',
   description: 'Kick a member.',
   guildOnly: true,
   execute (message, prefix, client) {
+    const Discord = require('discord.js');
+    const configFile = require('../../structure/config.json');
+    const db = require('../../data/databaseManager/index.js');
+    const logging = require('../../utils/functions.js').logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     function kickCmd() {
       let user =
@@ -30,10 +31,6 @@ module.exports = {
         .then(() => {
           message.channel.send(`Successfully kicked **${user.tag}**`
           );
-          if (db.get(message.guild.id + '.loggingChannel')) {
-            let LoggingChannel = client.channels.cache.get(
-              db.get(message.guild.id + '.loggingChannel')
-            );
             var embed = new Discord.MessageEmbed();
             embed.setTitle('Kicked Member');
             embed.setDescription(
@@ -47,12 +44,7 @@ module.exports = {
               `${db.get(message.guild.id + '.embedColor') || '#447ba1'}`
             );
             embed.setTimestamp();
-            try {
-              LoggingChannel.send(embed);
-            } catch {
-              return;
-            }
-          }
+            logging(embed, message, client);
         })
         .catch(err => {
           message.reply('I was unable to kick the member you provided.');

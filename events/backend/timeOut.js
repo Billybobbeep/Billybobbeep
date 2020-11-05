@@ -36,17 +36,13 @@ function mute(db, client) {
 
 function remove(table, db, guild, user, time, client, string) {
     let member = guild.members.cache.get(user);
-    console.log(table)
     table.splice(table.indexOf(guild.id.toString() + '_' + user.toString() + '_' + time.toString()), 1);
     db.set('mutedMembers', table);
-    console.log(table);
     if (string === 'mute') {
         setTimeout(() => {
             var mutedRole = db.get(guild.id +'.mutedRole');
             var role = guild.roles.cache.find(role => role.id === mutedRole);
-            console.log('mute1')
             if (member.roles.cache.find(role => role.id === mutedRole)) {
-                console.log('mute2')
                 member.roles.remove(role.id);
             }
         }, 50);

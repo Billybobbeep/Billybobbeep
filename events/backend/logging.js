@@ -1,6 +1,7 @@
 const db = require('../../data/databaseManager/index.js');
 const Discord = require('discord.js');
-const embed = new Discord.MessageEmbed()
+const embed = new Discord.MessageEmbed();
+const logging = require('../../utils/functions.js').logging;
 
 module.exports.add = (guild, client) => {
     guild.fetchAuditLogs()
@@ -11,25 +12,18 @@ module.exports.add = (guild, client) => {
         .first();
         
         if (ban.executor.id === client.user.id) return;
-        let LoggingChannel = client.channels.cache.get(db.get(guild.id + '.loggingChannel'));
-        if (LoggingChannel) {
-            embed.setTitle('User Banned');
-            embed.setDescription(
-                `**User Tag:** ${ban.target.tag}\n` +
-                `**User ID:** ${ban.target.id}\n\n` +
-                `**Reason:** ${ban.reason || 'No reason was provided.'}\n\n` +
-                `**Moderator:** ${ban.executor}\n` +
-                `**Moderator Tag:** ${ban.executor.tag}\n` +
-                `**Moderator ID:** ${ban.executor.id}\n`
-            )
-            embed.setTimestamp(ban.createdTimestamp);
-            embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`);
-            try {
-                LoggingChannel.send(embed)
-            } catch {
-                return;
-            }
-        }
+        embed.setTitle('User Banned');
+        embed.setDescription(
+            `**User Tag:** ${ban.target.tag}\n` +
+            `**User ID:** ${ban.target.id}\n\n` +
+            `**Reason:** ${ban.reason || 'No reason was provided.'}\n\n` +
+            `**Moderator:** ${ban.executor}\n` +
+            `**Moderator Tag:** ${ban.executor.tag}\n` +
+            `**Moderator ID:** ${ban.executor.id}\n`
+        )
+        embed.setTimestamp(ban.createdTimestamp);
+        embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`);
+        logging(embed, message, client);
     });
 }
 
@@ -47,25 +41,18 @@ module.exports.remove = (guild, client) => {
             .sort((a, b) => b.createdAt - a.createdAt)
             .first();
 
-            let LoggingChannel = client.channels.cache.get(db.get(guild.id + '.loggingChannel'));
-            if (LoggingChannel) {
-                embed.setTitle('User Unbanned');
-                embed.setDescription(
-                `**User Tag:** ${ban.target.tag}\n` +
-                `**User ID:** ${ban.target.id}\n\n` +
-                `**Banned For:** ${pb.reason || 'No reason was provided.'}\n\n` +
-                `**Moderator:** ${ban.executor}\n` +
-                `**Moderator Tag:** ${ban.executor.tag}\n` +
-                `**Moderator ID:** ${ban.executor.id}\n`
-                )
-                embed.setTimestamp(ban.createdTimestamp);
-                embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`);
-                try {
-                    LoggingChannel.send(embed)
-                } catch {
-                    return;
-                }
-            }
+            embed.setTitle('User Unbanned');
+            embed.setDescription(
+            `**User Tag:** ${ban.target.tag}\n` +
+            `**User ID:** ${ban.target.id}\n\n` +
+            `**Banned For:** ${pb.reason || 'No reason was provided.'}\n\n` +
+            `**Moderator:** ${ban.executor}\n` +
+            `**Moderator Tag:** ${ban.executor.tag}\n` +
+            `**Moderator ID:** ${ban.executor.id}\n`
+            )
+            embed.setTimestamp(ban.createdTimestamp);
+            embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`);
+            logging(embed, message, client);
         });
     }, 100);
 }

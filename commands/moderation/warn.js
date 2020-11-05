@@ -1,13 +1,13 @@
-const Discord = require('discord.js');
-const db = require('../../data/databaseManager/index.js');
 module.exports = {
   name: 'warn',
   description: 'Warn a user.',
   guildOnly: true,
   execute (message, prefix, client) {
+    const Discord = require('discord.js');
+    const db = require('../../data/databaseManager/index.js');
+    const logging = require('../../utils/functions.js').logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
-    let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
-
+  
     async function warnCmd() {
       var user = message.mentions.users.first() || message.guild.members.cache.get(args[1])
       if (!user) return message.channel.send('Please specify a user to warn.');
@@ -40,13 +40,7 @@ module.exports = {
         .addField('By:', message.author.tag, true)
         .addField('Reason:', reason)
         .addField('Total Warnings', `${db.get(message.guild.id + '_' + user.id + '.warnings') || 0 + 1}`, true)
-      if (LoggingChannel) {
-        try {
-          await LoggingChannel.send(log);
-        } catch {
-          return;
-        }
-      }
+      await logging(log, message, client);
 
       await message.channel.send(`**${user}** has been warned by **${message.author}**!`);
       var log2 = new Discord.MessageEmbed()

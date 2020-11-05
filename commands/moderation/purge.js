@@ -1,12 +1,12 @@
-const Discord = require('discord.js');
-const configFile = require('../../structure/config.json');
-const db = require('../../data/databaseManager/index.js');
-
 module.exports = {
   name: 'purge',
   description: 'Delete alot of messages at once.',
   guildOnly: true,
   execute (message, prefix, client) {
+    const Discord = require('discord.js');
+    const configFile = require('../../structure/config.json');
+    const db = require('../../data/databaseManager/index.js');
+    const logging = require('../../utils/functions.js').logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     function purgeCmd() {
       if (isNaN(args[1])) return message.channel.send('You have entered an invalid number.');
@@ -28,15 +28,8 @@ module.exports = {
                                 `**Moderator ID:** ${message.author.id}\n`)
             embed.setTimestamp()
             embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-            let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
 
-            if (LoggingChannel) {
-              try {
-                LoggingChannel.send(embed)
-              } catch {
-                return;
-              }
-            }
+            logging(embed, message, client);
 
             msg1.delete({ timeout: 3000 })
           }

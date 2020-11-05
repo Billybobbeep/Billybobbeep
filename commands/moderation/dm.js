@@ -1,14 +1,13 @@
-const Discord = require('discord.js');
-const db = require('../../data/databaseManager/index.js');
-
 module.exports = {
   name: 'dm',
   description: 'DM a user.',
   guildOnly: true,
   execute (message, prefix, client) {
+    const Discord = require('discord.js');
+    const db = require('../../data/databaseManager/index.js');
+    const logging = require('../../utils/functions.js').logging;
     if (!message.member.permissions.has(['MANAGE_MESSAGES', 'ADMINISTRATOR'])) return message.channel.send('You do not have the permissions to use this command.');
     let args = message.content.slice(prefix.length).trim().split(/ +/g);  
-    let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
     let user = message.mentions.members.first() || message.guild.members.cache.get(args[1]);
     if (!user) return message.channel.send(`Please specify a user.`);
     if (!args.slice(2).join(' ')) return message.channel.send('Please specify a message.');
@@ -40,12 +39,6 @@ module.exports = {
         .send(args.slice(2).join(' '))
         .catch(() => { return message.channel.send('The user does not have their DM\'s turned on.') })
         .then(() => message.channel.send(`Message sent to ${user.user.tag}.`))
-        if (LoggingChannel) {
-          try {
-            LoggingChannel.send(embed)
-          } catch {
-            return;
-          }
-        }
+      logging(embed, message, client);
     }
 }

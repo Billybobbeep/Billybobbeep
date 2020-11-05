@@ -8,6 +8,7 @@ module.exports = async (client) => {
   const fs = require('fs');
   const { parse } = require('querystring');
   const fetch = require('node-fetch');
+  const http = require('http');
   const logging = require('./utils/functions').logging;
 
   app.use('/style', express.static('style'));
@@ -251,4 +252,8 @@ module.exports = async (client) => {
   }
 
   listen()
+
+  setInterval(() => {
+    http.get(`http://localhost:3000/`);
+  }, 280000);
 }

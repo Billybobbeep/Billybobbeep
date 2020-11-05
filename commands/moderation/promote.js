@@ -7,9 +7,9 @@ module.exports = {
         const embed = new Discord.MessageEmbed();
         const embed2 = new Discord.MessageEmbed();
         const db = require('../../data/databaseManager/index.js');
+        const logging = require('../../utils/functions.js').logging;
         async function promoteCmd() {
             let args = message.content.slice(prefix.length).trim().split(/ +/g);
-            let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
             let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
             if (!user) return message.channel.send('Please mention a user to promote.');
             if (!user.tag) {
@@ -44,13 +44,7 @@ module.exports = {
                 } catch {
                     message.channel.send(`The user was not notified as they do not have their DMs turned on.`)
                 }
-                if (LoggingChannel) {
-                    try {
-                        LoggingChannel.send(embed);
-                    } catch {
-                        return;
-                    }
-                }
+                logging(embed, message, client);
             } else
                 message.channel.send(`<@!${user.id}> is already a moderator.`);
         }

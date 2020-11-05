@@ -1,24 +1,26 @@
-const configFile = require('../../structure/config.json');
-const db = require('../../data/databaseManager/index.js');
-const Discord = require('discord.js');
-var embed1 = new Discord.MessageEmbed();
-var embed2 = new Discord.MessageEmbed();
-
 module.exports = {
   name: 'unmute',
   description: 'Unmute a member.',
   guildOnly: true,
   execute (message, prefix, client) {
+    const configFile = require('../../structure/config.json');
+    const db = require('../../data/databaseManager/index.js');
+    const Discord = require('discord.js');
+    var embed1 = new Discord.MessageEmbed();
+    var embed2 = new Discord.MessageEmbed();
+    const logging = require('../../utils/functions.js').logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     async function unmuteCmd() {
       let user = message.mentions.users.first() || message.guild.members.cache.get(args[1])
-      let reason = args.slice(2).join(" ");
+      let reason = args.slice(2).join(' ');
 
       if (!db.get(message.guild.id + '.mutedRole')) return message.channel.send('Please setup a muted role in your server to use this command.')
       if (!user) return message.channel.send('Please mention a user to mute.')
-      if (!reason) return message.channel.send('Please specify a reason.');
       let member = message.guild.members.cache.get(user.id);
       if (!member) return message.channel.send(`I could not find the member you provided.`);
+      if (!member.roles.cache.find(r => r.id === db.get(message.guild.id + '.mutedRole'))) return message.channel.send(`<@!${user.id}> is not muted.`);
+      if (user.bot) return message.channel.send(`You cannot mute bots.`);
+      if (!reason) return message.channel.send('Please specify a reason.');
       
       member.roles.remove(message.guild.roles.cache.find(role => role.id === db.get(message.guild.id + '.mutedRole')));
       message.channel.send('Successfully unmuted <@!' + user + '>.');
@@ -34,23 +36,17 @@ module.exports = {
       } catch {
         message.channel.send('The user has not been notfied as they do not have their DM\'s turned on.')
       }
-      if (db.get(message.guild.id + '.loggingChannel')) {
-        let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
-        embed2.setTitle('User Muted');
+
+        embed2.setTitle('User Unmuted');
         embed2.setTimestamp();
         embed2.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
         embed2.setDescription(`**User:** ${user}\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Reason:** ${reason}\n\n**Moderator:** ${message.author}\n**Moderator Tag:** ${message.author.tag}\n**Moderator ID:** ${message.author.id}`);
-        try {
-          LoggingChannel.send(embed2)
-        } catch {
-          return;
-        }
-      }
+        logging(embed2, message, client)
     }
 
     var debounce = false;
 
-    if (message.member.hasPermission("MANAGE_MESSAGES") || message.member.hasPermission("ADMINISTRATOR")) {
+    if (message.member.hasPermission('MANAGE_MESSAGES') || message.member.hasPermission('ADMINISTRATOR')) {
       unmuteCmd()
       debounce = true;
     } else if (db.get(message.guild.id + '.modRole')) {

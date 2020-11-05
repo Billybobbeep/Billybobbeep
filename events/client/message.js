@@ -2,6 +2,11 @@ const configFile = require('../../structure/config.json');
 const db = require('../../data/databaseManager/index.js');
 
 function redirect(message, client) {
+    if (message.guild)
+        var prefix = db.get(message.guild.id + '.prefix') || '~';
+    else
+        var prefix = '~';
+    
     if (message.channel.id === configFile.PollChannel || message.channel.id === configFile.MemesChannel)
         require('../backend/reactions.js')(message);
     else {
@@ -15,6 +20,9 @@ function redirect(message, client) {
         } else {
             require('../backend/dmRecieving.js')(message, client);
         }
+    }
+    if (message.mentions.users.first()) {
+        require('../commands/afkHandle.js').mentions(message);
     }
 }
 

@@ -1,6 +1,7 @@
 module.exports = (newMessage, oldMessage, client) => {
 	const Discord = require('discord.js');
 	const db = require('../../data/databaseManager/index.js');
+	const logging = require('../../utils/functions.js').logging;
 
 	if (!newMessage) return;
 	if (!oldMessage) return;
@@ -11,8 +12,6 @@ module.exports = (newMessage, oldMessage, client) => {
 		console.log('bot');
 	}
 	if (!oldMessage.guild) return;
-
-	let LoggingChannel = client.channels.cache.get(db.get(oldMessage.guild.id + '.loggingChannel'));
 
 	if (
 		newMessage.content === null ||
@@ -32,13 +31,7 @@ module.exports = (newMessage, oldMessage, client) => {
 			)
 			.setTimestamp()
 			.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
-		if (LoggingChannel) {
-			try {
-				return LoggingChannel.send(embed);
-			} catch {
-				return;
-			}
-		}
+		return logging(embed, message, client);
 	}
 	if (oldMessage === newMessage) return;
 
@@ -69,11 +62,5 @@ module.exports = (newMessage, oldMessage, client) => {
 		)
 		.setTimestamp()
 		.setColor(`${db.get(oldMessage.guild.id + '.embedColor') || '#447ba1'}`);
-	if (LoggingChannel) {
-		try {
-			LoggingChannel.send(embed);
-		} catch {
-			return;
-		}
-	}
+	logging(embed, oldMessage, client);
 }

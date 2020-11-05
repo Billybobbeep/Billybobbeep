@@ -5,7 +5,7 @@ module.exports = async (message, client) => {
   if (!message.guild) return;
   let prefix = db.get(message.guild.id + '.prefix') || '~'
   const embed = new Discord.MessageEmbed()
-  const LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
+  const logging = require('../../utils/functions.js').logging;
   if (message.author.bot) return;
 
   //Invite link detecting
@@ -31,10 +31,7 @@ module.exports = async (message, client) => {
       `**Author:** ${message.author}\n` +
       `**Author Tag:** ${message.author.tag}\n` +
       `**Author ID:** ${message.author.id}\n`)
-      try {
-        await LoggingChannel.send(embed)
-      } catch {
-        return;
-      }
+      
+    logging(embed, message, client);
   }
 }

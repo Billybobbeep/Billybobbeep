@@ -1,12 +1,12 @@
-const Discord = require('discord.js');
-const db = require('../../data/databaseManager/index.js');
-const embed = new Discord.MessageEmbed();
-
 module.exports = {
   name: 'ban',
   description: 'Ban a member.',
   guildOnly: true,
   execute (message, prefix, client) {
+    const Discord = require('discord.js');
+    const db = require('../../data/databaseManager/index.js');
+    const embed = new Discord.MessageEmbed();
+    const logging = require('../../utils/functions.js').logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     function banCmd() {
       let user = message.mentions.users.first() || message.guild.members.cache.get(args[1])
@@ -23,8 +23,6 @@ module.exports = {
       }
       member.ban({ days: 5, reason: reason }).then(() => {
         message.channel.send(`Successfully banned **${user.tag}**`);
-        let LoggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
-        if (LoggingChannel) {
           embed.setTitle('User Banned');
           embed.setDescription(
             `**User Tag:** ${member.tag}\n` +
@@ -36,12 +34,7 @@ module.exports = {
           )
           embed.setTimestamp()
           embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-          try {
-            LoggingChannel.send(embed)
-          } catch {
-            return;
-          }
-        }
+          logging(embed, message, client);
       }).catch(err => {
         message.reply('I was unable to ban the member you provided.');
       });

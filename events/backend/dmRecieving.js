@@ -4,7 +4,7 @@ module.exports = async (message, client) => {
   if (message.channel.type !== 'dm') return;
   if (message.author.bot) return;
   const db = require('../../data/databaseManager/index.js');
-  let LoggingChannel = client.channels.cache.get(db.get(configFile.ServerId + '.loggingChannel'));
+  const logging = require('../../utils/functions.js').logging;
 
   const embed = new Discord.MessageEmbed();
   embed.setTitle(`DM Recieved`);
@@ -18,9 +18,5 @@ module.exports = async (message, client) => {
   embed.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
 
   if (message.content.toLowerCase().startsWith('~')) return;
-  try {
-    LoggingChannel.send(embed)
-  } catch {
-    return;
-  }
+  logging(embed, message, client)
 }

@@ -8,7 +8,7 @@ module.exports = {
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();
         const db = require('../../data/databaseManager/index.js');
-        
+
 //        Settings
 //      ------------
         if (message.guild) {
@@ -37,14 +37,9 @@ module.exports = {
         //        Script
         //      -----------
         async function message() {
-            console.log(message)
-            console.log('1');
             if (!message.guild) return false;
-            console.log('2')
             if (message.author.bot) return false;
-            console.log('3')
             if (!spamEnabled) return false;
-            console.log('4');
 
             const member = message.member || await message.guild.members.fetch(message.author);
 
