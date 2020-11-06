@@ -7,7 +7,7 @@ module.exports = {
         const db = require('../../data/databaseManager/index.js');
         const ms = require('ms');
 
-        let timesFired = db
-        let lastFired = db
+        let timesFired = db.get(message.author.id + '.economy.jobs');
+        let lastFired = db.get(message.author.id + '.economy.jobs');
     }
 }

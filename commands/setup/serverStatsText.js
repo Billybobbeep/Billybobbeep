@@ -29,7 +29,7 @@ module.exports = (message, db, prefix, args) => {
     if (!isNaN(args[2])) return message.channel.send('You have not specified a stat type.');
     if (args[2] === 'bot' || args[2] === 'total' || args[2] === 'member' || args[2] === 'b' || args[2] === 't' || args[2] === 'm') {
     
-        var text = args[3];
+        var text = args.slice(3).join(' ');
 
         try {
           if (args[2] === 't' || args[2] === 'total') db.set(message.guild.id + '.serverStats.totalNoText', text);
@@ -39,7 +39,7 @@ module.exports = (message, db, prefix, args) => {
           return message.channel.send(`An error as occured.`);
         }
 
-        message.channel.send(`Your ${args[2].replace('b', 'bot').replace('m', 'member').replace('t', 'total')} stat channel text has been set up as ${text}`);
+        message.channel.send(`Your ${args[2].replace('t', 'total').replace('b', 'bot').replace('m', 'member')} stat channel text has been set up as ${text}`);
     
     } else message.channel.send('You have provided an invalid stat type.');
   }

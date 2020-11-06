@@ -11,8 +11,8 @@ module.exports = {
             serverID: message.guild.id
         }
         if (!countChannel.total || !countChannel.member || !countChannel.bots) return message.channel.send(`This server has not been set up to use this command.`);
-        var tu = db.set(message.guild.id + '.serverStats.totalNoText') || 'Total Users:'
-        var tm = db.set(message.guild.id + '.serverStats.memberNoText') || 'Members:';
+        var tu = db.get(message.guild.id + '.serverStats.totalNoText') || 'Total Users:'
+        var tm = db.get(message.guild.id + '.serverStats.memberNoText') || 'Members:';
         var tb = db.get(message.guild.id + '.serverStats.botNoText') || 'Bots:';
         try {
             client.channels.cache.get(countChannel.total).setName(`${tu} ${message.guild.memberCount}`);

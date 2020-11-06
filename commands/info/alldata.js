@@ -17,8 +17,6 @@ module.exports = {
     } else {
       //db.delete(message.author.id);
       console.log(db.fetchAll());
-      let a = await db.get(message.guild.id + '.serverStats')
-      console.log(a)
       message.channel.send('All of the data from the database is currently in the terminal').then(msg => { setTimeout(() => { msg.delete()}, 6000)});
     }
   }

@@ -44,7 +44,7 @@ module.exports = (message, db, prefix, args) => {
           return message.channel.send(`An error as occured, please make sure the channel you have mentioned is in this server.`);
         }
 
-        message.channel.send(`Your ${args[2].replace('b', 'bot').replace('m', 'member').replace('t', 'total')} stat channel has been set up as ${channel}`)
+        message.channel.send(`Your ${args[2].replace('t', 'total').replace('b', 'bot').replace('m', 'member')} stat channel has been set up as ${channel}`)
     
     } else message.channel.send('You have provided an invalid stat type.');
   }
