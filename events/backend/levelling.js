@@ -41,11 +41,9 @@ module.exports = async (message, client) => {
   }
   if (message.author.bot) return;
   if (message.channel.id === db.get(message.guild.id + '.talk2billy')) return;
-  let levelsEnabled = db.get(message.guild.id + '.levelsEnabled') || true;
-  if (!levelsEnabled || levelsEnabled === false) return;
-  if (levelUpChannel) {
-    levelUpChannel = db.get(message.guild.id + '.levelUpChannelId')
-  }
+  let levelsEnabled = db.get(message.guild.id + '.levelsEnabled');
+  if (levelsEnabled === undefined) levelsEnabled = true;
+  if (!levelsEnabled) return;
   if (message.content.startsWith(db.get(message.guild.id + '.prefix') || '~')) return;
   xp.add(message.guild.id + '_' + message.author.id, gainedXp)
   if (xp.get(message.guild.id + '_' + message.author.id) >= xpForLevel) {
@@ -54,7 +52,7 @@ module.exports = async (message, client) => {
     if (!levelUpChannel) {
       message.reply(`is now level ${db.get(message.guild.id + '_' + message.author.id + '.level')}`);
     } else {
-      let channel = client.channels.cache.get(levelUpChannel);
+      let channel = message.guild.channels.cache.get(levelUpChannel);
       channel.send(`${message.author} is now level ${db.get(message.guild.id + '_' + message.author.id + '.level')}`)
     }
   }
