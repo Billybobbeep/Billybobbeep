@@ -35,6 +35,7 @@ module.exports = {
 
     function commands() {
       var redirect;
+      let args = message.content.slice(prefix.length).trim().split(/ +/g);
       if (message.content.toLowerCase().startsWith(prefix + 'setup logging')) {
         redirect = require('./loggingChannel.js');
         redirect(message, db);
@@ -76,11 +77,11 @@ module.exports = {
         redirect(message, db);
       }
       if (message.content.toLowerCase().startsWith(prefix + 'setup prefix')) {
-        let args = message.content
-        .slice(prefix.length)
-        .trim()
-        .split(/ +/g);
         redirect = require('./prefix.js')
+        redirect(message, db, prefix, args)
+      }
+      if (message.content.toLowerCase().startsWith(prefix + 'setup serverstats') || message.content.toLowerCase().startsWith(prefix + 'setup ss')) {
+        redirect = require('./serverStats.js')
         redirect(message, db, prefix, args)
       }
       if (message.content.toLowerCase().startsWith(prefix + 'setup talk')) {
