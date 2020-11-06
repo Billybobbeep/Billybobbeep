@@ -8,7 +8,7 @@ module.exports = {
         const embed = new Discord.MessageEmbed();
         embed.setFooter(`${message.author.username}`);
         embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
-        if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server.')
+        if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server.');
 
         //level 1 job
         let cashier = db.get(message.author.id + '.jobs.cashier') || undefined;
