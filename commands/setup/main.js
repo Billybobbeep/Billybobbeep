@@ -84,6 +84,10 @@ module.exports = {
         redirect = require('./serverStats.js')
         redirect(message, db, prefix, args)
       }
+      if (message.content.toLowerCase().startsWith(prefix + 'setup serverstatstext') || message.content.toLowerCase().startsWith(prefix + 'setup sst')) {
+        redirect = require('./serverStatsText.js')
+        redirect(message, db, prefix, args)
+      }
       if (message.content.toLowerCase().startsWith(prefix + 'setup talk')) {
         redirect = require('./talk2billy.js');
         redirect(message, db);
@@ -148,7 +152,10 @@ module.exports = {
               PageThree()
               reaction.users.remove(message.author.id)
             }
-
+            if (msg.embeds[0].title === 'Setup | Page Three') {
+              PageFour()
+              reaction.users.remove(message.author.id)
+            }
             wait()
           } else if (reaction.emoji.name === '◀') {
 
@@ -158,6 +165,10 @@ module.exports = {
             }
             if (msg.embeds[0].title === 'Setup | Page Three') {
               PageTwo()
+              reaction.users.remove(message.author.id)
+            }
+            if (msg.embeds[0].title === 'Setup | Page Four') {
+              PageThree()
               reaction.users.remove(message.author.id)
             }
             wait()
@@ -203,6 +214,16 @@ module.exports = {
       embed.setDescription(
         `${prefix}setup levels\n` + "Turn levelling on or off.\n\n" +
         `${prefix}setup economy\n` + "Turn economic commands on or off.\n\n")
+      embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
+      embed.setFooter(`TIP: Press the arrows to move between pages.`);
+      msg.edit(embed)
+    }
+
+    function PageFour() {
+      embed.setTitle('Setup | Page Four')
+      embed.setDescription(
+        `${prefix}setup serverstats\n` + "Set up a server stats channel.\n\n" +
+        `${prefix}setup serverstatstext\n` + "Change the text for the server stats channel.\n\n")
       embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
       embed.setFooter(`TIP: Press the arrows to move between pages.`);
       msg.edit(embed)

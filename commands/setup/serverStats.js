@@ -32,10 +32,17 @@ module.exports = (message, db, prefix, args) => {
         let channel = message.guild.channels.cache.get(args[3]);
         if (!channel) return message.channel.send(`You have not provided a channel.`);
 
-        if (args[2] === 't' || args[2] === 'total') db.set(message.guild.id + '.serverStats.totalNo', channel.id);
-        if (args[2] === 'b' || args[2] === 'bot') db.set(message.guild.id + '.serverStats.botNo', channel.id);
-        if (args[2] === 'm' || args[2] === 'member') db.set(message.guild.id + '.serverStats.memberNo', channel.id);
-        else return message.channel.send(`An error as occured, please make sure the channel you have mentioned is in this server.`);
+        if ((args[2] === 't' || args[2] === 'total') && (db.set(message.guild.id + '.serverStats.totalNo', channel.id) === channel.id)) return message.channel.send(`Your total member server stat channel is already set up as ${channel}.`);
+        if ((args[2] === 'm' || args[2] === 'member') && (db.set(message.guild.id + '.serverStats.memberNo', channel.id) === channel.id)) return message.channel.send(`Your member server stat channel is already set up as ${channel}.`);
+        if ((args[2] === 'b' || args[2] === 'bot') && (db.set(message.guild.id + '.serverStats.botNo', channel.id) === channel.id)) return message.channel.send(`Your bot server stat channel is already set up as ${channel}.`);
+
+        try {
+          if (args[2] === 't' || args[2] === 'total') db.set(message.guild.id + '.serverStats.totalNo', channel.id);
+          if (args[2] === 'b' || args[2] === 'bot') db.set(message.guild.id + '.serverStats.botNo', channel.id);
+          if (args[2] === 'm' || args[2] === 'member') db.set(message.guild.id + '.serverStats.memberNo', channel.id);
+        } catch {
+          return message.channel.send(`An error as occured, please make sure the channel you have mentioned is in this server.`);
+        }
 
         message.channel.send(`Your ${args[2].replace('b', 'bot').replace('m', 'member').replace('t', 'total')} stat channel has been set up as ${channel}`)
     
