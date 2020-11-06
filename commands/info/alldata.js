@@ -5,7 +5,7 @@ module.exports = {
   description: 'View all of the data from the database.',
   guildOnly: true,
   spoinkOnly: true,
-  execute (message, prefix, client) {
+  async execute (message, prefix, client) {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     const db = require('../../data/databaseManager/index.js');
 
@@ -17,9 +17,9 @@ module.exports = {
     } else {
       //db.delete(message.author.id);
       console.log(db.fetchAll());
-      message.channel.send('All of the data from the database is currently in the terminal', {
-        tts: true
-      }).then(msg => { setTimeout(() => { msg.delete()}, 6000)});
+      let a = await db.get(message.guild.id + '.serverStats')
+      console.log(a)
+      message.channel.send('All of the data from the database is currently in the terminal').then(msg => { setTimeout(() => { msg.delete()}, 6000)});
     }
   }
 }
