@@ -17,7 +17,7 @@ module.exports = {
         var sym = '$';
         let bal = db.get(user.id + '.bank.balance');
         if (bal.toString().startsWith('-')) sum = '-$';
-        embed.setDescription(`You currently have ${sym}${bal} in your bank account.`);
+        embed.setDescription(`You currently have **${sym}${bal.toString().replace('-', '')}** in your bank account.`);
         message.channel.send(embed);
     }
 }
