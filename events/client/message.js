@@ -21,9 +21,9 @@ function redirect(message, client) {
             require('../backend/dmRecieving.js')(message, client);
         }
     }
-    //if (message.mentions.users.first()) {
-     //   require('../commands/afkHandle.js').mentions(message);
-    //}
+    if (message.mentions.users.first()) {
+        require('../commands/afkHandle.js').mentions(message);
+    }
 }
 
 function handle(message, client) {
