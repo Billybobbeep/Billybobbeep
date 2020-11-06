@@ -1,14 +1,16 @@
 const db = require('../../data/databaseManager/index.js');
 var xp = new db.table('xp');
+var punc = ['!', '/', '\'', '"', 'p!', '%', '&', '?', '£', '$', '^', '*', '.', '>', ',', '<'];
 
 module.exports = async (message, client) => {
   if (!message.guild) return;
   let prefix = db.get(message.guild.id + '.prefix') || '~'
   if (message.content.startsWith(prefix)) return;
   var levelUpChannel = db.get(message.guild.id + '.levelUpChannel') || false;
+  let args = message.content.split(/ +/g);
   if (!isNaN(message.content)) return;
   let xpForLevel = 30;
-  var currlev = db.get(message.guild.id + '_' + message.author.id + '.level')
+  var currlev = db.get(message.guild.id + '_' + message.author.id + '.level');
   if (currlev > 20 && currlev < 30) {
     xpForLevel = 35
   } else if (currlev >= 30 && currlev < 40) {
@@ -45,6 +47,13 @@ module.exports = async (message, client) => {
   if (levelsEnabled === undefined) levelsEnabled = true;
   if (!levelsEnabled) return;
   if (message.content.startsWith(db.get(message.guild.id + '.prefix') || '~')) return;
+  var debounce = false;
+  punc.forEach(p => {
+    if (debounce === true) return;
+    if (message.content.startsWith(p)) debounce = true;
+    if (args[0].includes(p)) debounce = true;
+  });
+  if (debounce === true) return;
   xp.add(message.guild.id + '_' + message.author.id, gainedXp)
   if (xp.get(message.guild.id + '_' + message.author.id) >= xpForLevel) {
     xp.delete(message.guild.id + '_' + message.author.id);
