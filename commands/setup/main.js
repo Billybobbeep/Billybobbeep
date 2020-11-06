@@ -80,11 +80,11 @@ module.exports = {
         redirect = require('./prefix.js')
         redirect(message, db, prefix, args)
       }
-      if (message.content.toLowerCase().startsWith(prefix + 'setup serverstats') || message.content.toLowerCase().startsWith(prefix + 'setup ss')) {
+      if (message.content.toLowerCase().startsWith(prefix + 'setup serverstats') || args[1].toLowerCase() === 'ss') {
         redirect = require('./serverStats.js')
         redirect(message, db, prefix, args)
       }
-      if (message.content.toLowerCase().startsWith(prefix + 'setup serverstatstext') || message.content.toLowerCase().startsWith(prefix + 'setup sst')) {
+      if (message.content.toLowerCase().startsWith(prefix + 'setup serverstatstext') || args[1].toLowerCase() === 'sst') {
         redirect = require('./serverStatsText.js')
         redirect(message, db, prefix, args)
       }

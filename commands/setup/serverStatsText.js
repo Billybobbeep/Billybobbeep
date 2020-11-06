@@ -29,15 +29,15 @@ module.exports = (message, db, prefix, args) => {
     if (!isNaN(args[2])) return message.channel.send('You have not specified a stat type.');
     if (args[2] === 'bot' || args[2] === 'total' || args[2] === 'member' || args[2] === 'b' || args[2] === 't' || args[2] === 'm') {
     
-        let channel = message.guild.channels.cache.get(args[3]);
-        if (!channel) return message.channel.send(`You have not provided a channel.`);
-
         var text = args[3];
 
-        if (args[2] === 't' || args[2] === 'total') db.set(message.guild.id + '.serverStats.totalNoText', text);
-        if (args[2] === 'b' || args[2] === 'bot') db.set(message.guild.id + '.serverStats.botNoText', text);
-        if (args[2] === 'm' || args[2] === 'member') db.set(message.guild.id + '.serverStats.memberNoText', text);
-        else return message.channel.send(`An error as occured, please make sure the channel you have mentioned is in this server.`);
+        try {
+          if (args[2] === 't' || args[2] === 'total') db.set(message.guild.id + '.serverStats.totalNoText', text);
+          if (args[2] === 'b' || args[2] === 'bot') db.set(message.guild.id + '.serverStats.botNoText', text);
+          if (args[2] === 'm' || args[2] === 'member') db.set(message.guild.id + '.serverStats.memberNoText', text);
+        } catch {
+          return message.channel.send(`An error as occured.`);
+        }
 
         message.channel.send(`Your ${args[2].replace('b', 'bot').replace('m', 'member').replace('t', 'total')} stat channel text has been set up as ${text}`);
     
