@@ -58,19 +58,19 @@ module.exports = async (message, client) => {
   }
   currlev = db.get(message.guild.id + '_' + message.author.id + '.level')
   
-  let level1RoleId = db.get(message.guild.id + '.level1RoleId')
-  let level5RoleId = db.get(message.guild.id + '.level5RoleId')
-  let level10RoleId = db.get(message.guild.id + '.level10RoleId')
-  let level15RoleId = db.get(message.guild.id + '.level15RoleId')
-  let level20RoleId = db.get(message.guild.id + '.level20RoleId')
-  let level25RoleId = db.get(message.guild.id + '.level25RoleId')
-  let level30RoleId = db.get(message.guild.id + '.level30RoleId')
-  let level35RoleId = db.get(message.guild.id + '.level35RoleId')
-  let level40RoleId = db.get(message.guild.id + '.level40RoleId')
-  let level45RoleId = db.get(message.guild.id + 'level45RoleId')
-  let level50RoleId = db.get(message.guild.id + '.level50RoleId')
-  let level75RoleId = db.get(message.guild.id + '.level75RoleId')
-  let level100RoleId = db.get(message.guild.id + '.level100RoleId')
+  let level1RoleId = db.get(message.guild.id + '.level1RoleId');
+  let level5RoleId = db.get(message.guild.id + '.level5RoleId');
+  let level10RoleId = db.get(message.guild.id + '.level10RoleId');
+  let level15RoleId = db.get(message.guild.id + '.level15RoleId');
+  let level20RoleId = db.get(message.guild.id + '.level20RoleId');
+  let level25RoleId = db.get(message.guild.id + '.level25RoleId');
+  let level30RoleId = db.get(message.guild.id + '.level30RoleId');
+  let level35RoleId = db.get(message.guild.id + '.level35RoleId');
+  let level40RoleId = db.get(message.guild.id + '.level40RoleId');
+  let level45RoleId = db.get(message.guild.id + 'level45RoleId');
+  let level50RoleId = db.get(message.guild.id + '.level50RoleId');
+  let level75RoleId = db.get(message.guild.id + '.level75RoleId');
+  let level100RoleId = db.get(message.guild.id + '.level100RoleId');
 
   try {
     if (currlev === 1) {

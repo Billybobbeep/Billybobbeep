@@ -2,6 +2,7 @@ const event = (event) => require(`../events/client/${event}.js`);
 const events = (event) => require(`../events/backend/${event}.js`)
 module.exports = (client) => {
     client.once('ready', () => event('ready')(client));
+    client.on('reconnecting', () => event('ready').reconnecting(client))
     client.on('message', (message) => event('message')(message, client));
     client.on('guildMemberAdd', (member) => event('member').add(member, client));
     client.on('guildMemberRemove', (member) => event('member').remove(member, client));

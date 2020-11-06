@@ -36,7 +36,7 @@ module.exports = {
       }
 
       user.user
-        .send(args.slice(2).join(' '))
+        .send(args.slice(2).join(' ') + '\n\nSent from: ' + message.guild.name)
         .catch(() => { return message.channel.send('The user does not have their DM\'s turned on.') })
         .then(() => message.channel.send(`Message sent to ${user.user.tag}.`))
       logging(embed, message, client);
