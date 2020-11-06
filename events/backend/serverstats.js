@@ -1,24 +1,48 @@
 const configFile = require('../../structure/config.json');
-
-let countChannel = {
-  total: configFile.TotalUserVoiceId,
-  member: configFile.MembersVoiceId,
-  bots: configFile.BotsVoiceId,
-  serverID: configFile.ServerId
-}
+const db = require('../../data/databaseManager/index.js');
 
 module.exports.add = (member, client) => {
-    if (member.guild.id !== countChannel.serverID) return;
+  if (member.user.guild.id !== countChannel.serverID) return;
 
-    client.channels.cache.get(countChannel.total).setName(`➳𝓣𝓸𝓽𝓪𝓵 𝓤𝓼𝓮𝓻𝓼: ${member.guild.memberCount}`);
-    client.channels.cache.get(countChannel.member).setName(`➳𝓜𝓮𝓶𝓫𝓮𝓻𝓼: ${member.guild.members.cache.filter(m => !m.user.bot).size}`);
-    client.channels.cache.get(countChannel.bots).setName(`➳𝓑𝓸𝓽𝓼: ${member.guild.members.cache.filter(m => m.user.bot).size}`);
+  let countChannel = {
+    total: db.get(member.user.guild.id + '.serverStats.totalNo'),
+    member: db.get(member.user.guild.id + '.serverStats.memberNo'),
+    bots: db.get(member.user.guild.id + '.serverStats.botNo'),
+    serverID: member.user.guild.id
+  }
+     
+  if (!countChannel.total || !countChannel.member || !countChannel.bots) return;
+  var tu = db.set(member.user.guild.id + '.serverStats.totalNoText') || 'Total Users:'
+  var tm = db.set(member.user.guild.id + '.serverStats.memberNoText') || 'Members:';
+  var tb = db.get(member.user.guild.id + '.serverStats.botNoText') || 'Bots:';
+  try {
+      client.channels.cache.get(countChannel.total).setName(`${tu} ${member.user.guild.memberCount}`);
+      client.channels.cache.get(countChannel.member).setName(`${tm} ${member.user.guild.members.cache.filter(m => !m.user.bot).size}`);
+      client.channels.cache.get(countChannel.bots).setName(`${tb} ${member.user.user.guild.members.cache.filter(m => m.user.bot).size}`);
+  } catch {
+      return;
+  }
 }
 
 module.exports.remove = (member, client) => {
-  if (member.guild.id !== countChannel.serverID) return;
-
-  client.channels.cache.get(countChannel.total).setName(`➳𝓣𝓸𝓽𝓪𝓵 𝓤𝓼𝓮𝓻𝓼: ${member.guild.memberCount}`);
-  client.channels.cache.get(countChannel.member).setName(`➳𝓜𝓮𝓶𝓫𝓮𝓻𝓼: ${member.guild.members.cache.filter(m => !m.user.bot).size}`);
-  client.channels.cache.get(countChannel.bots).setName(`➳𝓑𝓸𝓽𝓼: ${member.guild.members.cache.filter(m => m.user.bot).size}`);
+  if (member.user.guild.id !== countChannel.serverID) return;
+  
+  let countChannel = {
+    total: db.get(member.user.guild.id + '.serverStats.totalNo'),
+    member: db.get(member.user.guild.id + '.serverStats.memberNo'),
+    bots: db.get(member.user.guild.id + '.serverStats.botNo'),
+    serverID: member.user.guild.id
+  }
+  
+  if (!countChannel.total || !countChannel.member || !countChannel.bots) return;
+  var tu = db.set(member.user.guild.id + '.serverStats.totalNoText') || 'Total Users:'
+  var tm = db.set(member.user.guild.id + '.serverStats.memberNoText') || 'Members:';
+  var tb = db.get(member.user.guild.id + '.serverStats.botNoText') || 'Bots:';
+  try {
+      client.channels.cache.get(countChannel.total).setName(`${tu} ${member.user.guild.memberCount}`);
+      client.channels.cache.get(countChannel.member).setName(`${tm} ${member.user.guild.members.cache.filter(m => !m.user.bot).size}`);
+      client.channels.cache.get(countChannel.bots).setName(`${tb} ${member.user.guild.members.cache.filter(m => m.user.bot).size}`);
+  } catch {
+      return;
+  }
 }
