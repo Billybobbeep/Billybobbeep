@@ -1,3 +1,5 @@
+const { MessageEmbed } = require('discord.js');
+const embed = new MessageEmbed();
 module.exports = {
   name: 'alldata',
   description: 'View all of the data from the database.',
@@ -6,13 +8,12 @@ module.exports = {
   execute (message, prefix, client) {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     const db = require('../../data/databaseManager/index.js');
-    var table = [];
-    const ms = require('ms');
-    if (args[0] && args[0] === 'guild') {
-      table.push('Total Guild List:')
-      table.push(client.guilds.cache.map((guild) => guild.name))
-      message.channel.send(table.join('\n').replace(',', ''))
-      console.log(table)
+
+    if (args[1] && args[1] === 'guild') {
+      embed.setTitle('Total Guild List:')
+      var count = 0;
+      client.guilds.cache.forEach(guild => { count++; embed.addField(`Guild ${count}`, guild.name) });
+      message.channel.send(embed);
     } else {
       //db.delete(message.author.id);
       console.log(db.fetchAll());
