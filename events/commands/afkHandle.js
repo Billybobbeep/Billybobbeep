@@ -137,7 +137,7 @@ module.exports = {
           r = r.replace('_', ' ').split(/ +/g);
           let user = message.guild.members.cache.get(r[0]);
           user = user.user;
-          let reason = r[1];
+          let reason = r.slice(1).join(' ');
           embed.addField(`${user.username}#${user.discriminator}`, reason);
         });
         message.channel.send(embed);
