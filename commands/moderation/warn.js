@@ -31,7 +31,7 @@ module.exports = {
 
       var reason = args.splice(2).join(' ');
       if (!reason) return message.reply('You need to specify a reason');
-      db.push(message.guild.id + '_' + user.id + '.warnReasons', reason);
+      db.push(message.guild.id + '_' + user.id + '.warnReasons', reason + ` - ${message.author.tag}(${message.author.id})`);
       var log = new Discord.MessageEmbed()
         .setTimestamp()
         .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
