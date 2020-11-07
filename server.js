@@ -253,7 +253,7 @@ module.exports = async (client) => {
 
   listen()
 
-  /*setInterval(() => {
-    http.get(`http://localhost:3000/`);
-  }, 280000);*/
+  setInterval(() => {
+    http.get(`http://localhost:3000/home`);
+  }, 280000);
 }
