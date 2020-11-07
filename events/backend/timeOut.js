@@ -1,8 +1,62 @@
+const { table } = require('quick.db');
+
 module.exports = (client) => {
     let db = require('../../data/databaseManager/index.js');
     setInterval(() => {
         mute(db, client)
     }, 300000);
+    setInterval(() => {
+        application(db, client)
+    }, 500);
+}
+
+function application(db, client) {
+    const { MessageEmbed } = require('discord.js');
+    let appliedUsers = db.get('awaiting');
+    var table = [];
+    appliedUsers.forEach(result => {
+        table.push(result);
+        result = result.replace('_', ' ').replace('_', ' ').replace('_', ' ').replace('_', ' ');
+        result = result.split(/ +/g);
+        let user = client.users.cache.get(result[0]);
+        let date = result[1];
+        let job = result[2];
+        let emj = client.emojis.cache.get(require('../../structure/config.json').emoji)
+        
+        const embed = new MessageEmbed();
+        embed.setColor(`${db.get(require('../../structure/config.json').ServerId + '.embedColor') || '#447ba1'}`);
+        var failed = false;
+        let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);
+        let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);
+        var results = [tick, cross, tick];
+        var result1 = Math.floor(Math.random() * result.length);
+        var result2 = Math.floor(Math.random() * result.length);
+        var result3 = Math.floor(Math.random() * result.length);
+        embed.setDescription(`**Qualifications:**\n${results[result1]} Grammar\n${results[result2]} Communications\n${results[result3]} Loyalty\n${results[result2]} Trustworthiness\n\n`);
+        console.log(result2.toString())
+        if (result1 === 1 && result2 === 1) failed = true;
+        if (result2 === 1 && result3 === 1) failed = true;
+        if (result1 === 1 && result3 === 1) failed = true;
+
+        if (failed === true) {
+            embed.addField(`Overall Score:`, `Failed`);
+            embed.setFooter(`Feel free to apply again in 2 minutes.`);
+            db.delete(user.id + '.jobs.awaiting');
+            db.set(user.id + '.jobs.lastApplied', Date.now());
+        } else {
+            embed.addField(`Overall Score:`, `Passed`);
+            embed.setFooter(`Feel free to start working when you're ready.`)
+            db.delete(user.id + '.jobs.awaiting');
+            db.set(user.id + '.jobs.lastApplied', Date.now());
+        }
+        try {
+            user.send(embed);
+        } catch {
+            return table.splice(table.indexOf(result.join('_')));
+        }
+        table.splice(table.indexOf(result.join('_')));
+    });
+    db.set('awaiting', table);
 }
 
 function mute(db, client) {

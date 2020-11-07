@@ -3,8 +3,8 @@ module.exports = {
     description: 'Apply for a job.',
     guildOnly: true,
     execute (message, prefix, client) {
-        application_process(message, 'cashier', client);
-        /*const Discord = require('discord.js');
+        //application_process(message, 'cashier', client);
+        const Discord = require('discord.js');
         const db = require('../../data/databaseManager/index.js');
         const ms = require('ms');
         const embed = new Discord.MessageEmbed();
@@ -35,39 +35,50 @@ module.exports = {
             embed.setFooter(`To view the full job list use the command ${prefix}jobs`);
             return message.channel.send(embed);
         }
-        if (args.slice(1).join('').toLowerCase() === 'cashier') {
-            
-        } else if (args.slice(1).join('').toLowerCase() === 'teacher') {
-            
-        } else if (args.slice(1).join('').toLowerCase() === 'waiter') {
-            
-        } else if (args.slice(1).join('').toLowerCase() === 'receptionist') {
-            
-        } else if (args.slice(1).join('').toLowerCase() === 'architect') {
-
-        } else if (args.slice(1).join('').toLowerCase() === 'lifeguard') {
-            
-        } else if (args.slice(1).join('').toLowerCase() === 'nurse') {
-
-        } else if (args.slice(1).join('').toLowerCase() === 'police') {
-            
-        } else if (args.slice(1).join('').toLowerCase() === 'engineer') {
-            
-        } else if (args.slice(1).join('').toLowerCase() === 'chief') {
-            
-        } else if (args.slice(1).join(' ').toLowerCase() === 'clinical scientist') {
-            
-        } else if (args.slice(1).join(' ').toLowerCase() === 'head-scientist') {
-            
-        } else if (args.slice(1).join('').toLowerCase() === 'lawyer') {
-            
-        } else if (args.slice(1).join(' ').toLowerCase() === 'social worker') {
-            
-        } else if (args.slice(1).join('').toLowerCase() === 'doctor') {
-            
+        if (db.get(message.author.id + '.jobs.awaiting') === true) {
+            var cooldown = 300000;
+            let lastApp = db.get(message.author.id + '.jobs.lastApplied');
+            if (cooldown - (lastApp - Date.now()) > 0) {
+                let timeObj = ms(cooldown - (Date.now() - lastApp));
+                timeObj = timeObj.replace('s', ' seconds').replace('m', ' minutes').replace('h', ' hours');
+                embed.setDescription(`You hve already applied in the last 5 minutes.\nTime Left: **${timeObj}**`);
+                message.channel.send(embed);
+            }
         } else {
-            message.channel.send(`**${args[1][0].toUpperCase() + args[1].toLowerCase().substring(1)}** is not a valid job, please make sure you have spelt it correctly and try again.`)
-        }*/
+            if (args.slice(1).join('').toLowerCase() === 'cashier') {
+                
+            } else if (args.slice(1).join('').toLowerCase() === 'teacher') {
+                
+            } else if (args.slice(1).join('').toLowerCase() === 'waiter') {
+                
+            } else if (args.slice(1).join('').toLowerCase() === 'receptionist') {
+                
+            } else if (args.slice(1).join('').toLowerCase() === 'architect') {
+
+            } else if (args.slice(1).join('').toLowerCase() === 'lifeguard') {
+                
+            } else if (args.slice(1).join('').toLowerCase() === 'nurse') {
+
+            } else if (args.slice(1).join('').toLowerCase() === 'police') {
+                
+            } else if (args.slice(1).join('').toLowerCase() === 'engineer') {
+                
+            } else if (args.slice(1).join('').toLowerCase() === 'chief') {
+                
+            } else if (args.slice(1).join(' ').toLowerCase() === 'clinical scientist') {
+                
+            } else if (args.slice(1).join(' ').toLowerCase() === 'head-scientist') {
+                
+            } else if (args.slice(1).join('').toLowerCase() === 'lawyer') {
+                
+            } else if (args.slice(1).join(' ').toLowerCase() === 'social worker') {
+                
+            } else if (args.slice(1).join('').toLowerCase() === 'doctor') {
+                
+            } else {
+                message.channel.send(`**${args[1][0].toUpperCase() + args[1].toLowerCase().substring(1) + ' ' + args.slice(2).join(' ')}** is not a valid job, please make sure you have spelt it correctly and try again.`)
+            }
+        }
     }
 }
 
@@ -95,7 +106,6 @@ function reactMessage(message, msg, job, client) {
     });
 }
 function application_process(message, job, client) {
-    console.log(message);
     const Discord = require('discord.js');
     const embed = new Discord.MessageEmbed();
     const db = require('../../data/databaseManager/index.js');
@@ -105,6 +115,8 @@ function application_process(message, job, client) {
     
     embed.setDescription(`${tick} Successfully applied for the ${job} job!`);
     embed.setAuthor('You will be DMed your application results soon.', message.author.displayAvatarURL());
+    embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
     message.channel.send(embed);
-    db.set(message.author.id + '.economy.jobs.awaiting', true);
+    db.push('awaiting', `${message.author.id}_${Date.now()}_${job}`);
+    db.set(message.author.id + '.jobs.awaiting', true);
 }
