@@ -75,12 +75,10 @@ console.log('1')
     let sem = client.emojis.cache.get('767365396474101831');
     let semoji = `${nem}${nem}${nem}${nem}${nem}`
 
-    console.log('2')
-
-    //if (lastRun !== null && cooldown - (Date.now() - lastRun) > 0) {
-      //embed.setDescription(`You have already collected your daily allowance today.\nTime Left: **${timeObj}**`);
-      //message.channel.send(embed);
-    //} else {
+    if (lastRun !== null && cooldown - (Date.now() - lastRun) > 0) {
+      embed.setDescription(`You have already collected your daily allowance today.\nTime Left: **${timeObj}**`);
+      message.channel.send(embed);
+    } else {
       if (lastRun !== null && cooldown - (Date.now() - lastRun) >= 126000000) {
         db.delete(message.author.id + '.economy.streak');
         db.delete(message.author.id + '.economy.tStreak');
@@ -108,7 +106,7 @@ console.log('1')
         embed.setDescription(`I have added **$${dailyAmt}** onto your account balance.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
         embed.setFooter(`Total Streak: ${tStreak}\nWallet: $${balance + dailyAmt}`)
         message.channel.send(embed);
-      //}
+      }
     }
   }
 }
