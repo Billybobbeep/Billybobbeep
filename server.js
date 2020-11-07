@@ -15,11 +15,6 @@ module.exports = async (client) => {
   app.set('view engine', 'ejs');
 
   function listen() {
-    app.use(function(req, res, next) {
-      console.log('New user to the site: \'' + req.url + '\'')
-      next()
-    });
-
     app.post('/api/database/:name/get', (req, res) => {
       if (req.params.name !== 'all') res.json('Error: Invalid database');
       key = req.params.key;
@@ -110,7 +105,7 @@ module.exports = async (client) => {
         } else {
           reply = reply + '.'
         }
-        res.json(reply.replace('?.', '?').replace('..', '.').replace('!.', '!'));
+        res.json(reply.replace('?.', '?').replace('..', '.').replace('!.', '!').replace('"', '').replace('"', ''));
       }
     });
     app.get('/', function(req, res) {
