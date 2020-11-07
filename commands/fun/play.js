@@ -126,7 +126,7 @@ module.exports = {
         let member = message.guild.members.cache.get(client.user.id);
         if (member.voice.channel) return message.channel.send('You cannot send TTS messages whilst I am playing music in a voice channel.');
         message.react('🔊');
-        connect(voiceChannel, args.slice(1).join(" "))
+        connect(voiceChannel, args.slice(1).join(' '))
         }
     }
 }
