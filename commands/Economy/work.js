@@ -206,9 +206,34 @@ module.exports = {
         }).catch(() => {
           msg.reactions.removeAll()
           amt = amt / 2
-          embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
+          if (db.get(message.author.id + '.economy.balance').toString().startsWith('-')) {
+            if (
+              db.get(message.author.id + '.jobs.timesFired') === 2 ||
+              db.get(message.author.id + '.jobs.timesFired') === 4 ||
+              db.get(message.author.id + '.jobs.timesFired') === 6 ||
+              db.get(message.author.id + '.jobs.timesFired') === 8
+              ) {
+                db.add(message.author.id + '.jobs.timesFired', 1);
+                db.set(message.author.id + '.jobs.lastFired', Date.now());
+                embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
+                db.delete(message.author.id + '.jobs');
+                db.add(message.author.id + '.jobs.timesFired', 1);
+                db.set(message.author.id + '.jobs.lastFired', Date.now());
+            } else if (db.get(message.author.id + '.jobs.timesFired') === 10) {
+              db.delete(message.author.id + '.jobs.timesFired');
+              db.set(message.author.id + '.jobs.lastFired', Date.now());
+              embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
+              db.delete(message.author.id + '.jobs');
+              db.add(message.author.id + '.jobs.timesFired', 1);
+              db.set(message.author.id + '.jobs.lastFired', Date.now());
+            } else {
+              embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
+              db.delete(message.author.id + '.jobs');
+            }
+          }
+          embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt}**`);
           db.subtract(message.author.id + '.economy.balance', amt);
-          msg.edit(embed)
+          msg.edit(embed);
         });
     }
 
@@ -251,24 +276,24 @@ module.exports = {
           amt = amt / 2
           if (db.get(message.author.id + '.economy.balance').toString().startsWith('-')) {
             if (
-              db.get(message.author.id + '.economy.timesFired') === 2 ||
-              db.get(message.author.id + '.economy.timesFired') === 4 ||
-              db.get(message.author.id + '.economy.timesFired') === 6 ||
-              db.get(message.author.id + '.economy.timesFired') === 8
+              db.get(message.author.id + '.jobs.timesFired') === 2 ||
+              db.get(message.author.id + '.jobs.timesFired') === 4 ||
+              db.get(message.author.id + '.jobs.timesFired') === 6 ||
+              db.get(message.author.id + '.jobs.timesFired') === 8
               ) {
-                db.add(message.author.id + '.economy.timesFired', 1);
-                db.set(message.author.id + '.economy.lastFired', Date.now());
+                db.add(message.author.id + '.jobs.timesFired', 1);
+                db.set(message.author.id + '.jobs.lastFired', Date.now());
                 embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
                 db.delete(message.author.id + '.jobs');
-                db.add(message.author.id + '.economy.timesFired', 1);
-                db.set(message.author.id + '.economy.lastFired', Date.now());
-            } else if (db.get(message.author.id + '.economy.timesFired') === 10) {
-              db.delete(message.author.id + '.economy.timesFired');
-              db.set(message.author.id + '.economy.lastFired', Date.now());
+                db.add(message.author.id + '.jobs.timesFired', 1);
+                db.set(message.author.id + '.jobs.lastFired', Date.now());
+            } else if (db.get(message.author.id + '.jobs.timesFired') === 10) {
+              db.delete(message.author.id + '.jobs.timesFired');
+              db.set(message.author.id + '.jobs.lastFired', Date.now());
               embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
               db.delete(message.author.id + '.jobs');
-              db.add(message.author.id + '.economy.timesFired', 1);
-              db.set(message.author.id + '.economy.lastFired', Date.now());
+              db.add(message.author.id + '.jobs.timesFired', 1);
+              db.set(message.author.id + '.jobs.lastFired', Date.now());
             } else {
               embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
               db.delete(message.author.id + '.jobs');
@@ -276,7 +301,7 @@ module.exports = {
           }
           embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt}**`);
           db.subtract(message.author.id + '.economy.balance', amt);
-          msg.edit(embed)
+          msg.edit(embed);
         });
     }
 

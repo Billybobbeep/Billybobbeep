@@ -10,7 +10,7 @@ module.exports = {
     embed.setFooter(`${message.author.username}`);
     embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
 
-    if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server.')
+    if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server.');
 
     var dailyAmt = 10;
     var cooldown = 8.64e+7;
@@ -53,7 +53,7 @@ module.exports = {
     let socialWorker = db.get(message.author.id + '.jobs.socialWorker') || undefined;
     //level 15 job
     let doctor = db.get(message.author.id + '.jobs.doctor') || undefined;
-
+console.log('1')
     if (jobs !== undefined) {
       if (cashier !== undefined) dailyAmt = 7.25
       if (teacher !== undefined) dailyAmt = 8.81
@@ -74,36 +74,41 @@ module.exports = {
     let nem = client.emojis.cache.get('767351869856940063');
     let sem = client.emojis.cache.get('767365396474101831');
     let semoji = `${nem}${nem}${nem}${nem}${nem}`
-    /*if (lastRun !== null && cooldown - (Date.now() - lastRun) <= 86400000) {
-      db.delete(message.author.id + '.economy.streak');
-      db.delete(message.author.id + '.economy.tStreak');
-    }*/
-    if (streak === 1) semoji = `${sem}${nem}${nem}${nem}${nem}`
-    else if (streak === 2) semoji = `${sem}${sem}${nem}${nem}${nem}`
-    else if (streak === 3) semoji = `${sem}${sem}${sem}${nem}${nem}`
-    else if (streak === 4) semoji = `${sem}${sem}${sem}${sem}${nem}`
-    else if (streak === 5) {
-      semoji =  `${sem}${sem}${sem}${sem}${sem}`
-      embed.setDescription(`You have collected your **${dailyAmt + reward}** reward.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
-      embed.setFooter(`Total Streak: ${tStreak}\nWallet: $${balance + dailyAmt + reward}`);
-      message.channel.send(embed);
-      db.set(message.author.id + '.economy.daily', Date.now());
-      db.delete(message.author.id + '.economy.streak');
-    }
 
-    if (lastRun !== null && cooldown - (Date.now() - lastRun) > 0) {
-      embed.setDescription(`You have already collected your daily allowance today.\nTime Left: **${timeObj}**`);
-      message.channel.send(embed);
-    } else {
-      db.add(message.author.id + '.economy.streak', 1);
-      db.add(message.author.id + '.economy.tStreak', 1);
-      db.add(message.author.id + '.economy.balance', dailyAmt);
-      db.set(message.author.id + '.economy.daily', Date.now());
+    console.log('2')
 
-      //db.delete(message.author.id);
-      embed.setDescription(`I have added **$${dailyAmt}** onto your account balance.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
-      embed.setFooter(`Total Streak: ${tStreak}\nWallet: $${balance + dailyAmt}`)
-      message.channel.send(embed);
+    //if (lastRun !== null && cooldown - (Date.now() - lastRun) > 0) {
+      //embed.setDescription(`You have already collected your daily allowance today.\nTime Left: **${timeObj}**`);
+      //message.channel.send(embed);
+    //} else {
+      if (lastRun !== null && cooldown - (Date.now() - lastRun) >= 126000000) {
+        db.delete(message.author.id + '.economy.streak');
+        db.delete(message.author.id + '.economy.tStreak');
+      }
+      if (streak === 1) semoji = `${sem}${nem}${nem}${nem}${nem}`
+      else if (streak === 2) semoji = `${sem}${sem}${nem}${nem}${nem}`
+      else if (streak === 3) semoji = `${sem}${sem}${sem}${nem}${nem}`
+      else if (streak === 4) semoji = `${sem}${sem}${sem}${sem}${nem}`
+      else if (streak === 5) {
+        console.log('1')
+        semoji =  `${sem}${sem}${sem}${sem}${sem}`
+        embed.setDescription(`You have collected your **$${dailyAmt + reward}** reward.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
+        embed.setFooter(`Total Streak: ${tStreak}\nWallet: $${balance + dailyAmt + reward}`);
+        db.set(message.author.id + '.economy.daily', Date.now());
+        db.delete(message.author.id + '.economy.streak');
+        message.channel.send(embed);
+      } else {
+        console.log('2')
+        db.add(message.author.id + '.economy.streak', 1);
+        db.add(message.author.id + '.economy.tStreak', 1);
+        db.add(message.author.id + '.economy.balance', dailyAmt);
+        db.set(message.author.id + '.economy.daily', Date.now());
+
+        //db.delete(message.author.id);
+        embed.setDescription(`I have added **$${dailyAmt}** onto your account balance.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
+        embed.setFooter(`Total Streak: ${tStreak}\nWallet: $${balance + dailyAmt}`)
+        message.channel.send(embed);
+      //}
     }
   }
 }
