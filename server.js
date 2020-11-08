@@ -62,6 +62,7 @@ module.exports = async (client) => {
       if (message.toLowerCase() === 'hello' || message.toLowerCase() === 'hi' || message.toLowerCase() === 'hiya') reply = message.toLowerCase();
       if (message.toLowerCase().includes('test')) reply = 'test command';
       if (message.toLowerCase().includes('ily')) reply = 'ily2';
+      if (message.toLowerCase().startsWith('call') || message.toLowerCase().includes('emergency')) reply = 'I am not responsible for any form of emergency call.\nIf you need any service from the emergency services, please call them yourself or ask another guild member to do it for you.';
       if (reply === 'undefined') {
         let response = await fetch('https://some-random-api.ml/chatbot?message=' + message);
         reply = await response.text();
