@@ -23,35 +23,20 @@ module.exports = {
     let decimal = Math.round(Math.random() * 89) + 10
     var gainedXp = 1
 
-    //level 1 job
     let cashier = db.get(message.author.id + '.jobs.cashier') || undefined;
-    //level 2 job
     let teacher = db.get(message.author.id + '.jobs.teacher') || undefined;
-    //level 3 job
     let waiter = db.get(message.author.id + '.jobs.waiter') || undefined;
-    //level 4 job
     let receptionist = db.get(message.author.id + '.jobs.receptionist') || undefined;
-    //level 5 job
     let architect = db.get(message.author.id + '.jobs.architect') || undefined;
-    //level 6 job
     let lifeGuard = db.get(message.author.id + '.jobs.lifeGuard') || undefined;
-    //level 7 job
     let nurse = db.get(message.author.id + '.jobs.nurse') || undefined;
-    //level 8 job
     let police = db.get(message.author.id + '.jobs.police') || undefined;
-    //level 9 job
     let engineer = db.get(message.author.id + '.jobs.engineer') || undefined;
-    //level 10 job
     let chief = db.get(message.author.id + '.jobs.chief') || undefined;
-    //level 11 job
     let clinicalScientist = db.get(message.author.id + '.jobs.clinicalScientist') || undefined;
-    //level 12 job
     let headScientist = db.get(message.author.id + '.jobs.headScientist') || undefined;
-    //level 13 job
     let lawyer = db.get(message.author.id + '.jobs.lawyer') || undefined;
-    //level 14 job
     let socialWorker = db.get(message.author.id + '.jobs.socialWorker') || undefined;
-    //level 15 job
     let doctor = db.get(message.author.id + '.jobs.doctor') || undefined;
 
     if (jobs !== undefined) {
@@ -92,6 +77,7 @@ module.exports = {
         .setDescription(`You earned **$${workAmt}.${decimal}** while working!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
+        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
         reactionCollection(msg, '📕', '📗', '📙', workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
       }
       else if (waiter !== undefined) {
@@ -113,6 +99,7 @@ module.exports = {
         .setDescription(`You earned **$${workAmt}.${decimal}** while working!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
+        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
         reactionCollection(msg, emojis[no1], emoji[no2], emoji, workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
       }
       else if (receptionist !== undefined) {
@@ -123,14 +110,17 @@ module.exports = {
         .setDescription(`You answered the phone ${count} times and earned **$${workAmt}.${decimal}**!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
+        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
         const congratsEmbed2 = new Discord.MessageEmbed()
         .setDescription(`You booked an appointment and earned **$${workAmt}.${decimal}**!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
+        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
         const congratsEmbed3 = new Discord.MessageEmbed()
         .setDescription(`You countded your daily earnings and it came to a total of **$${workAmt}.${decimal}**!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
+        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
         reactionCollection(msg, '📞', '💻', '💰', workAmt, congratsEmbed1, congratsEmbed2, congratsEmbed3);
       }
       else if (lifeGuard !== undefined) {
@@ -138,6 +128,7 @@ module.exports = {
         .setDescription(`You went to work and earnt **$${workAmt}.${decimal}**!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
+        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
         message.channel.send(congratsEmbed);
       }
       else if (engineer !== undefined) {
@@ -147,14 +138,17 @@ module.exports = {
         .setDescription(`You earnt **$${workAmt}.${decimal}** whilst fixing the 🚗Regular Car!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
+        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
         const congratsEmbed2 = new Discord.MessageEmbed()
         .setDescription(`You earnt **$${workAmt}.${decimal}** whilst fixing the 🚓Police Car!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
+        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
         const congratsEmbed3 = new Discord.MessageEmbed()
         .setDescription(`You earnt **$${workAmt}.${decimal}** whilst fixing the 🏎Race Car!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
+        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
         reactionCollection(msg, '🚗', '🚓', '🏎', workAmt, congratsEmbed1, congratsEmbed2, congratsEmbed3);
       }
       else if (chief !== undefined) {
