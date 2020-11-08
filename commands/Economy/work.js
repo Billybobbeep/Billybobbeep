@@ -7,11 +7,9 @@ module.exports = {
     const db = require('../../data/databaseManager/index.js');
     const ms = require('ms');
     const embed = new Discord.MessageEmbed();
-    const xp = new db.table('workXp');
 
     let crossEmoji = client.emojis.cache.get('736952985330122772');
-    embed.setTimestamp();
-    embed.setFooter(`${message.author.username}`);
+    embed.setAuthor(`${message.author.username}`, message.author.displayAvatarURL());
     embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
 
     if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server.')
@@ -56,6 +54,20 @@ module.exports = {
       if (socialWorker !== undefined) { workAmt = 31; gainedXp = 5; }
       if (doctor !== undefined) { workAmt = 55; gainedXp = 5; }
     }
+
+    db.add(message.author.id + '.jobs.xp', gainedXp);
+    let xp = db.get(message.author.id + '.jobs.xp');
+    if (cashier !== undefined) {
+      if (cashier !== undefined && xp === 25) db.add(message.author.id + '.jobs.level', 1);
+      if (cashier !== undefined && xp === 50) db.add(message.author.id + '.jobs.level', 1);
+      if (cashier !== undefined && xp === 85) db.add(message.author.id + '.jobs.level', 1);
+      if (cashier !== undefined && xp === 105) db.add(message.author.id + '.jobs.level', 1);
+    }
+
+    function lvlUp() {
+      embed.setDescription(`You have levelled up! You are now level ${db.get(message.author.id + '.jobs.level')}`);
+    }
+
     if (workAmt === undefined) {
       embed.setDescription(`Before you can start working, you need to get a job.\n\nTo Apply for a job use '${prefix}jobs'`);
       message.channel.send(embed)
@@ -162,7 +174,6 @@ module.exports = {
         embed.setDescription(`You earned **$${workAmt}.${decimal}** while working!`);
         message.channel.send(embed);
       }
-      xp.add(message.author.id, gainedXp);
       db.set(message.author.id + '.economy.work', Date.now() + cooldown);
     }
 
@@ -177,7 +188,7 @@ module.exports = {
         );
       }
 
-      msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+      msg.awaitReactions(filter, { max: 1, time: 10000, errors: ['time'] })
         .then((collected) => {
           const reaction = collected.first();
 
@@ -200,7 +211,8 @@ module.exports = {
         }).catch(() => {
           msg.reactions.removeAll()
           amt = amt / 2
-          if (db.get(message.author.id + '.economy.balance').toString().startsWith('-')) {
+          var bal = db.get(message.author.id + '.economy.balance') || 0;
+          if (bal.toString().startsWith('-')) {
             if (
               db.get(message.author.id + '.jobs.timesFired') === 2 ||
               db.get(message.author.id + '.jobs.timesFired') === 4 ||
@@ -247,7 +259,7 @@ module.exports = {
         );
       }
 
-      msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+      msg.awaitReactions(filter, { max: 1, time: 10000, errors: ['time'] })
         .then((collected) => {
           const reaction = collected.first();
 
