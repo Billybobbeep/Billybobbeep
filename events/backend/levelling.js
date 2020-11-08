@@ -55,14 +55,14 @@ module.exports = async (message, client) => {
   });
   if (debounce === true) return;
   xp.add(message.guild.id + '_' + message.author.id, gainedXp);
-  if (xp.get(message.guild.id + '_' + message.author.Id); >= xpForLevel) {
+  if (xp.get(message.guild.id + '_' + message.author.Id) >= xpForLevel) {
     xp.delete(message.guild.id + '_' + message.author.Id);;
     db.add(message.guild.id + '_' + message.author.id + '.level', 1);
     if (!levelUpChannel) {
       message.reply(`is now level ${db.get(message.guild.id + '_' + message.author.id + '.level')}`);
     } else {
       let channel = message.guild.channels.cache.get(levelUpChannel);
-      channel.send(`<@!${message.author.id}> is now level ${db.get(message.guild.id + '_' + message.author.id + '.level')}`)
+      channel.send(`<@!${message.author.id}> is now level ${db.get(message.guild.id + '_' + message.author.id + '.level')}`);
     }
   }
   currlev = db.get(message.guild.id + '_' + message.author.id + '.level');
