@@ -47,7 +47,11 @@ module.exports = {
                 }
             } else if (args.slice(1).join('').toLowerCase() === 'teacher') {
                 job = 'teacher'
-                if (level > (info.teacher.level + info.teacher.promotions)) {
+                if (level < info.teacher.level) {
+                    embed.setDescription(`You cannot apply for this job as your job level is too low.`);
+                    embed.setFooter(`Try working at your current job before applying again.`);
+                    message.channel.send(embed);
+                } else if (level > (info.teacher.level + info.teacher.promotions)) {
                     embed.setDescription(`You cannot apply for this job as your job level is too high.`);
                     embed.setFooter(`If you would like to start over you can apply for a prestige.`);
                     message.channel.send(embed);
@@ -57,7 +61,11 @@ module.exports = {
                 }
             } else if (args.slice(1).join('').toLowerCase() === 'waiter') {
                 job = 'waiter'
-                if (level > (info.waiter.level + info.waiter.promotions)) {
+                if (level < info.waiter.level) {
+                    embed.setDescription(`You cannot apply for this job as your job level is too low.`);
+                    embed.setFooter(`Try working at your current job before applying again.`);
+                    message.channel.send(embed);
+                } else if (level > (info.waiter.level + info.waiter.promotions)) {
                     embed.setDescription(`You cannot apply for this job as your job level is too high.`);
                     embed.setFooter(`If you would like to start over you can apply for a prestige.`);
                     message.channel.send(embed);
@@ -67,7 +75,11 @@ module.exports = {
                 }
             } else if (args.slice(1).join('').toLowerCase() === 'receptionist') {
                 job = 'receptionist'
-                if (level > (info.receptionist.level + info.receptionist.promotions)) {
+                if (level < info.receptionist.level) {
+                    embed.setDescription(`You cannot apply for this job as your job level is too low.`);
+                    embed.setFooter(`Try working at your current job before applying again.`);
+                    message.channel.send(embed);
+                } else if (level > (info.receptionist.level + info.receptionist.promotions)) {
                     embed.setDescription(`You cannot apply for this job as your job level is too high.`);
                     embed.setFooter(`If you would like to start over you can apply for a prestige.`);
                     message.channel.send(embed);
@@ -77,7 +89,11 @@ module.exports = {
                 }
             } else if (args.slice(1).join('').toLowerCase() === 'architect') {
                 job = 'architect'
-                if (level > (info.architect.level + info.architect.promotions)) {
+                if (level < info.architect.level) {
+                    embed.setDescription(`You cannot apply for this job as your job level is too low.`);
+                    embed.setFooter(`Try working at your current job before applying again.`);
+                    message.channel.send(embed);
+                } else if (level > (info.architect.level + info.architect.promotions)) {
                     embed.setDescription(`You cannot apply for this job as your job level is too high.`);
                     embed.setFooter(`If you would like to start over you can apply for a prestige.`);
                     message.channel.send(embed);
@@ -87,7 +103,11 @@ module.exports = {
                 }
             } else if (args.slice(1).join('').toLowerCase() === 'lifeguard') {
                 job = 'lifeguard'
-                if (level > (info.lifeguard.level + info.lifeguard.promotions)) {
+                if (level < info.lifeguard.level) {
+                    embed.setDescription(`You cannot apply for this job as your job level is too low.`);
+                    embed.setFooter(`Try working at your current job before applying again.`);
+                    message.channel.send(embed);
+                } else if (level > (info.lifeguard.level + info.lifeguard.promotions)) {
                     embed.setDescription(`You cannot apply for this job as your job level is too high.`);
                     embed.setFooter(`If you would like to start over you can apply for a prestige.`);
                     message.channel.send(embed);
@@ -97,7 +117,11 @@ module.exports = {
                 }
             } else if (args.slice(1).join('').toLowerCase() === 'nurse') {
                 job = 'nurse'
-                if (level > (info.nurse.level + info.nurse.promotions)) {
+                if (level < info.nurse.level) {
+                    embed.setDescription(`You cannot apply for this job as your job level is too low.`);
+                    embed.setFooter(`Try working at your current job before applying again.`);
+                    message.channel.send(embed);
+                } else if (level > (info.nurse.level + info.nurse.promotions)) {
                     embed.setDescription(`You cannot apply for this job as your job level is too high.`);
                     embed.setFooter(`If you would like to start over you can apply for a prestige.`);
                     message.channel.send(embed);
@@ -107,7 +131,7 @@ module.exports = {
                 }
             } else if (args.slice(1).join('').toLowerCase() === 'police') {
                 job = 'police'
-                if (level < info.doctor.level) {
+                if (level < info.police.level) {
                     embed.setDescription(`You cannot apply for this job as your job level is too low.`);
                     embed.setFooter(`Try working at your current job before applying again.`);
                     message.channel.send(embed);
