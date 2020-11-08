@@ -15,7 +15,6 @@ module.exports = {
       client.guilds.cache.forEach(guild => { count++; embed.addField(`Guild ${count}`, guild.name) });
       message.channel.send(embed);
     } else {
-      //db.delete(message.author.id);
       console.log(db.fetchAll());
       message.channel.send('All of the data from the database is currently in the terminal').then(msg => { setTimeout(() => { msg.delete()}, 6000)});
     }
