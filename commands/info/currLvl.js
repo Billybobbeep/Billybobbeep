@@ -1,7 +1,7 @@
 module.exports = {
   name: 'currlvl',
   description: 'View a users current level.',
-  alias: ['cl'],
+  alias: ['cl', 'xp', 'cx'],
   guildOnly: true,
   execute(message, prefix, client) {
     const db = require('../../data/databaseManager/index.js');
@@ -13,9 +13,7 @@ module.exports = {
     let currLvl = db.get(message.guild.id + '_' + user.id + '.level') || 0;
 
     if (db.get(message.guild.id + '.levelsEnabled') === false) return message.channel.send(`Levels have been disabled for this server.`);
-    if (user.username === undefined) {
-      user = user.user
-    }
+    if (user.username === undefined) user = user.user
     if (user.bot) return message.channeol.send(`Bots cannot have levels.`);
     const embed = new Discord.MessageEmbed();
     embed.setTitle('Billybobbeep | Levelling System');

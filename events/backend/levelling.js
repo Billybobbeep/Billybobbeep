@@ -1,6 +1,5 @@
 const { GuildMember } = require('discord.js');
 const db = require('../../data/databaseManager/index.js');
-var xp = new db.table('xp');
 var punc = ['!', '/', '\'', '"', 'p!', '%', '&', '?', '£', '$', '^', '*', '.', '>', ',', '<'];
 
 module.exports = async (message, client) => {
@@ -9,7 +8,7 @@ module.exports = async (message, client) => {
   if (message.content.startsWith(prefix)) return;
   var levelUpChannel = db.get(message.guild.id + '.levelUpChannel') || false;
   let args = message.content.split(/ +/g);
-  if (args[0].length < 4 && !args[1]) return;
+  if (args[0].length < 2 && !args[1]) return;
   if (!isNaN(message.content)) return;
   let xpForLevel = 30;
   var currlev = db.get(message.guild.id + '_' + message.author.id + '.level');
@@ -39,8 +38,8 @@ module.exports = async (message, client) => {
     xpForLevel = 150
   }
 
-  var gainedXp = Math.round(Math.random() * 5)
-  if (gainedXp < 1) gainedXp = Math.round(Math.random() * 5)
+  var gainedXp = Math.round(Math.random() * 5);
+  if (gainedXp < 1) gainedXp = Math.round(Math.random() * 5);
   if (message.author.bot) return;
   if (message.channel.id === db.get(message.guild.id + '.talk2billy')) return;
   let levelsEnabled = db.get(message.guild.id + '.levelsEnabled');
@@ -54,9 +53,9 @@ module.exports = async (message, client) => {
     if (args[0].includes(p)) debounce = true;
   });
   if (debounce === true) return;
-  xp.add(message.guild.id + '_' + message.author.id, gainedXp);
-  if (xp.get(message.guild.id + '_' + message.author.Id) >= xpForLevel) {
-    xp.delete(message.guild.id + '_' + message.author.Id);;
+  db.add(`${message.guild.id}_${message.author.id}.xp`, gainedXp);
+  if (db.get(`${message.guild.id}_${message.author.id}.xp`) >= xpForLevel) {
+    db.delete(`${message.guild.id}_${message.author.id}.xp`);
     db.add(message.guild.id + '_' + message.author.id + '.level', 1);
     if (!levelUpChannel) {
       message.reply(`is now level ${db.get(message.guild.id + '_' + message.author.id + '.level')}`);
