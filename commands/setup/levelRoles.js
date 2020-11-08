@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = (message, db) => {
     let prefix = db.get(message.guild.id + '.prefix') || '~';
-    var supportedLevels = ['1', '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '75', '100', '125', '130']
+    var supportedLevels = ['1', '5', '10', '15', '20', '25', '30', '35', '40', '45', '50', '75', '100', '120', '130', '140', '150', '160', '170', '180', '190', '200', '250', '300', '350', '400', '450', '500', '1000', '1200', '1400', '1500', '1600', '1700', '1800', '1900', '2000']
     var count = 0;
     let args = message.content
 		.slice(prefix.length)
