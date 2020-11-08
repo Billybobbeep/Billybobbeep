@@ -104,17 +104,14 @@ module.exports = {
         return message.channel.send(embed)
       }
 
-      if (db.fetch(user.id + '.isAFK')) {
-        if (db.fetch(user.id + '.isAFK') === true) {
-          embed.setDescription('**' + user.tag + '** has now been removed from the AFK list.\nWelcome back, ' + user.tag);
-          db.delete(user.id + '.isAFK')
-          db.delete(user.id + '.isAFKreason')
-          return message.channel.send(embed)
-        }
-        else {
-          embed.setDescription('**' + user.tag + '** ' + 'was not marked as AFK');
-          return message.channel.send(embed)
-        }
+    if (db.fetch(user.id + '.isAFK')) {
+        embed.setDescription('**' + user.tag + '** has now been removed from the AFK list.\nWelcome back, ' + user.tag);
+        db.delete(user.id + '.isAFK')
+        db.delete(user.id + '.isAFKreason')
+        message.channel.send(embed)
+      } else {
+        embed.setDescription('**' + user.tag + '** ' + 'was not marked as AFK');
+        message.channel.send(embed)
       }
     }
   },
@@ -125,10 +122,12 @@ module.exports = {
     embed.setDescription('The following users you have pinged are marked as AFK.');
     embed.setTimestamp();
     embed.setFooter(`${message.author.tag}`);
+    if (message.content.includes('back') || message.content.includes('afk')) return;
     if (message.mentions.users.first()) {
       var member = [];
       message.mentions.users.forEach(user => {
         if (db.get(user.id + '.isAFK')) {
+          if (user.id === message.author.id) return;
           member.push(`${user.id}_${db.get(user.id + '.isAFKreason')}`);
         }
       });

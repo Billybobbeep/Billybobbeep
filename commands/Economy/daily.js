@@ -18,42 +18,27 @@ module.exports = {
     let tStreak = db.get(message.author.id + '.economy.tStreak') || 1;
     let streak = db.get(message.author.id + '.economy.streak') || 1;
     let jobs = db.get(message.author.id + '.jobs') || undefined;
-    let balance = db.get(message.author.id + '.economy.balance');
+    let balance = db.get(message.author.id + '.economy.balance') || 0;
     let lastRun = db.get(message.author.id + '.economy.daily') || 0
     let timeObj = ms(cooldown - (Date.now() - lastRun));
     timeObj = timeObj.replace('s', ' seconds').replace('m', ' minutes').replace('h', ' hours');
 
-    //level 1 job
     let cashier = db.get(message.author.id + '.jobs.cashier') || undefined;
-    //level 2 job
     let teacher = db.get(message.author.id + '.jobs.teacher') || undefined;
-    //level 3 job
     let waiter = db.get(message.author.id + '.jobs.waiter') || undefined;
-    //level 4 job
     let receptionist = db.get(message.author.id + '.jobs.receptionist') || undefined;
-    //level 5 job
     let architect = db.get(message.author.id + '.jobs.architect') || undefined;
-    //level 6 job
     let lifeGuard = db.get(message.author.id + '.jobs.lifeGuard') || undefined;
-    //level 7 job
     let nurse = db.get(message.author.id + '.jobs.nurse') || undefined;
-    //level 8 job
     let police = db.get(message.author.id + '.jobs.police') || undefined;
-    //level 9 job
     let engineer = db.get(message.author.id + '.jobs.engineer') || undefined;
-    //level 10 job
     let chief = db.get(message.author.id + '.jobs.chief') || undefined;
-    //level 11 job
     let clinicalScientist = db.get(message.author.id + '.jobs.clinicalScientist') || undefined;
-    //level 12 job
     let headScientist = db.get(message.author.id + '.jobs.headScientist') || undefined;
-    //level 13 job
     let lawyer = db.get(message.author.id + '.jobs.lawyer') || undefined;
-    //level 14 job
     let socialWorker = db.get(message.author.id + '.jobs.socialWorker') || undefined;
-    //level 15 job
     let doctor = db.get(message.author.id + '.jobs.doctor') || undefined;
-console.log('1')
+    
     if (jobs !== undefined) {
       if (cashier !== undefined) dailyAmt = 7.25
       if (teacher !== undefined) dailyAmt = 8.81
@@ -88,25 +73,21 @@ console.log('1')
       else if (streak === 3) semoji = `${sem}${sem}${sem}${nem}${nem}`
       else if (streak === 4) semoji = `${sem}${sem}${sem}${sem}${nem}`
       else if (streak === 5) {
-        console.log('1')
         semoji =  `${sem}${sem}${sem}${sem}${sem}`
         embed.setDescription(`You have collected your **$${dailyAmt + reward}** reward.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
         embed.setFooter(`Total Streak: ${tStreak}\nWallet: $${balance + dailyAmt + reward}`);
         db.set(message.author.id + '.economy.daily', Date.now());
-        db.delete(message.author.id + '.economy.streak');
-        message.channel.send(embed);
-      } else {
-        console.log('2')
-        db.add(message.author.id + '.economy.streak', 1);
-        db.add(message.author.id + '.economy.tStreak', 1);
-        db.add(message.author.id + '.economy.balance', dailyAmt);
-        db.set(message.author.id + '.economy.daily', Date.now());
-
-        //db.delete(message.author.id);
-        embed.setDescription(`I have added **$${dailyAmt}** onto your account balance.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
-        embed.setFooter(`Total Streak: ${tStreak}\nWallet: $${balance + dailyAmt}`)
-        message.channel.send(embed);
+        db.set(message.author.id + '.economy.streak', 1);
+        return message.channel.send(embed);
       }
+      db.add(message.author.id + '.economy.streak', 1);
+      db.add(message.author.id + '.economy.tStreak', 1);
+      db.add(message.author.id + '.economy.balance', dailyAmt);
+      db.set(message.author.id + '.economy.daily', Date.now());
+
+      embed.setDescription(`I have added **$${dailyAmt}** onto your account balance.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
+      embed.setFooter(`Total Streak: ${tStreak}\nWallet: $${balance + dailyAmt}`)
+      message.channel.send(embed);
     }
   }
 }
