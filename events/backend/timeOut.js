@@ -7,7 +7,7 @@ module.exports = (client) => {
     }, 300000);
     setInterval(() => {
         application(db, client)
-    }, 500);
+    }, 180000);
 }
 
 function application(db, client) {
@@ -25,6 +25,7 @@ function application(db, client) {
         
         const embed = new MessageEmbed();
         embed.setColor(`${db.get(require('../../structure/config.json').ServerId + '.embedColor') || '#447ba1'}`);
+        embed.setAuthor(user.username, user.displayAvatarURL());
         var failed = false;
         let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);
         let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);
@@ -32,7 +33,7 @@ function application(db, client) {
         var result1 = Math.floor(Math.random() * result.length);
         var result2 = Math.floor(Math.random() * result.length);
         var result3 = Math.floor(Math.random() * result.length);
-        embed.setDescription(`**Qualifications:**\n${results[result1]} Grammar\n${results[result2]} Communications\n${results[result3]} Loyalty\n${results[result2]} Trustworthiness\n\n`);
+        embed.setDescription(`Your application results are the following:\n\n**Qualifications:**\n${results[result1]} Grammar\n${results[result2]} Communications\n${results[result3]} Loyalty\n${results[result2]} Trustworthiness\n\n`);
         console.log(result2.toString())
         if (result1 === 1 && result2 === 1) failed = true;
         if (result2 === 1 && result3 === 1) failed = true;
@@ -48,6 +49,7 @@ function application(db, client) {
             embed.setFooter(`Feel free to start working when you're ready.`)
             db.delete(user.id + '.jobs.awaiting');
             db.set(user.id + '.jobs.lastApplied', Date.now());
+            db.set(user.id + `.jobs.${job}`, true);
         }
         try {
             user.send(embed);
