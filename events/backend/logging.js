@@ -19,11 +19,11 @@ module.exports.add = (guild, client) => {
             `**Reason:** ${ban.reason || 'No reason was provided.'}\n\n` +
             `**Moderator:** ${ban.executor}\n` +
             `**Moderator Tag:** ${ban.executor.tag}\n` +
-            `**Moderator ID:** ${ban.executor.id}\n`
+            `**Moderator ID:** ${ban.executor.id}`
         )
         embed.setTimestamp(ban.createdTimestamp);
         embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`);
-        logging(embed, message, client);
+        logging(embed, guild.id, client);
     });
 }
 
@@ -41,6 +41,8 @@ module.exports.remove = (guild, client) => {
             .sort((a, b) => b.createdAt - a.createdAt)
             .first();
 
+            if (!pb) pb.reason = 'No Reason was provided.';
+
             embed.setTitle('User Unbanned');
             embed.setDescription(
             `**User Tag:** ${ban.target.tag}\n` +
@@ -48,11 +50,11 @@ module.exports.remove = (guild, client) => {
             `**Banned For:** ${pb.reason || 'No reason was provided.'}\n\n` +
             `**Moderator:** ${ban.executor}\n` +
             `**Moderator Tag:** ${ban.executor.tag}\n` +
-            `**Moderator ID:** ${ban.executor.id}\n`
+            `**Moderator ID:** ${ban.executor.id}`
             )
             embed.setTimestamp(ban.createdTimestamp);
             embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`);
-            logging(embed, message, client);
+            logging(embed, guild.id, client);
         });
     }, 100);
 }
