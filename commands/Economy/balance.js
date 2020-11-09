@@ -7,13 +7,17 @@ module.exports = {
         const Discord = require('discord.js');
         const db = require('../../data/databaseManager/index.js');
         const embed = new Discord.MessageEmbed();
+        let args = message.content.slice(prefix.length).trim().split(/ +/g);
+        let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]) || message.author;
+        if (user.bot) return message.channel.send(`Bots do not have wallets.`);
 
         embed.setFooter(`To bank some cash use: ${prefix}deposit [amount]`);
         embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
+        embed.setAuthor(user.username, user.displayAvatarURL());
 
         var sym = '$'
-        let bankBal = db.get(message.author.id + '.bank.balance') || 0;
-        var walletBal = db.get(message.author.id + '.economy.balance') || 0;
+        let bankBal = db.get(user.id + '.bank.balance') || 0;
+        var walletBal = db.get(user.id + '.economy.balance') || 0;
 
         if (walletBal.toString().startsWith('-')) sym = '-$';
         embed.addField(`Wallet:`, `${sym}${walletBal.toString().replace('-', '')}`);
