@@ -21,7 +21,7 @@ module.exports = {
     var cooldown = info.global.work.cooldown;
     let jobs = db.get(message.author.id + '.jobs') || undefined;
     let lastRun = db.get(message.author.id + '.economy.work');
-    let decimal = Math.round(Math.random() * 89) + 10
+    let decimal = Math.round(Math.random() * 89) + 10;
     var gainedXp = 1
 
     let cashier = db.get(message.author.id + '.jobs.cashier') || undefined;
