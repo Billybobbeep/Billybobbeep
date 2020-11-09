@@ -9,7 +9,7 @@ module.exports = {
     const logging = require('../../utils/functions.js').logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     function banCmd() {
-      let user = message.mentions.users.first() || message.guild.members.cache.get(args[1])
+      let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
 
       let member = message.guild.member(user);
       let reason = args.slice(2).join(' ');
