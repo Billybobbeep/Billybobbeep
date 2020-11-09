@@ -30,7 +30,15 @@ module.exports = async(message, prefix) => {
     `${prefix}jobs\n` +
     '*View the list of available jobs.*\n\n' +
     `${prefix}apply [job name]\n` +
-    '*Apply for a job.*\n')
+    '*Apply for a job.*\n' +
+    `${prefix}donate [user] [ammount]\n` +
+    'Donate money to another user.\n' +
+    `${prefix}balance [user]\n` +
+    'View a users balance.\n' +
+    `${prefix}resetstats\n` +
+    'Reset a users stats.\n' +
+    `${prefix}quit\n` +
+    'Quit your current job.\n')
   .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
   .setFooter('TIP: Press the arrows to switch pages')
 
