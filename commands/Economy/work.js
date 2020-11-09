@@ -1,3 +1,5 @@
+const { lifeguard } = require('./jobRequirements.js');
+
 module.exports = {
   name: 'work',
   description: 'Go to work.',
@@ -7,6 +9,7 @@ module.exports = {
     const db = require('../../data/databaseManager/index.js');
     const ms = require('ms');
     const embed = new Discord.MessageEmbed();
+    const info = require('./jobRequirements.js');
 
     let crossEmoji = client.emojis.cache.get('736952985330122772');
     embed.setAuthor(`${message.author.username}`, message.author.displayAvatarURL());
@@ -15,7 +18,7 @@ module.exports = {
     if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server.')
 
     var workAmt = undefined;
-    var cooldown = 15000;
+    var cooldown = info.global.work.cooldown;
     let jobs = db.get(message.author.id + '.jobs') || undefined;
     let lastRun = db.get(message.author.id + '.economy.work');
     let decimal = Math.round(Math.random() * 89) + 10
@@ -38,34 +41,29 @@ module.exports = {
     let doctor = db.get(message.author.id + '.jobs.doctor') || undefined;
 
     if (jobs !== undefined) {
-      if (cashier !== undefined) { workAmt = 10; gainedXp = 1; }
-      if (teacher !== undefined) { workAmt = 11; gainedXp = 1; }
-      if (waiter !== undefined) { workAmt = 12; gainedXp = 1; }
-      if (receptionist !== undefined) { workAmt = 12; gainedXp = 2; }
-      if (architect !== undefined) { workAmt = 15; gainedXp = 2; }
-      if (lifeGuard !== undefined) { workAmt = 16; gainedXp = 2; }
-      if (nurse !== undefined) { workAmt = 21; gainedXp = 3; }
-      if (police !== undefined) { workAmt = 22;  gainedXp = 3; }
-      if (engineer !== undefined) { workAmt = 24; gainedXp = 3; }
-      if (chief !== undefined) { workAmt = 25; gainedXp = 4; }
-      if (clinicalScientist !== undefined) { workAmt = 25; gainedXp = 4; }
-      if (headScientist !== undefined) { workAmt = 26; gainedXp = 4; }
-      if (lawyer !== undefined) { workAmt = 29; gainedXp = 4; }
-      if (socialWorker !== undefined) { workAmt = 31; gainedXp = 5; }
-      if (doctor !== undefined) { workAmt = 55; gainedXp = 5; }
-    }
-
-    db.add(message.author.id + '.jobs.xp', gainedXp);
-    let xp = db.get(message.author.id + '.jobs.xp');
-    if (cashier !== undefined) {
-      if (cashier !== undefined && xp === 25) db.add(message.author.id + '.jobs.level', 1);
-      if (cashier !== undefined && xp === 50) db.add(message.author.id + '.jobs.level', 1);
-      if (cashier !== undefined && xp === 85) db.add(message.author.id + '.jobs.level', 1);
-      if (cashier !== undefined && xp === 105) db.add(message.author.id + '.jobs.level', 1);
+      if (cashier !== undefined) { workAmt = 10; gainedXp = info.cashier.xp; }
+      if (teacher !== undefined) { workAmt = 11; gainedXp = info.teacher.xp; }
+      if (waiter !== undefined) { workAmt = 12; gainedXp = info.waiter.xp; }
+      if (receptionist !== undefined) { workAmt = 12; gainedXp = info.receptionist.xp; }
+      if (architect !== undefined) { workAmt = 15; gainedXp = info.architect.xp; }
+      if (lifeGuard !== undefined) { workAmt = 16; gainedXp = info.lifeguard.xp; }
+      if (nurse !== undefined) { workAmt = 21; gainedXp = info.nurse.xp; }
+      if (police !== undefined) { workAmt = 22;  gainedXp = info.police.xp; }
+      if (engineer !== undefined) { workAmt = 24; gainedXp = info.engineer.xp; }
+      if (chief !== undefined) { workAmt = 25; gainedXp = info.chief.xp; }
+      if (clinicalScientist !== undefined) { workAmt = 25; gainedXp = info.clinicalScientist.xp; }
+      if (headScientist !== undefined) { workAmt = 26; gainedXp = info.headScientist.xp; }
+      if (lawyer !== undefined) { workAmt = 29; gainedXp = info.lawyer.xp; }
+      if (socialWorker !== undefined) { workAmt = 31; gainedXp = info.socialWorker.xp; }
+      if (doctor !== undefined) { workAmt = 55; gainedXp = info.doctor.xp; }
     }
 
     function lvlUp() {
-      embed.setDescription(`You have levelled up! You are now level ${db.get(message.author.id + '.jobs.level')}`);
+      db.delete(message.author.id + '.jobs.xp');
+      db.add(message.author.id + '.jobs.level', 1);
+      embed.setDescription(`You have levelled up! You are now level **${db.get(message.author.id + '.jobs.level')}**!`);
+      message.channel.send(embed);
+      //db.delete(message.author.id + '.jobs.level');
     }
 
     if (workAmt === undefined) {
@@ -170,7 +168,40 @@ module.exports = {
       } else {
         db.add(message.author.id + '.economy.balance', workAmt);
 
-        //db.delete(message.author.id);
+        db.add(message.author.id + '.jobs.xp', gainedXp);
+        let xp = db.get(message.author.id + '.jobs.xp');
+        if (cashier !== undefined && xp >= info.global.xp.lower.max) {
+          lvlUp()
+        } else if (teacher !== undefined && xp >= info.global.xp.lower.max) {
+          lvlUp()
+        } else if (waiter !== undefined && xp >= info.global.xp.lower.max) {
+          lvlUp()
+        } else if (receptionist !== undefined && xp >= info.global.xp.lower.max) {
+          lvlUp()
+        } else if (architect !== undefined && xp >= info.global.xp.lower.max) {
+          lvlUp()
+        } else if (lifeguard !== undefined && xp >= info.global.xp.lower.max) {
+          lvlUp()
+        } else if (nurse !== undefined && xp >= info.global.xp.lower.max) {
+          lvlUp()
+        } else if (police !== undefined && xp >= info.global.xp.higher.max) {
+          lvlUp()
+        } else if (engineer !== undefined && xp >= info.global.xp.higher.max) {
+          lvlUp()
+        } else if (chief !== undefined && xp >= info.global.xp.higher.max) {
+          lvlUp()
+        } else if (clinicalScientist !== undefined && xp >= info.global.xp.higher.max) {
+          lvlUp()
+        } else if (headScientist !== undefined && xp >= info.global.xp.higher.max) {
+          lvlUp()
+        } else if (lawyer !== undefined && xp >= info.global.xp.higher.max) {
+          lvlUp()
+        } else if (socialWorker !== undefined && xp >= info.global.xp.higher.max) {
+          lvlUp()
+        } else if (doctor !== undefined && xp >= info.global.xp.higher.max) {
+          lvlUp()
+        }
+
         embed.setDescription(`You earned **$${workAmt}.${decimal}** while working!`);
         message.channel.send(embed);
       }
@@ -178,9 +209,43 @@ module.exports = {
     }
 
     async function reactionCollection(msg, emoji1, emoji2, emoji3, amt, edit1, edit2, edit3) {
-      await msg.react(emoji1)
-      await msg.react(emoji2)
-      await msg.react(emoji3)
+      await msg.react(emoji1);
+      await msg.react(emoji2);
+      await msg.react(emoji3);
+
+      db.add(message.author.id + '.jobs.xp', gainedXp);
+      let xp = db.get(message.author.id + '.jobs.xp');
+      if (cashier !== undefined && xp >= info.global.xp.lower.max) {
+        lvlUp()
+      } else if (teacher !== undefined && xp >= info.global.xp.lower.max) {
+        lvlUp()
+      } else if (waiter !== undefined && xp >= info.global.xp.lower.max) {
+        lvlUp()
+      } else if (receptionist !== undefined && xp >= info.global.xp.lower.max) {
+        lvlUp()
+      } else if (architect !== undefined && xp >= info.global.xp.lower.max) {
+        lvlUp()
+      } else if (lifeguard !== undefined && xp >= info.global.xp.lower.max) {
+        lvlUp()
+      } else if (nurse !== undefined && xp >= info.global.xp.lower.max) {
+        lvlUp()
+      } else if (police !== undefined && xp >= info.global.xp.higher.max) {
+        lvlUp()
+      } else if (engineer !== undefined && xp >= info.global.xp.higher.max) {
+        lvlUp()
+      } else if (chief !== undefined && xp >= info.global.xp.higher.max) {
+        lvlUp()
+      } else if (clinicalScientist !== undefined && xp >= info.global.xp.higher.max) {
+        lvlUp()
+      } else if (headScientist !== undefined && xp >= info.global.xp.higher.max) {
+        lvlUp()
+      } else if (lawyer !== undefined && xp >= info.global.xp.higher.max) {
+        lvlUp()
+      } else if (socialWorker !== undefined && xp >= info.global.xp.higher.max) {
+        lvlUp()
+      } else if (doctor !== undefined && xp >= info.global.xp.higher.max) {
+        lvlUp()
+      }
 
       const filter = (reaction, user) => {
         return (
