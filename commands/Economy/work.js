@@ -75,7 +75,7 @@ module.exports = {
       time2work = time2work.replace('-', '');
       if (time2work.endsWith('ms')) time2work = '1s';
       if (time2work === '1s') seco = 'second';
-      time2work.replace('s', '')
+      time2work = time2work.replace('s', '')
 
       embed.setDescription(`${crossEmoji} Break Time. You can work again in **${time2work}** ${seco}.`);
       message.channel.send(embed);
