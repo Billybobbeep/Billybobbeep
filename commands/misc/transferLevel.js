@@ -31,8 +31,9 @@ module.exports = {
 
         if (user1.bot) return message.channel.send(`Bots do not have levels.`);
         if (user2.bot) return message.channel.send(`You cannot transfer levels to a bot.`);
-        let user1lvl = db.get(message.guild.id + user1.id + '.level');
-        if (user1lvl <= 1) return message.channel.send(`${user1} does not have enough levels for this.`);
+        if (user1.id === user2.id) return message.chanel.send(`You cannot transfer a level to the same person.`);
+        let user1lvl = db.get(message.guild.id + '_' + user1.id + '.level');
+        if (user1lvl <= 1) return message.channel.send(`${user1} does not have enough levels to transfer.`);
 
         db.delete(message.guild.id + '_' + user1.id +'.level');
         db.add(message.guild.id + '_' + user2.id +'.level', user1lvl);
