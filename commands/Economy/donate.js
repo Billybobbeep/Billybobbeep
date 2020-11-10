@@ -37,7 +37,7 @@ module.exports = {
         }
 
         db.set(message.author.id + '.economy.lastDonated', Date.now());
-        message.channel.send(`Donated **${amt}** to <@!${user.id}>.`);
+        message.channel.send(`<@!${message.author.id}> successfully donated **$${amt}** to <@!${user.id}>.`);
         db.subtract(message.author.id + '.economy.balance', amt);
         db.add(user.id + '.economy.balance', amt);
     }
