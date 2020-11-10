@@ -2,6 +2,8 @@ module.exports = {
   name: 'removelvl',
   description: 'Remove a users level.',
   alias: ['rl', 'removelevel'],
+  catagory: 'mod',
+  usage: 'removelvl [user] [amount]',
   guildOnly: true,
   execute(message, prefix, client) {
     const db = require('../../data/databaseManager/index.js');

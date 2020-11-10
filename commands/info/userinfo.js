@@ -5,6 +5,7 @@ const db = require('../../data/databaseManager/index.js');
 module.exports = {
     name: 'userinfo',
     description: 'View a users info.',
+    catagory: 'info',
     guildOnly: true,
     execute (message, prefix, client) {
         let args = message.content.slice(prefix.length).trim().split(/ +/g);

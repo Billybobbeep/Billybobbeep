@@ -5,6 +5,7 @@ const db = require('../../data/databaseManager/index.js');
 module.exports = {
   name: 'image',
   description: 'Generate a random image.',
+  catagory: 'generator',
   guildOnly: true,
   execute (message, prefix, client) {
     const embed = new Discord.MessageEmbed()

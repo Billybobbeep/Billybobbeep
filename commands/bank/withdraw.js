@@ -2,6 +2,9 @@ module.exports = {
     name: 'withdraw',
     description: 'Withdraw an amount from the bank.',
     alias: ['wd'],
+    catagory: 'economy',
+    usage: 'withdraw [amount]',
+    guildOnly: true,
     execute(message, prefix, client) {
         const db = require('../../data/databaseManager/index.js');
 

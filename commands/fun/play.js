@@ -4,6 +4,7 @@ module.exports = {
     name: 'play',
     description: 'Play a song in a voice channel.',
     alias: ['stop', 'tts'],
+    catagory: 'general',
     guildOnly: true,
     execute (message, prefix, client) {
         let args = message.content.slice(prefix.length).trim().split(/ +/g);

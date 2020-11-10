@@ -1,6 +1,7 @@
 module.exports = {
   name: 'daily',
   description: 'Collect your daily reward.',
+  catagory: 'economy',
   guildOnly: true,
   execute (message, prefix, client) {
     const Discord = require('discord.js');

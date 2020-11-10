@@ -1,6 +1,7 @@
 module.exports = {
     name: 'generate key',
     description: 'Generate a billybobbeep API key.',
+    catagory: 'none',
     guildOnly: true,
     execute (message, prefix, client) {
         const Discord = require('discord.js');

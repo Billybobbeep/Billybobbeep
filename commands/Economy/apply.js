@@ -1,6 +1,8 @@
 module.exports = {
     name: 'apply',
     description: 'Apply for a job.',
+    catagory: 'economy',
+    usage: 'apply [job name]',
     guildOnly: true,
     async execute (message, prefix, client) {
         //application_process(message, 'cashier', client);

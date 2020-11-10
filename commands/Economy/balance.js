@@ -1,7 +1,9 @@
 module.exports = {
     name: 'balance',
-    description: 'View how much money you have.',
+    description: 'Check how much money a user has.',
     alias: ['bal', 'wallet'],
+    catagory: 'economy',
+    usage: 'balance [user]',
     guildOnly: true,
     execute (message, prefix, client) {
         const Discord = require('discord.js');

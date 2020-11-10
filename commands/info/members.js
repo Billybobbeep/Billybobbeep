@@ -5,6 +5,7 @@ const db = require('../../data/databaseManager/index.js');
 module.exports = {
     name: 'members',
     description: 'View the member stats for the server.',
+    catagory: 'info',
     guildOnly: true,
     execute (message, prefix, client) {
         let member = message.guild.members;

@@ -2,6 +2,7 @@ module.exports = {
     name: 'jobs',
     description: 'View avalable jobs.',
     alias: ['job'],
+    catagory: 'economy',
     guildOnly: true,
     async execute (message, prefix, client) {
         const db = require('../../data/databaseManager/index.js');

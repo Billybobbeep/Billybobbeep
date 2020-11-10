@@ -5,6 +5,8 @@ const db = require('../../data/databaseManager/index.js');
 module.exports = {
   name: 'giveaway',
   description: 'Start a giveaway.',
+  catagory: 'other',
+  usage: 'giveaway [time] [channel] [prize]',
   guildOnly: true,
   async execute (message, prefix, client) {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -24,7 +26,7 @@ module.exports = {
         `I could not find that channel in the server.`
       );
     let prize = args.slice(2).join(' ');
-    if (!prize) return message.channel.send(`Please specify a time.`);
+    if (!prize) return message.channel.send(`Please specify a prize.`);
     message.channel.send(`*Giveaway created in ${channel}.*`);
     let Embed = new MessageEmbed()
       .setTitle(`${prize}`)

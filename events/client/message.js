@@ -48,7 +48,10 @@ function handle(message, client) {
                 if (debounce === true) return message.channel.send(`You cannot use that command on ${user.user}`);
             }
         }
-        client.commands.get(command).execute(message, prefix, client);
+        client.commands.get(command).execute(message, prefix, client).catch(err => {
+            if (err.toString().includes('client.commands.get(...).execute is not a function')) return;
+            else console.error(err);
+        })
     }
 }
 

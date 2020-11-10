@@ -12,6 +12,7 @@ let autherValid;
 module.exports = {
     name: 'poll',
     description: 'Send a poll.',
+    catagory: 'generator',
     guildOnly: true,
     async execute (message, prefix, client) {
         let args = message.content.slice(prefix.length).trim().split(/ +/g);

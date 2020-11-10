@@ -2,6 +2,8 @@ module.exports = {
   name: 'currlvl',
   description: 'View a users current level.',
   alias: ['cl', 'xp', 'cx'],
+  catagory: 'info',
+  usage: 'currlvl [user]',
   guildOnly: true,
   execute(message, prefix, client) {
     const db = require('../../data/databaseManager/index.js');

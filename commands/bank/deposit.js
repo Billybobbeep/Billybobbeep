@@ -2,6 +2,8 @@ module.exports = {
     name: 'deposit',
     description: 'Deposit some money into your bank account.',
     alias: ['dep'],
+    catagory: 'economy',
+    usage: 'deposit [amount]',
     guildOnly: true,
     execute (message, prefix, client) {
         const db = require('../../data/databaseManager/index.js');

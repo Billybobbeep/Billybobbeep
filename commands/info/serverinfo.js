@@ -35,6 +35,8 @@ const regions = {
 module.exports = {
 	name: 'serverinfo',
 	description: 'View this servers info.',
+	alias: ['server'],
+	catagory: 'info',
 	guildOnly: true,
 	execute (message, prefix, client) {
 		const roles = message.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());

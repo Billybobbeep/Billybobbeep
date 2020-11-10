@@ -97,6 +97,8 @@ var letters = {
 module.exports = {
   name: 'secret',
   description: 'Repeat what you just said in a spoiler format.',
+  catagory: 'generator',
+  usage: 'secret [message]',
   guildOnly: true,
   execute (message, prefix, client) {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);

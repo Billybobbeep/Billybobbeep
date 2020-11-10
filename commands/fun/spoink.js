@@ -3,13 +3,10 @@ const configFile = require('../../structure/config.json');
 
 module.exports = {
     name: 'spoink',
-    description: ';).',
+    description: '\u200b',
+    catagory: 'general',
     guildOnly: true,
     execute (message, prefix, client) {
-        message.channel.send(":eyes:")
-        message.channel.send(":nose:")
-        message.channel.send(":lips:")
-        message.channel.send(":open_hands:")
-        message.channel.send(":leg:")
+        message.channel.send(':eyes:\n:nose:\n:lips:\n:open_hands:\n:leg:');
     }
 }

@@ -4,6 +4,7 @@ module.exports = {
   description: ';)',
   alias: ['wibwob'],
   guildOnly: true,
+  catagory: 'general',
   explit: true,
   execute (message, prefix, client) {
     if (db.get(message.guild.id + '.cleanFilter')) {

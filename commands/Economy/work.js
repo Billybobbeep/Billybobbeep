@@ -3,6 +3,7 @@ const { lifeguard } = require('./jobRequirements.js');
 module.exports = {
   name: 'work',
   description: 'Go to work.',
+  catagory: 'economy',
   guildOnly: true,
   async execute (message, prefix, client) {
     const Discord = require('discord.js');

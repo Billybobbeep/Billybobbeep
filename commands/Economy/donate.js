@@ -2,6 +2,8 @@ module.exports = {
     name: 'donate',
     description: 'Donate a user some cash.',
     alias: ['give'],
+    usage: 'donate [user] [amount]',
+    catagory: 'economy',
     guildOnly: true,
     execute(message, prefix, client) {
         const db = require('../../data/databaseManager/index.js');

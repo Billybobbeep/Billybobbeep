@@ -2,7 +2,8 @@ const { lifeguard } = require('./jobRequirements.js');
 
 module.exports = {
     name: 'quit',
-    description: 'Quit your job.',
+    description: 'Quit your current job.',
+    catagory: 'economy',
     guildOnly: true,
     execute(message, prefix, client) {
         message.channel.send(`Are you sure you want to quit your job?\n\nYou will have to reapply for another job before you can start working again.`).then(msg => reactions(message, msg, client));

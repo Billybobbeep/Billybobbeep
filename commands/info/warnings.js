@@ -4,6 +4,8 @@ var reasons = [];
 module.exports = {
   name: 'warnings',
   description: 'View a users warnings.',
+  catagory: 'info',
+  usage: 'warnings [user]',
   guildOnly: true,
   execute (message, prefix, client) {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);

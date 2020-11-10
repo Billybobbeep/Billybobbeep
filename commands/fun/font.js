@@ -77,6 +77,7 @@ module.exports = {
     name: 'font',
     description: 'Put your message into a new font.',
     alias: ['fonts'],
+    catagory: 'generator',
     execute (message, prefix, client) {
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         var lines = ['', ''];

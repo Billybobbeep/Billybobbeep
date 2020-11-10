@@ -1,6 +1,8 @@
 module.exports = {
     name: 'resetstats',
     description: 'Delete a users stats.',
+    catagory: 'economy',
+    usage: 'apply [user]',
     guildOnly: true,
     execute(message, prefix, client) {
         if (message.member.hasPermission('MANAGE_GUILD') || message.member.hasPermission('ADMINISTRATOR')) {
