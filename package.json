@@ -9,9 +9,11 @@
     "url": "https://github.com/Tyler2P/Billybobbeep"
   },
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
     "restart": "npm stop && npm start",
-    "stop": "echo stopped"
+    "stop": "exit 0",
+    "developer": "nodemon index.js",
+    "test": "node test.js"
   },
   "description": "",
   "dependencies": {
