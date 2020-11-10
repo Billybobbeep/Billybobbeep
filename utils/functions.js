@@ -2,7 +2,7 @@ const db = require('../data/databaseManager/index.js');
 const guildID = require('../structure/config.json').ServerId;
 
 module.exports.logging = function(msg, message,client) {
-    if (isNaN(message)) {
+    if (!isNaN(message)) {
         var loggingChannel = client.channels.cache.get(db.get(message + '.loggingChannel'));
         if (loggingChannel) {
             loggingChannel.send(msg).catch(() => {return});
