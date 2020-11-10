@@ -16,7 +16,7 @@ module.exports = {
             let amt = db.get(message.author.id + '.economy.balance');
             db.add(message.author.id + '.bank.balance', db.get(message.author.id + '.economy.balance'));
             db.subtract(message.author.id + '.economy.balance', amt);
-            message.channel.send(`Successfully deposited all of your cash.`);
+            message.channel.send(`Successfully transfered **$${amt}** to your bank account.`);
         } else {
             let amt = args[1].replace('$', '');
             if (isNaN(amt)) return message.channel.send(`**${amt}** is not a valid amount.`);
@@ -24,7 +24,7 @@ module.exports = {
 
             db.subtract(message.author.id + '.economy.balance', amt);
             db.add(message.author.id + '.bank.balance', amt);
-            message.channel.send(`Successfully deposited **$${amt}**.`);
+            message.channel.send(`Successfully transfered **$${amt}** to your bank account.`);
         }
     }
 }
