@@ -1,6 +1,6 @@
 module.exports = (client) => {
-    //let activities = [`~help`, `Version ${require('../../package-lock.json').version}`];
-    let activities = [`Billianist and proud`];
+    let activities = [`~help`, `Version ${require('../../package-lock.json').version}`];
+    //let activities = [`Billianist and proud`];
       i = 0;
     setInterval(() => {
       client.user.setActivity(`${activities[i++ % activities.length]}`, {type: 'LISTENING'});
