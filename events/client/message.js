@@ -48,17 +48,19 @@ function handle(message, client) {
                 if (debounce === true) return message.channel.send(`You cannot use that command on ${user.user}`);
             }
         }
-        client.commands.get(command).execute(message, prefix, client).catch(err => {
+        try {
+            client.commands.get(command).execute(message, prefix, client)
+        } catch(err) {
             if (err.toString().includes('client.commands.get(...).execute is not a function')) return;
             else console.error(err);
-        })
+        }
     }
 }
 
 module.exports = (message, client) => {
     if (message.content.toLowerCase() === '~middle') {
-        let emj = client.emojis.cache.get('772154941489545216')
-        message.channel.send(emj)
+        let emj = client.emojis.cache.get('772154941489545216');
+        message.channel.send(`${emj}`);
     }
     if (message.author.bot) return;
     redirect(message, client)

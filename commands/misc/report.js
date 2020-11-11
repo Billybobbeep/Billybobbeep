@@ -68,7 +68,7 @@ module.exports = {
 
                 collected = await msg.channel.awaitMessages(mfilter, {
                     max: 1,
-                    time: 50000,
+                    time: 50000
                 }).catch(() => {
                     message.author.send('Time expired, please run this command again.');
                 });
@@ -76,27 +76,27 @@ module.exports = {
 
                 if (collected.first().content.toLowerCase() === 'skip' || collected.first().content.toLowerCase() === '~skip')
                     extra = '*Question Skipped*';
-                else extra = collected.first().content;
+                else extra = collected.first().content.replace('~', '');
 
                 const embed5 = new Discord.MessageEmbed();
                 embed5.setTitle('Results');
                 embed5.setDescription(`Please react to the message below if you are happy with the information below.`);
                 embed5.addField(`Subject`, subject.toString().replace('~', ''));
                 embed5.addField(`Message`, body.toString().replace('~', ''));
-                embed5.addField(`Additional Information`, extra.toString());
+                embed5.addField(`Additional Information`, extra.toString().replace('~', ''));
                 embed5.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
 
                 const embed6 = new Discord.MessageEmbed();
                 embed6.setTitle('Bug Report');
                 embed6.addField(`Subject`, subject.toString().replace('~', ''));
                 embed6.addField(`Message`, body.toString().replace('~', ''));
-                embed6.addField(`Additional Information`, extra.toString());
-                embed.addField(`Sent From`, message.author.tag);
+                embed6.addField(`Additional Information`, extra.toString().replace('~', ''));
+                embed6.addField(`Sent From`, message.author.tag);
                 message.guild ? embed6.addField(`Guild`, message.guild.name) : '';
                 embed6.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
 
 
-                msg = message.channel.send(embed5);
+                msg = await message.channel.send(embed5);
                 let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);
                 let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);
                 await msg.react(tick);
@@ -129,7 +129,7 @@ module.exports = {
                 }
 
                 msg.awaitReactions(rfilter, { max: 1, time: 30000, errors: ['time'] }).then((collected) => {
-                    message.channel.send(embed2);
+                    message.author.send(embed2);
                 });
                 const mfilter = collected => collected.author.id === message.author.id;
                 var collected = await msg.channel.awaitMessages(mfilter, {
@@ -142,7 +142,7 @@ module.exports = {
                 if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt.');
                 if (collected.first().content.toLowerCase() === 'skip' || collected.first().content.toLowerCase() === '~skip') message.author.send('This is a required question.');
                 subject = collected.first().content;
-                message.channel.send(embed3);
+                message.author.send(embed3);
 
                 collected = await msg.channel.awaitMessages(mfilter, {
                     max: 1,
@@ -153,11 +153,11 @@ module.exports = {
                 if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt.');
                 if (collected.first().content.toLowerCase() === 'skip' || collected.first().content.toLowerCase() === '~skip') message.author.send('This is a required question.');
                 body = collected.first().content;
-                message.channel.send(embed4);
+                message.author.send(embed4);
 
                 collected = await msg.channel.awaitMessages(mfilter, {
                     max: 1,
-                    time: 50000,
+                    time: 50000
                 }).catch(() => {
                     message.author.send('Time expired, please run this command again.');
                 });
@@ -165,27 +165,27 @@ module.exports = {
 
                 if (collected.first().content.toLowerCase() === 'skip' || collected.first().content.toLowerCase() === '~skip')
                     extra = '*Question Skipped*';
-                else extra = collected.first().content;
+                else extra = collected.first().content.replace('~', '');
 
                 const embed5 = new Discord.MessageEmbed();
                 embed5.setTitle('Results');
                 embed5.setDescription(`Please react to the message below if you are happy with the information below.`);
                 embed5.addField(`Subject`, subject.toString().replace('~', ''));
                 embed5.addField(`Message`, body.toString().replace('~', ''));
-                embed5.addField(`Additional Information`, extra.toString());
+                embed5.addField(`Additional Information`, extra.toString().replace('~', ''));
                 embed5.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
 
                 const embed6 = new Discord.MessageEmbed();
                 embed6.setTitle('Bug Report');
                 embed6.addField(`Subject`, subject.toString().replace('~', ''));
                 embed6.addField(`Message`, body.toString().replace('~', ''));
-                embed6.addField(`Additional Information`, extra.toString());
-                embed.addField(`Sent From`, message.author.tag);
+                embed6.addField(`Additional Information`, extra.toString().replace('~', ''));
+                embed6.addField(`Sent From`, message.author.tag);
                 message.guild ? embed6.addField(`Guild`, message.guild.name) : '';
                 embed6.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
 
 
-                msg = message.channel.send(embed5);
+                msg = await message.author.send(embed5);
                 let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);
                 let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);
                 await msg.react(tick);
@@ -201,9 +201,9 @@ module.exports = {
                     if (reaction.emoji.id === tick.id) {
                         let channel = client.channels.cache.get('734398769831084102');
                         channel.send(embed6).catch(e => console.error(e));
-                        message.channel.send(`Your report has been sent.`);
+                        message.author.send(`Your report has been sent.`);
                     } else {
-                        message.channel.send(`Your report has not been sent.`);
+                        message.author.send(`Your report has not been sent.`);
                     }
                 });
             }
