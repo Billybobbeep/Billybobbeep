@@ -92,9 +92,9 @@ module.exports = {
         reactionCollection(msg, '📕', '📗', '📙', workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
       }
       else if (waiter !== undefined) {
-        var usedNo = []
-        var numbers = ['1', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-        var  emojis = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣']
+        var usedNo = [];
+        var numbers = ['1', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        var  emojis = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣'];
         var no1 = Math.floor(Math.random() * emojis.length);
         if (usedNo.length === numbers.length) usedNo = []
         usedNo.push(numbers[no1]);
@@ -104,7 +104,7 @@ module.exports = {
         var no3 = Math.floor(Math.random() * emojis.length);
         if (usedNo.includes(numbers[no3])) no3 = Math.floor(Math.random() * emojis.length);
         usedNo.push(numbers[no3]);
-        embed.setDescription(`Select a table number:\n\n${emojis[no1]}-${numbers[no1]}\n${emojis[no2]}-${number[no2]}\n${emojis[no3]}-${numbers[no3]}`);
+        embed.setDescription(`Select a table number:\n\n${emojis[no1]}-${numbers[no1]}\n${emojis[no2]}-${numbers[no2]}\n${emojis[no3]}-${numbers[no3]}`);
         let msg = await message.channel.send(embed);
         const congratsEmbed = new Discord.MessageEmbed()
         .setDescription(`You earned **$${workAmt}.${decimal}** while working!`)
