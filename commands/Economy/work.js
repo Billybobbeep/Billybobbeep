@@ -111,7 +111,7 @@ module.exports = {
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
         .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
-        reactionCollection(msg, emojis[no1], emoji[no2], emoji, workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
+        reactionCollection(msg, emojis[no1], emojis[no2], emojis[no3], workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
       }
       else if (receptionist !== undefined) {
         embed.setDescription(`What would you like to do?\n\n📞Answer the phone\n💻Book an appointment\n💰Count the daily earnings`);
