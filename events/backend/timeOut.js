@@ -1,5 +1,3 @@
-const { table } = require('quick.db');
-
 module.exports = (client) => {
     const db = require('quick.db');
     setInterval(() => {
@@ -14,6 +12,7 @@ function application(db, client) {
     const { MessageEmbed } = require('discord.js');
     let appliedUsers = db.get('awaiting');
     var table = [];
+    if (!appliedUsers) return;
     appliedUsers.forEach(result => {
         table.push(result);
         result = result.replace('_', ' ').replace('_', ' ').replace('_', ' ').replace('_', ' ');

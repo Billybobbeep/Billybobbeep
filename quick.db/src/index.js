@@ -4,7 +4,7 @@ const util = require('util');
 let db;
 
 // Create Database Under Conditions
-if (!db) db = new Database('./structure/json.sqlite');
+if (!db) db = new Database('./structure/data.sqlite');
 
 // Declare Methods
 var methods = {
