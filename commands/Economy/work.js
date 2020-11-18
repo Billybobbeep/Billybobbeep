@@ -260,17 +260,20 @@ module.exports = {
 
           if (reaction.emoji.name === emoji1) {
             if (edit1 !== undefined) {
-              msg.reactions.removeAll()
+              msg.reactions.removeAll();
+              db.add(message.author.id + '.economy.balance', amt);
               return msg.edit(edit1);
             }
           } else if (reaction.emoji.name === emoji2) {
             if (edit2 !== undefined) {
-              msg.reactions.removeAll()
+              msg.reactions.removeAll();
+              db.add(message.author.id + '.economy.balance', amt);
               return msg.edit(edit2)
             }
           } else if (reaction.emoji.name === emoji3) {
             if (edit3 !== undefined) {
-              msg.reactions.removeAll()
+              msg.reactions.removeAll();
+              db.add(message.author.id + '.economy.balance', amt);
               return msg.edit(edit3);
             }
           }
