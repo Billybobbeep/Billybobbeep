@@ -7,7 +7,7 @@ module.exports = {
   guildOnly: true,
   async execute (message, prefix, client) {
     const Discord = require('discord.js');
-    const db = require('../../data/databaseManager/index.js');
+    const db = require('quick.db');
     const ms = require('ms');
     const embed = new Discord.MessageEmbed();
     const info = require('./jobRequirements.js');

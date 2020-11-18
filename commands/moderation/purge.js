@@ -5,7 +5,7 @@ module.exports = {
   execute (message, prefix, client) {
     const Discord = require('discord.js');
     const configFile = require('../../structure/config.json');
-    const db = require('../../data/databaseManager/index.js');
+    const db = require('quick.db');
     const logging = require('../../utils/functions.js').logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     function purgeCmd() {

@@ -1,5 +1,5 @@
 const { GuildMember } = require('discord.js');
-const db = require('../../data/databaseManager/index.js');
+const db = require('quick.db');
 var punc = ['!', '/', '\'', '"', 'p!', '%', '&', '?', '£', '$', '^', '*', '.', '>', ',', '<'];
 
 module.exports = async (message, client) => {

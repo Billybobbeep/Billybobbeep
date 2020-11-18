@@ -1,12 +1,11 @@
-const { MessageEmbed } = require('discord.js');
-const db = require('../../data/databaseManager/index.js')
-
 module.exports = {
   name: 'setup',
   description: 'Setup billybobbeep in your own server.',
   guildOnly: true,
   execute (message, prefix, client) {
-    const embed = new MessageEmbed()
+    const { MessageEmbed } = require('discord.js');
+    const db = require('quick.db');
+    const embed = new MessageEmbed();
     var msg;
 
     function nonAdmin() {

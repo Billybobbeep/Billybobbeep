@@ -1,4 +1,4 @@
-const db = require('../../data/databaseManager/index.js');
+const db = require('quick.db');
 module.exports = async (member) => {
   if (db.get(member.guild.id + '.welcomeChannel')) {
     const channel = member.guild.channels.cache.find(ch => ch.id === db.get(member.guild.id + '.welcomeChannel'));

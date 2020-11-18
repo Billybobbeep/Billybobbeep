@@ -1,4 +1,4 @@
-const db = require('../../data/databaseManager/index.js');
+const db = require('quick.db');
 const fetch = require('node-fetch');
 const Discord = require('discord.js');
 

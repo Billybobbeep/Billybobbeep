@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const db = require('../../data/databaseManager/index.js');
+const db = require('quick.db');
 const logging = require('../../utils/functions.js').logging;
 
 module.exports = {

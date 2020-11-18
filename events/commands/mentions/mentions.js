@@ -1,7 +1,8 @@
-const Discord = require('discord.js');
-const db = require('../../../data/databaseManager/index.js');
-const embed = new Discord.MessageEmbed();
 module.exports = async (message, client) => {
+  const Discord = require('discord.js');
+  const db = require('quick.db');
+  const embed = new Discord.MessageEmbed();
+
   if (!message.guild) return;
   embed.setTitle('Billybobbeep | Mentioned');
   embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);

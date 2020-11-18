@@ -5,7 +5,7 @@ module.exports = {
     async execute(message, prefix, client) {
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();
-        const db = require('../../data/databaseManager/index.js');
+        const db = require('quick.db');
         embed.setDescription(`Welcome to the ${client.user.username} bug report service.\nHere I will be asking you a series of questions.\nYou can cancel this prompt anytime by entering \`cancel\`.\n\n**Please begin all messages with a** \`~\`**.**`);
         embed.setFooter(`To continue react to this message`);
         embed.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);

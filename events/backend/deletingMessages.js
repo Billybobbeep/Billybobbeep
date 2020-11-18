@@ -1,4 +1,4 @@
-const db = require('../../data/databaseManager/index.js');
+const db = require('quick.db');
 const Discord = require('discord.js');
 
 module.exports = async (message, client) => {

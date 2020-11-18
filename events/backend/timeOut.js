@@ -1,7 +1,7 @@
 const { table } = require('quick.db');
 
 module.exports = (client) => {
-    let db = require('../../data/databaseManager/index.js');
+    const db = require('quick.db');
     setInterval(() => {
         mute(db, client)
     }, 300000);

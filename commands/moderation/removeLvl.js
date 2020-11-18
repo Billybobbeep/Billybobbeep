@@ -6,7 +6,7 @@ module.exports = {
   usage: 'removelvl [user] [amount]',
   guildOnly: true,
   execute(message, prefix, client) {
-    const db = require('../../data/databaseManager/index.js');
+    const db = require('quick.db');
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     let user = message.guild.members.cache.get(args[1]) || message.mentions.users.first();
     if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send('You do not have premission to run this command.')

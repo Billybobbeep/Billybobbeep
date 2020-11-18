@@ -1,4 +1,4 @@
-const db = require('../../data/databaseManager/index.js');
+const db = require('quick.db');
 const Discord = require('discord.js');
 const embed = new Discord.MessageEmbed();
 const logging = require('../../utils/functions.js').logging;

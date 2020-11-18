@@ -1,4 +1,4 @@
-const db = require('../../../data/databaseManager/index.js');
+const db = require('quick.db');
 
 module.exports.add = async (reaction, user, client) => {
     if (reaction.partial) {

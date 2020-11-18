@@ -4,7 +4,7 @@ module.exports = {
   guildOnly: true,
   execute (message, prefix, client) {
     const Discord = require('discord.js');
-    const db = require('../../data/databaseManager/index.js');
+    const db = require('quick.db');
     const embed = new Discord.MessageEmbed();
     const logging = require('../../utils/functions.js').logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);

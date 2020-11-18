@@ -253,7 +253,7 @@ module.exports = {
 function application_process(message, job, client) {
     const Discord = require('discord.js');
     const embed = new Discord.MessageEmbed();
-    const db = require('../../data/databaseManager/index.js');
+    const db = require('quick.db');
 
     let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);
     let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);

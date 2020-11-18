@@ -1,7 +1,7 @@
 module.exports = {
     guildOnly: true,
     execute (message, client) {
-        const db = require('../../data/databaseManager/index.js');
+        const db = require('quick.db');
         var currentNo = new db.table('counting');
         let TE = client.emojis.cache.get('736952966447366154')
         let CE = client.emojis.cache.get('736952985330122772')

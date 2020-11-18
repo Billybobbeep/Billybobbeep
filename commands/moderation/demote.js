@@ -6,7 +6,7 @@ module.exports = {
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();
         const embed2 = new Discord.MessageEmbed();
-        const db = require('../../data/databaseManager/index.js');
+        const db = require('quick.db');
         const logging = require('../../utils/functions.js').logging;
         async function demoteCmd() {
             let args = message.content.slice(prefix.length).trim().split(/ +/g);

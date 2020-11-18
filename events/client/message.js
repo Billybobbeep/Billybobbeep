@@ -1,5 +1,5 @@
 const configFile = require('../../structure/config.json');
-const db = require('../../data/databaseManager/index.js');
+const db = require('quick.db');
 
 function redirect(message, client) {
     if (message.guild)

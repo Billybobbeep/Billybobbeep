@@ -7,7 +7,7 @@ module.exports = {
         */
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();
-        const db = require('../../data/databaseManager/index.js');
+        const db = require('quick.db');
 
 //        Settings
 //      ------------

@@ -3,7 +3,7 @@ module.exports = {
     description: 'Update the member stats.',
     execute (message, prefix, client) {
         const configFile = require('../../structure/config.json');
-        const db = require('../../data/databaseManager/index.js');        
+        const db = require('quick.db');        
         let countChannel = {
             total: db.get(message.guild.id + '.serverStats.totalNo'),
             member: db.get(message.guild.id + '.serverStats.memberNo'),
