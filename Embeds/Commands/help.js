@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const configFile = require('../../structure/config.json');
-const db = require('../../data/databaseManager/index.js');
+const db = require('quick.db');
 
 module.exports = async(msg, args, prefix, message) => {
         const commandEmbed = new Discord.MessageEmbed()

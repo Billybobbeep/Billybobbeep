@@ -7,7 +7,7 @@ module.exports = {
     const { utc } = require('moment');
     const os = require('os');
     const ms = require('ms');
-    const db = require('../data/databaseManager/index.js');
+    const db = require('quick.db');
 
     const core = os.cpus()[0];
     const embed = new MessageEmbed()

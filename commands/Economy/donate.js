@@ -6,7 +6,7 @@ module.exports = {
     catagory: 'economy',
     guildOnly: true,
     execute(message, prefix, client) {
-        const db = require('../../data/databaseManager/index.js');
+        const db = require('quick.db');
         const ms = require('ms');
 
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
