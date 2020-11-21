@@ -8,7 +8,7 @@ const getTrials = (searchTerms) => {
 
 	// With command-line arguments, the user can run specific groups of trials.
 	return require('./trials').searchable.filter(filterBySearchTerms(searchTerms));
-};
+}
 
 const filterBySearchTerms = (searchTerms) => (trial) => {
 	const terms = [
@@ -20,7 +20,7 @@ const filterBySearchTerms = (searchTerms) => (trial) => {
 		...trial.customPragma,
 	];
 	return searchTerms.every(arg => terms.includes(arg));
-};
+}
 
 const sortTrials = (a, b) => {
 	const aRo = require(`./types/${a.type}`).readonly;
@@ -28,23 +28,23 @@ const sortTrials = (a, b) => {
 	if (typeof aRo !== 'boolean') throw new TypeError(`Missing readonly export in benchmark type ${a.type}`);
 	if (typeof bRo !== 'boolean') throw new TypeError(`Missing readonly export in benchmark type ${b.type}`);
 	return bRo - aRo;
-};
+}
 
 const displayTrialName = (trial) => {
 	if (trial.description) return console.log(clc.magenta(`--- ${trial.description} ---`));
 	const name = `${trial.type} ${trial.table} (${trial.columns.join(', ')})`;
 	const pragma = trial.customPragma.length ? ` | ${trial.customPragma.join('; ')}` : '';
 	console.log(clc.magenta(name) + clc.yellow(pragma));
-};
+}
 
 const createContext = (trial, driver) => {
 	const tableInfo = Object.assign({}, tables.get(trial.table), { data: undefined });
 	return JSON.stringify(Object.assign({}, trial, tableInfo, { driver, tables: [...tables.keys()] }));
-};
+}
 
 const erase = () => {
 	return clc.move(0, -1) + clc.erase.line;
-};
+}
 
 // Determine which trials should be executed.
 process.chdir(__dirname);

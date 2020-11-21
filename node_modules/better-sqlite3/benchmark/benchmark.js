@@ -4,17 +4,17 @@ const benchmark = require('nodemark');
 
 const sync = (fn) => {
 	display(benchmark(fn));
-};
+}
 
 const async = (fn) => {
 	const wrapped = cb => fn().then(() => cb(), cb);
 	benchmark(wrapped).then(display);
-};
+}
 
 const display = (result) => {
 	process.stdout.write(String(result).replace(/ \(.*/, ''));
 	process.exit();
-};
+}
 
 (async () => {
 	process.on('unhandledRejection', (err) => { throw err; });

@@ -23,17 +23,17 @@ public:
 		bool operator() (Database const * const a, Database const * const b) const {
 			return a < b;
 		}
-	};
+	}
 	class CompareStatement { public:
 		bool operator() (Statement const * const a, Statement const * const b) const {
 			return Statement::Compare(a, b);
 		}
-	};
+	}
 	class CompareBackup { public:
 		bool operator() (Backup const * const a, Backup const * const b) const {
 			return Backup::Compare(a, b);
 		}
-	};
+	}
 
 	// Proper error handling logic for when an sqlite3 operation fails.
 	void ThrowDatabaseError() {
@@ -53,7 +53,7 @@ public:
 		v8::Local<v8::Value> args[2] = {
 			StringFromUtf8(isolate, message, -1),
 			addon->cs.Code(isolate, code)
-		};
+		}
 		isolate->ThrowException(v8::Local<v8::Function>::New(isolate, addon->SqliteError)
 			->NewInstance(OnlyContext, 2, args)
 			.ToLocalChecked());
@@ -91,7 +91,7 @@ public:
 		const bool has_logger;
 		unsigned short iterators;
 		Addon* const addon;
-	};
+	}
 	inline State* GetState() {
 		return reinterpret_cast<State*>(&open);
 	}
@@ -376,4 +376,4 @@ private:
 	const CopyablePersistent<v8::Value> logger;
 	std::set<Statement*, CompareStatement> stmts;
 	std::set<Backup*, CompareBackup> backups;
-};
+}

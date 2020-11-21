@@ -129,4 +129,4 @@ private:
 	const sqlite3_uint64 id;
 	bool alive;
 	bool unlink;
-};
+}

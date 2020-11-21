@@ -44,4 +44,4 @@ module.exports = () => {
 
 	db.close();
 	return tables;
-};
+}

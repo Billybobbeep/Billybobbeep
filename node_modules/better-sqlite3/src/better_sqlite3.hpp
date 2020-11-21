@@ -111,7 +111,7 @@ private:
   void SetCode (v8::Isolate * isolate, int code, char const * str);
 #line 149 "./src/util/constants.lzz"
   std::unordered_map <int, CopyablePersistent<v8::String> > codes;
-};
+}
 #line 1 "./src/util/bind-map.lzz"
 class BindMap
 {
@@ -138,7 +138,7 @@ public:
     CopyablePersistent <v8::String> const name;
 #line 26 "./src/util/bind-map.lzz"
     int const index;
-  };
+  }
 #line 29 "./src/util/bind-map.lzz"
   explicit BindMap (char _);
 #line 36 "./src/util/bind-map.lzz"
@@ -159,7 +159,7 @@ private:
   int capacity;
 #line 66 "./src/util/bind-map.lzz"
   int length;
-};
+}
 #line 19 "./src/better_sqlite3.lzz"
 struct Addon;
 #line 20 "./src/better_sqlite3.lzz"
@@ -180,7 +180,7 @@ public:
   public:
 #line 23 "./src/objects/database.lzz"
     bool operator () (Database const * const a, Database const * const b) const;
-  };
+  }
 #line 27 "./src/objects/database.lzz"
   class CompareStatement
   {
@@ -188,7 +188,7 @@ public:
   public:
 #line 28 "./src/objects/database.lzz"
     bool operator () (Statement const * const a, Statement const * const b) const;
-  };
+  }
 #line 32 "./src/objects/database.lzz"
   class CompareBackup
   {
@@ -196,7 +196,7 @@ public:
   public:
 #line 33 "./src/objects/database.lzz"
     bool operator () (Backup const * const a, Backup const * const b) const;
-  };
+  }
 #line 39 "./src/objects/database.lzz"
   void ThrowDatabaseError ();
 #line 43 "./src/objects/database.lzz"
@@ -232,7 +232,7 @@ public:
     unsigned short int iterators;
 #line 93 "./src/objects/database.lzz"
     Addon * const addon;
-  };
+  }
 #line 95 "./src/objects/database.lzz"
   State * GetState ();
 #line 98 "./src/objects/database.lzz"
@@ -301,7 +301,7 @@ private:
   std::set <Statement*, CompareStatement> stmts;
 #line 378 "./src/objects/database.lzz"
   std::set <Backup*, CompareBackup> backups;
-};
+}
 #line 1 "./src/objects/statement.lzz"
 class Statement : public node::ObjectWrap
 {
@@ -332,7 +332,7 @@ private:
     BindMap bind_map;
 #line 58 "./src/objects/statement.lzz"
     sqlite3_uint64 const id;
-  };
+  }
 #line 61 "./src/objects/statement.lzz"
   explicit Statement (Database * _db, sqlite3_stmt * _handle, sqlite3_uint64 _id, bool _returns_data);
 #line 79 "./src/objects/statement.lzz"
@@ -377,7 +377,7 @@ private:
   char mode;
 #line 313 "./src/objects/statement.lzz"
   bool const returns_data;
-};
+}
 #line 1 "./src/objects/statement-iterator.lzz"
 class StatementIterator : public node::ObjectWrap
 {
@@ -427,7 +427,7 @@ private:
   bool alive;
 #line 137 "./src/objects/statement-iterator.lzz"
   bool logged;
-};
+}
 #line 1 "./src/objects/backup.lzz"
 class Backup : public node::ObjectWrap
 {
@@ -463,7 +463,7 @@ private:
   bool alive;
 #line 131 "./src/objects/backup.lzz"
   bool unlink;
-};
+}
 #line 1 "./src/util/custom-function.lzz"
 class CustomFunction
 {
@@ -497,7 +497,7 @@ protected:
   CopyablePersistent <v8::Function> const fn;
 #line 51 "./src/util/custom-function.lzz"
   bool const safe_ints;
-};
+}
 #line 1 "./src/util/custom-aggregate.lzz"
 class CustomAggregate : public CustomFunction
 {
@@ -530,7 +530,7 @@ private:
     bool initialized;
 #line 70 "./src/util/custom-aggregate.lzz"
     bool is_window;
-  };
+  }
 #line 73 "./src/util/custom-aggregate.lzz"
   Accumulator * GetAccumulator (sqlite3_context * invocation);
 #line 90 "./src/util/custom-aggregate.lzz"
@@ -547,7 +547,7 @@ private:
   CopyablePersistent <v8::Function> const result;
 #line 105 "./src/util/custom-aggregate.lzz"
   CopyablePersistent <v8::Value> const start;
-};
+}
 #line 67 "./src/util/data.lzz"
 namespace Data
 {
@@ -620,7 +620,7 @@ private:
     int count;
 #line 31 "./src/util/binder.lzz"
     bool bound_object;
-  };
+  }
 #line 34 "./src/util/binder.lzz"
   static bool IsPlainObject (v8::Isolate * isolate, v8::Local <v8::Object> obj);
 #line 43 "./src/util/binder.lzz"
@@ -643,7 +643,7 @@ private:
   int anon_index;
 #line 188 "./src/util/binder.lzz"
   bool success;
-};
+}
 #line 31 "./src/better_sqlite3.lzz"
 struct Addon
 {
@@ -675,7 +675,7 @@ struct Addon
   bool PragmaMode ();
 #line 61 "./src/better_sqlite3.lzz"
   void SetPragmaMode (bool active);
-};
+}
 #line 16 "./src/util/macros.lzz"
 LZZ_INLINE v8::Local <v8::String> StringFromUtf8 (v8::Isolate * isolate, char const * data, int length)
 #line 16 "./src/util/macros.lzz"

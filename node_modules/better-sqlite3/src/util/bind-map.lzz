@@ -24,7 +24,7 @@ public:
 
 			const CopyablePersistent<v8::String> name;
 			const int index;
-	};
+	}
 
 	explicit BindMap(char _) {
 		assert(_ == 0);
@@ -64,4 +64,4 @@ private:
 	Pair* pairs;
 	int capacity;
 	int length;
-};
+}

@@ -8,7 +8,7 @@ exports['better-sqlite3'] = (db, { table, columns }) => {
 		for (let i = 0; i < 100; ++i) stmt.run(row);
 	});
 	return () => trx(row);
-};
+}
 
 exports['node-sqlite3'] = async (db, { table, columns, driver, pragma }) => {
 	const sql = `INSERT INTO ${table} (${columns.join(', ')}) VALUES (${columns.map(x => '@' + x).join(', ')})`;
@@ -37,4 +37,4 @@ exports['node-sqlite3'] = async (db, { table, columns, driver, pragma }) => {
 			await db.close();
 		}
 	});
-};
+}

@@ -3,8 +3,8 @@ const { getBooleanOption } = require('./util');
 
 module.exports = (createFunction) => {
 	return function defineFunction(name, options, fn) {
-		if (options == null) options = {};
-		if (typeof options === 'function') { fn = options; options = {}; }
+		if (options == null) options = {}
+		if (typeof options === 'function') { fn = options; options = {} }
 		if (typeof name !== 'string') throw new TypeError('Expected first argument to be a string');
 		if (typeof fn !== 'function') throw new TypeError('Expected last argument to be a function');
 		if (typeof options !== 'object') throw new TypeError('Expected second argument to be an options object');
@@ -22,5 +22,5 @@ module.exports = (createFunction) => {
 		}
 
 		return createFunction.call(this, fn, name, argCount, safeIntegers, deterministic);
-	};
-};
+	}
+}
