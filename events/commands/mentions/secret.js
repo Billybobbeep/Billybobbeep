@@ -3,7 +3,8 @@ module.exports = async (message, args) => {
     embed.setDescription('Please specify a message to send');
     message.channel.send(embed)
   } else {
-    await message.delete();
-    await message.channel.send('||' + args.slice(2).join(" ") + '||');
+    message.delete().then(() => {
+      message.channel.send(`||${args.slice(2).join(' ')}||`);
+    });
   }
 }
