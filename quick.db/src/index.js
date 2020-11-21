@@ -1,5 +1,5 @@
 // Require Database
-const Database = require('../../better-sqlite3/lib/index.js');
+const Database = require('better-sqlite3');
 const util = require('util');
 let db;
 
@@ -16,7 +16,7 @@ var methods = {
     delete: require('./methods/delete.js'),
     has: require('./methods/has.js'),
     all: require('./methods/all.js'),
-    type: require('./methods/type'),
+    type: require('./methods/type')
 }
 
 module.exports = {
