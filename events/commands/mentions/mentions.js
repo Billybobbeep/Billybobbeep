@@ -1,6 +1,6 @@
 module.exports = async (message, client) => {
   const Discord = require('discord.js');
-  const db = require('../../structure/global.js').db;;
+  const db = require('../../../structure/global.js').db;;
   const embed = new Discord.MessageEmbed();
 
   if (!message.guild) return;
@@ -79,12 +79,10 @@ module.exports = async (message, client) => {
       message.content.toLowerCase().startsWith('<@' + client.user.id + '> help') ||
       message.content.toLowerCase().startsWith('help <@' + client.user.id + '>') ||
       message.content.toLowerCase().startsWith('help <@!' + client.user.id + '>')) {
-      require('../../../Embeds/help')(message, client)
+      require('../../../Embeds/help')(message, client);
       return;
     }
   }
-
-
 
   //Answer when mentioned
   if (message.mentions.users.first()) {

@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const db = require('../../structure/global.js').db;;
+const db = require('../structure/global.js').db;;
 
 module.exports = {
   name: 'credit',
