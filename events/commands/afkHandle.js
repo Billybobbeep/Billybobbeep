@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const configFile = require('../../structure/config.json');
 var embed = new Discord.MessageEmbed();
-const db = require('quick.db');
+const db = require('../../structure/global.js').db;;
 
 module.exports = {
   commands: ['afk', 'back'],

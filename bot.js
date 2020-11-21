@@ -1,7 +1,7 @@
 module.exports = async (client) => {
   // [Varibles] //
   const Discord = require('discord.js');
-  const db = require('quick.db');
+  const db = require('./structure/global.js').db;
   const fs = require('fs');
 
   require('./utils/events.js')(client);

@@ -4,7 +4,7 @@ module.exports = {
   guildOnly: true,
   execute (message, prefix, client) {
     const configFile = require('../../structure/config.json');
-    const db = require('quick.db');
+    const db = require('../../structure/global.js').db;;
     const Discord = require('discord.js');
     var embed1 = new Discord.MessageEmbed();
     var embed2 = new Discord.MessageEmbed();

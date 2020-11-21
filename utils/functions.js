@@ -1,4 +1,4 @@
-const db = require('quick.db');
+const db = require('../../structure/global.js').db;;
 const guildID = require('../structure/config.json').ServerId;
 
 module.exports.logging = function(msg, message,client) {

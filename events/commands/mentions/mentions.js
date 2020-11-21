@@ -1,6 +1,6 @@
 module.exports = async (message, client) => {
   const Discord = require('discord.js');
-  const db = require('quick.db');
+  const db = require('../../structure/global.js').db;;
   const embed = new Discord.MessageEmbed();
 
   if (!message.guild) return;

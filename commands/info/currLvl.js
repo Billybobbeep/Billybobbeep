@@ -6,7 +6,7 @@ module.exports = {
   usage: 'currlvl [user]',
   guildOnly: true,
   execute(message, prefix, client) {
-    const db = require('quick.db');
+    const db = require('../../structure/global.js').db;;
     const Discord = require('discord.js');
 
     var prefix = db.get(message.guild.id + '.prefix') || '~'

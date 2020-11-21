@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const ms = require('ms');
-const db = require('quick.db');
+const db = require('../../structure/global.js').db;;
 
 module.exports = {
   name: 'giveaway',

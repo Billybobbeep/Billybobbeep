@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const configFile = require('../../structure/config.json');
-const db = require('quick.db');
+const db = require('../../structure/global.js').db;;
 
 module.exports = {
   name: 'nickname',

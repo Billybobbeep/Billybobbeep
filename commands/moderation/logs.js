@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const embed = new MessageEmbed();
-const db = require('quick.db');
+const db = require('../../structure/global.js').db;;
 
 function handling(client, message) {
     let prefix = db.get(message.guild.id + '.prefix') || '~';

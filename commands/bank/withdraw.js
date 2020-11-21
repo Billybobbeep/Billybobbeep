@@ -6,7 +6,7 @@ module.exports = {
     usage: 'withdraw [amount]',
     guildOnly: true,
     execute(message, prefix, client) {
-        const db = require('quick.db');
+        const db = require('../../structure/global.js').db;
 
         if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server.');
         

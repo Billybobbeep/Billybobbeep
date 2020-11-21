@@ -4,7 +4,7 @@ module.exports = {
   catagory: 'economy',
   guildOnly: true,
   execute(message, prefix, client) {
-    const db = require('quick.db');
+    const db = require('../../structure/global.js').db;;
 
     let cashier = db.get(message.author.id + '.jobs.cashier') || undefined;
     let teacher = db.get(message.author.id + '.jobs.teacher') || undefined;

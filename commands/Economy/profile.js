@@ -5,7 +5,7 @@ module.exports = {
     catagory: 'economy',
     guildOnly: true,
     execute(message, prefix, client) {
-        const db = require('quick.db');
+        const db = require('../../structure/global.js').db;;
         const moment = require('moment');
         const { MessageEmbed } = require('discord.js');
         const embed = new MessageEmbed();

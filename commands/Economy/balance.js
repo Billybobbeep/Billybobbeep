@@ -7,7 +7,7 @@ module.exports = {
     guildOnly: true,
     execute (message, prefix, client) {
         const Discord = require('discord.js');
-        const db = require('quick.db');
+        const db = require('../../structure/global.js').db;;
         const embed = new Discord.MessageEmbed();
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]) || message.author;

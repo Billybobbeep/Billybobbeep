@@ -5,7 +5,7 @@ module.exports = {
     catagory: 'economy',
     guildOnly: true,
     async execute (message, prefix, client) {
-        const db = require('quick.db');
+        const db = require('../../structure/global.js').db;;
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();
         const info = require('./jobRequirements.js');

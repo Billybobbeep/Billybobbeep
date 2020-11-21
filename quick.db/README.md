@@ -17,7 +17,7 @@ Quick.db is an open-source package meant to provide an easy way for beginners an
 
 [**Code Sandbox Demo**](https://codesandbox.io/s/quickdb-demo-7ti8z?file=/src/index.js)
 ```js
-const db = require('quick.db');
+const db = require('../../structure/global.js').db;;
 
 // Setting an object in the database:
 db.set('userInfo', { difficulty: 'Easy' })

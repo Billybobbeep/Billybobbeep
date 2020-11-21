@@ -22,7 +22,7 @@ var methods = {
 module.exports = {
     /**
      * Package version. Community requested feature.
-     * console.log(require('quick.db').version);
+     * console.log(require('../../structure/global.js').db;.version);
      */
     version: require('../package.json').version,
 

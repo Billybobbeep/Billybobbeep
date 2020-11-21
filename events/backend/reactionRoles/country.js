@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const db = require('quick.db');
+const db = require('../../structure/global.js').db;;
 
 module.exports = async (message) => {
     const commandEmbed = new Discord.MessageEmbed()

@@ -5,7 +5,7 @@ module.exports = {
   bannedUsers: ['441613173003649028', '750046512909647942'],
   execute (message, prefix, client) {
     const Discord = require('discord.js');
-    const db = require('quick.db');
+    const db = require('../../structure/global.js').db;;
     var reasons = [];
     const logging = require('../../utils/functions.js').logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);

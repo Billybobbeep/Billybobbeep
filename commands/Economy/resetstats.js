@@ -17,7 +17,7 @@ module.exports = {
 }
 
 async function reactions(message, msg, user, client) {
-    const db = require('quick.db');
+    const db = require('../../structure/global.js').db;;
 
     let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);
     let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);

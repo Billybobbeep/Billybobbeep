@@ -1,5 +1,5 @@
 module.exports = (client) => {
-    const db = require('quick.db');
+    const db = require('../../structure/global.js').db;;
     setInterval(() => {
         mute(db, client)
     }, 300000);

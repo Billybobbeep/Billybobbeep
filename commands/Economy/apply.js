@@ -7,7 +7,7 @@ module.exports = {
     async execute (message, prefix, client) {
         //application_process(message, 'cashier', client);
         const Discord = require('discord.js');
-        const db = require('quick.db');
+        const db = require('../../structure/global.js').db;
         const ms = require('ms');
         const embed = new Discord.MessageEmbed();
         const info = require('./jobRequirements.js');
@@ -253,7 +253,7 @@ module.exports = {
 function application_process(message, job, client) {
     const Discord = require('discord.js');
     const embed = new Discord.MessageEmbed();
-    const db = require('quick.db');
+    const db = require('../../structure/global.js').db;;
 
     let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);
     let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);
