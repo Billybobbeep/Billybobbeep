@@ -9,7 +9,7 @@ module.exports = {
     guildOnly: true,
     execute (message, prefix, client) {
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
-        let user = message.mentions.users.first() || message.guild.members.get(args[1]) || message.author;
+        let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]) || message.author;
         message.reply(user.displayAvatarURL());
     }
 }
