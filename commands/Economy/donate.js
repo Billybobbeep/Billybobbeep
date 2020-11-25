@@ -21,7 +21,7 @@ module.exports = {
         if (user.id === message.author.id) return message.channel.send(`You cannot donate to yourself.`);
 
         if (!args[2]) return message.channel.send(`Please specify an amount.`);
-        let amt = args[2];
+        let amt = Number(args[2]);
         if (isNaN(amt)) return message.channel.send(`Please enter a valid number to donate.`);
         if (amt > db.get(message.author.id + '.economy.balance')) return message.channel.send(`You do not have **${amt}** in your wallet.`);
 

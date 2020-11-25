@@ -38,11 +38,11 @@ module.exports = {
       socialWorker === undefined &&
       doctor === undefined) return message.channel.send(`You do not have a job.`);
 
-    message.channel.send(`Are you sure you want to quit your job?\n\nYou will have to reapply for another job before you can start working again.`).then(msg => reactions(message, msg, client));
+    message.channel.send(`Are you sure you want to quit your job?\n\nYou will have to reapply for another job before you can start working again.`).then(msg => reactions(message, msg, db, client));
   }
 }
 
-async function reactions(message, msg, client) {
+async function reactions(message, msg, db, client) {
   var job = 'none';
 
   let cashier = db.get(message.author.id + '.jobs.cashier') || undefined;
