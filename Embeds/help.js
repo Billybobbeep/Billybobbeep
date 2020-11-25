@@ -5,7 +5,7 @@ module.exports = {
     const Discord = require('discord.js');
     const db = require('../structure/global.js').db;;
 
-    const helpEmbed = new Discord.MessageEmbed()
+    const embed = new Discord.MessageEmbed()
       .setTitle('Billybobbeep | Help')
       .setDescription(`Thank you for using ${client.user.username}!\n` +
         '\n' +
@@ -20,9 +20,9 @@ module.exports = {
         '*Shows a quick briefing.*\n' +
         `${prefix}setup\n` +
         '*To set up billybobbeep in your own server.*')
-      .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
       .setFooter(`Requested by: ${message.author.tag}`)
       .setTimestamp()
-    message.channel.send(helpEmbed);
+      message.guild ? embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : embed.setColor('#447ba1');
+    message.channel.send(embed);
   }
 }

@@ -40,8 +40,8 @@ module.exports = async(msg, args, prefix, message) => {
         `${prefix}logs help\n` +
         '*Help embed for the mod logs.*\n' +
         '*Requires:* View audit log premissions.')
-        .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
         .setFooter(`Requested by: ${message.author.tag}`)
         .setTimestamp()
+        message.guild ? commandEmbed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : commandEmbed.setColor('#447ba1');
         message.channel.send(commandEmbed)
 }

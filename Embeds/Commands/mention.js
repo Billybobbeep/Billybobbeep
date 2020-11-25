@@ -5,7 +5,6 @@ const db = require('../../structure/global.js').db;;
 module.exports = async(msg, args, prefix, message, client) => {
     const commandEmbed = new Discord.MessageEmbed()
     .setTitle('Billybobbeep | Mention Commands')
-    .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
     .setTimestamp()
     .setFooter('Requested by: ' + message.author.tag)
     .setDescription(
@@ -21,5 +20,6 @@ module.exports = async(msg, args, prefix, message, client) => {
       `welcome <@${client.user.id}>\n` +
       `greetings <@${client.user.id}>\n\n`
     )
-    message.channel.send(commandEmbed)
+    message.guild ? commandEmbed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : commandEmbed.setColor('#447ba1');
+    message.channel.send(commandEmbed);
 }

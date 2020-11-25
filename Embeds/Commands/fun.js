@@ -17,8 +17,8 @@ module.exports = async(message, prefix) => {
       '*Provides info about a user in the server.*\n\n' +
       `${prefix}rolldice\n` +
       '*Rolls a dice and gives you the number.*')
-  .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
   .setFooter('TIP: Press the arrows to switch pages')
+  message.guild ? PageOne.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : PageOne.setColor('#447ba1');
 
   const PageTwo = new Discord.MessageEmbed()
   .setTitle('Billybobbeep | Economy Commands')
@@ -39,8 +39,8 @@ module.exports = async(message, prefix) => {
     'Reset a users stats.\n' +
     `${prefix}quit\n` +
     'Quit your current job.\n')
-  .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
   .setFooter('TIP: Press the arrows to switch pages')
+  message.guild ? PageTwo.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : PageTwo.setColor('#447ba1');
 
   const PageThree = new Discord.MessageEmbed()
   .setTitle('Billybobbeep | Message Commands')
@@ -51,8 +51,8 @@ module.exports = async(message, prefix) => {
     '*Provides you with options to announce a message in another channel.*\n\n' +
     `${prefix}secret\n` +
     '*Repeats what you say in a secret message format.*')
-  .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
   .setFooter('TIP: Press the arrows to switch pages')
+  message.guild ? PageThree.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : PageThree.setColor('#447ba1');
 
   const PageFour = new Discord.MessageEmbed()
   .setTitle('Billybobbeep | Generator Commands')
@@ -65,8 +65,8 @@ module.exports = async(message, prefix) => {
     '*Request a key for the billybobbeep API services.*\n\n' +
     `${prefix}regenerate key\n` +
     '*Request a new API key.*')
-  .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
   .setFooter('TIP: Press the arrows to switch pages')
+  message.guild ? PageFour.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : PageFour.setColor('#447ba1');
 
   let msg = await message.channel.send(PageOne)
   

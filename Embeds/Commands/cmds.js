@@ -10,8 +10,8 @@ module.exports = async(msg, args, prefix, message) => {
         `${prefix}cmds help\n` +
         `${prefix}cmds fun\n` +
         `${prefix}cmds moderation`)
-        .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
         .setFooter(`Requested by: ${message.author.tag}`)
         .setTimestamp()
-        message.channel.send(commandEmbed)
+        message.guild ? commandEmbed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : commandEmbed.setColor('#447ba1');
+        message.channel.send(commandEmbed);
 }

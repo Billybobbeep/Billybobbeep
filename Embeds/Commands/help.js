@@ -18,8 +18,8 @@ module.exports = async(msg, args, prefix, message) => {
         '*Provides you with Billybobbeep\'s development credits*\n' +
         `${prefix}setup\n` +
         '*Helps you customise billy for your server.*')
-        .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
         .setFooter(`Requested by: ${message.author.tag}`)
         .setTimestamp()
-        message.channel.send(commandEmbed)
+        message.guild ? commandEmbed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : commandEmbed.setColor('#447ba1');
+        message.channel.send(commandEmbed);
 }

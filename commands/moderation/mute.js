@@ -14,6 +14,7 @@ module.exports = {
       let user = message.mentions.users.first() || message.guild.members.cache.get(args[1])
       let reason = args.slice(3).join(" ");
       let time = args[2] || undefined;
+      let member = message.guild.members.cache.get(user.id);
       if (member.roles.cache.find(r => r.id === db.get(message.guild.id + '.mutedRole'))) return message.channel.send(`<@!${user.id}> is already muted.`);
       if (user.bot) return message.channel.send(`You cannot mute bots.`);
       if (!db.get(message.guild.id + '.mutedRole')) return message.channel.send('Please setup a muted role in your server to use this command.')
@@ -21,7 +22,6 @@ module.exports = {
       if (!user.tag) user = user.user;
       if (user.id === message.author.id)return message.channel.send('You cannot mute yourself.');
       if (!reason) return message.channel.send('Please specify a reason.');
-      let member = message.guild.members.cache.get(user.id);
       if (!member) return message.channel.send(`I could not find the member you provided.`);
       if (time === undefined) return message.channel.send('Please specify a time.');
       if (time.endsWith('h') || time.endsWith('m')) time = ms(time); else return message.channel.send('The time can only be in hours or minutes.');
