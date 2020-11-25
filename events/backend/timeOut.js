@@ -1,11 +1,40 @@
 module.exports = (client) => {
-    const db = require('../../structure/global.js').db;;
+    const db = require('../../structure/global.js').db;
     setInterval(() => {
         mute(db, client)
     }, 300000);
     setInterval(() => {
         application(db, client)
     }, 180000);
+    //setInterval(() => {
+        database(db, client)
+    //}, 300000);
+}
+
+function database(db, client) {
+    db.fetchAll().forEach(data => {
+        if (data.ID.includes('_')) return;
+        if (isNaN(data.ID)) return;
+        let amt = db.get(data.ID + '.economy.balance');
+        let newAmt;
+        if (amt && amt.toString().includes('.')) {
+            amt = amt.toString().split('.');
+            if (amt[1].length > 2) newAmt = [amt[0]];
+            else return;
+            newAmt.push(amt[1][0] + amt[1][1]);
+            db.set(data.ID + '.economy.balance', Number(newAmt[0]));
+        }
+
+        amt = db.get(data.ID + '.bank.balance');
+        newAmt = [];
+        if (amt && amt.toString().includes('.')) {
+            amt = amt.toString().split('.');
+            if (amt[1].length > 2) newAmt = [amt[0]];
+            else return;
+            newAmt.push(amt[1][0] + amt[1][1]);
+            db.set(data.ID + '.bank.balance', Number(newAmt[0]));
+        }
+    });
 }
 
 function application(db, client) {
