@@ -1,7 +1,7 @@
 module.exports = {
     guildOnly: true,
     execute (message, client) {
-        const db = require('../../structure/global.js').db;;
+        const db = require('../../structure/global.js').db;
         var currentNo = new db.table('counting');
         let TE = client.emojis.cache.get('736952966447366154')
         let CE = client.emojis.cache.get('736952985330122772')

@@ -1,4 +1,4 @@
-const db = require('../../structure/global.js').db;;
+const db = require('../../structure/global.js').db;
 
 module.exports = {
   name: 'prefix',

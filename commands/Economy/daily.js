@@ -5,7 +5,7 @@ module.exports = {
   guildOnly: true,
   execute (message, prefix, client) {
     const Discord = require('discord.js');
-    const db = require('../../structure/global.js').db;;
+    const db = require('../../structure/global.js').db;
     const ms = require('ms');
     const embed = new Discord.MessageEmbed();
     embed.setFooter(`${message.author.username}`);

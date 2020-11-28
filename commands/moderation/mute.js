@@ -3,7 +3,7 @@ module.exports = {
   description: 'Mute a member.',
   guildOnly: true,
   execute (message, prefix, client) {
-    const db = require('../../structure/global.js').db;;
+    const db = require('../../structure/global.js').db;
     const Discord = require('discord.js');
     var embed1 = new Discord.MessageEmbed();
     var embed2 = new Discord.MessageEmbed();

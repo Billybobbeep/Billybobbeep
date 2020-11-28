@@ -71,7 +71,7 @@
 */
 const { MessageEmbed } = require('discord.js');
 const embed = new MessageEmbed()
-const db = require('../../structure/global.js').db;;
+const db = require('../../structure/global.js').db;
 
 module.exports = {
     name: 'font',

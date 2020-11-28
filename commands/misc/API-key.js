@@ -7,7 +7,7 @@ module.exports = {
         const Discord = require('discord.js');
         var embed = new Discord.MessageEmbed();
         var currKey = db.get('apiKey');
-        const db = require('../../structure/global.js').db;;
+        const db = require('../../structure/global.js').db;
 
         function makeid(length) {
             var result = '';

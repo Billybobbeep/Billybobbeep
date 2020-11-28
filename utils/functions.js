@@ -1,4 +1,4 @@
-const db = require('../structure/global.js').db;;
+const db = require('../structure/global.js').db;
 const guildID = require('../structure/config.json').ServerId;
 
 module.exports.logging = function(msg, message,client) {
@@ -7,8 +7,7 @@ module.exports.logging = function(msg, message,client) {
         if (loggingChannel) {
             loggingChannel.send(msg).catch(() => {return});
         }
-    }
-    if (message !== undefined) {
+    } else if (message !== undefined) {
         if (message.guild)
             var loggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
         else

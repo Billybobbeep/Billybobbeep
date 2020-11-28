@@ -3,7 +3,7 @@ module.exports = {
   description: 'Get help whilst using billybobbeep.',
   execute(message, prefix, client) {
     const Discord = require('discord.js');
-    const db = require('../structure/global.js').db;;
+    const db = require('../structure/global.js').db;
 
     const embed = new Discord.MessageEmbed()
       .setTitle('Billybobbeep | Help')

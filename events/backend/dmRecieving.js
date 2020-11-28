@@ -4,7 +4,7 @@ module.exports = async (message, client) => {
   if (message.channel.type !== 'dm') return;
   if (message.author.bot) return;
   if (message.author.id === client.user.id) return;
-  const db = require('../../structure/global.js').db;;
+  const db = require('../../structure/global.js').db;
   const logging = require('../../utils/functions.js').logging;
 
   var embed = new Discord.MessageEmbed();

@@ -7,7 +7,7 @@ module.exports = {
   spoinkOnly: true,
   async execute (message, prefix, client) {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
-    const db = require('../../structure/global.js').db;;
+    const db = require('../../structure/global.js').db;
 
     if (args[1] && args[1] === 'guild') {
       embed.setTitle('Total Guild List:')

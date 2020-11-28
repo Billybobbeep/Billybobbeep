@@ -4,7 +4,7 @@ module.exports = {
     alias: ['stats'],
     catagory: 'economy',
     execute(message, prefix, client) {
-        const db = require('../../structure/global.js').db;;
+        const db = require('../../structure/global.js').db;
         const moment = require('moment');
         const { MessageEmbed } = require('discord.js');
         const embed = new MessageEmbed();

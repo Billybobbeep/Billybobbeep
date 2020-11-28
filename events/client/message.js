@@ -1,5 +1,5 @@
 const configFile = require('../../structure/config.json');
-const db = require('../../structure/global.js').db;;
+const db = require('../../structure/global.js').db;
 
 function redirect(message, client) {
     if (message.guild)

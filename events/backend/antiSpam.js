@@ -7,7 +7,7 @@ module.exports = {
         */
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();
-        const db = require('../../structure/global.js').db;;
+        const db = require('../../structure/global.js').db;
 
 //        Settings
 //      ------------

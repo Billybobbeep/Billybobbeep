@@ -4,7 +4,7 @@ module.exports = {
   guildOnly: true,
   execute (message, prefix, client) {
     const { MessageEmbed } = require('discord.js');
-    const db = require('../../structure/global.js').db;;
+    const db = require('../../structure/global.js').db;
     const embed = new MessageEmbed();
     var msg;
 
