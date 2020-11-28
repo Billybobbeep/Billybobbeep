@@ -10,7 +10,7 @@ module.exports = {
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         const { MessageEmbed } = require('discord.js');
         const embed = new MessageEmbed();
-        embed.setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
+        embed.setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
         embed.setTitle('Levels | Leaderboard');
 
         if (args[1] && args[1] === 'global') {

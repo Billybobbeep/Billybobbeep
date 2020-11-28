@@ -24,21 +24,21 @@ module.exports = {
     let timeObj = ms(cooldown - (Date.now() - lastRun));
     timeObj = timeObj.replace('s', ' seconds').replace('m', ' minutes').replace('h', ' hours');
 
-    let cashier = db.get(message.author.id + '.jobs.cashier') || undefined;
-    let teacher = db.get(message.author.id + '.jobs.teacher') || undefined;
-    let waiter = db.get(message.author.id + '.jobs.waiter') || undefined;
-    let receptionist = db.get(message.author.id + '.jobs.receptionist') || undefined;
-    let architect = db.get(message.author.id + '.jobs.architect') || undefined;
-    let lifeGuard = db.get(message.author.id + '.jobs.lifeGuard') || undefined;
-    let nurse = db.get(message.author.id + '.jobs.nurse') || undefined;
-    let police = db.get(message.author.id + '.jobs.police') || undefined;
-    let engineer = db.get(message.author.id + '.jobs.engineer') || undefined;
-    let chief = db.get(message.author.id + '.jobs.chief') || undefined;
-    let clinicalScientist = db.get(message.author.id + '.jobs.clinicalScientist') || undefined;
-    let headScientist = db.get(message.author.id + '.jobs.headScientist') || undefined;
-    let lawyer = db.get(message.author.id + '.jobs.lawyer') || undefined;
-    let socialWorker = db.get(message.author.id + '.jobs.socialWorker') || undefined;
-    let doctor = db.get(message.author.id + '.jobs.doctor') || undefined;
+    let cashier = db.get(message.author.id + '.jobs.job') === 'cashier' ? true : undefined;
+    let teacher = db.get(message.author.id + '.jobs.job') === 'teacher' ? true : undefined;
+    let waiter = db.get(message.author.id + '.jobs.job') === 'waiter' ? true : undefined;
+    let receptionist = db.get(message.author.id + '.jobs.job') === 'receptionist' ? true : undefined;
+    let architect = db.get(message.author.id + '.jobs.job') === 'architect' ? true : undefined;
+    let lifeGuard = db.get(message.author.id + '.jobs.job') === 'life guard' ? true : undefined;
+    let nurse = db.get(message.author.id + '.jobs.job') === 'nurse' ? true : undefined;
+    let police = db.get(message.author.id + '.jobs.job') === 'police' ? true : undefined;
+    let engineer = db.get(message.author.id + '.jobs.job') === 'engineer' ? true : undefined;
+    let chef = db.get(message.author.id + '.jobs.job') === 'chef' ? true : undefined;
+    let clinicalScientist = db.get(message.author.id + '.jobs.job') === 'clinical scientist' ? true : undefined;
+    let headScientist = db.get(message.author.id + '.jobs.job') === 'head scientist' ? true : undefined;
+    let lawyer = db.get(message.author.id + '.jobs.job') === 'lawyer' ? true : undefined;
+    let socialWorker = db.get(message.author.id + '.jobs.job') === 'social worker' ? true : undefined;
+    let doctor = db.get(message.author.id + '.jobs.job') === 'doctor' ? true : undefined;
     
     if (jobs !== undefined) {
       if (cashier !== undefined) dailyAmt = 7.25
@@ -50,7 +50,7 @@ module.exports = {
       if (nurse !== undefined) dailyAmt = 17.52
       if (police !== undefined) dailyAmt = 17.61
       if (engineer !== undefined) dailyAmt = 20.55
-      if (chief !== undefined) dailyAmt = 20.76
+      if (chef !== undefined) dailyAmt = 20.76
       if (clinicalScientist !== undefined) dailyAmt = 22.45
       if (headScientist !== undefined) dailyAmt = 22.70
       if (lawyer !== undefined) dailyAmt = 25.61

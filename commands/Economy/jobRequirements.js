@@ -75,7 +75,7 @@ module.exports = {
         description:'Fix any vehicle that comes in for a repair.',
         xp : 2
     },
-    chief: {
+    chef: {
         level: 90,
         promotions: 15,
         pay: 25,

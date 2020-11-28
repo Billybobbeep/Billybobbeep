@@ -39,9 +39,7 @@ module.exports = {
       message.channel.send(`Removed \`1\` warnings from ${user}`);
 
       reasons = db.get(message.guild.id + '_' + user.id + '.warnReasons');
-      console.log(reasons)
       reasons.splice((reasons.length - 1).toString(), 1);
-      console.log(reasons)
       if (tw < 2) {
         db.delete(message.guild.id + '_' + user.id + '.warnReasons');
       } else {

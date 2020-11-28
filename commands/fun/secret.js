@@ -112,7 +112,6 @@ module.exports = {
           lines[j] += letters[letter] + '';
       }
   }
-    console.log(lines)
     
     //if (message.content.includes('||')) return message.channel.send('You cannot include `||` in your message.');
     //if (message.content.toLowerCase().includes('/spoiler')) return message.chanel.send('You cannot include `/spoiler` in your message.');

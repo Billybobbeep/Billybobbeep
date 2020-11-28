@@ -6,21 +6,21 @@ module.exports = {
   execute(message, prefix, client) {
     const db = require('../../structure/global.js').db;;
 
-    let cashier = db.get(message.author.id + '.jobs.cashier') || undefined;
-    let teacher = db.get(message.author.id + '.jobs.teacher') || undefined;
-    let waiter = db.get(message.author.id + '.jobs.waiter') || undefined;
-    let receptionist = db.get(message.author.id + '.jobs.receptionist') || undefined;
-    let architect = db.get(message.author.id + '.jobs.architect') || undefined;
-    let lifeGuard = db.get(message.author.id + '.jobs.lifeGuard') || undefined;
-    let nurse = db.get(message.author.id + '.jobs.nurse') || undefined;
-    let police = db.get(message.author.id + '.jobs.police') || undefined;
-    let engineer = db.get(message.author.id + '.jobs.engineer') || undefined;
-    let chief = db.get(message.author.id + '.jobs.chief') || undefined;
-    let clinicalScientist = db.get(message.author.id + '.jobs.clinicalScientist') || undefined;
-    let headScientist = db.get(message.author.id + '.jobs.headScientist') || undefined;
-    let lawyer = db.get(message.author.id + '.jobs.lawyer') || undefined;
-    let socialWorker = db.get(message.author.id + '.jobs.socialWorker') || undefined;
-    let doctor = db.get(message.author.id + '.jobs.doctor') || undefined;
+    let cashier = db.get(message.author.id + '.jobs.job') === 'cashier' ? true : undefined;
+    let teacher = db.get(message.author.id + '.jobs.job') === 'teacher' ? true : undefined;
+    let waiter = db.get(message.author.id + '.jobs.job') === 'waiter' ? true : undefined;
+    let receptionist = db.get(message.author.id + '.jobs.job') === 'receptionist' ? true : undefined;
+    let architect = db.get(message.author.id + '.jobs.job') === 'architect' ? true : undefined;
+    let lifeGuard = db.get(message.author.id + '.jobs.job') === 'life guard' ? true : undefined;
+    let nurse = db.get(message.author.id + '.jobs.job') === 'nurse' ? true : undefined;
+    let police = db.get(message.author.id + '.jobs.job') === 'police' ? true : undefined;
+    let engineer = db.get(message.author.id + '.jobs.job') === 'engineer' ? true : undefined;
+    let chef = db.get(message.author.id + '.jobs.job') === 'chef' ? true : undefined;
+    let clinicalScientist = db.get(message.author.id + '.jobs.job') === 'clinical scientist' ? true : undefined;
+    let headScientist = db.get(message.author.id + '.jobs.job') === 'head scientist' ? true : undefined;
+    let lawyer = db.get(message.author.id + '.jobs.job') === 'lawyer' ? true : undefined;
+    let socialWorker = db.get(message.author.id + '.jobs.job') === 'social worker' ? true : undefined;
+    let doctor = db.get(message.author.id + '.jobs.job') === 'doctor' ? true : undefined;
 
     if (cashier === undefined &&
       teacher === undefined &&
@@ -31,7 +31,7 @@ module.exports = {
       nurse === undefined &&
       police === undefined &&
       engineer === undefined &&
-      chief === undefined &&
+      chef === undefined &&
       clinicalScientist === undefined &&
       headScientist === undefined &&
       lawyer === undefined &&
@@ -45,21 +45,21 @@ module.exports = {
 async function reactions(message, msg, db, client) {
   var job = 'none';
 
-  let cashier = db.get(message.author.id + '.jobs.cashier') || undefined;
-  let teacher = db.get(message.author.id + '.jobs.teacher') || undefined;
-  let waiter = db.get(message.author.id + '.jobs.waiter') || undefined;
-  let receptionist = db.get(message.author.id + '.jobs.receptionist') || undefined;
-  let architect = db.get(message.author.id + '.jobs.architect') || undefined;
-  let lifeGuard = db.get(message.author.id + '.jobs.lifeGuard') || undefined;
-  let nurse = db.get(message.author.id + '.jobs.nurse') || undefined;
-  let police = db.get(message.author.id + '.jobs.police') || undefined;
-  let engineer = db.get(message.author.id + '.jobs.engineer') || undefined;
-  let chief = db.get(message.author.id + '.jobs.chief') || undefined;
-  let clinicalScientist = db.get(message.author.id + '.jobs.clinicalScientist') || undefined;
-  let headScientist = db.get(message.author.id + '.jobs.headScientist') || undefined;
-  let lawyer = db.get(message.author.id + '.jobs.lawyer') || undefined;
-  let socialWorker = db.get(message.author.id + '.jobs.socialWorker') || undefined;
-  let doctor = db.get(message.author.id + '.jobs.doctor') || undefined;
+  let cashier = db.get(message.author.id + '.jobs.job') === 'cashier' ? true : undefined;
+  let teacher = db.get(message.author.id + '.jobs.job') === 'teacher' ? true : undefined;
+  let waiter = db.get(message.author.id + '.jobs.job') === 'waiter' ? true : undefined;
+  let receptionist = db.get(message.author.id + '.jobs.job') === 'receptionist' ? true : undefined;
+  let architect = db.get(message.author.id + '.jobs.job') === 'architect' ? true : undefined;
+  let lifeGuard = db.get(message.author.id + '.jobs.job') === 'life guard' ? true : undefined;
+  let nurse = db.get(message.author.id + '.jobs.job') === 'nurse' ? true : undefined;
+  let police = db.get(message.author.id + '.jobs.job') === 'police' ? true : undefined;
+  let engineer = db.get(message.author.id + '.jobs.job') === 'engineer' ? true : undefined;
+  let chef = db.get(message.author.id + '.jobs.job') === 'chef' ? true : undefined;
+  let clinicalScientist = db.get(message.author.id + '.jobs.job') === 'clinical scientist' ? true : undefined;
+  let headScientist = db.get(message.author.id + '.jobs.job') === 'head scientist' ? true : undefined;
+  let lawyer = db.get(message.author.id + '.jobs.job') === 'lawyer' ? true : undefined;
+  let socialWorker = db.get(message.author.id + '.jobs.job') === 'social worker' ? true : undefined;
+  let doctor = db.get(message.author.id + '.jobs.job') === 'doctor' ? true : undefined;
 
   if (cashier !== undefined) job = 'cashier';
   if (teacher !== undefined) job = 'teacher';
@@ -70,7 +70,7 @@ async function reactions(message, msg, db, client) {
   if (nurse !== undefined) job = 'nurse';
   if (police !== undefined) job = 'police';
   if (engineer !== undefined) job = 'engineer';
-  if (chief !== undefined) job = 'chief';
+  if (chef !== undefined) job = 'chef';
   if (clinicalScientist !== undefined) job = 'clinicalScientist';
   if (headScientist !== undefined) job = 'headScientist';
   if (lawyer !== undefined) job = 'lawyer';

@@ -62,7 +62,6 @@ function application(db, client) {
         var result2 = Math.floor(Math.random() * result.length);
         var result3 = Math.floor(Math.random() * result.length);
         embed.setDescription(`Your application results are the following:\n\n**Qualifications:**\n${results[result1]} Grammar\n${results[result2]} Communications\n${results[result3]} Loyalty\n${results[result2]} Trustworthiness\n\n`);
-        console.log(result2.toString())
         if (result1 === 1 && result2 === 1) failed = true;
         if (result2 === 1 && result3 === 1) failed = true;
         if (result1 === 1 && result3 === 1) failed = true;

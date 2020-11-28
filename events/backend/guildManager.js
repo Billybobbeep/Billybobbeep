@@ -18,13 +18,13 @@ module.exports.add = async (guild, client) => {
             }
         }
 
-        let channel = guild.channels.cache.get(guild.systemChannelID || channelID);
+        let channel = await guild.channels.cache.get(guild.systemChannelID || channelID);
         embed.setTitle('Billybobbeep | Welcome')
         embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`)
         embed.setTimestamp()
         embed.setDescription(`Thank you for adding me to your server.\n\nThe default prefix is \`~\`, You can change the prefix with the command \`~prefix\`\n\nTo view the commands view \`~cmds\` and to customise the bot for your server feel free to check out \`~setup\``)
         await channel.send(embed);
-      }, 5000);
+      }, 10000);
 
       var role;
         guild.roles.create({
@@ -48,7 +48,7 @@ module.exports.add = async (guild, client) => {
     embed.setColor('#447ba1')
     embed.setTimestamp()
     embed.setThumbnail(guild.iconURL({ dynamic: true }))
-    logging(embed, message, client);
+    logging(embed, '733442092667502613', client);
   }
 
 module.exports.remove = (guild, client) => {
@@ -62,5 +62,5 @@ module.exports.remove = (guild, client) => {
     .setColor('#447ba1')
     .setTimestamp()
     .setThumbnail(guild.iconURL({ dynamic: true }))
-  logging(embed, message, client);
+  logging(embed, '733442092667502613', client);
 }

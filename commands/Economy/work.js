@@ -25,21 +25,21 @@ module.exports = {
     let decimal = Math.round(Math.random() * 89) + 10;
     var gainedXp = 1
 
-    let cashier = db.get(message.author.id + '.jobs.cashier') || undefined;
-    let teacher = db.get(message.author.id + '.jobs.teacher') || undefined;
-    let waiter = db.get(message.author.id + '.jobs.waiter') || undefined;
-    let receptionist = db.get(message.author.id + '.jobs.receptionist') || undefined;
-    let architect = db.get(message.author.id + '.jobs.architect') || undefined;
-    let lifeGuard = db.get(message.author.id + '.jobs.lifeGuard') || undefined;
-    let nurse = db.get(message.author.id + '.jobs.nurse') || undefined;
-    let police = db.get(message.author.id + '.jobs.police') || undefined;
-    let engineer = db.get(message.author.id + '.jobs.engineer') || undefined;
-    let chief = db.get(message.author.id + '.jobs.chief') || undefined;
-    let clinicalScientist = db.get(message.author.id + '.jobs.clinicalScientist') || undefined;
-    let headScientist = db.get(message.author.id + '.jobs.headScientist') || undefined;
-    let lawyer = db.get(message.author.id + '.jobs.lawyer') || undefined;
-    let socialWorker = db.get(message.author.id + '.jobs.socialWorker') || undefined;
-    let doctor = db.get(message.author.id + '.jobs.doctor') || undefined;
+    let cashier = db.get(message.author.id + '.jobs.job') === 'cashier' ? true : undefined;
+    let teacher = db.get(message.author.id + '.jobs.job') === 'teacher' ? true : undefined;
+    let waiter = db.get(message.author.id + '.jobs.job') === 'waiter' ? true : undefined;
+    let receptionist = db.get(message.author.id + '.jobs.job') === 'receptionist' ? true : undefined;
+    let architect = db.get(message.author.id + '.jobs.job') === 'architect' ? true : undefined;
+    let lifeGuard = db.get(message.author.id + '.jobs.job') === 'life guard' ? true : undefined;
+    let nurse = db.get(message.author.id + '.jobs.job') === 'nurse' ? true : undefined;
+    let police = db.get(message.author.id + '.jobs.job') === 'police' ? true : undefined;
+    let engineer = db.get(message.author.id + '.jobs.job') === 'engineer' ? true : undefined;
+    let chef = db.get(message.author.id + '.jobs.job') === 'chef' ? true : undefined;
+    let clinicalScientist = db.get(message.author.id + '.jobs.job') === 'clinical scientist' ? true : undefined;
+    let headScientist = db.get(message.author.id + '.jobs.job') === 'head scientist' ? true : undefined;
+    let lawyer = db.get(message.author.id + '.jobs.job') === 'lawyer' ? true : undefined;
+    let socialWorker = db.get(message.author.id + '.jobs.job') === 'social worker' ? true : undefined;
+    let doctor = db.get(message.author.id + '.jobs.job') === 'doctor' ? true : undefined;
 
     if (jobs !== undefined) {
       if (cashier !== undefined) { workAmt = 10; gainedXp = info.cashier.xp; }
@@ -51,7 +51,7 @@ module.exports = {
       if (nurse !== undefined) { workAmt = 21; gainedXp = info.nurse.xp; }
       if (police !== undefined) { workAmt = 22;  gainedXp = info.police.xp; }
       if (engineer !== undefined) { workAmt = 24; gainedXp = info.engineer.xp; }
-      if (chief !== undefined) { workAmt = 25; gainedXp = info.chief.xp; }
+      if (chef !== undefined) { workAmt = 25; gainedXp = info.chef.xp; }
       if (clinicalScientist !== undefined) { workAmt = 25; gainedXp = info.clinicalScientist.xp; }
       if (headScientist !== undefined) { workAmt = 26; gainedXp = info.headScientist.xp; }
       if (lawyer !== undefined) { workAmt = 29; gainedXp = info.lawyer.xp; }
@@ -88,7 +88,7 @@ module.exports = {
         .setDescription(`You earned **$${workAmt}.${decimal}** while working!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
+        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
         reactionCollection(msg, '📕', '📗', '📙', workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
       }
       else if (waiter !== undefined) {
@@ -110,7 +110,7 @@ module.exports = {
         .setDescription(`You earned **$${workAmt}.${decimal}** while working!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
+        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
         reactionCollection(msg, emojis[no1], emojis[no2], emojis[no3], workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
       }
       else if (receptionist !== undefined) {
@@ -121,17 +121,17 @@ module.exports = {
         .setDescription(`You answered the phone ${count} times and earned **$${workAmt}.${decimal}**!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
+        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
         const congratsEmbed2 = new Discord.MessageEmbed()
         .setDescription(`You booked an appointment and earned **$${workAmt}.${decimal}**!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
+        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
         const congratsEmbed3 = new Discord.MessageEmbed()
         .setDescription(`You countded your daily earnings and it came to a total of **$${workAmt}.${decimal}**!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
+        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
         reactionCollection(msg, '📞', '💻', '💰', workAmt, congratsEmbed1, congratsEmbed2, congratsEmbed3);
       }
       else if (lifeGuard !== undefined) {
@@ -139,7 +139,7 @@ module.exports = {
         .setDescription(`You went to work and earnt **$${workAmt}.${decimal}**!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
+        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
         message.channel.send(congratsEmbed);
       }
       else if (engineer !== undefined) {
@@ -149,23 +149,23 @@ module.exports = {
         .setDescription(`You earnt **$${workAmt}.${decimal}** whilst fixing the 🚗Regular Car!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
+        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
         const congratsEmbed2 = new Discord.MessageEmbed()
         .setDescription(`You earnt **$${workAmt}.${decimal}** whilst fixing the 🚓Police Car!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
+        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
         const congratsEmbed3 = new Discord.MessageEmbed()
         .setDescription(`You earnt **$${workAmt}.${decimal}** whilst fixing the 🏎Race Car!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + 'embedColor') || '#447ba1');
+        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
         reactionCollection(msg, '🚗', '🚓', '🏎', workAmt, congratsEmbed1, congratsEmbed2, congratsEmbed3);
       }
-      else if (chief !== undefined) {
+      else if (chef !== undefined) {
         embed.setDescription(`To begin working click the green circle below.`);
         let msg = await message.channel.send(embed)
-        chiefReact(workAmt, msg, '🟢');
+        chefReact(workAmt, msg, '🟢');
       } else {
         db.add(message.author.id + '.economy.balance', workAmt);
 
@@ -189,7 +189,7 @@ module.exports = {
           lvlUp()
         } else if (engineer !== undefined && xp >= info.global.xp.higher.max) {
           lvlUp()
-        } else if (chief !== undefined && xp >= info.global.xp.higher.max) {
+        } else if (chef !== undefined && xp >= info.global.xp.higher.max) {
           lvlUp()
         } else if (clinicalScientist !== undefined && xp >= info.global.xp.higher.max) {
           lvlUp()
@@ -234,7 +234,7 @@ module.exports = {
         lvlUp()
       } else if (engineer !== undefined && xp >= info.global.xp.higher.max) {
         lvlUp()
-      } else if (chief !== undefined && xp >= info.global.xp.higher.max) {
+      } else if (chef !== undefined && xp >= info.global.xp.higher.max) {
         lvlUp()
       } else if (clinicalScientist !== undefined && xp >= info.global.xp.higher.max) {
         lvlUp()
@@ -313,7 +313,7 @@ module.exports = {
         });
     }
 
-    async function chiefReact(amt, msg, emoji1, emoji2, emoji3) {
+    async function chefReact(amt, msg, emoji1, emoji2, emoji3) {
       if (emoji1) {
         await msg.react(emoji1);
       }
@@ -335,17 +335,17 @@ module.exports = {
 
           if (reaction.emoji.name === '🟢') {
             msg.reactions.removeAll()
-            mainChief('start', msg)
+            mainchef('start', msg)
           }
           if (reaction.emoji.name === emoji1) {
             msg.reactions.removeAll()
-            return mainChief('1', msg, emoji1, amt);
+            return mainchef('1', msg, emoji1, amt);
           } else if (reaction.emoji.name === emoji2) {
             msg.reactions.removeAll()
             return mainCihef('2', msg, emoji2, amt);
           } else if (reaction.emoji.name === emoji3) {
             msg.reactions.removeAll()
-            return mainChief('3', msg, emoji3, amt);
+            return mainchef('3', msg, emoji3, amt);
           }
         }).catch(() => {
           msg.reactions.removeAll()
@@ -381,7 +381,7 @@ module.exports = {
         });
     }
 
-    function mainChief(reaction, msg, emoji, amt) {
+    function mainchef(reaction, msg, emoji, amt) {
       var emojis = ['🍳', '🥐', '🥑', '🥒', '🥓', '🥔', '🥕', '🥖', '🥗', '🥘', '🥚', '🥜', '🥝', '🥞', '🦐', '🦑'];
       var names = ['Fry Eggs', 'Croissants', 'Avocado', 'Cucumber', 'Bacon Strips', 'Potatoes', 'Carrots', 'Bread Sticks', 'Salad', 'Curry', 'Boiled Eggs', 'Special Nut Dish', 'Kiwi', 'Pancakes', 'Shrimp', 'Octopus'];
       if (reaction === 'start') {
@@ -393,7 +393,7 @@ module.exports = {
         if (no3 === no1) no1 = Math.floor(Math.random() * emojis.length);
         embed.setDescription(`What would you like to prepare first?\n${emojis[no1]} - ${names[no1]}\n${emojis[no2]} - ${names[no2]}\n${emojis[no3]} - ${names[no3]}`);
         msg.edit(embed);
-        chiefReact(amt, msg, emojis[no1], emojis[no2], emojis[no3]);
+        chefReact(amt, msg, emojis[no1], emojis[no2], emojis[no3]);
       }
       if (reaction === '1' || reaction === '2' || reaction === '3') {
         var name;

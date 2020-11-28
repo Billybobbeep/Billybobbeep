@@ -13,36 +13,21 @@ module.exports = {
         embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
         if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server.');
 
-        //level 1 job
-        let cashier = db.get(message.author.id + '.jobs.cashier') || undefined;
-        //level 2 job
-        let teacher = db.get(message.author.id + '.jobs.teacher') || undefined;
-        //level 3 job
-        let waiter = db.get(message.author.id + '.jobs.waiter') || undefined;
-        //level 4 job
-        let receptionist = db.get(message.author.id + '.jobs.receptionist') || undefined;
-        //level 5 job
-        let architect = db.get(message.author.id + '.jobs.architect') || undefined;
-        //level 6 job
-        let lifeGuard = db.get(message.author.id + '.jobs.lifeGuard') || undefined;
-        //level 7 job
-        let nurse = db.get(message.author.id + '.jobs.nurse') || undefined;
-        //level 8 job
-        let police = db.get(message.author.id + '.jobs.police') || undefined;
-        //level 9 job
-        let engineer = db.get(message.author.id + '.jobs.engineer') || undefined;
-        //level 10 job
-        let chief = db.get(message.author.id + '.jobs.chief') || undefined;
-        //level 11 job
-        let clinicalScientist = db.get(message.author.id + '.jobs.clinicalScientist') || undefined;
-        //level 12 job
-        let headScientist = db.get(message.author.id + '.jobs.headScientist') || undefined;
-        //level 13 job
-        let lawyer = db.get(message.author.id + '.jobs.lawyer') || undefined;
-        //level 14 job
-        let socialWorker = db.get(message.author.id + '.jobs.socialWorker') || undefined;
-        //level 15 job
-        let doctor = db.get(message.author.id + '.jobs.doctor') || undefined;
+        let cashier = db.get(message.author.id + '.jobs.job') === 'cashier' ? true : undefined;
+        let teacher = db.get(message.author.id + '.jobs.job') === 'teacher' ? true : undefined;
+        let waiter = db.get(message.author.id + '.jobs.job') === 'waiter' ? true : undefined;
+        let receptionist = db.get(message.author.id + '.jobs.job') === 'receptionist' ? true : undefined;
+        let architect = db.get(message.author.id + '.jobs.job') === 'architect' ? true : undefined;
+        let lifeGuard = db.get(message.author.id + '.jobs.job') === 'life guard' ? true : undefined;
+        let nurse = db.get(message.author.id + '.jobs.job') === 'nurse' ? true : undefined;
+        let police = db.get(message.author.id + '.jobs.job') === 'police' ? true : undefined;
+        let engineer = db.get(message.author.id + '.jobs.job') === 'engineer' ? true : undefined;
+        let chef = db.get(message.author.id + '.jobs.job') === 'chef' ? true : undefined;
+        let clinicalScientist = db.get(message.author.id + '.jobs.job') === 'clinical scientist' ? true : undefined;
+        let headScientist = db.get(message.author.id + '.jobs.job') === 'head scientist' ? true : undefined;
+        let lawyer = db.get(message.author.id + '.jobs.job') === 'lawyer' ? true : undefined;
+        let socialWorker = db.get(message.author.id + '.jobs.job') === 'social worker' ? true : undefined;
+        let doctor = db.get(message.author.id + '.jobs.job') === 'doctor' ? true : undefined;
 
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let args1 = args.join(' ').split(/ +/g).slice(1).join(' ').split('-').join(' ');
@@ -92,7 +77,7 @@ module.exports = {
 
         function PageOne(msg) {
             embed.setTitle('Jobs | Page One');
-            embed.setDescription('Cashier - 10/hr\nTeacher - 11/hr\nWaiter - 12/hr\nReceptionist - 12/hr\nArchitect - 15/hr\nLifeguard - 16/hr\nNurse - 21/hr\nPolice - 22/hr\nEngineer - 24/hr\nChief - 25/hr\nClinical Scientist - 25/hr\nHead Scientist - 26/hr\nLawyer - 29/hr\nSocial Worker - 21/hr\nDoctor - 55/hr');
+            embed.setDescription('Cashier - 10/hr\nTeacher - 11/hr\nWaiter - 12/hr\nReceptionist - 12/hr\nArchitect - 15/hr\nLifeguard - 16/hr\nNurse - 21/hr\nPolice - 22/hr\nEngineer - 24/hr\nchef - 25/hr\nClinical Scientist - 25/hr\nHead Scientist - 26/hr\nLawyer - 29/hr\nSocial Worker - 21/hr\nDoctor - 55/hr');
             msg.edit(embed)
         }
         function MainPage(msg) {
@@ -166,11 +151,11 @@ module.exports = {
                 embed.addField('Maximum Promotions', info.engineer.promotions, true)
                 embed.addField('Job Description', info.engineer.description)
                 message.channel.send(embed)
-            } else if (args[1].toLowerCase() === 'chief') {
-                embed.addField('Level Required', info.chief.level, true)
-                embed.addField('Hourly Pay', `$` + info.chief.pay, true)
-                embed.addField('Maximum Promotions', info.chief.promotions, true)
-                embed.addField('Job Description', info.chief.description)
+            } else if (args[1].toLowerCase() === 'chef') {
+                embed.addField('Level Required', info.chef.level, true)
+                embed.addField('Hourly Pay', `$` + info.chef.pay, true)
+                embed.addField('Maximum Promotions', info.chef.promotions, true)
+                embed.addField('Job Description', info.chef.description)
                 message.channel.send(embed)
             } else if (args1.toLowerCase() === 'clinical scientist') {
                 embed.addField('Level Required', info.clinicalScientist.level, true)

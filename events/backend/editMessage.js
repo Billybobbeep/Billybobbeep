@@ -7,9 +7,9 @@ module.exports = (newMessage, oldMessage, client) => {
 	if (!oldMessage) return;
 	if (!oldMessage.author) return;
 	try {
-	if (oldMessage.author.bot) return;
+		if (oldMessage.author.bot) return;
 	} catch {
-		console.log('bot');
+		console.log('editMsg - bot');
 	}
 	if (!oldMessage.guild) return;
 
