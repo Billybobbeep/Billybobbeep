@@ -20,7 +20,7 @@ module.exports = {
         if (db.get(message.author.id + '.economy.balance') < 50) return message.channel.send(`You need \`$50+\` to rob a user.`);
         
         let robAmt = db.get(user.id + '.economy.balance') / 2 - 30;
-        if (robAmt.toString().split('.')[1].length > 2) robAmt = robAmt.toString().split('.')[0] + '.' + robAmt.toString().split('.')[1][0] + robAmt.toString().split('.')[1][1];
+        if (robAmt.toString().split('.')[1] && robAmt.toString().split('.')[1].length > 2) robAmt = robAmt.toString().split('.')[0] + '.' + robAmt.toString().split('.')[1][0] + robAmt.toString().split('.')[1][1];
         let chance = [true, false, true, true, true, true, false];
         const ran = () => {
             let a = Math.round(Math.random() * chance.length);

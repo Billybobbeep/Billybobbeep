@@ -291,19 +291,20 @@ module.exports = {
                 db.add(message.author.id + '.jobs.timesFired', 1);
                 db.set(message.author.id + '.jobs.lastFired', Date.now());
                 embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
-                db.delete(message.author.id + '.jobs');
+                db.delete(message.author.id + '.jobs.job');
                 db.add(message.author.id + '.jobs.timesFired', 1);
                 db.set(message.author.id + '.jobs.lastFired', Date.now());
             } else if (db.get(message.author.id + '.jobs.timesFired') === 10) {
               db.delete(message.author.id + '.jobs.timesFired');
               db.set(message.author.id + '.jobs.lastFired', Date.now());
               embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
-              db.delete(message.author.id + '.jobs');
+              db.delete(message.author.id + '.jobs.job');
               db.add(message.author.id + '.jobs.timesFired', 1);
               db.set(message.author.id + '.jobs.lastFired', Date.now());
             } else {
               embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
-              db.delete(message.author.id + '.jobs');
+              msg.edit(embed);
+              db.delete(message.author.id + '.jobs.job');
             }
           }
           embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt}**`);
@@ -359,19 +360,19 @@ module.exports = {
                 db.add(message.author.id + '.jobs.timesFired', 1);
                 db.set(message.author.id + '.jobs.lastFired', Date.now());
                 embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
-                db.delete(message.author.id + '.jobs');
+                db.delete(message.author.id + '.jobs.job');
                 db.add(message.author.id + '.jobs.timesFired', 1);
                 db.set(message.author.id + '.jobs.lastFired', Date.now());
             } else if (db.get(message.author.id + '.jobs.timesFired') === 10) {
               db.delete(message.author.id + '.jobs.timesFired');
               db.set(message.author.id + '.jobs.lastFired', Date.now());
               embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
-              db.delete(message.author.id + '.jobs');
+              db.delete(message.author.id + '.jobs.job');
               db.add(message.author.id + '.jobs.timesFired', 1);
               db.set(message.author.id + '.jobs.lastFired', Date.now());
             } else {
               embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
-              db.delete(message.author.id + '.jobs');
+              db.delete(message.author.id + '.jobs.job');
             }
           }
           embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt}**`);
