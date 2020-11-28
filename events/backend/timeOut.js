@@ -76,7 +76,7 @@ function application(db, client) {
             embed.setFooter(`Feel free to start working when you're ready.`)
             db.delete(user.id + '.jobs.awaiting');
             db.set(user.id + '.jobs.lastApplied', Date.now());
-            db.set(user.id + `.jobs.${job}`, true);
+            db.set(user.id + `.jobs.job`, job.toLowerCase());
         }
         try {
             user.send(embed);
