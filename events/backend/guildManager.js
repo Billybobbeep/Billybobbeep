@@ -48,7 +48,7 @@ module.exports.add = async (guild, client) => {
     embed.setColor('#447ba1')
     embed.setTimestamp()
     embed.setThumbnail(guild.iconURL({ dynamic: true }))
-    logging(embed, '733442092667502613', client);
+    logging(embed, '733442092667502613', client, 'guild');
   }
 
 module.exports.remove = (guild, client) => {
@@ -62,5 +62,5 @@ module.exports.remove = (guild, client) => {
     .setColor('#447ba1')
     .setTimestamp()
     .setThumbnail(guild.iconURL({ dynamic: true }))
-  logging(embed, '733442092667502613', client);
+  logging(embed, '733442092667502613', client, 'guild');
 }
