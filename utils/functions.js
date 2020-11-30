@@ -24,3 +24,21 @@ module.exports.logging = function(msg, message, client, option) {
         }
     }
 }
+
+module.exports.rank = function(avatar, username, discriminator, currentXP, requiredXP, level) {
+    const canvas = require('canvas');
+
+    if (!avatar) throw new Error('Avatar is required');
+    if (!username) throw new Error('Username is required');
+    if (!discriminator) throw new Error('Discriminator is required');
+    if (!currentXP) throw new Error('Current XP is required');
+    if (!requiredXP) throw new Error('Required XP is required');
+    if (!level) throw new Error('Level is required');
+
+    if (!isNaN(discriminator)) throw new Error('Discriminator must be a number');
+    if (!isNaN(currentXP)) throw new Error('Current XP must be a number');
+    if (!isNaN(requiredXP)) throw new Error('Required XP must be a number');
+    if (!isNaN(level)) throw new Error('Level must be a number');
+
+    
+}
