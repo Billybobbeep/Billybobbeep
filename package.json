@@ -19,6 +19,8 @@
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
     "better-sqlite3": "^7.1.1",
+    "canvacord": "file:canvacord",
+    "canvas": "^2.6.1",
     "discord.js": "^12.3.1",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",

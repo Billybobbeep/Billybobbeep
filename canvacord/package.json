@@ -1,0 +1,48 @@
+{
+  "name": "canvacord",
+  "version": "5.0.0",
+  "description": "Powerful image manipulation package for beginners.",
+  "main": "index.js",
+  "scripts": {
+    "docsgen": "jsdoc --configure .jsdoc.json --verbose",
+    "test": "cd test && node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Snowflake107/Canvacord.git"
+  },
+  "keywords": [
+    "canvacord",
+    "canvas",
+    "image",
+    "manipulation",
+    "easy",
+    "simple",
+    "fast",
+    "api"
+  ],
+  "author": "Snowflake107",
+  "funding": {
+    "type": "individual",
+    "url": "https://paypal.me/devsnowflake"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Snowflake107/Canvacord/issues"
+  },
+  "homepage": "https://canvacord.js.org",
+  "dependencies": {
+    "canvacord-assets": "^1.0.6",
+    "canvas": "^2.6.1",
+    "gifencoder": "^2.0.1",
+    "moment": "^2.29.0",
+    "moment-duration-format": "^2.3.2",
+    "node-canvas-with-twemoji-and-discord-emoji": "^1.1.4"
+  },
+  "devDependencies": {
+    "captcha-canvas": "^2.2.1",
+    "discord-canvas": "github:Snowflake107/discord-canvas",
+    "jsdoc": "^3.6.6",
+    "jsdoc-skyceil": "github:zyrouge/jsdoc-skyceil"
+  }
+}
