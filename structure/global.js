@@ -1,3 +1,3 @@
 module.exports = {
-    db: require('../quick.db/src/index.js'),
+    db: require('../quick.db/src/index.js')
 }
