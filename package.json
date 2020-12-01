@@ -17,6 +17,7 @@
   },
   "description": "",
   "dependencies": {
+    "@canvacord/assets": "^1.0.0",
     "@discordjs/opus": "^0.3.2",
     "better-sqlite3": "^7.1.1",
     "canvas": "^2.6.1",
@@ -32,6 +33,7 @@
     "querystring": "^0.2.0",
     "quick.db": "file:quick.db",
     "say": "^0.16.0",
+    "util": "^0.12.3",
     "ytdl-core": "^3.4.1"
   },
   "engines": {
