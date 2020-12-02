@@ -4,6 +4,8 @@ module.exports = {
   name: 'prefix',
   description: 'Set up a new server prefix.',
   guildOnly: true,
+  catagory: 'moderation',
+  usage: 'prefix [new-prefix]',
   execute (message, prefix, client) {
     if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send('You need the `Administrator` premissions to run this command.');
     let args = message.content.slice(prefix.length).trim().split(/ +/g);

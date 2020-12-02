@@ -2,6 +2,8 @@ module.exports = {
     name: 'demote',
     description: 'Demote a user.',
     guildOnly: true,
+    catagory: 'moderation',
+    usage: 'demote [user] [reason]',
     execute(message, prefix, client) {
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();

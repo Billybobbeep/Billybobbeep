@@ -2,6 +2,8 @@ module.exports = {
   name: 'unmute',
   description: 'Unmute a member.',
   guildOnly: true,
+  catagory: 'moderation',
+  usage: 'unmute [user] [reason]',
   execute (message, prefix, client) {
     const configFile = require('../../structure/config.json');
     const db = require('../../structure/global.js').db;

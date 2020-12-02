@@ -2,6 +2,8 @@ module.exports = {
     name: 'promote',
     description: 'Promote a user to mod.',
     guildOnly: true,
+    catagory: 'moderation',
+    usage: 'promote [user] [reason]',
     execute(message, prefix, client) {
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();
@@ -34,7 +36,7 @@ module.exports = {
                     `**Moderator Tag:** ${message.author.tag}\n` +
                     `**Moderator ID:** ${message.author.id}`);
                 embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
-                embed2.setTitle('🎉You have been promoted🎉');
+                embed2.setTitle('You have been promoted');
                 embed2.addField(`Moderator`, message.author.tag);
                 embed2.addField(`Reason`, reason);
                 embed2.addField('Guild:', message.guild.name);

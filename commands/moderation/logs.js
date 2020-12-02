@@ -241,6 +241,8 @@ module.exports = {
     name: 'logs',
     description: 'View recent logs.',
     guildOnly: true,
+    catagory: 'moderation',
+    usage: 'logs help',
     execute (message, prefix, client) {
         if (message.member.roles.cache.has(['VIEW_AUDIT_LOG', 'ADMINISTRATOR']) && !message.member.roles.cache.find(role => role.id === db.get(message.guild.id + '.modRole')))
             return message.channel.send(`You must have the \`View Audit Log\` premissions to use this command.`)

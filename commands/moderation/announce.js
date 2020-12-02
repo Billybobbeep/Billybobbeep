@@ -6,6 +6,8 @@ module.exports = {
   name: 'announce',
   description: 'Announce a message in a different channel.',
   guildOnly: true,
+  catagory: 'moderation',
+  usage: 'announce',
   execute (message, prefix, client) {
     if (!message.guild) return;
     const embed = new Discord.MessageEmbed()

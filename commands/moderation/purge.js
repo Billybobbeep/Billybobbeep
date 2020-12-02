@@ -2,6 +2,8 @@ module.exports = {
   name: 'purge',
   description: 'Delete alot of messages at once.',
   guildOnly: true,
+  catagory: 'moderation',
+  usage: 'purge [amount]',
   execute (message, prefix, client) {
     const Discord = require('discord.js');
     const configFile = require('../../structure/config.json');

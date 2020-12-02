@@ -69,9 +69,6 @@
             0 : '0'
         }
 */
-const { MessageEmbed } = require('discord.js');
-const embed = new MessageEmbed()
-const db = require('../../structure/global.js').db;
 
 module.exports = {
     name: 'font',
@@ -79,6 +76,10 @@ module.exports = {
     alias: ['fonts'],
     catagory: 'generator',
     execute (message, prefix, client) {
+        const { MessageEmbed } = require('discord.js');
+        const embed = new MessageEmbed()
+        const db = require('../../structure/global.js').db;
+
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         var lines = ['', ''];
         var starter = '➳';

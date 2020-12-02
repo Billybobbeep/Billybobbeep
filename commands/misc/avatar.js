@@ -5,6 +5,7 @@ module.exports = {
     name: 'avatar',
     description: 'Announce a message in a different channel.',
     alias: ['pfp', 'myavatar'],
+    catagory: 'info',
     usage: 'avatar [user]',
     guildOnly: true,
     execute (message, prefix, client) {

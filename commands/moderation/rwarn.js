@@ -1,8 +1,9 @@
 module.exports = {
   name: 'rwarn',
-  description: 'Remove a users warning.',
+  description: 'Remove a users last warning.',
   guildOnly: true,
-  bannedUsers: ['441613173003649028', '750046512909647942'],
+  catagory: 'moderation',
+  usage: 'rwarn [user] [reason]',
   execute (message, prefix, client) {
     const Discord = require('discord.js');
     const db = require('../../structure/global.js').db;

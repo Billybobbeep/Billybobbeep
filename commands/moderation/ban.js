@@ -2,6 +2,8 @@ module.exports = {
   name: 'ban',
   description: 'Ban a member.',
   guildOnly: true,
+  catagory: 'moderation',
+  usage: 'ban [user] [reason]',
   execute (message, prefix, client) {
     const Discord = require('discord.js');
     const db = require('../../structure/global.js').db;

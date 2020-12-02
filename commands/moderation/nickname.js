@@ -7,6 +7,8 @@ module.exports = {
   description: 'Change a users nickname.',
   alias: ['nick'],
   guildOnly: true,
+  catagory: 'moderation',
+  usage: 'nickname [user] [nickname]',
   execute (message, prefix, client) {
     async function nicknameCmd() {
       let args = message.content.slice(prefix.length).trim().split(/ +/g);

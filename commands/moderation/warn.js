@@ -2,7 +2,8 @@ module.exports = {
   name: 'warn',
   description: 'Warn a user.',
   guildOnly: true,
-  //bannedUsers: ['441613173003649028', '750046512909647942'],
+  catagory: 'moderation',
+  usage: 'warn [user] [reason]',
   execute (message, prefix, client) {
     const Discord = require('discord.js');
     const db = require('../../structure/global.js').db;

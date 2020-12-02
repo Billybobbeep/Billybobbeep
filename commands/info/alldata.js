@@ -4,7 +4,7 @@ module.exports = {
   name: 'alldata',
   description: 'View all of the data from the database.',
   guildOnly: true,
-  spoinkOnly: true,
+  disabled: true,
   async execute (message, prefix, client) {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     const db = require('../../structure/global.js').db;

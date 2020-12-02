@@ -2,6 +2,8 @@ module.exports = {
   name: 'kick',
   description: 'Kick a member.',
   guildOnly: true,
+  catagory: 'moderation',
+  usage: 'kick [user] [reason]',
   execute (message, prefix, client) {
     const Discord = require('discord.js');
     const configFile = require('../../structure/config.json');

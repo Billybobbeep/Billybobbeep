@@ -2,6 +2,8 @@ module.exports = {
   name: 'mute',
   description: 'Mute a member.',
   guildOnly: true,
+  catagory: 'moderation',
+  usage: 'mute [user] [time] [reason]',
   execute (message, prefix, client) {
     const db = require('../../structure/global.js').db;
     const Discord = require('discord.js');

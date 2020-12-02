@@ -1,47 +1,38 @@
-const Discord = require('discord.js');
-const configFile = require('../../structure/config.json');
-const db = require('../../structure/global.js').db;
 module.exports = async(msg, args, prefix, message) => {
-        const commandEmbed = new Discord.MessageEmbed()
+        const Discord = require('discord.js');
+        const db = require('../../structure/global.js').db;
+        const fs = require('fs');
+        const embed = new Discord.MessageEmbed()
         .setTitle('Billybobbeep | Moderation Commands')
-        .setDescription(
-        `${prefix}kick [user]\n` +
-        '*Kicks a member from the server.*\n' +
-        '*Requires:* Kick Members premission.\n' +
-        `${prefix}ban [user]\n` +
-        '*Bans a member from the server.*\n' +
-        '*Requires:* Ban Members premission.\n' +
-        `${prefix}purge [number]\n` +
-        '*Deletes alot of messages at once.*\n' +
-        '*Requires:* Manage Messages premission.\n\n' +
-        
-        `${prefix}warn [user] [reason]\n` +
-        '*Warns a user*\n' +
-        '*Requires:* Manage Messages premissions.\n' +
-        `${prefix}rwarn [user] [reason]\n` +
-        '*Removes a warning.*\n' +
-        '*Requires:* Manage Messages premissions\n' +
-        `${prefix}warnings [user]\n` +
-        'View the total warnings a user has.\n' +
-        '*Requires:* this command does not require any premissions.\n' +
-        `${prefix}mute [user] [reason]\n` +
-        'Mute a user.\n' +
-        '*Requires:* Manage Message premissions.\n\n' +
-        
-        `${prefix}nickname [user]\n` +
-        '*Changes the nickname of a member.*\n' +
-        '*Requires:* Manage Server premissions.\n' +
-        `${prefix}dm [user] [message]\n` +
-        '*Sends a DM to a user.*\n' +
-        '*Requires:* Manage Message premissions.\n\n' +
-        `${prefix}logs\n` +
-        '*View recent mod logs.*\n' +
-        '*Requires:* View audit log premissions.\n' +
-        `${prefix}logs help\n` +
-        '*Help embed for the mod logs.*\n' +
-        '*Requires:* View audit log premissions.')
         .setFooter(`Requested by: ${message.author.tag}`)
         .setTimestamp()
-        message.guild ? commandEmbed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : commandEmbed.setColor('#447ba1');
-        message.channel.send(commandEmbed)
+        message.guild ? embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : embed.setColor('#447ba1');
+        const commandFolders = fs.readdirSync('./commands').filter(file => !file.endsWith('.js'));
+        for (const folder of commandFolders) {
+                const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
+                for (const file of commandFiles) {
+                        const command = require(`../../commands/${folder}/${file}`);
+                        if (command.usage && command.catagory && command.catagory === 'moderation') {
+                                console.log(command.name)
+                                /*embed.addField(
+                                        `${prefix}${command.name[0].toString().toUppercase()}${command.name.toString().toLowerCase().substring(1)}`,
+                                        `${command.description[0].toString().toUppercase()}${command.description.toString().toLowerCase().substring(1)}`,
+                                        `**Usage:** ${prefix}${command.usage}`
+                                );*/
+                                embed.addField(
+                                        `${prefix}${command.name}`,
+                                        `${command.description}\n` +
+                                        `Usage: ${prefix}${command.usage}`,
+                                        true
+                                );
+                        } else if (command.catagory && command.catagory === 'moderation') {
+                                embed.addField(
+                                        `${prefix}${command.name}`,
+                                        `${command.description}`,
+                                        false
+                                );
+                        }
+                }
+        }
+        message.channel.send(embed);
 }

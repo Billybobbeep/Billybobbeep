@@ -2,71 +2,179 @@ const Discord = require('discord.js');
 const configFile = require('../../structure/config.json');
 const db = require('../../structure/global.js').db;
 module.exports = async(message, prefix) => {
+  const fs = require('fs');
+
   const PageOne = new Discord.MessageEmbed()
   .setTitle('Billybobbeep | General Commands')
-  .setDescription(
-      `${prefix}members\n` +
-      '*Quickly find how many members are in your server.*\n\n' +
-      `${prefix}spoink\n` +
-      '*Well I guess you will just have to use it and find out. 👁👄👁*\n\n' +
-      `${prefix}wibbleywobbley\n` +
-      '*It\'s 15 inches long. :woman_fairy::sparkles::bouquet:*\n\n' +
-      `${prefix}ping\n` +
-      '*Gives you the reaction/delay time between the bot and the server.*\n\n' +
-      `${prefix}userinfo\n` +
-      '*Provides info about a user in the server.*\n\n' +
-      `${prefix}rolldice\n` +
-      '*Rolls a dice and gives you the number.*')
   .setFooter('TIP: Press the arrows to switch pages')
   message.guild ? PageOne.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : PageOne.setColor('#447ba1');
 
+  const commandFolders = fs.readdirSync('./commands').filter(file => !file.endsWith('.js'));
+  for (const folder of commandFolders) {
+    const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
+    for (const file of commandFiles) {
+      const command = require(`../../commands/${folder}/${file}`);
+      if (command.usage && command.catagory && command.catagory === 'general') {
+        PageOne.addField(
+          `${prefix}${command.name}`,
+          `${command.description}\n` +
+          `Usage: ${prefix}${command.usage}`,
+          true
+        );
+      } else if (command.catagory && command.catagory === 'general') {
+        PageOne.addField(
+          `${prefix}${command.name}`,
+          `${command.description}`,
+          false
+        );
+      }
+    }
+  }
+
   const PageTwo = new Discord.MessageEmbed()
   .setTitle('Billybobbeep | Economy Commands')
-  .setDescription(
-    `${prefix}daily\n` +
-    '*Collect your daily bonus.*\n\n' +
-    `${prefix}work\n` +
-    '*Go to work to earn money.*\n\n' +
-    `${prefix}jobs\n` +
-    '*View the list of available jobs.*\n\n' +
-    `${prefix}apply [job name]\n` +
-    '*Apply for a job.*\n' +
-    `${prefix}donate [user] [ammount]\n` +
-    'Donate money to another user.\n' +
-    `${prefix}balance [user]\n` +
-    'View a users balance.\n' +
-    `${prefix}resetstats\n` +
-    'Reset a users stats.\n' +
-    `${prefix}quit\n` +
-    'Quit your current job.\n')
   .setFooter('TIP: Press the arrows to switch pages')
   message.guild ? PageTwo.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : PageTwo.setColor('#447ba1');
 
+  for (const folder of commandFolders) {
+    const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
+    for (const file of commandFiles) {
+      const command = require(`../../commands/${folder}/${file}`);
+      if (command.usage && command.catagory && command.catagory === 'economy') {
+        if (command.name.toLowerCase() === 'withdraw' || command.name.toLowerCase() === 'apply') {
+          PageTwo.addField(
+            `${prefix}${command.name}`,
+            `${command.description}\n` +
+            `Usage: ${prefix}${command.usage}`,
+            false
+          );
+        } else {
+          PageTwo.addField(
+            `${prefix}${command.name}`,
+            `${command.description}\n` +
+            `Usage: ${prefix}${command.usage}`,
+            true
+          );
+        }
+      } else if (command.catagory && command.catagory === 'economy') {
+        PageTwo.addField(
+          `${prefix}${command.name}`,
+          `${command.description}`,
+          false
+        );
+      }
+    }
+  }
+
   const PageThree = new Discord.MessageEmbed()
-  .setTitle('Billybobbeep | Message Commands')
-  .setDescription(
-    `${prefix}say [message]\n` +
-    '*Repeats what you just said.*\n\n' +
-    `${prefix}announce\n` +
-    '*Provides you with options to announce a message in another channel.*\n\n' +
-    `${prefix}secret\n` +
-    '*Repeats what you say in a secret message format.*')
+  .setTitle('Billybobbeep | Other Commands')
   .setFooter('TIP: Press the arrows to switch pages')
   message.guild ? PageThree.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : PageThree.setColor('#447ba1');
 
+  for (const folder of commandFolders) {
+    const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
+    for (const file of commandFiles) {
+      const command = require(`../../commands/${folder}/${file}`);
+      if (command.usage && command.catagory && command.catagory === 'other') {
+        PageThree.addField(
+          `${prefix}${command.name}`,
+          `${command.description}\n` +
+          `Usage: ${prefix}${command.usage}`,
+          true
+        );
+      } else if (command.catagory && command.catagory === 'other') {
+        PageThree.addField(
+          `${prefix}${command.name}`,
+          `${command.description}`,
+          false
+        );
+      } else if (command.catagory && command.catagory === 'none' && command.usage) {
+        PageThree.addField(
+          `${prefix}${command.name}`,
+          `${command.description}\n` +
+          `Usage: ${prefix}${command.usage}`,
+          false
+        );
+      } else if (command.catagory && command.catagory === 'none') {
+        PageThree.addField(
+          `${prefix}${command.name}`,
+          `${command.description}`,
+          false
+        );
+      }
+    }
+}
+
   const PageFour = new Discord.MessageEmbed()
   .setTitle('Billybobbeep | Generator Commands')
-  .setDescription(
-    `${prefix}font\n` +
-    '*Gives you a list of fonts you can turn your message into.*\n\n' +
-    `${prefix}image\n` +
-    '*Generates a random image.*\n\n' +
-    `${prefix}generate key\n` +
-    '*Request a key for the billybobbeep API services.*\n\n' +
-    `${prefix}regenerate key\n` +
-    '*Request a new API key.*')
   .setFooter('TIP: Press the arrows to switch pages')
   message.guild ? PageFour.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : PageFour.setColor('#447ba1');
+
+  for (const folder of commandFolders) {
+    const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
+    for (const file of commandFiles) {
+      const command = require(`../../commands/${folder}/${file}`);
+      if (command.usage && command.catagory && command.catagory === 'generator') {
+        if (command.name.toLowerCase() === 'say') {
+          PageFour.addField(
+            `${prefix}${command.name}`,
+            `${command.description}\n` +
+            `Usage: ${prefix}${command.usage}`,
+            false
+          );
+        } else {
+          PageFour.addField(
+                  `${prefix}${command.name}`,
+                  `${command.description}\n` +
+                  `Usage: ${prefix}${command.usage}`,
+                  true
+          );
+        }
+      } else if (command.catagory && command.catagory === 'generator') {
+        PageFour.addField(
+                `${prefix}${command.name}`,
+                `${command.description}`,
+                false
+        );
+      }
+    }
+  }
+
+  const PageFive = new Discord.MessageEmbed()
+  .setTitle('Billybobbeep | Information Commands')
+  .setFooter('TIP: Press the arrows to switch pages')
+  message.guild ? PageFive.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : PageFive.setColor('#447ba1');
+
+  for (const folder of commandFolders) {
+    const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
+    for (const file of commandFiles) {
+      const command = require(`../../commands/${folder}/${file}`);
+      if (command.usage && command.catagory && command.catagory === 'info') {
+        if (command.name.toLowerCase() === 'avatar') {
+          PageFive.addField(
+            `${prefix}${command.name}`,
+            `${command.description}\n` +
+            `Usage: ${prefix}${command.usage}`,
+            false
+          );
+        } else {
+          PageFive.addField(
+            `${prefix}${command.name}`,
+            `${command.description}\n` +
+            `Usage: ${prefix}${command.usage}`,
+            true
+          );
+        }
+      } else if (command.catagory && command.catagory === 'info') {
+        PageFive.addField(
+          `${prefix}${command.name}`,
+          `${command.description}`,
+          false
+        );
+      }
+    }
+  }
+
 
   let msg = await message.channel.send(PageOne)
   
@@ -94,6 +202,9 @@ module.exports = async(message, prefix) => {
         } else if (msg.embeds[0].title === PageThree.title) {
           msg.edit(PageFour);
           reaction.users.remove(message.author.id);
+        } else if (msg.embeds[0].title === PageFour.title) {
+          msg.edit(PageFive);
+          reaction.users.remove(message.author.id);
         }
         wait()
       } else {
@@ -105,6 +216,9 @@ module.exports = async(message, prefix) => {
           reaction.users.remove(message.author.id);
         } else if (msg.embeds[0].title === PageFour.title) {
           msg.edit(PageThree);
+          reaction.users.remove(message.author.id);
+        } else if (msg.embeds[0].title === PageFive.title) {
+          msg.edit(PageFour);
           reaction.users.remove(message.author.id);
         }
         wait()

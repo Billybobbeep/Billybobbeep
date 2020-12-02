@@ -3,6 +3,7 @@ module.exports = {
     description: 'Transfer a users level to another user.',
     alias: ['tl', 'translvl', 'transferlevel'],
     guildOnly: true,
+    catagory: 'other',
     execute(message, prefix, client) {
         const db = require('../../structure/global.js').db;
         let args = message.content.slice(prefix.length).trim().split(/ +/g);

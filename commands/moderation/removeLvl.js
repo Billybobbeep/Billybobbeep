@@ -2,7 +2,7 @@ module.exports = {
   name: 'removelvl',
   description: 'Remove a users level.',
   alias: ['rl', 'removelevel'],
-  catagory: 'mod',
+  catagory: 'moderation',
   usage: 'removelvl [user] [amount]',
   guildOnly: true,
   execute(message, prefix, client) {
