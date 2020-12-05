@@ -17,6 +17,7 @@ function redirect(message, client) {
             require('../commands/talk2billy').execute(message);
             require('../commands/mentions/mentions.js')(message, client);
             //require('../backend/antiSpam.js').execute(message);
+            //require('../backend/attachments.js')(message, client);
         } else {
             require('../backend/dmRecieving.js')(message, client);
         }
