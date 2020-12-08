@@ -1,4 +1,4 @@
-module.exports.data = function(callback) {
+module.exports.data = function(client, callback) {
     const configFile = require('../structure/config.json');
     var totalNum = client.guilds.cache.get(configFile.ServerId).members.cache.array();
     var totalOnlineNum = client.guilds.cache.get(configFile.ServerId).members.cache.filter(m => m.presence.status != 'offline').array();

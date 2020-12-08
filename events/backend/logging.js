@@ -23,7 +23,11 @@ module.exports.add = (guild, client) => {
         )
         embed.setTimestamp(ban.createdTimestamp);
         embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`);
-        logging(embed, guild.id, client);
+
+        var loggingChannel = client.channels.cache.get(db.get(guild.id + '.loggingChannel'));
+        if (loggingChannel) {
+            loggingChannel.send(msg).catch(() => {return});
+        }
     });
 }
 
@@ -54,7 +58,10 @@ module.exports.remove = (guild, client) => {
             )
             embed.setTimestamp(ban.createdTimestamp);
             embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`);
-            logging(embed, guild.id, client);
+            var loggingChannel = client.channels.cache.get(db.get(guild.id + '.loggingChannel'));
+            if (loggingChannel) {
+                loggingChannel.send(msg).catch(() => {return});
+            }
         });
     }, 100);
 }

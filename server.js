@@ -18,7 +18,7 @@ module.exports = async (client) => {
     app.post('/api/database/:name/get', (req, res) => {
       if (req.params.name !== 'all') res.json('Error: Invalid database');
       key = req.params.key;
-      bot.data(function(data) { res.send(data) });
+      bot.data(function(client, data) { res.send(data) });
     });
     app.get('/api/:key/chatbot', async function(req, res) {
       let message = req.query.message;

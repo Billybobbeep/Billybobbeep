@@ -2,12 +2,12 @@ const db = require('../structure/global.js').db;
 const guildID = require('../structure/config.json').ServerId;
 
 module.exports.logging = function(msg, message, client, option) {
-    if (option && option.toLowerCase() === 'guild') {
+    if (typeof message === 'number') {
         var loggingChannel = client.channels.cache.get(db.get(message + '.loggingChannel'));
         if (loggingChannel) {
             loggingChannel.send(msg).catch(() => {return});
         }
-    }else if (message !== undefined) {
+    } else if (message !== undefined) {
         if (message.guild)
             var loggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
         else
@@ -20,7 +20,7 @@ module.exports.logging = function(msg, message, client, option) {
         var loggingChannel = client.channels.cache.get(db.get(guildID + '.loggingChannel'));
         
         if (loggingChannel) {
-            loggingChannel.send(msg).catch(() => {return});
+            loggingChannel.send(msg).catch((error) => {console.log(error)});
         }
     }
 }
