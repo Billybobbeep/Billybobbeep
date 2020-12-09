@@ -30,6 +30,7 @@ module.exports = {
       if (user.tag === undefined) {
         user = user.user
       }
+      if (user.id === message.guild.owner.id) return message.channel.send(`You cannot warn the guild owner.`);
 
       var reason = args.splice(2).join(' ');
       if (!reason) return message.reply('You need to specify a reason');
@@ -42,7 +43,7 @@ module.exports = {
         .addField('By:', message.author.tag, true)
         .addField('Reason:', reason)
         .addField('Total Warnings', `${db.get(message.guild.id + '_' + user.id + '.warnings') || 0 + 1}`, true)
-      await logging(log, message, client);
+      logging(log, message, client);
 
       await message.channel.send(`**${user}** has been warned by **${message.author}**!`);
       var log2 = new Discord.MessageEmbed()
