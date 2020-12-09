@@ -32,6 +32,7 @@ module.exports = {
                     `**User:** ${user}\n` +
                     `**User Tag:** ${user.tag}\n` +
                     `**User ID:** ${user.id}\n\n` +
+                    `**Reason:** ${reason}\n\n` +
                     `**Moderator:** ${message.author}\n` +
                     `**Moderator Tag:** ${message.author.tag}\n` +
                     `**Moderator ID:** ${message.author.id}`);
