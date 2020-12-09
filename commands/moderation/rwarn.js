@@ -40,12 +40,28 @@ module.exports = {
       message.channel.send(`Removed \`1\` warnings from ${user}`);
 
       reasons = db.get(message.guild.id + '_' + user.id + '.warnReasons');
+      let warnReason = reasons[reasons.length - 1];
       reasons.splice((reasons.length - 1).toString(), 1);
       if (tw < 2) {
         db.delete(message.guild.id + '_' + user.id + '.warnReasons');
       } else {
         db.set(message.guild.id + '_' + user.id + '.warnReasons', reasons);
       }
+
+      warnReason = warnReason.split(/ +/g);
+      var index = warnReason.findIndex(result => result === '-');
+      var warnReason2 = '';
+      var i = 0;
+      warnReason.forEach(word => {
+          i++;
+          if (i >= (index + 1)) return;
+          if (i === 1) {
+            word = word[0].toUpperCase() + word.substring(1).toLowerCase();
+            warnReason2 = `${word}`;
+          } else {
+            warnReason2 += ` ${word}`;
+          }
+      });
 
       var log = new Discord.MessageEmbed()
         .setTimestamp()
@@ -54,14 +70,15 @@ module.exports = {
         .addField('User:', user, true)
         .addField('By:', message.author, true)
         .addField('Reason:', reason)
+        .addField('Warning Reason', warnReason, true)
         .addField('Total Warnings', db.get(message.guild.id + '_' + user.id + '.warnings') - 1, true)
-      await logging(log, message, client);
+      logging(log, message, client);
       if (db.get(message.guild.id + '_' + user.id + '.warnings') < 1)
         message.channel.send(`${user.username} does not have any warnings to remove.`);
       else if (db.get(message.guild.id + '_' + user.id + '.warnings') == 1)
         db.delete(message.guild.id + '_' + user.id + '.warnings');
       else {
-        db.subtract(message.guild.id + '_' + user.id + '.warnings', 1)
+        db.subtract(message.guild.id + '_' + user.id + '.warnings', 1);
       }
     }
     var debounce = false;
