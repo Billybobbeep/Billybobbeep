@@ -113,13 +113,13 @@ module.exports = async (client) => {
       res.redirect('/home');
     });
     app.get('/home', function(req, res) {
-      res.sendFile(__dirname + '/Public/index.html');
+      res.sendFile(__dirname + '/public/index.html');
     });
     app.get('/home/status', function(req, res) {
-      res.sendFile(__dirname + '/Public/status.html');
+      res.sendFile(__dirname + '/public/status.html');
     });
     app.get('/home/analytics', (req, res) => {
-      res.sendFile(__dirname + '/Public/analytics.html')
+      res.sendFile(__dirname + '/public/analytics.html')
     });
     app.get('/contact/submit', (req, res) => {
       if (!req.query) res.render('general.ejs');
@@ -139,7 +139,7 @@ module.exports = async (client) => {
       res.render('success.ejs');
     });
     app.get('/discord/invite', function(req, res) {
-      fs.readFile('./Public/analytics/invites.json', 'utf8', function readFileCallback(err, data) {
+      fs.readFile('./public/analytics/invites.json', 'utf8', function readFileCallback(err, data) {
         if (err) {
           return;
         }
@@ -154,7 +154,7 @@ module.exports = async (client) => {
             'website': website + 1
           }]
           json = JSON.stringify(json)
-          fs.writeFile('./Public/analytics/invites.json', json, 'utf8', function() { })
+          fs.writeFile('./public/analytics/invites.json', json, 'utf8', function() { })
           res.redirect('https://discord.com/invite/qNJEj3s');
         } else {
           if (req.query.from === 'spoink' || req.query.from === 'tyler') {
@@ -167,7 +167,7 @@ module.exports = async (client) => {
               'website': data[0].website
             }]
             json = JSON.stringify(json)
-            fs.writeFile('./Public/analytics/invites.json', json, 'utf8', function() { })
+            fs.writeFile('./public/analytics/invites.json', json, 'utf8', function() { })
             res.redirect('https://discord.com/invite/qNJEj3s');
           }
             else if (req.query.from === 'stack') {
@@ -182,14 +182,14 @@ module.exports = async (client) => {
               'website': data[0].website
             }]
             json = JSON.stringify(json)
-            fs.writeFile('./Public/analytics/invites.json', json, 'utf8', function() { })
+            fs.writeFile('./public/analytics/invites.json', json, 'utf8', function() { })
             res.redirect('https://discord.com/invite/qNJEj3s');
           }
         }
       });
     });
     app.get('/terms', (req, res) => {
-      res.sendFile(__dirname + '/Public/terms.html');
+      res.sendFile(__dirname + '/public/terms.html');
     });
     app.post('/terms', (req, res) => {
       var users = new Set()
@@ -239,7 +239,7 @@ module.exports = async (client) => {
         res.json('An invalid API key was sent.')
       } else {
         res.status(404);
-        res.sendFile(__dirname + '/Public/error404.html');
+        res.sendFile(__dirname + '/public/error404.html');
       }
     });
 
