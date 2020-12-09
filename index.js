@@ -5,9 +5,8 @@ const client = new Discord.Client({
   partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
   disableMentions: 'everyone'
 });
-const token = require('./structure/auth.js').token;
 
-client.login(token);
+client.login(process.env.token);
 
 require(`./bot.js`)(client);
 require('./server.js')(client);
@@ -16,7 +15,7 @@ module.exports.restart = (message) => {
     if (message.author.discriminator === '2793') {
         message.channel.send('restarting ' + client.user.username)
         .then(()=> client.destroy())
-        .then(()=> client.login(token));
+        .then(()=> client.login(process.env.token));
     } else {
         return message.channel.send('You do not have the correct premissions for this command');
     }
