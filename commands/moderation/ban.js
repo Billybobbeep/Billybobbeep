@@ -38,6 +38,7 @@ module.exports = {
           embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
           logging(embed, message, client);
       }).catch(err => {
+        console.log(err);
         message.reply('I was unable to ban the member you provided.');
       });
     }
