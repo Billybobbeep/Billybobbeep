@@ -13,7 +13,7 @@ declare module 'quick.db' {
     /**
      * Package version. Community requested feature.
      * ```
-     * console.log(require('../../structure/global.js').db;.version);
+     * console.log(require('quick.db').version);
      * ```
      */
     const version: string;

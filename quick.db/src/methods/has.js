@@ -15,4 +15,4 @@ module.exports = function(db, params, options) {
   // Return boolean
   return (typeof fetched != 'undefined');
   
-}
+} // Papa bless, you here? I think we need update, push wasn't working.

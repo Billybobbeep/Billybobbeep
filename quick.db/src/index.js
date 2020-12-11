@@ -16,14 +16,10 @@ var methods = {
     delete: require('./methods/delete.js'),
     has: require('./methods/has.js'),
     all: require('./methods/all.js'),
-    type: require('./methods/type')
+    type: require('./methods/type'),
 }
 
 module.exports = {
-    /**
-     * Package version. Community requested feature.
-     * console.log(require('../../structure/global.js').db;.version);
-     */
     version: require('../package.json').version,
 
     /**
