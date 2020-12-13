@@ -13,9 +13,11 @@ module.exports = {
     async function warnCmd() {
       var user = message.mentions.users.first() || message.guild.members.cache.get(args[1])
       if (!user) return message.channel.send('Please specify a user to warn.');
+      if (!user.id || !user.tag) user = user.user;
 
       if (user.id === message.author.id) return message.channel.send('You cannot warn yourself.');
       if (user.bot) return message.channel.send(`Bots cannot be warned.`);
+      if (user.id === message.guild.owner.id) return message.channel.send('The server owner cannot be warned.');
 
       var member;
 
