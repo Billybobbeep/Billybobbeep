@@ -29,7 +29,7 @@ module.exports = {
           message.channel.send(`Changed **${user.tag}'s** nickname to ${nick}`);
       }
       catch(error) {
-          message.channel.send('I do not have the premissions to change this users nickname.');
+          message.channel.send('I do not have the permissions to change this users nickname.');
       }
     }
     var debounce = false;
@@ -43,7 +43,7 @@ module.exports = {
         debounce = true;
       }
       if (debounce === false) {
-        message.channel.send('You do not have the premissions to run this command.')
+        message.channel.send('You do not have the permissions to run this command.')
       }
     }
   }

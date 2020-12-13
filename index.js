@@ -19,6 +19,6 @@ module.exports.restart = (message) => {
         .then(()=> client.destroy())
         .then(()=> client.login(token));
     } else {
-        return message.channel.send('You do not have the correct premissions for this command');
+        return message.channel.send('You do not have the correct permissions for this command');
     }
 }

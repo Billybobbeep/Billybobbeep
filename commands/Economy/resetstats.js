@@ -11,7 +11,7 @@ module.exports = {
             if (!user) user = message.author;
             message.channel.send(`Are you sure you want to clear <@!${user.id}>'s stats?`).then(msg => reactions(message, msg, user, client));
         } else {
-            message.channel.send(`You do not have premission to use this command.`);
+            message.channel.send(`You do not have permission to use this command.`);
         }
     }
 }

@@ -7,7 +7,7 @@ module.exports = {
   catagory: 'moderation',
   usage: 'prefix [new-prefix]',
   execute (message, prefix, client) {
-    if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send('You need the `Administrator` premissions to run this command.');
+    if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send('You need the `Administrator` permissions to run this command.');
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     var newPrefix = args[1].toLowerCase();
     if (!newPrefix && db.get(message.guild.id + '.prefix') === '~') return message.channel.send('Please specify a prefix.');

@@ -11,7 +11,7 @@ module.exports = {
     function nonAdmin() {
       embed.setTitle('Billybobbeep | Setup Command')
       embed.setDescription(
-        'The billybobbeep setup command is used to set billy up in a new server.\nRequires the `Administrator` premissions.\n\n' +
+        'The billybobbeep setup command is used to set billy up in a new server.\nRequires the `Administrator` permissions.\n\n' +
         `Commands:\n` +
         `${prefix}setup muted [role]\n` +
         `*Sets up the muted role to use mute commands.*\n` +

@@ -7,7 +7,7 @@ module.exports = {
     execute(message, prefix, client) {
         const db = require('../../structure/global.js').db;
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
-        if (!message.member.hasPermission(['ADMINISTRATOR'])) return message.channel.send(`You need the \`Administrator\` premission to use this command.`);
+        if (!message.member.hasPermission(['ADMINISTRATOR'])) return message.channel.send(`You need the \`Administrator\` permission to use this command.`);
         if (db.get(message.guild.id + '.levelsEnabled') === false) return message.channel.send(`Levels have been disabled for this server.`);
         let user1 = message.guild.members.cache.get(args[1]);
         let user2 = message.guild.members.cache.get(args[2]);

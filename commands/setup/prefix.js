@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 
 module.exports = (message, db, prefix, args) => {
-  if (!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send('You need the `Administrator` premissions to run this command.')
+  if (!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send('You need the `Administrator` permissions to run this command.')
   if (!args[2] || args[2].toLowerCase() === 'help') {
     const embed = new Discord.MessageEmbed()
     .setTitle('Billybobbeep | Setup Command')
