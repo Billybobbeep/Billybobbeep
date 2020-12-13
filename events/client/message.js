@@ -1,5 +1,6 @@
 const configFile = require('../../structure/config.json');
 const db = require('../../structure/global.js').db;
+const { MessageEmbed } = require('discord.js');
 
 function redirect(message, client) {
     if (message.guild)
@@ -47,6 +48,18 @@ function handle(message, client) {
                     if (client.commands.get(command).bannedRoles.includes(r)) debounce = true;
                 });
                 if (debounce === true) return message.channel.send(`You cannot use that command on ${user.user}`);
+            }
+        }
+        if (message.guild && client.commands.get(command).catagory && client.commands.get(command).catagory === 'moderation') {
+            if (!message.guild.me.hasPermission('ADMINISTRATOR')) {
+                const embed = new MessageEmbed();
+                embed.setTitle('Invalid Permissions');
+                embed.setDescription('Unfortunately, this command requires `administrator` permissions to work correctly.');
+                embed.addField('Don\'t know how?', 'Go to **Server Settings**, **Roles** then find **billybobbeep** and make sure **administrator** is enabled.', false)
+                embed.setFooter(`${message.guild.name}`);
+                embed.setTimestamp();
+                embed.setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
+                return message.channel.send(embed);
             }
         }
         try {
