@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js')
+const { MessageEmbed } = require('discord.js');
 const db = require('../../structure/global.js').db;
 const configFile = require('../../structure/config.json');
 const embed = new MessageEmbed();
@@ -23,7 +23,13 @@ module.exports.add = async (guild, client) => {
         embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`)
         embed.setTimestamp()
         embed.setDescription(`Thank you for adding me to your server.\n\nThe default prefix is \`~\`, You can change the prefix with the command \`~prefix\`\n\nTo view the commands view \`~cmds\` and to customise the bot for your server feel free to check out \`~setup\``)
-        await channel.send(embed);
+        try {
+          setTimeout(() => {
+            channel.send(embed);
+          }, 300);
+        } catch {
+          console.error('Could not send welcome embed in ' + guild.name)
+        }
       }, 10000);
 
       var role;
