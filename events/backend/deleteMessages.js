@@ -23,15 +23,6 @@ module.exports = async (message, client) => {
   else
     attachments = '*This message did not contain any attachments.*';
 
-  let deleted;
-  message.guild.fetchAuditLogs().then(logs => {
-    let log = logs.entries
-      .filter(e => e.action === 'MESSAGE_DELETE')
-      .sort((a, b) => b.createdAt - a.createdAt)
-      .first()
-    deleted = log.executor.username + '#' + log.executor.discriminator;
-  });
-
   if (message.content.startsWith(prefix)) {
     command = true;
   } else {
@@ -52,7 +43,6 @@ module.exports = async (message, client) => {
     `>\n\n**Author:** ${message.author}` +
     '\n**Author Tag:** ' + message.author.tag +
     '\n**Author ID:** ' + message.author.id +
- //   '\n**Deleted By:** ' + deleted +
     '\n\n**Command:** ' + command +
     '\n**Pinned:** ' + pinned +
     `${attachments ? `\n**Attachments:\n** ${attachments}` : ''}`
