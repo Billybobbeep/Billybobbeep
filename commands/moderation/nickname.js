@@ -18,8 +18,12 @@ module.exports = {
       let nick = args.slice(2).join(' ');
       let member = message.guild.members.cache.get(user.id);
       if (!nick) {
-      await member.setNickname('')
-      return message.channel.send('Removed **' + user.tag + '\'s** nickname.')
+        try {
+          await member.setNickname('');
+          return message.channel.send('Removed **' + user.tag + '\'s** nickname.');
+        } catch {
+          message.channel.send('I do not have the permissions to change this users nickname.');
+        }
       }
       if (user.tag === undefined) {
       user = user.user
@@ -27,8 +31,7 @@ module.exports = {
       try {
           await member.setNickname(nick);
           message.channel.send(`Changed **${user.tag}'s** nickname to ${nick}`);
-      }
-      catch(error) {
+      } catch {
           message.channel.send('I do not have the permissions to change this users nickname.');
       }
     }
