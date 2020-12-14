@@ -12,7 +12,7 @@ function redirect(message, client) {
         require('../backend/reactions.js')(message);
     else {
         if (message.guild) {
-            require('../backend/deletingMessages.js')(message, client);
+            require('../backend/inviteLinks.js')(message, client);
             require('../backend/levelling.js')(message, client);
             require('../commands/counting.js').execute(message, client);
             require('../commands/talk2billy').execute(message);
