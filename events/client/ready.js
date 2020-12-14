@@ -1,11 +1,10 @@
 module.exports = (client) => {
     let activities = [`~help`, `Version ${require('../../package.json').version}`];
-    //let activities = [`Billianist and proud`];
-      i = 0;
+    i = 0;
     setInterval(() => {
       client.user.setActivity(`${activities[i++ % activities.length]}`, {type: 'LISTENING'});
     }, 10000);
-
+    console.log(`Total Guilds: ${client.guilds.cache.size}\nTotal Members: ${client.users.cache.size}`)
     require('../backend/timeOut.js')(client);
 }
 

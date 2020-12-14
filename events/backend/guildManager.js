@@ -59,7 +59,14 @@ module.exports.add = async (guild, client) => {
 
 module.exports.remove = (guild, client) => {
   if (db.get(guild.id)) db.delete(guild.id);
-              
+
+  db.fetchAll().forEach(data => {
+    if (data.id.split('_').length < 1) return;
+    if (data.id.split('_')[1] === guild.id) {
+      db.delete(data.id)
+    }
+  });
+
   const embed = new MessageEmbed()
     .setTitle('Guild Removed')
     .setDescription(
