@@ -13,7 +13,7 @@ module.exports = async (message, client) => {
   embed.setTitle(`Billybobbeep | Invite Links`);
   embed.setTimestamp();
   embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
-  let inviteLinks = db.get(message.guild.id + '.inviteLinks') || true;
+  let inviteLinks = db.get(message.guild.id + '.inviteLinks') || false;
   if (inviteLinks === false) return;
 
   if (message.content.toLowerCase().includes('discord.gg') || message.content.toLowerCase().includes('discord.com/invite')) {

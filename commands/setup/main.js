@@ -38,61 +38,50 @@ module.exports = {
       if (message.content.toLowerCase().startsWith(prefix + 'setup logging')) {
         redirect = require('./loggingChannel.js');
         redirect(message, db);
-      }
-      if (message.content.toLowerCase().startsWith(prefix + 'setup muted')) {
+      } else if (message.content.toLowerCase().startsWith(prefix + 'setup muted')) {
         redirect = require('./mutedRole.js');
         redirect(message, db);
-      }
-      if (message.content.toLowerCase().startsWith(prefix + 'setup mod')) {
+      } else if (message.content.toLowerCase().startsWith(prefix + 'setup mod')) {
         redirect = require('./modRole.js');
         redirect(message, db);
-      }
-      if (message.content.toLowerCase().startsWith(prefix + 'setup embed')) {
+      } else if (message.content.toLowerCase().startsWith(prefix + 'setup embed')) {
         redirect = require('./embedColor.js');
         redirect(message, db);
-      }
-      if (message.content.toLowerCase().startsWith(prefix + 'setup clean')) {
+      } else if (message.content.toLowerCase().startsWith(prefix + 'setup clean')) {
         redirect = require('./cleanFilter.js');
         redirect(message, db);
-      }
-      if (message.content.toLowerCase().startsWith(prefix + 'setup lvlchannel')) {
+      } else if (message.content.toLowerCase().startsWith(prefix + 'setup lvlchannel')) {
         redirect = require('./levelChannel.js');
         redirect(message, db);
-      }
-      if (message.content.toLowerCase().startsWith(prefix + 'setup lvlrole')) {
+      } else if (message.content.toLowerCase().startsWith(prefix + 'setup lvlrole')) {
         redirect = require('./levelRoles.js');
         redirect(message, db);
-      }
-      if (message.content.toLowerCase().startsWith(prefix + 'setup welcomechannel')) {
+      } else if (message.content.toLowerCase().startsWith(prefix + 'setup welcomechannel')) {
         redirect = require('./welcomeChannel.js');
         redirect(message, db);
-      }
-      if (message.content.toLowerCase().startsWith(prefix + 'setup auto')) {
+      } else if (message.content.toLowerCase().startsWith(prefix + 'setup auto')) {
         redirect = require('./autoRole.js');
         redirect(message, db);
-      }
-      if (message.content.toLowerCase().startsWith(prefix + 'setup lvls') || message.content.toLowerCase().startsWith(prefix + 'setup levels')) {
+      } else if (message.content.toLowerCase().startsWith(prefix + 'setup lvls') || message.content.toLowerCase().startsWith(prefix + 'setup levels')) {
         redirect = require('./lvlEn.js');
         redirect(message, db);
-      }
-      if (message.content.toLowerCase().startsWith(prefix + 'setup prefix')) {
+      } else if (message.content.toLowerCase().startsWith(prefix + 'setup prefix')) {
         redirect = require('./prefix.js')
         redirect(message, db, prefix, args)
-      }
-      if (message.content.toLowerCase().startsWith(prefix + 'setup serverstats') || args[1].toLowerCase() === 'ss') {
+      } else if (message.content.toLowerCase().startsWith(prefix + 'setup serverstats') || args[1].toLowerCase() === 'ss') {
         redirect = require('./serverStats.js')
         redirect(message, db, prefix, args)
-      }
-      if (message.content.toLowerCase().startsWith(prefix + 'setup serverstatstext') || args[1].toLowerCase() === 'sst') {
+      } else if (message.content.toLowerCase().startsWith(prefix + 'setup serverstatstext') || args[1].toLowerCase() === 'sst') {
         redirect = require('./serverStatsText.js')
         redirect(message, db, prefix, args)
-      }
-      if (message.content.toLowerCase().startsWith(prefix + 'setup talk')) {
+      } else if (message.content.toLowerCase().startsWith(prefix + 'setup talk')) {
         redirect = require('./talk2billy.js');
         redirect(message, db);
-      }
-      if (message.content.toLowerCase().startsWith(prefix + 'setup economy')) {
+      } else if (message.content.toLowerCase().startsWith(prefix + 'setup economy')) {
         redirect = require('./economy.js');
+        redirect(message, db);
+      } else if (message.content.toLowerCase().startsWith(prefix + 'setup invite')) {
+        redirect = require('./inviteLinks.js');
         redirect(message, db);
       }
     }
@@ -120,7 +109,7 @@ module.exports = {
       }
     }
 
-    if (!message.member.hasPermission("ADMINISTRATOR")) {
+    if (!message.member.hasPermission('ADMINISTRATOR')) {
       nonAdmin()
     } else {
       isAdmin()
@@ -184,12 +173,13 @@ module.exports = {
     function PageOne() {
       embed.setTitle('Setup | Page One')
       embed.setDescription(
-        `${prefix}setup clean\n` + "Prevent Billy sending explicit content.\n\n" +
-        `${prefix}setup embed\n` + "Changes the default color of the embeds.\n\n" +
-        `${prefix}setup logging\n` + "Setup a logging channel.\n\n" +
-        `${prefix}setup muted\n` + "Set up a muted role.\n\n" +
-        `${prefix}setup mod [role]\n` + `Set up a moderators role for moderators to use moderator commands.\n\n` +
-        `${prefix}setup prefix\n` + "Change the default prefix.")
+        `${prefix}setup clean\n` + 'Prevent Billy sending explicit content.\n\n' +
+        `${prefix}setup embed\n` + 'Changes the default color of the embeds.\n\n' +
+        `${prefix}setup logging\n` + 'Setup a logging channel.\n\n' +
+        `${prefix}setup muted\n` + 'Set up a muted role.\n\n' +
+        `${prefix}setup mod [role]\n` + 'Set up a moderators role for moderators to use moderator commands.\n\n' +
+        `${prefix}setup prefix\n` + 'Change the default prefix.\n\n' +
+        `${prefix}setup invites\n` + 'Delete invite links')
       embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
       embed.setFooter(`TIP: Press the arrows to move between pages.`);
       msg.edit(embed)
@@ -198,11 +188,11 @@ module.exports = {
     function PageTwo() {
       embed.setTitle('Setup | Page Two')
       embed.setDescription(
-        `${prefix}setup lvlChannel\n` + "Set up a levelling channel.\n\n" +
-        `${prefix}setup lvlRole\n` + "Sets up a level roles.\n\n" +
-        `${prefix}setup welcomeChannel\n` + "Set up a channel to welcome new members & log members leaving.\n\n" +
-        `${prefix}setup auto\n` + "Set up a auto role.\n\n" +
-        `${prefix}setup talk\n` + "Set up a talk to billy channel.")
+        `${prefix}setup lvlChannel\n` + 'Set up a levelling channel.\n\n' +
+        `${prefix}setup lvlRole\n` + 'Sets up a level roles.\n\n' +
+        `${prefix}setup welcomeChannel\n` + 'Set up a channel to welcome new members & log members leaving.\n\n' +
+        `${prefix}setup auto\n` + 'Set up a auto role.\n\n' +
+        `${prefix}setup talk\n` + 'Set up a talk to billy channel.')
       embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
       embed.setFooter(`TIP: Press the arrows to move between pages.`);
       msg.edit(embed)
@@ -211,8 +201,8 @@ module.exports = {
     function PageThree() {
       embed.setTitle('Setup | Page Three')
       embed.setDescription(
-        `${prefix}setup levels\n` + "Turn levelling on or off.\n\n" +
-        `${prefix}setup economy\n` + "Turn economic commands on or off.\n\n")
+        `${prefix}setup levels\n` + 'Turn levelling on or off.\n\n' +
+        `${prefix}setup economy\n` + 'Turn economic commands on or off.\n\n')
       embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
       embed.setFooter(`TIP: Press the arrows to move between pages.`);
       msg.edit(embed)
@@ -221,8 +211,8 @@ module.exports = {
     function PageFour() {
       embed.setTitle('Setup | Page Four')
       embed.setDescription(
-        `${prefix}setup serverstats\n` + "Set up a server stats channel.\n\n" +
-        `${prefix}setup serverstatstext\n` + "Change the text for the server stats channel.\n\n")
+        `${prefix}setup serverstats\n` + 'Set up a server stats channel.\n\n' +
+        `${prefix}setup serverstatstext\n` + 'Change the text for the server stats channel.\n\n')
       embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
       embed.setFooter(`TIP: Press the arrows to move between pages.`);
       msg.edit(embed)
