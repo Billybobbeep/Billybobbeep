@@ -28,7 +28,7 @@ module.exports = (message, db) => {
         if (!db.get(message.guild.id + '.inviteLinks')) {
             message.channel.send('I will no longer ignore invite links.');
         } else {
-            message.channel.send('This feature was already turned on.');
+            message.channel.send('This feature is already turned on.');
         }
     } else {
         message.channel.send('Invalid arguments provided');
