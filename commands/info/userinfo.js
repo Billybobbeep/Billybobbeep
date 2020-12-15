@@ -24,6 +24,7 @@ module.exports = {
             else if (user.presence.activities.length <1) game = 'None'; //If the user is not playing a game.
             return game;
         }
+
         let x = Date.now() - user.createdAt; //When the user created their account.
         let y = Date.now() - message.guild.members.cache.get(user.id).joinedAt; //When the user joined the server.
         let created = Math.floor(x / 86400000); //5 digits-zero
