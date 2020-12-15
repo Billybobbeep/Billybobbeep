@@ -193,10 +193,8 @@ module.exports.rank = async function(message, avatar, username, discriminator, c
     if (this.data.progressBar.rounded) {
         // bg
         ctx.fillStyle = this.data.progressBar.track.color;
-        ctx.arc(257 + 18.5, 147.5 + 18.5 + 36.25, 18.5, 1.5 * Math.PI, 0.5 * Math.PI, true);
         ctx.fill();
         ctx.fillRect(257 + 18.5, 147.5 + 36.25, 615 - 18.5, 37.5);
-        ctx.arc(257 + 615, 147.5 + 18.5 + 36.25, 18.75, 1.5 * Math.PI, 0.5 * Math.PI, false);
         ctx.fill();
 
         ctx.beginPath();
@@ -212,10 +210,8 @@ module.exports.rank = async function(message, avatar, username, discriminator, c
         }
 
         // progress bar
-        ctx.arc(257 + 18.5, 147.5 + 18.5 + 36.25, 18.5, 1.5 * Math.PI, 0.5 * Math.PI, true);
         ctx.fill();
         ctx.fillRect(257 + 18.5, 147.5 + 36.25, calculateProgress(), 37.5);
-        ctx.arc(257 + 18.5 + calculateProgress(), 147.5 + 18.5 + 36.25, 18.75, 1.5 * Math.PI, 0.5 * Math.PI, false);
         ctx.fill();
     } else {
 
