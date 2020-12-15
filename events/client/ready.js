@@ -6,6 +6,7 @@ module.exports = (client) => {
     }, 10000);
     console.log(`Total Guilds: ${client.guilds.cache.size}\nTotal Members: ${client.users.cache.size}`)
     require('../backend/timeOut.js')(client);
+    require('../backend/voteManager.js')(client);
 }
 
 module.exports.reconnecting = (client) => {
