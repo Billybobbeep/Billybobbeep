@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const embed = new Discord.MessageEmbed();
 const logging = require('../../utils/functions.js').logging;
 
-module.exports.add = (guild, client) => {
+module.exports.add = (guild, user, client) => {
     guild.fetchAuditLogs()
     .then(logs => {
         let ban = logs.entries
@@ -31,7 +31,7 @@ module.exports.add = (guild, client) => {
     });
 }
 
-module.exports.remove = (guild, client) => {
+module.exports.remove = (guild, user, client) => {
     setTimeout(() => {
         guild.fetchAuditLogs()
         .then(logs => {
@@ -45,13 +45,11 @@ module.exports.remove = (guild, client) => {
             .sort((a, b) => b.createdAt - a.createdAt)
             .first();
 
-            if (!pb) pb.reason = 'No Reason was provided.';
-
             embed.setTitle('User Unbanned');
             embed.setDescription(
             `**User Tag:** ${ban.target.tag}\n` +
             `**User ID:** ${ban.target.id}\n\n` +
-            `**Banned For:** ${pb.reason || 'No reason was provided.'}\n\n` +
+            `**Banned For:** ${pb.reason ? pb.reason.toString() : 'No reason was provided.'}\n\n` +
             `**Moderator:** ${ban.executor}\n` +
             `**Moderator Tag:** ${ban.executor.tag}\n` +
             `**Moderator ID:** ${ban.executor.id}`
