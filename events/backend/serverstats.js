@@ -8,10 +8,10 @@ module.exports = (member, client) => {
     bots: db.get(member.guild.id + '.serverStats.botNo'),
     serverID: member.guild.id
   }
-     
+  
   if (!countChannel.total || !countChannel.member || !countChannel.bots) return;
-  var tu = db.set(member.guild.id + '.serverStats.totalNoText') || 'Total Users:'
-  var tm = db.set(member.guild.id + '.serverStats.memberNoText') || 'Members:';
+  var tu = db.get(member.guild.id + '.serverStats.totalNoText') || 'Total Users:'
+  var tm = db.get(member.guild.id + '.serverStats.memberNoText') || 'Members:';
   var tb = db.get(member.guild.id + '.serverStats.botNoText') || 'Bots:';
   try {
       client.channels.cache.get(countChannel.total).setName(`${tu} ${member.guild.memberCount}`);
