@@ -6,24 +6,44 @@ module.exports = () => {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         autoIndex: false,
-        poolSize: 5,
         connectTimeoutMS: 10000,
-        family: 4
+        family: 4,
+        server: { 
+            auto_reconnect: true,
+            reconnectTries: Number.MAX_VALUE,
+            reconnectInterval: 1000,
+        }
       };
 
     //Connect to mongoDB
-    mongoose.connect('mongodb://localhost/billybobbeep', dbOptions);
+    function connect() {
+        mongoose.connect('mongodb://localhost/billybobbeep', dbOptions);
+    }
+    connect();
     mongoose.set('useFindAndModify', false);
     mongoose.Promise = global.Promise;
 
     //Event listeners
-    mongoose.connection.once('open', function() {
+    mongoose.connection.once('connecting', function() {
+        console.log(chalk.blue('Connecting to MongoDb'));
+    });
+    mongoose.connection.once('connected', function() {
         console.log(chalk.green('Connected to MongoDb'));
     });
     mongoose.connection.on('error', function(error) {
         console.log(chalk.red(error));
     });
+    mongoose.connection.on('disconnect', () => {
+        console.log(chalk.red('MongoDb connection as been lost'));
+    });
     mongoose.connection.on('disconnected', () => {
-        console.warn('MongoDb connection lost');
+        console.log(chalk.red('MongoDb connection as been lost'));
+        connect()
+    });
+    mongoose.connection.on('reconnected', () => {
+        console.log(chalk.green('MongoDb has reconnected'));
+    });
+    mongoose.connection.on('reconnected', () => {
+        console.log(chalk.green('MongoDb is reconnecting'));
     });
 }
