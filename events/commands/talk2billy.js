@@ -15,9 +15,11 @@ module.exports = {
       if (message.channel.id !== talk2billy) return;
       let msg = message.content.toLowerCase();
       if (message.attachments.size < 1) {
-        const response = await fetch('http://billybobbeep.tyler2p.repl.co/api/QCZCCgUy9UfxdHowD35ueM/chatbot?message=' + args.join('%20').replace(' ', '%20') + '&punc=yes&cap=yes');
-        const text = await response.text();
-        message.channel.send(text.split('"').join(''));
+        const response = await fetch(`http://api.brainshop.ai/get?${require('../../structure/auth.js').api_bid}&key=${require('../../structure/auth.js').api_key}&uid=[uid]&msg=` + args.join('%20').replace(' ', '%20'));
+        console.log(`http://api.brainshop.ai/get?bid=${require('../../structure/auth.js').api_bid}&key=${require('../../structure/auth.js').api_key}&uid=${message.author.id}&msg=` + encodeURIComponent(args.join(' ')));
+        const text = await response.json();
+        console.log(text)
+        message.channel.send(text.cnt ? text.cnt : (text.status.errorType).replace('bad_request,', 'Bad request, '));
       } else {
         var table = ['Whale', 'Racoon', 'Kangaroo', 'Koala', 'Birb', 'Fox', 'Panda', 'Cat', 'Dog']
         var res = Math.floor(Math.random() * table.length)
