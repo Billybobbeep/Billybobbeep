@@ -5,7 +5,7 @@
 - Billy is build for/around **Squiddies.** [(discord.gg/qNJEj3s)](https://www.discord.gg/qNJEj3s)
 - Billy was scripted by: **Spoink#2793**
 
-# Version Control
+# Version
 - **Discord.js** : v12.3.1
 - **Bot Version** : v2.0.0
 - **Node JS** : v12.18.3
@@ -25,3 +25,6 @@
 
 - Name:
     * wibbleywobbley♡#1564
+
+# Licence
+Please read [our licence](https://github.com/Tyler2P/Billybobbeep/blob/master/LICENCE) before using this source code.
