@@ -5,19 +5,11 @@ module.exports = () => {
     const dbOptions = {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        autoIndex: false,
-        connectTimeoutMS: 10000,
-        family: 4,
-        server: { 
-            auto_reconnect: true,
-            reconnectTries: Number.MAX_VALUE,
-            reconnectInterval: 1000,
-        }
-      };
+    };
 
     //Connect to mongoDB
     function connect() {
-        mongoose.connect('mongodb://localhost/billybobbeep', dbOptions);
+        mongoose.connect('mongodb+srv://Tyler2P:<password>@billybobbeep.c05sy.mongodb.net/billybobbeep', dbOptions);
     }
     connect();
     mongoose.set('useFindAndModify', false);

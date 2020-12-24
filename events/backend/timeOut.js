@@ -104,7 +104,7 @@ function mute(db, client) {
         user =  result[1];
         time = result[2];
         
-        guild = client.guilds.cache.get(guild)
+        guild = client.guilds.cache.get(guild);
         let member = guild.members.cache.get(user);
         if (!member) return remove(MM, db, guild, user, time, client);
         if (member.roles.cache.find(role => role.id === db.get(guild.id + '.mutedRole'))) {

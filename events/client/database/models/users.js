@@ -18,6 +18,6 @@ const userSchema = new mongoose.Schema({
     job_xp: Number,
     //-Bank
     bank_balance: Number
-});
+}, { strict: false });
 
 module.exports = mongoose.model('users', userSchema);

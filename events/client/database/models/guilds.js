@@ -5,8 +5,6 @@ const guildSchema = new mongoose.Schema({
     //Roles
     modRole: String,
     mutedRole: String,
-    //-Level Roles
-    
     //Channels
     welcomeChannel: String,
     talkToBilly: String,
@@ -19,6 +17,6 @@ const guildSchema = new mongoose.Schema({
     serverstats_totalNoText: String,
     serverstats_memberNoText: String,
     serverstats_botNoText: String,
-});
+}, { strict: false });
 
 module.exports = mongoose.model('guilds', guildSchema);
