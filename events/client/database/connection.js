@@ -9,7 +9,7 @@ module.exports = () => {
 
     //Connect to mongoDB
     function connect() {
-        mongoose.connect('mongodb+srv://Tyler2P:<password>@billybobbeep.c05sy.mongodb.net/billybobbeep', dbOptions);
+        mongoose.connect(require('../../../structure/auth.js').mongoDb, dbOptions);
     }
     connect();
     mongoose.set('useFindAndModify', false);
@@ -29,7 +29,7 @@ module.exports = () => {
         console.log(chalk.red('MongoDb connection as been lost'));
     });
     mongoose.connection.on('disconnected', () => {
-        console.log(chalk.red('MongoDb connection as been lost'));
+        console.log(chalk.red('MongoDb connection failed'));
         connect()
     });
     mongoose.connection.on('reconnected', () => {
