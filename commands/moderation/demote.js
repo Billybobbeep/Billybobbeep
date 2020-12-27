@@ -10,8 +10,8 @@ module.exports = {
         const embed2 = new Discord.MessageEmbed();
         const guildData = require('../../events/client/database/models/guilds.js');
         const logging = require('../../utils/functions.js').logging;
-        async function demoteCmd() {
-            guildData.findOne({ guildId: message.guild.id }).then(result => {
+        function demoteCmd() {
+            guildData.findOne({ guildId: message.guild.id }).then(async result => {
                 let args = message.content.slice(prefix.length).trim().split(/ +/g);
                 let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
                 if (!user) return message.channel.send('Please mention a user to demote');
@@ -44,7 +44,7 @@ module.exports = {
                     embed2.addField('Guild:', message.guild.name);
                     embed2.setColor(`${result.embedColor || '#447ba1'}`);
                     try {
-                        await user.send(embed2)
+                        await user.send(embed2);
                     } catch {
                         message.channel.send(`The user was not notified as they do not have their DMs turned on`);
                     }

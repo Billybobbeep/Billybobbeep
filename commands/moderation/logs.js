@@ -42,7 +42,7 @@ function help_embed(message, prefix) {
 }
 function filter_flags(client, message, prefix) {
     let args = message.content.toLowerCase().split(/ +/g)
-    if (!message.content.toLowerCase().includes('--filter-logs')) return message.channel.send(`Logs flag was not found, please make sure you have included all of the required flags);
+    if (!message.content.toLowerCase().includes('--filter-logs')) return message.channel.send(`Logs flag was not found, please make sure you have included all of the required flags`);
     if (message.content.toLowerCase().includes('--filter-logs-bot')) {
 
     } else if (message.content.toLowerCase().includes('--filter-logs-audit')) {
@@ -51,7 +51,7 @@ function filter_flags(client, message, prefix) {
         if (actions !== 'Not filtered') {
             actions = actions.substring(16);
             actions = actions.replace('-', ' ').replace('-', ' ').split(/ +/g);
-            if (actions[2] && actions[2].includes('-')) return message.channel.send(`You can only select up to \`3\` actions to filter);
+            if (actions[2] && actions[2].includes('-')) return message.channel.send(`You can only select up to \`3\` actions to filter`);
             
             let FA = '';
             let SA = '';
@@ -75,9 +75,9 @@ function filter_flags(client, message, prefix) {
                     FA = 'MEMBER_KICK';
                 else if (actions[0].toLowerCase() === 'bot_add')
                     FA = 'BOT_ADD';
-                else return message.channel.send(`**${actions[0][0].toUpperCase() + actions[0].substring(1).toLowerCase()}** is not a valid action);
+                else return message.channel.send(`**${actions[0][0].toUpperCase() + actions[0].substring(1).toLowerCase()}** is not a valid action`);
             } else 
-                return message.channel.send(`You have entered an invalid action)
+                return message.channel.send('You have entered an invalid action')
             
             if (actions[1]) {
                 if (actions[1].toLowerCase() === 'emoji_update')
@@ -98,7 +98,7 @@ function filter_flags(client, message, prefix) {
                     SA = 'MEMBER_KICK';
                 else if (actions[1].toLowerCase() === 'bot_add')
                     SA = 'BOT_ADD';
-                else return message.channel.send(`**${actions[1][0].toUpperCase() + actions[1].substring(1).toLowerCase()}** is not a valid action);
+                else return message.channel.send(`**${actions[1][0].toUpperCase() + actions[1].substring(1).toLowerCase()}** is not a valid action`);
             }
 
             if (actions[2]) {
@@ -120,12 +120,12 @@ function filter_flags(client, message, prefix) {
                     TA = 'MEMBER_KICK';
                 else if (actions[2].toLowerCase() === 'bot_add')
                     TA = 'BOT_ADD';
-                else return message.channel.send(`**${actions[2][0].toUpperCase() + actions[2].substring(1).toLowerCase()}** is not a valid action);
+                else return message.channel.send(`**${actions[2][0].toUpperCase() + actions[2].substring(1).toLowerCase()}** is not a valid action`);
             }
 
-            if (FA !== '' && SA !== '') if (FA === SA) return message.channel.send(`You have filtered the action **${actions[0]}** more than once.\nYou can only filter an action once);
-            if (SA !== '' && TA !== '') if (SA === TA) return message.channel.send(`You have filtered the action **${actions[1]}** more than once.\nYou can only filter an action once);
-            if (TA !== '' && FA !== '') if (TA === FA) return message.channel.send(`You have filtered the action **${actions[2]}** more than once.\nYou can only filter an action once);
+            if (FA !== '' && SA !== '') if (FA === SA) return message.channel.send(`You have filtered the action **${actions[0]}** more than once.\nYou can only filter an action once`);
+            if (SA !== '' && TA !== '') if (SA === TA) return message.channel.send(`You have filtered the action **${actions[1]}** more than once.\nYou can only filter an action once`);
+            if (TA !== '' && FA !== '') if (TA === FA) return message.channel.send(`You have filtered the action **${actions[2]}** more than once.\nYou can only filter an action once`);
 
             audit_logs(client, message, (FA || undefined), (SA || undefined), (TA || undefined), 'filter-action');
             debounce = true;
@@ -135,7 +135,7 @@ function filter_flags(client, message, prefix) {
         if (actions !== 'Not filtered') {
             actions = actions.substring(16);
             actions = actions.replace('-', ' ').replace('-', ' ').split(/ +/g);
-            if (actions[2] && actions[2].includes('-')) return message.channel.send(`You can only select up to \`3\` actions to remove);
+            if (actions[2] && actions[2].includes('-')) return message.channel.send(`You can only select up to \`3\` actions to remove`);
             
             let FA = '';
             let SA = '';
@@ -159,9 +159,9 @@ function filter_flags(client, message, prefix) {
                     FA = 'MEMBER_KICK';
                 else if (actions[0].toLowerCase() === 'bot_add')
                     FA = 'BOT_ADD';
-                else return message.channel.send(`**${actions[0][0].toUpperCase() + actions[0].substring(1).toLowerCase()}** is not a valid action);
+                else return message.channel.send(`**${actions[0][0].toUpperCase() + actions[0].substring(1).toLowerCase()}** is not a valid action`);
             } else 
-                return message.channel.send(`You have entered an invalid action)
+                return message.channel.send(`You have entered an invalid action`);
             
             if (actions[1]) {
                 if (actions[1].toLowerCase() === 'emoji_update')
@@ -182,7 +182,7 @@ function filter_flags(client, message, prefix) {
                     SA = 'MEMBER_KICK';
                 else if (actions[1].toLowerCase() === 'bot_add')
                     SA = 'BOT_ADD';
-                else return message.channel.send(`**${actions[1][0].toUpperCase() + actions[1].substring(1).toLowerCase()}** is not a valid action);
+                else return message.channel.send(`**${actions[1][0].toUpperCase() + actions[1].substring(1).toLowerCase()}** is not a valid action`);
             }
 
             if (actions[2]) {
@@ -204,17 +204,17 @@ function filter_flags(client, message, prefix) {
                     TA = 'MEMBER_KICK';
                 else if (actions[2].toLowerCase() === 'bot_add')
                     TA = 'BOT_ADD';
-                else return message.channel.send(`**${actions[2][0].toUpperCase() + actions[2].substring(1).toLowerCase()}** is not a valid action);
+                else return message.channel.send(`**${actions[2][0].toUpperCase() + actions[2].substring(1).toLowerCase()}** is not a valid action`);
             }
 
-            if (FA !== '' && SA !== '') if (FA === SA) return message.channel.send(`You have filtered the action **${actions[0]}** more than once.\nYou can only filter an action once);
-            if (SA !== '' && TA !== '') if (SA === TA) return message.channel.send(`You have filtered the action **${actions[1]}** more than once.\nYou can only filter an action once);
-            if (TA !== '' && FA !== '') if (TA === FA) return message.channel.send(`You have filtered the action **${actions[2]}** more than once.\nYou can only filter an action once);
+            if (FA !== '' && SA !== '') if (FA === SA) return message.channel.send(`You have filtered the action **${actions[0]}** more than once.\nYou can only filter an action once`);
+            if (SA !== '' && TA !== '') if (SA === TA) return message.channel.send(`You have filtered the action **${actions[1]}** more than once.\nYou can only filter an action once`);
+            if (TA !== '' && FA !== '') if (TA === FA) return message.channel.send(`You have filtered the action **${actions[2]}** more than once.\nYou can only filter an action once`);
 
             audit_logs(client, message, (FA || undefined), (SA || undefined), (TA || undefined), 'remove-action');
             debounce = true;
         }
-    } else return message.channel.send(`You have entered an invalid log flag);
+    } else return message.channel.send('You have entered an invalid log flag');
 
     if (debounce === false)
         audit_logs(client, message, undefined, undefined, undefined, 'none');
@@ -246,7 +246,7 @@ module.exports = {
     usage: 'logs help',
     execute (message, prefix, client) {
         if (message.member.roles.cache.has(['VIEW_AUDIT_LOG', 'ADMINISTRATOR']) && !message.member.roles.cache.find(role => role.id === guildData.findOne({ guildId: message.guild.id }).then(result => result.modRole)))
-            return message.channel.send('You must have the `View Audit Log` permissions to use this command')
+            return message.channel.send('You must have the `View Audit Log` permissions to use this command');
         else handling(client, message);
     }
 }
