@@ -16,7 +16,7 @@ module.exports = {
       if (!user.id || !user.tag) user = user.user;
 
       if (user.id === message.author.id) return message.channel.send('You cannot warn yourself');
-      if (user.bot) return message.channel.send(`Bots cannot be warned.`);
+      if (user.bot) return message.channel.send(`Bots cannot be warned);
       if (user.id === message.guild.owner.id) return message.channel.send('The server owner cannot be warned');
 
       var member;
@@ -32,7 +32,7 @@ module.exports = {
       if (user.tag === undefined) {
         user = user.user
       }
-      if (user.id === message.guild.owner.id) return message.channel.send(`You cannot warn the guild owner.`);
+      if (user.id === message.guild.owner.id) return message.channel.send(`You cannot warn the guild owner);
 
       var reason = args.splice(2).join(' ');
       if (!reason) return message.reply('You need to specify a reason');

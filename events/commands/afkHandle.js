@@ -56,7 +56,7 @@ module.exports = {
       }
 
       if (user.bot) {
-        embed.setDescription(`You cannot mark bots as AFK.`);
+        embed.setDescription(`You cannot mark bots as AFK);
         return message.channel.send(embed)
       } else {
         if (use === false) return;

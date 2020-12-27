@@ -10,7 +10,7 @@ module.exports = {
     const guildMemberData = require('../../events/client/database/models/guildMembers.js');
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     let user = message.guild.members.cache.get(args[1]) || message.mentions.users.first();
-    if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send('You do not have permission to run this command')
+    if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send('You do not have permission to run this command');
 
     if (!user)
       return message.channel.send('Please mention a user');
@@ -21,7 +21,7 @@ module.exports = {
 
     if (args[2] === 'all' || args[2] === 'a') {
       guildData.findOneAndUpdate({  })
-      return message.channel.send(`Cleared ${user}'s levels.`)
+      return message.channel.send(`Cleared ${user}'s levels`)
     }
     if (isNaN(args[2])) 
       return message.channel.send('You have entered an invalid amount');

@@ -20,7 +20,7 @@ module.exports = async (message, client) => {
     message.delete()
     embed.setDescription(`We have detected that you have sent a discord invite link, if you would like to share your server inside of our server please contact one of the owners.\n` +
       `Detected Invite Link: **${message.content.toLowerCase()}**\n` +
-      `Thanks, the ${message.guild.name} Staff Team.`);
+      `Thanks, the ${message.guild.name} Staff Team);
     await message.author.send(embed);
 
     embed.setTitle(`Invite Link Detected`);

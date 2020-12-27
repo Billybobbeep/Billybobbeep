@@ -19,14 +19,14 @@ module.exports = {
                     user = user.user;
                 }
                 if (!result.modRole)
-                    return message.channel.send(`You need to set up a mod role in your server to use this command.`);
+                    return message.channel.send(`You need to set up a mod role in your server to use this command);
 
                 let reason = args.slice(2).join(' ');
                 if (!reason) return message.channel.send('You need to provide a reason');
                 let member = message.guild.members.cache.get(user.id);
 
                 if (member.roles.cache.get(result.modRole)) {
-                    await member.roles.remove(result.modRole).catch(() => { return message.channel.send(`I do not have permissions to run this command.`) });
+                    await member.roles.remove(result.modRole).catch(() => { return message.channel.send(`I do not have permissions to run this command) });
                     message.channel.send(`<@!${user.id}> was demoted by <@!${message.author.id}>`)
                     embed.setTitle('User Demoted');
                     embed.setDescription(
@@ -46,11 +46,11 @@ module.exports = {
                     try {
                         await user.send(embed2)
                     } catch {
-                        message.channel.send(`The user was not notified as they do not have their DMs turned on.`)
+                        message.channel.send(`The user was not notified as they do not have their DMs turned on)
                     }
                     logging(embed, message, client);
                 } else
-                    message.channel.send(`<@!${user.id}> is not a moderator.`);
+                    message.channel.send(`<@!${user.id}> is not a moderator);
             });
         }
 

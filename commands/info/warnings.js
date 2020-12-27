@@ -16,12 +16,12 @@ module.exports = {
     if (user.username === undefined) {
       user = user.user
     }
-    if (user.bot) return message.channel.send(`Bots cannot be warned.`);
+    if (user.bot) return message.channel.send(`Bots cannot be warned);
     if (tWarnings > 0) {
       reasons = reasons = db.get(message.guild.id + '_' + user.id + '.warnReasons');
       if (!reasons) return noWarnings()
       const embed = new Discord.MessageEmbed()
-      .setDescription(`${user.username} has **${tWarnings}** warnings.`)
+      .setDescription(`${user.username} has **${tWarnings}** warnings)
       .setTimestamp()
       .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
       .setAuthor(`${user.tag}`)
@@ -36,7 +36,7 @@ module.exports = {
 
     function noWarnings() {
       const embed = new Discord.MessageEmbed()
-      .setDescription(`${user.username} has **${tWarnings}** warnings.`)
+      .setDescription(`${user.username} has **${tWarnings}** warnings)
       .setTimestamp()
       .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
       .setAuthor(`${user.tag}`)

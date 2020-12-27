@@ -14,9 +14,9 @@ module.exports = {
     let user = message.guild.members.cache.get(args[1]) || message.mentions.users.first() || message.author
     let currLvl = db.get(message.guild.id + '_' + user.id + '.level') || 0;
 
-    if (db.get(message.guild.id + '.levelsEnabled') === false) return message.channel.send(`Levels have been disabled for this server.`);
+    if (db.get(message.guild.id + '.levelsEnabled') === false) return message.channel.send(`Levels have been disabled for this server);
     if (user.username === undefined) user = user.user
-    if (user.bot) return message.channeol.send(`Bots cannot have levels.`);
+    if (user.bot) return message.channeol.send(`Bots cannot have levels);
     const embed = new Discord.MessageEmbed();
     embed.setTitle('Billybobbeep | Levelling System');
     embed.setTimestamp();

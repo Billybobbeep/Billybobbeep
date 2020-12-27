@@ -101,7 +101,7 @@ module.exports = {
             `To see more information on any setup commnd use the command:\n\`${prefix}setup [command] help\``
           )
           embed.setColor(embedColor)
-          embed.setFooter(`TIP: Press the arrows to move between pages.`);
+          embed.setFooter(`TIP: Press the arrows to move between pages);
           msg = await message.channel.send(embed)
           await msg.react('◀');
           await msg.react('▶');
@@ -183,7 +183,7 @@ module.exports = {
           `${prefix}setup prefix\n` + 'Change the default prefix.\n\n' +
           `${prefix}setup invites\n` + 'Delete invite links')
         embed.setColor(embedColor)
-        embed.setFooter(`TIP: Press the arrows to move between pages.`);
+        embed.setFooter(`TIP: Press the arrows to move between pages);
         msg.edit(embed)
       }
 
@@ -196,7 +196,7 @@ module.exports = {
           `${prefix}setup auto\n` + 'Set up a auto role.\n\n' +
           `${prefix}setup talk\n` + 'Set up a talk to billy channel')
         embed.setColor(embedColor)
-        embed.setFooter(`TIP: Press the arrows to move between pages.`);
+        embed.setFooter(`TIP: Press the arrows to move between pages);
         msg.edit(embed)
       }
 
@@ -206,7 +206,7 @@ module.exports = {
           `${prefix}setup levels\n` + 'Turn levelling on or off.\n\n' +
           `${prefix}setup economy\n` + 'Turn economic commands on or off.\n\n')
         embed.setColor(embedColor)
-        embed.setFooter(`TIP: Press the arrows to move between pages.`);
+        embed.setFooter(`TIP: Press the arrows to move between pages);
         msg.edit(embed)
       }
 
@@ -216,7 +216,7 @@ module.exports = {
           `${prefix}setup serverstats\n` + 'Set up a server stats channel.\n\n' +
           `${prefix}setup serverstatstext\n` + 'Change the text for the server stats channel.\n\n')
         embed.setColor(embedColor)
-        embed.setFooter(`TIP: Press the arrows to move between pages.`);
+        embed.setFooter(`TIP: Press the arrows to move between pages);
         msg.edit(embed)
       }
     });

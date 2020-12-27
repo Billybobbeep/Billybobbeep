@@ -68,12 +68,12 @@ function application(db, client) {
 
         if (failed === true) {
             embed.addField(`Overall Score:`, `Failed`);
-            embed.setFooter(`Feel free to apply again in 2 minutes.`);
+            embed.setFooter(`Feel free to apply again in 2 minutes);
             db.delete(user.id + '.jobs.awaiting');
             db.set(user.id + '.jobs.lastApplied', Date.now());
         } else {
             embed.addField(`Overall Score:`, `Passed`);
-            embed.setFooter(`Feel free to start working when you're ready.`)
+            embed.setFooter(`Feel free to start working when you're ready)
             db.delete(user.id + '.jobs.awaiting');
             db.set(user.id + '.jobs.lastApplied', Date.now());
             db.set(user.id + `.jobs.job`, job.toLowerCase());

@@ -11,7 +11,7 @@ module.exports = {
             if (!user) user = message.author;
             message.channel.send(`Are you sure you want to clear <@!${user.id}>'s stats?`).then(msg => reactions(message, msg, user, client));
         } else {
-            message.channel.send(`You do not have permission to use this command.`);
+            message.channel.send(`You do not have permission to use this command);
         }
     }
 }
@@ -35,13 +35,13 @@ async function reactions(message, msg, user, client) {
 
         if (reaction.emoji.id === tick.id) {
             msg.reactions.removeAll();
-            message.channel.send(`${tick} Successfully cleared <@!${user.id}>'s stats.`);
+            message.channel.send(`${tick} Successfully cleared <@!${user.id}>'s stats);
             db.delete(user.id + `.economy`);
             db.delete(user.id + `.bank`);
             db.delete(user.id + `.jobs`);
         } else {
             msg.reactions.removeAll();
-            message.channel.send(`${cross} Cancelled prompt.`);
+            message.channel.send(`${cross} Cancelled prompt);
         }
     }).catch(() => {
         msg.reactions.removeAll();

@@ -23,7 +23,7 @@ module.exports = async (message, client) => {
 
   if (!db.get(message.author.id + '.dmed')) {
     embed = new Discord.MessageEmbed();
-    embed.setDescription(`Please remember that all messages sent to billybobbeep are recorded.`);
+    embed.setDescription(`Please remember that all messages sent to billybobbeep are recorded);
     embed.setAuthor(message.author.username, message.author.displayAvatarURL());
     embed.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
     message.channel.send(embed);

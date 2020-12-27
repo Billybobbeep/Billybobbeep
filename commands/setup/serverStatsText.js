@@ -7,7 +7,7 @@ module.exports = (message, prefix, embedColor) => {
       if (message.content.includes('help') || !args[2]) {
         const embed = new Discord.MessageEmbed()
         .setTitle('Billybobbeep | Setup Command')
-        .setDescription(`With this command you can setup a server stats channel text.\n\n**Usage:**\n\`${prefix}setup ${args[1]} total [text]\` - Set up a total members server stat text.\n\`${prefix}setup ${args[1]} member [text]\` - Set up a total humans server stat text.\n\`${prefix}setup ${args[1]} bot [text]\` - Set up a total bot server stat text.`)
+        .setDescription(`With this command you can setup a server stats channel text.\n\n**Usage:**\n\`${prefix}setup ${args[1]} total [text]\` - Set up a total members server stat text.\n\`${prefix}setup ${args[1]} member [text]\` - Set up a total humans server stat text.\n\`${prefix}setup ${args[1]} bot [text]\` - Set up a total bot server stat text)
         .setColor(`${embedColor}`)
         message.channel.send(embed);
       } else if (message.content.includes('reset')) {

@@ -17,7 +17,7 @@ module.exports = {
 
         const embed3 = new Discord.MessageEmbed();
         embed3.setTitle('Question: 2/3');
-        embed3.setDescription(`What is your bug?\n*Please provide as much detail as you can*.`);
+        embed3.setDescription(`What is your bug?\n*Please provide as much detail as you can*);
         embed3.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
 
         const embed4 = new Discord.MessageEmbed();
@@ -80,7 +80,7 @@ module.exports = {
 
                 const embed5 = new Discord.MessageEmbed();
                 embed5.setTitle('Results');
-                embed5.setDescription(`Please react to the message below if you are happy with the information below.`);
+                embed5.setDescription(`Please react to the message below if you are happy with the information below);
                 embed5.addField(`Subject`, subject.toString().replace('~', ''));
                 embed5.addField(`Message`, body.toString().replace('~', ''));
                 embed5.addField(`Additional Information`, extra.toString().replace('~', ''));
@@ -112,14 +112,14 @@ module.exports = {
                     if (reaction.emoji.id === tick.id) {
                         let channel = client.channels.cache.get('734398769831084102');
                         channel.send(embed6).catch(e => console.error(e));
-                        message.channel.send(`Your report has been sent.`);
+                        message.channel.send(`Your report has been sent);
                     } else {
-                        message.channel.send(`Your report has not been sent.`);
+                        message.channel.send(`Your report has not been sent);
                     }
                 });
             }
         } else {
-            let msg = await message.author.send(embed).catch(() => { return message.channel.send(`You must have your DMs turned on to use this command.`) });
+            let msg = await message.author.send(embed).catch(() => { return message.channel.send(`You must have your DMs turned on to use this command) });
             message.channel.send(`<@!${message.author.id}> Check your DMs!`);
             if (msg && msg.id) {
                 await msg.react('🐞');
@@ -169,7 +169,7 @@ module.exports = {
 
                 const embed5 = new Discord.MessageEmbed();
                 embed5.setTitle('Results');
-                embed5.setDescription(`Please react to the message below if you are happy with the information below.`);
+                embed5.setDescription(`Please react to the message below if you are happy with the information below);
                 embed5.addField(`Subject`, subject.toString().replace('~', ''));
                 embed5.addField(`Message`, body.toString().replace('~', ''));
                 embed5.addField(`Additional Information`, extra.toString().replace('~', ''));
@@ -201,9 +201,9 @@ module.exports = {
                     if (reaction.emoji.id === tick.id) {
                         let channel = client.channels.cache.get('734398769831084102');
                         channel.send(embed6).catch(e => console.error(e));
-                        message.author.send(`Your report has been sent.`);
+                        message.author.send(`Your report has been sent);
                     } else {
-                        message.author.send(`Your report has not been sent.`);
+                        message.author.send(`Your report has not been sent);
                     }
                 });
             }

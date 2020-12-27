@@ -40,7 +40,7 @@ function handle(message, client) {
     if (!message.content.startsWith(prefix)) return;
     if (client.commands.get(command)) {
         if (client.commands.get(command).guildOnly && client.commands.get(command).guildOnly === true && !message.guild) return;
-        if (client.commands.get(command).bannedUsers && client.commands.get(command).bannedUsers.includes(message.author.id)) return message.channel.send(`You have been banned from using this command.`);
+        if (client.commands.get(command).bannedUsers && client.commands.get(command).bannedUsers.includes(message.author.id)) return message.channel.send(`You have been banned from using this command);
         if (client.commands.get(command).bannedRoles) {
             if (message.mentions.users.first()) {
                 let user = message.guild.members.cache.get(message.mentions.users.first().id);

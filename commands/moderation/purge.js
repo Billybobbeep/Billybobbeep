@@ -20,7 +20,7 @@ module.exports = {
         message.channel.bulkDelete(args[1])
           .then(messages => {
             async function main() {
-              msg1 = await message.channel.send(`Deleted ${messages.size}/${args[0]} messages.`);
+              msg1 = await message.channel.send(`Deleted ${messages.size}/${args[0]} messages);
 
               const embed = new Discord.MessageEmbed()
               embed.setTitle(`Purged Messages`)
