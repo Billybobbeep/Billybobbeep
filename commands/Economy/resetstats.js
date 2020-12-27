@@ -1,6 +1,6 @@
 module.exports = {
     name: 'resetstats',
-    description: 'Delete a users stats.',
+    description: 'Delete a users stats',
     catagory: 'economy',
     usage: 'apply [user]',
     guildOnly: true,

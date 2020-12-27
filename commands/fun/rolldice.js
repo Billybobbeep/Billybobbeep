@@ -1,6 +1,6 @@
 module.exports = {
     name: 'rolldice',
-    description: 'Roll a rice and recieve a number.',
+    description: 'Roll a rice and recieve a number',
     alias: ['roll', 'dice'],
     catagory: 'generator',
     execute (message, prefix, client) {

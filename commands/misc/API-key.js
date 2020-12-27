@@ -1,6 +1,6 @@
 module.exports = {
     name: 'generate key',
-    description: 'Generate a billybobbeep API key.',
+    description: 'Generate a billybobbeep API key',
     catagory: 'none',
     guildOnly: true,
     execute (message, prefix, client) {
@@ -20,7 +20,7 @@ module.exports = {
         }
 
         function generateKey() {
-            var string = 'You have requested a Billybobbeep API key.'
+            var string = 'You have requested a Billybobbeep API key'
             var result = makeid(22)
             try {
                 message.author.send(string + `\nYour API key is: \`${result}\``).then(() => {
@@ -29,7 +29,7 @@ module.exports = {
             } catch {
                 return message.channel.send(`You cannot use this command when your DMs are turned off.`);
             }
-            message.channel.send('Check your DMs.');
+            message.channel.send('Check your DMs');
         }
 
         function generate() {

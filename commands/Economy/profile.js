@@ -1,6 +1,6 @@
 module.exports = {
     name: 'profile',
-    description: 'View a users economy profile.',
+    description: 'View a users economy profile',
     alias: ['stats'],
     catagory: 'economy',
     execute(message, prefix, client) {

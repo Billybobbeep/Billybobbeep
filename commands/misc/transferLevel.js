@@ -1,6 +1,6 @@
 module.exports = {
     name: 'transferlvl',
-    description: 'Transfer a users level to another user.',
+    description: 'Transfer a users level to another user',
     alias: ['tl', 'translvl', 'transferlevel'],
     guildOnly: true,
     catagory: 'other',

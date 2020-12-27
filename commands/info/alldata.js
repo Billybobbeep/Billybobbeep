@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const embed = new MessageEmbed();
 module.exports = {
   name: 'alldata',
-  description: 'View all of the data from the database.',
+  description: 'View all of the data from the database',
   guildOnly: true,
   disabled: true,
   async execute (message, prefix, client) {

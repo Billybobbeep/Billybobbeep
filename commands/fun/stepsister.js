@@ -3,7 +3,7 @@ const configFile = require('../../structure/config.json');
 
 module.exports = {
   name: 'stepsister',
-  description: ';).',
+  description: ';)',
   guildOnly: true,
   catagory: 'general',
   explicit: true,

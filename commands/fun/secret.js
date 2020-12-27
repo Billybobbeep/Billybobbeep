@@ -53,7 +53,7 @@ var letters = {
   Z : 'Z',
   ' ' : ' ',
   '/' : '/',
-  '.' : '.',
+  '' : '',
   ',' : ',',
   '{' : '{',
   '[' : '[',
@@ -96,7 +96,7 @@ var letters = {
 
 module.exports = {
   name: 'secret',
-  description: 'Repeat what you just said in a spoiler format.',
+  description: 'Repeat what you just said in a spoiler format',
   catagory: 'generator',
   usage: 'secret [message]',
   guildOnly: true,
@@ -104,7 +104,7 @@ module.exports = {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     var lines = ['', ''];
     
-    if (!args) return message.channel.send('You must specify a message to send.');
+    if (!args) return message.channel.send('You must specify a message to send');
 
     for (var i = 0; i < args.slice(1).join(' ').length; i++) {
       var letter = args.slice(1).join(' ')[i];
@@ -113,8 +113,8 @@ module.exports = {
       }
   }
     
-    //if (message.content.includes('||')) return message.channel.send('You cannot include `||` in your message.');
-    //if (message.content.toLowerCase().includes('/spoiler')) return message.chanel.send('You cannot include `/spoiler` in your message.');
+    //if (message.content.includes('||')) return message.channel.send('You cannot include `||` in your message');
+    //if (message.content.toLowerCase().includes('/spoiler')) return message.chanel.send('You cannot include `/spoiler` in your message');
     /*args.forEach(a => {
       if (a.toLowerCase() === '/spoiler') {
         args.splice(args.indexOf('/spoiler', 1));

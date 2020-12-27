@@ -1,6 +1,6 @@
 module.exports = {
   name: 'currlvl',
-  description: 'View a users current level.',
+  description: 'View a users current level',
   alias: ['cl', 'xp', 'cx'],
   catagory: 'info',
   usage: 'currlvl [user]',

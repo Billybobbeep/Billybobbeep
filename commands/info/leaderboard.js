@@ -2,7 +2,7 @@ const all = require('../../quick.db/src/methods/all.js');
 
 module.exports = {
     name: 'leaderboard',
-    description: 'View this servers level leaderboard.',
+    description: 'View this servers level leaderboard',
     guildOnly: true,
     catagory: 'info',
     async execute(message, prefix, client) {
@@ -80,7 +80,7 @@ module.exports = {
 
             let msg = await message.channel.send(embed);
             if (msg.embeds[0].fields.length < 1) {
-                msg.embeds[0].description = 'No data avalable.';
+                msg.embeds[0].description = 'No data avalable';
                 msg.embeds[0].fields = [];
                 msg.edit(msg.embeds[0]);
             }

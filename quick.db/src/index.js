@@ -363,7 +363,7 @@ function arbitrate(method, params, tableName) {
     ).run();
 
     // Verify Options
-    if (params.ops.target && params.ops.target[0] === '.')
+    if (params.ops.target && params.ops.target[0] === '')
         params.ops.target = params.ops.target.slice(1); // Remove prefix if necessary
     if (params.data && params.data === Infinity)
         throw new TypeError(
@@ -382,10 +382,10 @@ function arbitrate(method, params, tableName) {
     }
 
     // Translate dot notation from keys
-    if (params.id && params.id.includes('.')) {
-        let unparsed = params.id.split('.');
+    if (params.id && params.id.includes('')) {
+        let unparsed = params.id.split('');
         params.id = unparsed.shift();
-        params.ops.target = unparsed.join('.');
+        params.ops.target = unparsed.join('');
     }
 
     // Run & Return Method

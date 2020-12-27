@@ -8,7 +8,7 @@ module.exports = {
   explit: true,
   execute (message, prefix, client) {
     if (db.get(message.guild.id + '.cleanFilter')) {
-      return message.channel.send('This server has been set to clean content only.');
+      return message.channel.send('This server has been set to clean content only');
     }
       message.channel.send("suck\nmy");
       message.channel.send("dick\nyou");

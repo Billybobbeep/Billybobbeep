@@ -1,6 +1,6 @@
 module.exports = {
   name: 'help',
-  description: 'Get help whilst using billybobbeep.',
+  description: 'Get help whilst using billybobbeep',
   execute(message, prefix, client) {
     const Discord = require('discord.js');
     const db = require('../structure/global.js').db;

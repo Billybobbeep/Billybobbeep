@@ -2,7 +2,7 @@ const { lifeguard } = require('./jobRequirements.js');
 
 module.exports = {
   name: 'work',
-  description: 'Go to work.',
+  description: 'Go to work',
   catagory: 'economy',
   guildOnly: true,
   async execute (message, prefix, client) {
@@ -16,7 +16,7 @@ module.exports = {
     embed.setAuthor(`${message.author.username}`, message.author.displayAvatarURL());
     embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
 
-    if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server.')
+    if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server')
 
     var workAmt = undefined;
     var cooldown = info.global.work.cooldown;

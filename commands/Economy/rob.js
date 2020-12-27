@@ -1,6 +1,6 @@
 module.exports = {
     name: 'rob',
-    description: 'Take money from other users without them noticing.',
+    description: 'Take money from other users without them noticing',
     guildOnly: true,
     execute(message, prefix, client) {
         const db = require('quick.db');
@@ -20,7 +20,7 @@ module.exports = {
         if (db.get(message.author.id + '.economy.balance') < 50) return message.channel.send(`You need \`$50+\` to rob a user.`);
         
         let robAmt = db.get(user.id + '.economy.balance') / 2 - 30;
-        if (robAmt.toString().split('.')[1] && robAmt.toString().split('.')[1].length > 2) robAmt = robAmt.toString().split('.')[0] + '.' + robAmt.toString().split('.')[1][0] + robAmt.toString().split('.')[1][1];
+        if (robAmt.toString().split('')[1] && robAmt.toString().split('')[1].length > 2) robAmt = robAmt.toString().split('')[0] + '' + robAmt.toString().split('')[1][0] + robAmt.toString().split('')[1][1];
         let chance = [true, false, true, true, true, true, false];
         const ran = () => {
             let a = Math.round(Math.random() * chance.length);
@@ -30,7 +30,7 @@ module.exports = {
         if (able) {
             db.add(message.author.id + '.economy.balance', robAmt);
             db.subtract(user.id + '.economy.balance', robAmt);
-            let ranMes = ['You have slipped out **$(money)** from (user)\'s wallet!', '(user) dropped **$(money)** and you have put it into your wallet.', '(user) caught you trying to take their wallet and handed it to you anyway. **+$(money)**'];
+            let ranMes = ['You have slipped out **$(money)** from (user)\'s wallet!', '(user) dropped **$(money)** and you have put it into your wallet', '(user) caught you trying to take their wallet and handed it to you anyway. **+$(money)**'];
             const ranMessFunc = () => {
                 let a = Math.round(Math.random() * ranMes.length);
                 return ranMes[a];

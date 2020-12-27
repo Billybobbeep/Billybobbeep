@@ -1,6 +1,6 @@
 module.exports = {
   name: 'info',
-  description: 'View billybobbeep\'s info.',
+  description: 'View billybobbeep\'s info',
   guildOnly: true,
   execute(message, prefix, client) {
     const { MessageEmbed, version: djsversion } = require('discord.js');

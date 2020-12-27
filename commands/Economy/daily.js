@@ -1,6 +1,6 @@
 module.exports = {
   name: 'daily',
-  description: 'Collect your daily reward.',
+  description: 'Collect your daily reward',
   catagory: 'economy',
   guildOnly: true,
   execute (message, prefix, client) {
@@ -11,7 +11,7 @@ module.exports = {
     embed.setFooter(`${message.author.username}`);
     embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
 
-    if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server.');
+    if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server');
 
     var dailyAmt = 10;
     var cooldown = 8.64e+7;

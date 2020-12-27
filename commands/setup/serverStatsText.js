@@ -36,7 +36,7 @@ module.exports = (message, prefix, embedColor) => {
             }
         }
       } else {
-        if (!isNaN(args[2])) return message.channel.send('You have not specified a stat type.');
+        if (!isNaN(args[2])) return message.channel.send('You have not specified a stat type');
         if (args[2] === 'bot' || args[2] === 'total' || args[2] === 'member' || args[2] === 'b' || args[2] === 't' || args[2] === 'm') {
         
             var text = args.slice(3).join(' ');
@@ -51,7 +51,7 @@ module.exports = (message, prefix, embedColor) => {
 
             message.channel.send(`Your ${args[2].replace('t', 'total').replace('b', 'bot').replace('m', 'member')} stat channel text has been set up as ${text}`);
         
-        } else message.channel.send('You have provided an invalid stat type.');
+        } else message.channel.send('You have provided an invalid stat type');
       }
     });
 }

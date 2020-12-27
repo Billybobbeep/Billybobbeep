@@ -1,6 +1,6 @@
 module.exports = {
     name: 'Anti Spam',
-    description: 'A backend module to monitor all messages sent.',
+    description: 'A backend module to monitor all messages sent',
     execute (message) {
         /**
          * @param {string} message
@@ -99,7 +99,7 @@ module.exports = {
             if (!logging) {
                 db.set(message.guild.id + '.antiSpam.enabled', false);
                 embed.setTitle('Spam detection has been turned off');
-                embed.setDescription('Spam detection has been turned off due to an invalid logging channel.\nTo set this back up please view the setup manuals.');
+                embed.setDescription('Spam detection has been turned off due to an invalid logging channel.\nTo set this back up please view the setup manuals');
                 embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
                 return message.channel.send(embed);
             }
@@ -142,7 +142,7 @@ module.exports = {
 
         function warnUser(message) {
             cache.warnedUsers.push(message.author.id);
-            db.push(message.guild.id + '_' + message.author.id + '.warnReasons', 'Automatic Warning - Spamming.');
+            db.push(message.guild.id + '_' + message.author.id + '.warnReasons', 'Automatic Warning - Spamming');
             db.add(message.guild.id + '_' + message.author.id + '.warnings', 1);
             log(message, 'warn');
         }

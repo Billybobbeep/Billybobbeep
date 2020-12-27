@@ -1,6 +1,6 @@
 module.exports = {
   name: 'warn',
-  description: 'Warn a user.',
+  description: 'Warn a user',
   guildOnly: true,
   catagory: 'moderation',
   usage: 'warn [user] [reason]',
@@ -12,12 +12,12 @@ module.exports = {
   
     async function warnCmd() {
       var user = message.mentions.users.first() || message.guild.members.cache.get(args[1])
-      if (!user) return message.channel.send('Please specify a user to warn.');
+      if (!user) return message.channel.send('Please specify a user to warn');
       if (!user.id || !user.tag) user = user.user;
 
-      if (user.id === message.author.id) return message.channel.send('You cannot warn yourself.');
+      if (user.id === message.author.id) return message.channel.send('You cannot warn yourself');
       if (user.bot) return message.channel.send(`Bots cannot be warned.`);
-      if (user.id === message.guild.owner.id) return message.channel.send('The server owner cannot be warned.');
+      if (user.id === message.guild.owner.id) return message.channel.send('The server owner cannot be warned');
 
       var member;
 
@@ -26,9 +26,9 @@ module.exports = {
       } catch (err) {
         member = null;
       }
-      if (member.user.bot) return message.channel.send('You cannot warn bots.')
+      if (member.user.bot) return message.channel.send('You cannot warn bots')
 
-      if (!member) return message.reply('That user is not in this server.');
+      if (!member) return message.reply('That user is not in this server');
       if (user.tag === undefined) {
         user = user.user
       }
@@ -40,7 +40,7 @@ module.exports = {
       var log = new Discord.MessageEmbed()
         .setTimestamp()
         .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-        .setTitle('User Warned.')
+        .setTitle('User Warned')
         .addField('User:', user.tag, true)
         .addField('By:', message.author.tag, true)
         .addField('Reason:', reason)
@@ -58,7 +58,7 @@ module.exports = {
       try {
         user.send(log2)
       } catch {
-        message.channel.send('The user has not been notfied as they do not have their DM\'s turned on.')
+        message.channel.send('The user has not been notfied as they do not have their DM\'s turned on')
       }
       db.add(message.guild.id + '_' + user.id + '.warnings', 1)
     }
@@ -74,7 +74,7 @@ module.exports = {
           debounce = true;
       } 
       if (debounce === false) {
-        message.channel.send('You do not have the permissions to run this command.')
+        message.channel.send('You do not have the permissions to run this command')
       }
     }
   }

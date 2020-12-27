@@ -3,7 +3,7 @@ const configFile = require('../../structure/config.json');
 
 module.exports = {
     name: 'avatar',
-    description: 'Announce a message in a different channel.',
+    description: 'Announce a message in a different channel',
     alias: ['pfp', 'myavatar'],
     catagory: 'info',
     usage: 'avatar [user]',

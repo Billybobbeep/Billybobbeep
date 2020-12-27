@@ -1,6 +1,6 @@
 module.exports = {
   name: 'setup',
-  description: 'Setup billybobbeep in your own server.',
+  description: 'Setup billybobbeep in your own server',
   guildOnly: true,
   execute (message, prefix, client) {
     const { MessageEmbed } = require('discord.js');
@@ -194,7 +194,7 @@ module.exports = {
           `${prefix}setup lvlRole\n` + 'Sets up a level roles.\n\n' +
           `${prefix}setup welcomeChannel\n` + 'Set up a channel to welcome new members & log members leaving.\n\n' +
           `${prefix}setup auto\n` + 'Set up a auto role.\n\n' +
-          `${prefix}setup talk\n` + 'Set up a talk to billy channel.')
+          `${prefix}setup talk\n` + 'Set up a talk to billy channel')
         embed.setColor(embedColor)
         embed.setFooter(`TIP: Press the arrows to move between pages.`);
         msg.edit(embed)

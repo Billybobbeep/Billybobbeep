@@ -1,6 +1,6 @@
 module.exports = {
     name: 'apply',
-    description: 'Apply for a job.',
+    description: 'Apply for a job',
     catagory: 'economy',
     usage: 'apply [job name]',
     guildOnly: true,
@@ -259,7 +259,7 @@ function application_process(message, job, client) {
     let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);
     
     embed.setDescription(`${tick} Successfully applied for the ${job} job!`);
-    embed.setAuthor('You will be DMed your application results soon.', message.author.displayAvatarURL());
+    embed.setAuthor('You will be DMed your application results soon', message.author.displayAvatarURL());
     embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
     message.channel.send(embed);
     db.push('awaiting', `${message.author.id}_${Date.now()}_${job}`);

@@ -1,6 +1,6 @@
 module.exports = {
     name: 'report',
-    description: 'Report errors & bugs.',
+    description: 'Report errors & bugs',
     catagory: 'other',
     async execute(message, prefix, client) {
         const Discord = require('discord.js');
@@ -23,7 +23,7 @@ module.exports = {
         const embed4 = new Discord.MessageEmbed();
         embed4.setTitle('Question: 3/3');
         embed4.setDescription(`Any additional information the moderator should know?`);
-        embed.setFooter('Say \'skip\' to skip this question.')
+        embed.setFooter('Say \'skip\' to skip this question')
         embed4.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
 
         var subject = '';
@@ -47,11 +47,11 @@ module.exports = {
                     max: 1,
                     time: 50000,
                 }).catch(() => {
-                    message.author.send('Time expired, please run this command again.');
+                    message.author.send('Time expired, please run this command again');
                 });
 
-                if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt.');
-                if (collected.first().content.toLowerCase() === 'skip' || collected.first().content.toLowerCase() === '~skip') message.author.send('This is a required question.');
+                if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt');
+                if (collected.first().content.toLowerCase() === 'skip' || collected.first().content.toLowerCase() === '~skip') message.author.send('This is a required question');
                 subject = collected.first().content;
                 message.channel.send(embed3);
 
@@ -59,10 +59,10 @@ module.exports = {
                     max: 1,
                     time: 50000,
                 }).catch(() => {
-                    message.author.send('Time expired, please run this command again.');
+                    message.author.send('Time expired, please run this command again');
                 });
-                if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt.');
-                if (collected.first().content.toLowerCase() === 'skip' || collected.first().content.toLowerCase() === '~skip') message.author.send('This is a required question.');
+                if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt');
+                if (collected.first().content.toLowerCase() === 'skip' || collected.first().content.toLowerCase() === '~skip') message.author.send('This is a required question');
                 body = collected.first().content;
                 message.channel.send(embed4);
 
@@ -70,9 +70,9 @@ module.exports = {
                     max: 1,
                     time: 50000
                 }).catch(() => {
-                    message.author.send('Time expired, please run this command again.');
+                    message.author.send('Time expired, please run this command again');
                 });
-                if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt.');
+                if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt');
 
                 if (collected.first().content.toLowerCase() === 'skip' || collected.first().content.toLowerCase() === '~skip')
                     extra = '*Question Skipped*';
@@ -136,11 +136,11 @@ module.exports = {
                     max: 1,
                     time: 50000,
                 }).catch(() => {
-                    message.author.send('Time expired, please run this command again.');
+                    message.author.send('Time expired, please run this command again');
                 });
 
-                if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt.');
-                if (collected.first().content.toLowerCase() === 'skip' || collected.first().content.toLowerCase() === '~skip') message.author.send('This is a required question.');
+                if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt');
+                if (collected.first().content.toLowerCase() === 'skip' || collected.first().content.toLowerCase() === '~skip') message.author.send('This is a required question');
                 subject = collected.first().content;
                 message.author.send(embed3);
 
@@ -148,10 +148,10 @@ module.exports = {
                     max: 1,
                     time: 50000,
                 }).catch(() => {
-                    message.author.send('Time expired, please run this command again.');
+                    message.author.send('Time expired, please run this command again');
                 });
-                if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt.');
-                if (collected.first().content.toLowerCase() === 'skip' || collected.first().content.toLowerCase() === '~skip') message.author.send('This is a required question.');
+                if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt');
+                if (collected.first().content.toLowerCase() === 'skip' || collected.first().content.toLowerCase() === '~skip') message.author.send('This is a required question');
                 body = collected.first().content;
                 message.author.send(embed4);
 
@@ -159,9 +159,9 @@ module.exports = {
                     max: 1,
                     time: 50000
                 }).catch(() => {
-                    message.author.send('Time expired, please run this command again.');
+                    message.author.send('Time expired, please run this command again');
                 });
-                if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt.');
+                if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt');
 
                 if (collected.first().content.toLowerCase() === 'skip' || collected.first().content.toLowerCase() === '~skip')
                     extra = '*Question Skipped*';

@@ -1,6 +1,6 @@
 module.exports = {
   name: 'unmute',
-  description: 'Unmute a member.',
+  description: 'Unmute a member',
   guildOnly: true,
   catagory: 'moderation',
   usage: 'unmute [user] [reason]',
@@ -16,16 +16,16 @@ module.exports = {
       let user = message.mentions.users.first() || message.guild.members.cache.get(args[1])
       let reason = args.slice(2).join(' ');
 
-      if (!db.get(message.guild.id + '.mutedRole')) return message.channel.send('Please setup a muted role in your server to use this command.')
-      if (!user) return message.channel.send('Please mention a user to mute.')
+      if (!db.get(message.guild.id + '.mutedRole')) return message.channel.send('Please setup a muted role in your server to use this command')
+      if (!user) return message.channel.send('Please mention a user to mute')
       let member = message.guild.members.cache.get(user.id);
       if (!member) return message.channel.send(`I could not find the member you provided.`);
       if (!member.roles.cache.find(r => r.id === db.get(message.guild.id + '.mutedRole'))) return message.channel.send(`<@!${user.id}> is not muted.`);
       if (user.bot) return message.channel.send(`You cannot mute bots.`);
-      if (!reason) return message.channel.send('Please specify a reason.');
+      if (!reason) return message.channel.send('Please specify a reason');
       
       member.roles.remove(message.guild.roles.cache.find(role => role.id === db.get(message.guild.id + '.mutedRole')));
-      message.channel.send('Successfully unmuted <@!' + user + '>.');
+      message.channel.send('Successfully unmuted <@!' + user + '>');
 
       embed1.setTimestamp()
       embed1.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
@@ -36,7 +36,7 @@ module.exports = {
       try {
         await user.send(embed1)
       } catch {
-        message.channel.send('The user has not been notfied as they do not have their DM\'s turned on.')
+        message.channel.send('The user has not been notfied as they do not have their DM\'s turned on')
       }
 
         embed2.setTitle('User Unmuted');
@@ -57,7 +57,7 @@ module.exports = {
           debounce = true;
       } 
       if (debounce === false) {
-        message.channel.send('You do not have the permissions to run this command.')
+        message.channel.send('You do not have the permissions to run this command')
       }
     }
   }

@@ -18,7 +18,7 @@ if (!args[2] || args[2].toLowerCase() === 'help') {
     }
     if (args[2].toLowerCase() === 'reset') {
         guildData.findOneAndUpdate({ guildId: message.guild.id }, { autoRole: '' }).then(() => {
-            return message.channel.send('Removed auto role from the database.');
+            return message.channel.send('Removed auto role from the database');
         });
     }
     let role = message.mentions.roles.first() || message.guild.roles.cache.get(args[2]);

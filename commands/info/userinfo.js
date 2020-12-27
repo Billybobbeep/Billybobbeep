@@ -4,14 +4,14 @@ const db = require('../../structure/global.js').db;
 
 module.exports = {
     name: 'userinfo',
-    description: 'View a users info.',
+    description: 'View a users info',
     catagory: 'info',
     guildOnly: true,
     execute (message, prefix, client) {
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]) || message.author;
         const moment = require('moment');
-        if (!user) return message.channel.send('Please specify a user.')
+        if (!user) return message.channel.send('Please specify a user')
         if (!user.avatarURL) user = user.user
         if (user.presence.status === 'dnd') user.presence.status = 'Do Not Disturb';
         if (user.presence.status === 'idle') user.presence.status = 'Idle';

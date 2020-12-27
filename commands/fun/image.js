@@ -4,7 +4,7 @@ const db = require('../../structure/global.js').db;
 
 module.exports = {
   name: 'image',
-  description: 'Generate a random image.',
+  description: 'Generate a random image',
   catagory: 'generator',
   guildOnly: true,
   execute (message, prefix, client) {
@@ -132,7 +132,7 @@ module.exports = {
     `https://cdn.discordapp.com/attachments/729336942998585346/754020109042974840/image0.jpg`]
 
     if (db.get(message.guild.id + '.cleanFilter')) {
-      return message.channel.send('This server has been set to clean content only.')
+      return message.channel.send('This server has been set to clean content only')
     }
 
     embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)

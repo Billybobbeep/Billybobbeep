@@ -1,6 +1,6 @@
 module.exports = {
   name: 'invite',
-  description: 'Generate a bot invite.',
+  description: 'Generate a bot invite',
   catagory: 'info',
   execute (message, prefix, client) {
     const Discord = require('discord.js');

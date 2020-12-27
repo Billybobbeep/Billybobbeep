@@ -36,7 +36,7 @@ function loginCheck(event) {
         return true;
     } else {
         event.preventDefault();
-        alert('Please make sure you have entered your username and tag.')
+        alert('Please make sure you have entered your username and tag')
         return false;
     }
 }

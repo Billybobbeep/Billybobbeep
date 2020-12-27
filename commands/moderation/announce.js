@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
-const db = require('../../structure/global.js').db;
+const guildData = require('../../events/client/database/models/guilds.js');
 const logging = require('../../utils/functions.js').logging;
 
 module.exports = {
   name: 'announce',
-  description: 'Announce a message in a different channel.',
+  description: 'Announce a message in a different channel',
   guildOnly: true,
   catagory: 'moderation',
   usage: 'announce',
@@ -13,7 +13,7 @@ module.exports = {
     const embed = new Discord.MessageEmbed()
     embed.setTitle(`Announcement Sent`)
     embed.setTimestamp()
-    embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
+    embed.setColor(`${guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor) || '#447ba1'}`)
     let filter = m => m.author.id === message.author.id;
     let q1 = new Discord.MessageCollector(message.channel, filter, {
         max: 1
@@ -27,7 +27,7 @@ module.exports = {
         q1.stop();
         let q2 = new Discord.MessageCollector(message.channel, filter, {
             max: 1
-        })
+        });
         q2.on('collect', async (message, col) => {
             channel.send(message.content);
             await message.react('✔');

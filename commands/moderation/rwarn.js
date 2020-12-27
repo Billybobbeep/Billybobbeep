@@ -1,6 +1,6 @@
 module.exports = {
   name: 'rwarn',
-  description: 'Remove a users last warning.',
+  description: 'Remove a users last warning',
   guildOnly: true,
   catagory: 'moderation',
   usage: 'rwarn [user] [reason]',
@@ -12,7 +12,7 @@ module.exports = {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     async function rwarnCmd() {
       var user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
-      if (!user) return message.channel.send('Please specify a user.');
+      if (!user) return message.channel.send('Please specify a user');
 
       if (user.id === message.author.id) return message.channel.send('You cannot remove your own warnings');
       if (user.bot) return message.channel.send(`Bots cannot be warned.`);
@@ -32,7 +32,7 @@ module.exports = {
         user = user.user
       }
 
-      if (!member) return message.reply('That user is not in this server.');
+      if (!member) return message.reply('That user is not in this server');
 
       var reason = args.splice(2).join(' ');
       let tw = db.get(message.guild.id + '_' + user.id + '.warnings')
@@ -92,7 +92,7 @@ module.exports = {
         debounce = true;
       }
       if (debounce === false) {
-        message.channel.send('You do not have the permissions to run this command.')
+        message.channel.send('You do not have the permissions to run this command')
       }
     }
   }

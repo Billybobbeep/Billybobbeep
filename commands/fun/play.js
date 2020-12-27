@@ -2,7 +2,7 @@ const ytdl = require('ytdl-core');
 
 module.exports = {
     name: 'play',
-    description: 'Play a song in a voice channel.',
+    description: 'Play a song in a voice channel',
     alias: ['stop', 'tts'],
     catagory: 'general',
     guildOnly: true,
@@ -11,7 +11,7 @@ module.exports = {
         if (message.content.startsWith(`${prefix}play`)) {
         const voiceChannel = message.member.voice.channel;
         if (!voiceChannel)
-        return message.channel.send('You need to be in a voice channel to run this command.');
+        return message.channel.send('You need to be in a voice channel to run this command');
         const permissions = voiceChannel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT'))
         return message.channel.send(
@@ -21,8 +21,8 @@ module.exports = {
         return message.channel.send(
             "I don't have permissions to speak in a voice channel"
         );
-        if (!args[1]) return message.channel.send('Please provide a youtube link to play.');
-        if (!args[1].toLowerCase().includes('you')) return message.channel.send('Please provide a valid youtube link.')
+        if (!args[1]) return message.channel.send('Please provide a youtube link to play');
+        if (!args[1].toLowerCase().includes('you')) return message.channel.send('Please provide a valid youtube link')
 
         var queue = []
 
@@ -72,7 +72,7 @@ module.exports = {
         }
 
     } else if (message.content.startsWith(`${prefix}stop`)) {
-    if (!message.member.voice.channel) return message.channel.send('You need to be in a voice channel to stop the song.');
+    if (!message.member.voice.channel) return message.channel.send('You need to be in a voice channel to stop the song');
     message.member.voice.channel.leave();
     } else if (message.content.startsWith(`${prefix}tts`)) {
         function connect(voiceChannel, text) {
@@ -116,16 +116,16 @@ module.exports = {
                 }
             });
         }
-        if (message.attachments.size > 0) return message.channel.send('You cannot send an attachment as a tts message.');
-        if (message.content.toLowerCase().includes('https://') || message.content.toLowerCase().includes('http://') || message.content.toLowerCase().includes('www.') || message.content.toLowerCase().includes('.com') || message.content.toLowerCase().includes('.co.uk')) return ('You cannot send a link as a tts message.');
-        if (!args[1]) return message.channel.send('Please provide a message to send.')
+        if (message.attachments.size > 0) return message.channel.send('You cannot send an attachment as a tts message');
+        if (message.content.toLowerCase().includes('https://') || message.content.toLowerCase().includes('http://') || message.content.toLowerCase().includes('www') || message.content.toLowerCase().includes('.com') || message.content.toLowerCase().includes('.co.uk')) return ('You cannot send a link as a tts message');
+        if (!args[1]) return message.channel.send('Please provide a message to send')
         const voiceChannel = message.member.voice.channel;
-        if (!voiceChannel) return message.channel.send('You need to be in a voice channel to run this command.');
+        if (!voiceChannel) return message.channel.send('You need to be in a voice channel to run this command');
         const permissions = voiceChannel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.channel.send('I don\'t have permissions to connect to a voice channel.');
+        if (!permissions.has('CONNECT')) return message.channel.send('I don\'t have permissions to connect to a voice channel');
         if (!permissions.has('SPEAK')) return message.channel.send('I don\'t have permissions to speak in a voice channel');
         let member = message.guild.members.cache.get(client.user.id);
-        if (member.voice.channel) return message.channel.send('You cannot send TTS messages whilst I am playing music in a voice channel.');
+        if (member.voice.channel) return message.channel.send('You cannot send TTS messages whilst I am playing music in a voice channel');
         message.react('🔊');
         connect(voiceChannel, args.slice(1).join(' '))
         }

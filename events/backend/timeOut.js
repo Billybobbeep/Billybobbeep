@@ -17,8 +17,8 @@ function database(db, client) {
         if (isNaN(data.ID)) return;
         let amt = db.get(data.ID + '.economy.balance');
         let newAmt;
-        if (amt && amt.toString().includes('.')) {
-            amt = amt.toString().split('.');
+        if (amt && amt.toString().includes('')) {
+            amt = amt.toString().split('');
             if (amt[1].length > 2) newAmt = [amt[0]];
             else return;
             newAmt.push(amt[1][0] + amt[1][1]);
@@ -27,8 +27,8 @@ function database(db, client) {
 
         amt = db.get(data.ID + '.bank.balance');
         newAmt = [];
-        if (amt && amt.toString().includes('.')) {
-            amt = amt.toString().split('.');
+        if (amt && amt.toString().includes('')) {
+            amt = amt.toString().split('');
             if (amt[1].length > 2) newAmt = [amt[0]];
             else return;
             newAmt.push(amt[1][0] + amt[1][1]);

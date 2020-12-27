@@ -4,7 +4,7 @@ const db = require('../../structure/global.js').db;
 
 module.exports = {
   name: 'giveaway',
-  description: 'Start a giveaway.',
+  description: 'Start a giveaway',
   catagory: 'other',
   usage: 'giveaway [time] [channel] [prize]',
   guildOnly: true,

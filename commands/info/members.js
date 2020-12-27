@@ -4,7 +4,7 @@ const db = require('../../structure/global.js').db;
 
 module.exports = {
     name: 'members',
-    description: 'View the member stats for the server.',
+    description: 'View the member stats for the server',
     catagory: 'info',
     guildOnly: true,
     execute (message, prefix, client) {

@@ -3,7 +3,7 @@ const db = require('../structure/global.js').db;
 
 module.exports = {
   name: 'credit',
-  description: 'View billybobbeep\'s credits.',
+  description: 'View billybobbeep\'s credits',
   aslias: ['credits'],
   execute (message, prefix, client) {
     const embed = new Discord.MessageEmbed()

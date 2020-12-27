@@ -1,6 +1,6 @@
 module.exports = {
     name: 'deposit',
-    description: 'Deposit some money into your bank account.',
+    description: 'Deposit some money into your bank account',
     alias: ['dep'],
     catagory: 'economy',
     usage: 'deposit [amount]',
@@ -8,7 +8,7 @@ module.exports = {
     execute (message, prefix, client) {
         const db = require('../../structure/global.js').db;
 
-        if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server.');
+        if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server');
         
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
 

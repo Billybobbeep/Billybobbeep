@@ -25,7 +25,7 @@ module.exports = (message, prefix, embedColor) => {
     } else {
       let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[2])
       if (!channel)
-        return message.channel.send('Please specify a valid channel.')
+        return message.channel.send('Please specify a valid channel')
       if (channel.id === result.loggingChannel) return message.channel.send(`Your logging channel is already set as ${channel}`);
       guildData.findOneAndUpdate({ guildId: message.guild.id }, { loggingChannel: channel.id }).then(() => {
         message.channel.send(`Your logging channel is now set up as ${channel}`);

@@ -1,6 +1,6 @@
 module.exports = {
     name: 'jobs',
-    description: 'View avalable jobs.',
+    description: 'View avalable jobs',
     alias: ['job'],
     catagory: 'economy',
     guildOnly: true,
@@ -11,7 +11,7 @@ module.exports = {
         const info = require('./jobRequirements.js');
         embed.setFooter(`${message.author.username}`);
         embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
-        if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server.');
+        if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server');
 
         let cashier = db.get(message.author.id + '.jobs.job') === 'cashier' ? true : undefined;
         let teacher = db.get(message.author.id + '.jobs.job') === 'teacher' ? true : undefined;

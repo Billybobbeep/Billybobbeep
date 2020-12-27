@@ -1,6 +1,6 @@
 module.exports = {
     name: 'donate',
-    description: 'Donate a user some cash.',
+    description: 'Donate a user some cash',
     alias: ['give'],
     usage: 'donate [user] [amount]',
     catagory: 'economy',

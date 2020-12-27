@@ -55,8 +55,8 @@ function handle(message, client) {
             if (!message.guild.me.hasPermission('ADMINISTRATOR')) {
                 const embed = new MessageEmbed();
                 embed.setTitle('Invalid Permissions');
-                embed.setDescription('Unfortunately, this command requires `administrator` permissions to work correctly.');
-                embed.addField('Don\'t know how?', 'Go to **Server Settings**, **Roles** then find **billybobbeep** and make sure **administrator** is enabled.', false)
+                embed.setDescription('Unfortunately, this command requires `administrator` permissions to work correctly');
+                embed.addField('Don\'t know how?', 'Go to **Server Settings**, **Roles** then find **billybobbeep** and make sure **administrator** is enabled', false)
                 embed.setFooter(`${message.guild.name}`);
                 embed.setTimestamp();
                 embed.setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');

@@ -28,7 +28,7 @@ module.exports = (message, prefix, embedColor) => {
       let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[2]);
 
       if (!channel)
-        return message.channel.send('Please specify a valid channel.')
+        return message.channel.send('Please specify a valid channel')
       if (channel.id === result.welcomeChannel) return message.channel.send(`Your welcome channel is already set as ${channel}`);
       guildData.findOneAndUpdate({ guildId: message.guild.id }, { welcomeChannel: channel.id }).then(() => {
         message.channel.send(`Your welcome channel is now set up as ${channel}`);

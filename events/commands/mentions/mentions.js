@@ -18,15 +18,15 @@ module.exports = async (message, client) => {
     let messagedUser = message.mentions.users.first()
 
     if (messagedUser.tag == client.user.tag && message.content.toLowerCase().startsWith('|')) {
-      embed.setDescription('Unfortunately, we do not support formatted messages yet, however we hope to launch this service soon.')
+      embed.setDescription('Unfortunately, we do not support formatted messages yet, however we hope to launch this service soon')
       return message.channel.send(embed)
     }
     if (messagedUser.tag == client.user.tag && message.content.toLowerCase().startsWith('*')) {
-      embed.setDescription('Unfortunately, we do not support formatted messages yet, however we hope to launch this service soon.')
+      embed.setDescription('Unfortunately, we do not support formatted messages yet, however we hope to launch this service soon')
       return message.channel.send(embed)
     }
     if (messagedUser.tag == client.user.tag && message.content.toLowerCase().startsWith('`')) {
-      embed.setDescription('Unfortunately, we do not support formatted messages yet, however we hope to launch this service soon.')
+      embed.setDescription('Unfortunately, we do not support formatted messages yet, however we hope to launch this service soon')
       return message.channel.send(embed)
     }
 
@@ -51,7 +51,7 @@ module.exports = async (message, client) => {
       if (args[0].toLowerCase() == 'welcome') {
         message.channel.send('Greetings, <@' + message.author.id + '>')
       } else {
-        if (args.includes(',') || args.includes('.') || args.includes('?') || args.includes('/') || args.includes('\\') || args.includes('@') || args.includes('|') || args.includes('-') || args.includes(':') || args.includes(';') || args.includes('.')) {
+        if (args.includes(',') || args.includes('') || args.includes('?') || args.includes('/') || args.includes('\\') || args.includes('@') || args.includes('|') || args.includes('-') || args.includes(':') || args.includes(';') || args.includes('')) {
           return message.channel.send(args[0][0].toUpperCase() + args[0].toLowerCase().substring(1) + ' <@' + message.author.id + '>')
         } else {
           return message.channel.send(args[0][0].toUpperCase() + args[0].toLowerCase().substring(1) + `, <@${message.author.id}>`)

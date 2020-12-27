@@ -1,6 +1,6 @@
 module.exports = {
     name: 'updatestats',
-    description: 'Update the member stats.',
+    description: 'Update the member stats',
     catagory: 'other',
     execute (message, prefix, client) {
         const configFile = require('../../structure/config.json');

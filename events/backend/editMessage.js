@@ -40,8 +40,8 @@ module.exports = (newMessage, oldMessage, client) => {
 			oldMessage.content.toLowerCase().includes('https://')) ||
 		(newMessage.content.toLowerCase().includes('http://') &&
 			oldMessage.content.toLowerCase().includes('http://')) ||
-		(newMessage.content.toLowerCase().includes('www.') &&
-			oldMessage.content.toLowerCase().includes('www.')) ||
+		(newMessage.content.toLowerCase().includes('www') &&
+			oldMessage.content.toLowerCase().includes('www')) ||
 		(newMessage.content.toLowerCase().includes('.com') &&
 			oldMessage.content.toLowerCase().includes('.com')) ||
 		(newMessage.content.toLowerCase().includes('.co.uk') &&

@@ -11,7 +11,7 @@ let autherValid;
 
 module.exports = {
     name: 'poll',
-    description: 'Send a poll.',
+    description: 'Send a poll',
     catagory: 'generator',
     guildOnly: true,
     async execute (message, prefix, client) {

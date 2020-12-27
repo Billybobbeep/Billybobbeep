@@ -1,6 +1,6 @@
 module.exports = {
   name: 'quit',
-  description: 'Quit your current job.',
+  description: 'Quit your current job',
   catagory: 'economy',
   guildOnly: true,
   execute(message, prefix, client) {

@@ -25,7 +25,7 @@ module.exports = {
 
     if (message.content.toLowerCase().startsWith(prefix + 'afk')) {
       if (message.guild === null) {
-        embed.setDescription('This command is not available for direct messaging, please enter the command in a valid server.')
+        embed.setDescription('This command is not available for direct messaging, please enter the command in a valid server')
         return message.channel.send(embed)
       }
       if (args[1]) {
@@ -35,22 +35,22 @@ module.exports = {
           user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
         }
       } else {
-        embed.setDescription('Please specify a user to mark as AFK.')
+        embed.setDescription('Please specify a user to mark as AFK')
         return message.channel.send(embed)
       }
       if (!user) {
-        embed.setDescription('Please specify a user to mark as AFK.')
+        embed.setDescription('Please specify a user to mark as AFK')
         return message.channel.send(embed)
       }
       if (args[2]) {
         reason = args.slice(2).join(" ")
       } else {
-        reason = 'No reason was provided.'
+        reason = 'No reason was provided'
       }
       use = true
       if (db.fetch(user.id + '.isAFK')) {
         if (db.fetch(user.id + '.isAFK') === false) return;
-        embed.setDescription('This user is already marked as AFK.')
+        embed.setDescription('This user is already marked as AFK')
         use = false
         return message.channel.send(embed)
       }
@@ -70,7 +70,7 @@ module.exports = {
           try {
             return user.send(embed)
           } catch {
-            message.channel.send('You must have your DM\'s turned on to use this command.')
+            message.channel.send('You must have your DM\'s turned on to use this command')
           }
         } else {
           embed.setDescription(`${message.author.tag} has marked you as AFK in ${message.guild}\nReason: ${reason}`)
@@ -78,7 +78,7 @@ module.exports = {
           try {
             return user.send(embed)
           } catch {
-            message.channel.send('You must have your DM\'s turned on to use this command.')
+            message.channel.send('You must have your DM\'s turned on to use this command')
           }
         }
       }
@@ -96,11 +96,11 @@ module.exports = {
           user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
         }
       } else {
-        embed.setDescription('Please specify a user.')
+        embed.setDescription('Please specify a user')
         return message.channel.send(embed)
       }
       if (!user) {
-        embed.setDescription('Please specify a user.')
+        embed.setDescription('Please specify a user')
         return message.channel.send(embed)
       }
 
@@ -119,7 +119,7 @@ module.exports = {
     embed = new Discord.MessageEmbed();
     embed.setTitle('Billybobbeep | AFK Handling');
     embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
-    embed.setDescription('The following users you have pinged are marked as AFK.');
+    embed.setDescription('The following users you have pinged are marked as AFK');
     embed.setTimestamp();
     embed.setFooter(`${message.author.tag}`);
     if (message.content.includes('back') || message.content.includes('afk')) return;

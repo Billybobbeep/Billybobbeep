@@ -1,16 +1,17 @@
 const { MessageEmbed } = require('discord.js');
 const embed = new MessageEmbed();
-const db = require('../../structure/global.js').db;
+const guildData = require('../../events/client/database/models/guilds.js');
+
 
 function handling(client, message) {
-    let prefix = db.get(message.guild.id + '.prefix') || '~';
+    let prefix = guildData.findOne({ guildId: message.guild.id }).then(result => result.prefix) || '~';
     let args = message.content.toLowerCase().slice(prefix.length).trim().split(/ +/g)
     if (args[1] === 'help') help_embed(message, prefix);
     else filter_flags(client, message, prefix);
 }
 function help_embed(message, prefix) {
-    embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-    embed.setFooter('NOTE: All flags require no spaces.')
+    embed.setColor(`${guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor) || '#447ba1'}`)
+    embed.setFooter('NOTE: All flags require no spaces')
     embed.setDescription(
         '**Flags:**\n\n' +
         '--filter-user-[user-id] - ' + 'Filters all logs by the user ID.\n' +
@@ -239,13 +240,13 @@ function bot_logs(client, message, action1, action2, action3) {
 
 module.exports = {
     name: 'logs',
-    description: 'View recent logs.',
+    description: 'View recent logs',
     guildOnly: true,
     catagory: 'moderation',
     usage: 'logs help',
     execute (message, prefix, client) {
-        if (message.member.roles.cache.has(['VIEW_AUDIT_LOG', 'ADMINISTRATOR']) && !message.member.roles.cache.find(role => role.id === db.get(message.guild.id + '.modRole')))
-            return message.channel.send(`You must have the \`View Audit Log\` permissions to use this command.`)
+        if (message.member.roles.cache.has(['VIEW_AUDIT_LOG', 'ADMINISTRATOR']) && !message.member.roles.cache.find(role => role.id === guildData.findOne({ guildId: message.guild.id }).then(result => result.modRole)))
+            return message.channel.send('You must have the `View Audit Log` permissions to use this command')
         else handling(client, message);
     }
 }

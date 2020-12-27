@@ -16,7 +16,7 @@ module.exports.add = (guild, user, client) => {
         embed.setDescription(
             `**User Tag:** ${ban.target.tag}\n` +
             `**User ID:** ${ban.target.id}\n\n` +
-            `**Reason:** ${ban.reason || 'No reason was provided.'}\n\n` +
+            `**Reason:** ${ban.reason || 'No reason was provided'}\n\n` +
             `**Moderator:** ${ban.executor}\n` +
             `**Moderator Tag:** ${ban.executor.tag}\n` +
             `**Moderator ID:** ${ban.executor.id}`
@@ -49,7 +49,7 @@ module.exports.remove = (guild, user, client) => {
             embed.setDescription(
             `**User Tag:** ${ban.target.tag}\n` +
             `**User ID:** ${ban.target.id}\n\n` +
-            `**Banned For:** ${pb.reason ? pb.reason.toString() : 'No reason was provided.'}\n\n` +
+            `**Banned For:** ${pb.reason ? pb.reason.toString() : 'No reason was provided'}\n\n` +
             `**Moderator:** ${ban.executor}\n` +
             `**Moderator Tag:** ${ban.executor.tag}\n` +
             `**Moderator ID:** ${ban.executor.id}`

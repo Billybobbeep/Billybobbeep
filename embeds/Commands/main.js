@@ -4,7 +4,7 @@ const db = require('../../structure/global.js').db;
 
 module.exports = {
     commands: ['cmds', 'c', 'commands'],
-    description: 'View billybobbeep\'s commands.',
+    description: 'View billybobbeep\'s commands',
     execute(message, prefix, client) {
         let msg = message.content.toLowerCase();
         let args = message.content.slice(prefix.length).trim().split(/ +/g);

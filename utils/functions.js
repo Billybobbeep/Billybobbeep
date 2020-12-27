@@ -122,7 +122,7 @@ module.exports.rank = async function(message, avatar, username, discriminator, c
     function shorten(text, len) {
         if (typeof text !== 'string') return '';
         if (text.length <= len) return text;
-        return text.substr(0, len).trim() + '...';
+        return text.substr(0, len).trim() + '..';
     }
 
     function toAbbrev(num) {

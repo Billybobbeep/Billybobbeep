@@ -17,7 +17,7 @@ module.exports = (message, prefix, embedColor) => {
 		message.channel.send(embed);
 	} else if (args[2].toLowerCase() === 'reset') {
 		guildData.findOneAndUpdate({ guildId: message.guild.id }, { modRole: false }).then(() => {
-			message.channel.send('Removed moderator role from the database.');
+			message.channel.send('Removed moderator role from the database');
 		});
 	} else {
 		guildData.findOne({ guildId: Mmessage.guild.id }).then(result => {

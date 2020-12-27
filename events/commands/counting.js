@@ -16,7 +16,7 @@ module.exports = {
         } else {
             currentNo.set(message.guild.id, 0);
             message.react(CE)
-            message.reply('has ruined the chain with an incorrect number.\nThe next number is `1`.');
+            message.reply('has ruined the chain with an incorrect number.\nThe next number is `1`');
         }
     }
 }

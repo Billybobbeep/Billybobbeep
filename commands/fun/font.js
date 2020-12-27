@@ -28,7 +28,7 @@
             z : '',
             ' ' : ' ',
             '/' : '/',
-            '.' : '.',
+            '' : '',
             ',' : ',',
             '{' : '{',
             '[' : '[',
@@ -72,7 +72,7 @@
 
 module.exports = {
     name: 'font',
-    description: 'Put your message into a new font.',
+    description: 'Put your message into a new font',
     alias: ['fonts'],
     catagory: 'generator',
     execute (message, prefix, client) {
@@ -94,7 +94,7 @@ module.exports = {
         }
 
         if (message.content.toLowerCase() === prefix + 'font' || message.content.toLowerCase() === prefix + 'fonts') return mainEmbed()
-        if (!args[1]) return message.channel.send('Please specify a font.')
+        if (!args[1]) return message.channel.send('Please specify a font')
         if (args[1].toLowerCase() === 'fancy') {
             var letters = {
                 a : '𝓪',
@@ -125,7 +125,7 @@ module.exports = {
                 z : '𝔃',
                 ' ' : ' ',
                 '/' : '/',
-                '.' : '.',
+                '' : '',
                 ',' : ',',
                 '{' : '{',
                 '[' : '[',
@@ -195,7 +195,7 @@ module.exports = {
                 z : '𝕫',
                 ' ' : ' ',
                 '/' : '/',
-                '.' : '.',
+                '' : '',
                 ',' : ',',
                 '{' : '{',
                 '[' : '[',
@@ -266,7 +266,7 @@ module.exports = {
                 z : '𝓏',
                 ' ' : ' ',
                 '/' : '/',
-                '.' : '.',
+                '' : '',
                 ',' : ',',
                 '{' : '{',
                 '[' : '[',
@@ -336,7 +336,7 @@ module.exports = {
                 z : 'z̶̘̙̰̪̣̻͉͂͒ͅ',
                 ' ' : ' ',
                 '/' : '/',
-                '.' : '.',
+                '' : '',
                 ',' : ',',
                 '{' : '{',
                 '[' : '[',
@@ -406,7 +406,7 @@ module.exports = {
                 z : 'ᘔ',
                 ' ' : ' ',
                 '/' : '/',
-                '.' : '.',
+                '' : '',
                 ',' : ',',
                 '{' : '{',
                 '[' : '[',
@@ -476,7 +476,7 @@ module.exports = {
                 z : 'z',
                 ' ' : ' ',
                 '/' : '/',
-                '.' : '.',
+                '' : '',
                 ',' : ',',
                 '{' : '{',
                 '[' : '[',
@@ -517,11 +517,11 @@ module.exports = {
                 0 : '0'
             }
         } else {
-            return message.channel.send('You have entered an invalid font.')
+            return message.channel.send('You have entered an invalid font')
         }
 
         if (!args[2]) {
-            message.reply('Please specify a message.')
+            message.reply('Please specify a message')
         } else {
             try {
                 for (var i = 0; i < args.slice(2).join(' ').length; i++) {
@@ -532,7 +532,7 @@ module.exports = {
                 }
             message.channel.send(starter + lines.join('\n'))
             } catch {
-                return message.channel.send('You have entered some invalid arguments.');
+                return message.channel.send('You have entered some invalid arguments');
             }
         }
     }

@@ -2,7 +2,7 @@ const { Canvas } = require('canvas');
 
 module.exports = {
     name: 'rank',
-    description: 'View your xp.',
+    description: 'View your xp',
     catagory: 'info',
     alias: ['cl', 'currlvl', 'xp'],
     guildOnly: true,
@@ -15,7 +15,7 @@ module.exports = {
         if (!user.username) user = user.user;
         let displayName = `${user.username[0].toUpperCase()}${(user.username).substring(1).toLowerCase()}`;
         let avatar = await canvas.loadImage(user.displayAvatarURL({ dynamic: false, format: 'png' }));
-        var msg = await message.channel.send('Please wait...');
+        var msg = await message.channel.send('Please wait..');
 
         var level = db.get(message.guild.id + '_' + user.id + '.level') || 0;
         var xp = db.get(message.guild.id + '_' + user.id + '.xp') || 1;

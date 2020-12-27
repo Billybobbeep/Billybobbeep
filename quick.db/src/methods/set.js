@@ -20,7 +20,7 @@ module.exports = function(db, params, options) {
   if (typeof fetched === 'object' && params.ops.target) {
     params.data = JSON.parse(params.data);
     params.data = set(fetched, params.ops.target, params.data);
-  } else if (params.ops.target) throw new TypeError('Cannot target a non-object.');
+  } else if (params.ops.target) throw new TypeError('Cannot target a non-object');
 
   // Stringify data
   params.data = JSON.stringify(params.data);

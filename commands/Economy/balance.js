@@ -1,6 +1,6 @@
 module.exports = {
     name: 'balance',
-    description: 'Check how much money a user has.',
+    description: 'Check how much money a user has',
     alias: ['bal', 'wallet'],
     catagory: 'economy',
     usage: 'balance [user]',
