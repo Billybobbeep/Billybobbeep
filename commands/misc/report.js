@@ -5,26 +5,26 @@ module.exports = {
     async execute(message, prefix, client) {
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();
-        const db = require('../../structure/global.js').db;
+        const guildData = require('../../events/client/database/models/guilds.js');
         embed.setDescription(`Welcome to the ${client.user.username} bug report service.\nHere I will be asking you a series of questions.\nYou can cancel this prompt anytime by entering \`cancel\`.\n\n**Please begin all messages with a** \`~\`**.**`);
         embed.setFooter(`To continue react to this message`);
-        embed.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
+        embed.setColor(`${guildData.findOne({ guildId: '733442092667502613' }).then(result => result.embedColor) || '#447ba1'}`);
 
         const embed2 = new Discord.MessageEmbed();
         embed2.setTitle('Question: 1/3');
         embed2.setDescription(`What is your bug about?`);
-        embed2.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
+        embed2.setColor(`${guildData.findOne({ guildId: '733442092667502613' }).then(result => result.embedColor) || '#447ba1'}`);
 
         const embed3 = new Discord.MessageEmbed();
         embed3.setTitle('Question: 2/3');
         embed3.setDescription('What is your bug?\n*Please provide as much detail as you can*');
-        embed3.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
+        embed3.setColor(`${guildData.findOne({ guildId: '733442092667502613' }).then(result => result.embedColor) || '#447ba1'}`);
 
         const embed4 = new Discord.MessageEmbed();
         embed4.setTitle('Question: 3/3');
         embed4.setDescription(`Any additional information the moderator should know?`);
         embed.setFooter('Say \'skip\' to skip this question')
-        embed4.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
+        embed4.setColor(`${guildData.findOne({ guildId: '733442092667502613' }).then(result => result.embedColor) || '#447ba1'}`);
 
         var subject = '';
         var body = '';
@@ -84,7 +84,7 @@ module.exports = {
                 embed5.addField(`Subject`, subject.toString().replace('~', ''));
                 embed5.addField(`Message`, body.toString().replace('~', ''));
                 embed5.addField(`Additional Information`, extra.toString().replace('~', ''));
-                embed5.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
+                embed5.setColor(`${guildData.findOne({ guildId: '733442092667502613' }).then(result => result.embedColor) || '#447ba1'}`);
 
                 const embed6 = new Discord.MessageEmbed();
                 embed6.setTitle('Bug Report');
@@ -93,7 +93,7 @@ module.exports = {
                 embed6.addField(`Additional Information`, extra.toString().replace('~', ''));
                 embed6.addField(`Sent From`, message.author.tag);
                 message.guild ? embed6.addField(`Guild`, message.guild.name) : '';
-                embed6.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
+                embed6.setColor(`${guildData.findOne({ guildId: '733442092667502613' }).then(result => result.embedColor) || '#447ba1'}`);
 
 
                 msg = await message.channel.send(embed5);
@@ -173,7 +173,7 @@ module.exports = {
                 embed5.addField(`Subject`, subject.toString().replace('~', ''));
                 embed5.addField(`Message`, body.toString().replace('~', ''));
                 embed5.addField(`Additional Information`, extra.toString().replace('~', ''));
-                embed5.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
+                embed5.setColor(`${guildData.findOne({ guildId: '733442092667502613' }).then(result => result.embedColor) || '#447ba1'}`);
 
                 const embed6 = new Discord.MessageEmbed();
                 embed6.setTitle('Bug Report');
@@ -182,7 +182,7 @@ module.exports = {
                 embed6.addField(`Additional Information`, extra.toString().replace('~', ''));
                 embed6.addField(`Sent From`, message.author.tag);
                 message.guild ? embed6.addField(`Guild`, message.guild.name) : '';
-                embed6.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
+                embed6.setColor(`${guildData.findOne({ guildId: '733442092667502613' }).then(result => result.embedColor) || '#447ba1'}`);
 
 
                 msg = await message.author.send(embed5);

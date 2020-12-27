@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const ms = require('ms');
-const db = require('../../structure/global.js').db;
+const guildData = require('../../events/client/database/models/guilds.js');
 
 module.exports = {
   name: 'giveaway',
@@ -29,7 +29,7 @@ module.exports = {
         `**Host:** ${message.author.tag}\n` + `**Prize:** ${prize}`
       )
       .setTimestamp(Date.now() + ms(args[1]))
-      .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
+      .setColor(`${guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor) || '#447ba1'}`);
 
     let m = await channel.send(Embed);
     m.react('🎉');
@@ -51,7 +51,7 @@ module.exports = {
         `**Host:** ${message.author.tag}\n` + `**Prize:** ${prize}\n` + `**Winner:** ${winner.tag}\n` + `\n` + `*This giveaway has now ended.*`
       )
       .setTimestamp(Date.now() + ms(args[1]))
-      .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
+      .setColor(`${guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor) || '#447ba1'}`);
       m.edit(WinningEmbed)
     }, ms(args[1]));
   }
