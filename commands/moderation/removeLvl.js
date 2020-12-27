@@ -6,7 +6,6 @@ module.exports = {
   usage: 'removelvl [user] [amount]',
   guildOnly: true,
   execute(message, prefix, client) {
-    const guildData = require('../../events/client/database/models/guilds.js');
     const guildMemberData = require('../../events/client/database/models/guildMembers.js');
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     let user = message.guild.members.cache.get(args[1]) || message.mentions.users.first();
@@ -15,13 +14,15 @@ module.exports = {
     if (!user)
       return message.channel.send('Please mention a user');
 
-    let currLvl = db.get(message.guild.id + '_' + user.id + '.level');
+    let currLvl = guildMemberData.findOne({ memberId: message.author.id, guildId: message.guild.id }).then(result => result.level);
+    
     if (!args[2])
       return message.channel.send('Please specify an amount');
 
     if (args[2] === 'all' || args[2] === 'a') {
-      guildData.findOneAndUpdate({  })
-      return message.channel.send(`Cleared ${user}'s levels`)
+      guildMemberData.findOneAndUpdate({ memberId: message.author.id, guildId: message.guild.id }, { level: 0 }).then(() => {
+        message.channel.send(`Cleared ${user}'s levels`);
+      });
     }
     if (isNaN(args[2])) 
       return message.channel.send('You have entered an invalid amount');

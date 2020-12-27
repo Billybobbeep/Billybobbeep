@@ -17,7 +17,7 @@ module.exports = {
                 if (!user) return message.channel.send('Please mention a user to promote');
                 if (!user.tag) user = user.user;
                 if (!result.modRole)
-                    return message.channel.send(`You need to set up a mod role in your server to use this command);
+                    return message.channel.send('You need to set up a mod role in your server to use this command');
 
                 let reason = args.slice(2).join(' ');
                 if (!reason) return message.channel.send('Please specify a reason');

@@ -15,12 +15,12 @@ module.exports = {
       if (!user) return message.channel.send('Please specify a user');
 
       if (user.id === message.author.id) return message.channel.send('You cannot remove your own warnings');
-      if (user.bot) return message.channel.send(`Bots cannot be warned);
+      if (user.bot) return message.channel.send('Bots cannot be warned');
 
       var member;
 
       if (db.get(message.guild.id + '_' + user.id + '.warnings') < 1 || !db.get(message.guild.id + '_' + user.id + '.warnings')) {
-        return message.channel.send(`${user} does not have any warnings)
+        return message.channel.send(`${user} does not have any warnings`)
       }
 
       try {
@@ -74,7 +74,7 @@ module.exports = {
         .addField('Total Warnings', db.get(message.guild.id + '_' + user.id + '.warnings') - 1, true)
       logging(log, message, client);
       if (db.get(message.guild.id + '_' + user.id + '.warnings') < 1)
-        message.channel.send(`${user.username} does not have any warnings to remove);
+        message.channel.send(`${user.username} does not have any warnings to remove`);
       else if (db.get(message.guild.id + '_' + user.id + '.warnings') == 1)
         db.delete(message.guild.id + '_' + user.id + '.warnings');
       else {

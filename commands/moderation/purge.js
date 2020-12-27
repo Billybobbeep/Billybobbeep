@@ -20,17 +20,17 @@ module.exports = {
         message.channel.bulkDelete(args[1])
           .then(messages => {
             async function main() {
-              msg1 = await message.channel.send(`Deleted ${messages.size}/${args[0]} messages);
+              msg1 = await message.channel.send(`Deleted ${messages.size}/${args[0]} messages`);
 
               const embed = new Discord.MessageEmbed()
-              embed.setTitle(`Purged Messages`)
+              embed.setTitle('Purged Messages');
               embed.setDescription(`**Channel:** ${message.channel}\n` +
                                   `**Messages Purged:** ${messages.size}\n\n` +
                                   `**Moderator:** ${message.author}\n` +
                                   `**Moderator Tag:** ${message.author.tag}\n` +
                                   `**Moderator ID:** ${message.author.id}\n`)
-              embed.setTimestamp()
-              embed.setColor(`${result.embedColor || '#447ba1'}`)
+              embed.setTimestamp();
+              embed.setColor(`${result.embedColor || '#447ba1'}`);
 
               logging(embed, message, client);
 

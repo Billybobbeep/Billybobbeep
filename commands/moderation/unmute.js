@@ -19,9 +19,9 @@ module.exports = {
       if (!db.get(message.guild.id + '.mutedRole')) return message.channel.send('Please setup a muted role in your server to use this command')
       if (!user) return message.channel.send('Please mention a user to mute')
       let member = message.guild.members.cache.get(user.id);
-      if (!member) return message.channel.send(`I could not find the member you provided);
-      if (!member.roles.cache.find(r => r.id === db.get(message.guild.id + '.mutedRole'))) return message.channel.send(`<@!${user.id}> is not muted);
-      if (user.bot) return message.channel.send(`You cannot mute bots);
+      if (!member) return message.channel.send('I could not find the member you provided');
+      if (!member.roles.cache.find(r => r.id === db.get(message.guild.id + '.mutedRole'))) return message.channel.send(`<@!${user.id}> is not muted`);
+      if (user.bot) return message.channel.send('You cannot mute bots');
       if (!reason) return message.channel.send('Please specify a reason');
       
       member.roles.remove(message.guild.roles.cache.find(role => role.id === db.get(message.guild.id + '.mutedRole')));
