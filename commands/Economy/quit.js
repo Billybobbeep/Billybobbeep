@@ -36,9 +36,9 @@ module.exports = {
       headScientist === undefined &&
       lawyer === undefined &&
       socialWorker === undefined &&
-      doctor === undefined) return message.channel.send(`You do not have a job);
+      doctor === undefined) return message.channel.send(`You do not have a job`);
 
-    message.channel.send(`Are you sure you want to quit your job?\n\nYou will have to re-apply for another job before you can start working again).then(msg => reactions(message, msg, db, client));
+    message.channel.send(`Are you sure you want to quit your job?\n\nYou will have to re-apply for another job before you can start working again`).then(msg => reactions(message, msg, db, client));
   }
 }
 
@@ -64,7 +64,7 @@ async function reactions(message, msg, db, client) {
         db.delete(message.author.id + `.jobs.${job}`);
       } else {
         msg.reactions.removeAll();
-        message.channel.send(`${cross} Cancelled prompt);
+        message.channel.send(`${cross} Cancelled prompt`);
       }
     }).catch(() => {
       msg.reactions.removeAll();

@@ -10,23 +10,18 @@ module.exports = {
   guildOnly: true,
   async execute (message, prefix, client) {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
-    if (!args[1]) return message.channel.send(`Please specify a time);
+    if (!args[1]) return message.channel.send('Please specify a time');
     if (
       !args[1].endsWith('d') &&
       !args[1].endsWith('h') &&
       !args[1].endsWith('m')
-    )
-      return message.channel.send(
-        `You did not use the correct formatting for the time
-      );
-    if (isNaN(args[1][0])) return message.channel.send(`You did not specify a valid time);
+    ) return message.channel.send('You did not use the correct formatting for the time');
+    if (isNaN(args[1][0])) return message.channel.send('You did not specify a valid time');
     let channel = message.mentions.channels.first();
     if (!channel)
-      return message.channel.send(
-        `I could not find that channel in the server
-      );
+      return message.channel.send('I could not find that channel in the server');
     let prize = args.slice(2).join(' ');
-    if (!prize) return message.channel.send(`Please specify a prize);
+    if (!prize) return message.channel.send('Please specify a prize');
     message.channel.send(`*Giveaway created in ${channel}.*`);
     let Embed = new MessageEmbed()
       .setTitle(`${prize}`)

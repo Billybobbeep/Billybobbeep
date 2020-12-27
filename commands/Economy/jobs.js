@@ -188,7 +188,7 @@ module.exports = {
                 embed.addField('Job Description', info.doctor.description)
                 message.channel.send(embed)
             } else {
-                message.channel.send(`**${args1}** is not a valid job, please make sure you have spelt it correctly and try again)
+                message.channel.send(`**${args1}** is not a valid job, please make sure you have spelt it correctly and try again`);
             }
         }
     }

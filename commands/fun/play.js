@@ -15,11 +15,11 @@ module.exports = {
         const permissions = voiceChannel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT'))
         return message.channel.send(
-            "I don't have permissions to connect to a voice channel."
+            'I don\'t have permissions to connect to a voice channel.'
         );
         if (!permissions.has('SPEAK'))
         return message.channel.send(
-            "I don't have permissions to speak in a voice channel"
+            'I don\'t have permissions to speak in a voice channel'
         );
         if (!args[1]) return message.channel.send('Please provide a youtube link to play');
         if (!args[1].toLowerCase().includes('you')) return message.channel.send('Please provide a valid youtube link')

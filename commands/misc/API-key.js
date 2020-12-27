@@ -27,7 +27,7 @@ module.exports = {
                     db.push('apiKey', message.author.id + '_' + result);
                 });
             } catch {
-                return message.channel.send(`You cannot use this command when your DMs are turned off);
+                return message.channel.send('You cannot use this command when your DMs are turned off');
             }
             message.channel.send('Check your DMs');
         }
@@ -45,7 +45,7 @@ module.exports = {
                         try {
                             message.author.send(`Your API key is \`${result[1]}\``);
                         } catch {
-                            return message.channel.send(`You cannot use this command when your DMs are turned off);
+                            return message.channel.send('You cannot use this command when your DMs are turned off');
                         }
                         message.channel.send('It appears you already have an API key.\nCheck your DMs');
                         debounce = true;
@@ -77,7 +77,7 @@ module.exports = {
                 } else {
                     let newKey = makeid(22);
                     db.push('apiKey', message.author.id + '_' + newKey);
-                    message.channel.send(`Regenerating API key..).then(msg => msg.edit(`Check your DMs!`)).then(() => message.author.send(`Your new API key is: \`${newKey}\``));
+                    message.channel.send(`Regenerating API key..`).then(msg => msg.edit(`Check your DMs!`)).then(() => message.author.send(`Your new API key is: \`${newKey}\``));
                 }
             } else {
                 message.channel.send(`You do not have a valid API key.\nTo get an API key use: \`${db.get(message.guild.id + '.prefix') || '~'}generate key\``);

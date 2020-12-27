@@ -17,7 +17,7 @@ module.exports = {
         if (!db.get(user.id)) return message.channel.send(`It appears as <@!${user.id}> has not started working yet 🤔`);
         if (!db.get(user.id + '.economy.balance') || db.get(user.id + '.economy.balance') === 0) return message.channel.send(`It appears as <@!${user.id}> has not started working yet 🤔`);
         if (db.get(user.id + '.economy.balance') < 100) return message.channel.send(`<@!${user.id}> only has \`$${db.get(user.id + '.economy.balance')}\`, not worth robbing`);
-        if (db.get(message.author.id + '.economy.balance') < 50) return message.channel.send(`You need \`$50+\` to rob a user);
+        if (db.get(message.author.id + '.economy.balance') < 50) return message.channel.send(`You need \`$50+\` to rob a user`);
         
         let robAmt = db.get(user.id + '.economy.balance') / 2 - 30;
         if (robAmt.toString().split('')[1] && robAmt.toString().split('')[1].length > 2) robAmt = robAmt.toString().split('')[0] + '' + robAmt.toString().split('')[1][0] + robAmt.toString().split('')[1][1];

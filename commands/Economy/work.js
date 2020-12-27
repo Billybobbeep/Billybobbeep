@@ -78,7 +78,7 @@ module.exports = {
       if (time2work === '1s') seco = 'second';
       time2work = time2work.replace('s', '')
 
-      embed.setDescription(`${crossEmoji} Break Time. You can work again in **${time2work}** ${seco});
+      embed.setDescription(`${crossEmoji} Break Time. You can work again in **${time2work}** ${seco}`);
       message.channel.send(embed);
     } else {
       if (teacher !== undefined) {
@@ -163,7 +163,7 @@ module.exports = {
         reactionCollection(msg, '🚗', '🚓', '🏎', workAmt, congratsEmbed1, congratsEmbed2, congratsEmbed3);
       }
       else if (chef !== undefined) {
-        embed.setDescription(`To begin working click the green circle below);
+        embed.setDescription(`To begin working click the green circle below`);
         let msg = await message.channel.send(embed)
         chefReact(workAmt, msg, '🟢');
       } else {
@@ -405,9 +405,9 @@ module.exports = {
           }
         });
         if (name.toString().endsWith('s')) {
-          embed.setDescription(`Preparing some ${name}..);
+          embed.setDescription(`Preparing some ${name}..`);
         } else {
-          embed.setDescription(`Preparing a ${name}..);
+          embed.setDescription(`Preparing a ${name}..`);
         }
         msg.edit(embed);
         setTimeout(() => {

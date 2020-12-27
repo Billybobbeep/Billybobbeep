@@ -110,7 +110,7 @@ module.exports = {
                 embed.setTimestamp();
                 await message.author.send(embed).catch(() => { return log(message, 'err-warn') });
                 embed.setTitle('Spam Detected');
-                embed.setDescription(`**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Action:** Warned);
+                embed.setDescription(`**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Action:** Warned`);
                 embed.setTimestamp();
                 logging.send(embed);
             } else if (type.toString() === 'mute') {
@@ -120,23 +120,23 @@ module.exports = {
                 embed.setTimestamp();
                 await message.author.send(embed).catch(() => { return log(message, 'err-mute') });
                 embed.setTitle('Spam Detected');
-                embed.setDescription(`**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Action:** Muted);
+                embed.setDescription(`**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Action:** Muted`);
                 embed.setTimestamp();
                 logging.send(embed);
             } else if (type.toString() === 'err-mute') {
                 embed.setTitle('Spam Detected');
-                embed.setDescription(`**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Action:** Muted);
-                embed.setFooter(`User not notified);
+                embed.setDescription(`**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Action:** Muted`);
+                embed.setFooter('User not notified');
                 embed.setTimestamp();
                 logging.send(embed);
             } else if (type.toString() == 'err-warn') {
                 embed.setTitle('Spam Detected');
-                embed.setDescription(`**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Action:** Warned);
-                embed.setFooter(`User not notified);
+                embed.setDescription(`**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Action:** Warned`);
+                embed.setFooter('User not notified');
                 embed.setTimestamp();
                 logging.send(embed);
             } else {
-                throw new TypeError(`Invalid type argument)
+                throw new TypeError('Invalid type argument')
             }
         }
 
