@@ -1,6 +1,6 @@
 module.exports = {
     name: 'jobs',
-    description: 'View avalable jobs',
+    description: 'View available jobs',
     alias: ['job'],
     catagory: 'economy',
     guildOnly: true,
@@ -82,7 +82,7 @@ module.exports = {
         }
         function MainPage(msg) {
             embed.setTitle(`Economy | Jobs`)
-            embed.setDescription('The billybobbeep job command is used to view all of the jobs avalable & apply for new jobs.\n\n' +
+            embed.setDescription('The billybobbeep job command is used to view all of the jobs available & apply for new jobs.\n\n' +
             'To see all of the jobs available, please see the next few pages.\n\n' + 'To see more information on any job use the command: ' +
             `\`${prefix}jobs [job] info\``);
             msg.edit(embed)

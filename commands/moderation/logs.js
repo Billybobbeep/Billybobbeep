@@ -16,12 +16,12 @@ function help_embed(message, prefix) {
         '**Flags:**\n\n' +
         '--filter-user-[user-id] - ' + 'Filters all logs by the user ID.\n' +
         '--filter-logs-[audit/bot] - ' + 'Filters logs by the bot or from the audit logs.*\n' +
-        '--remove-action-[action] - ' + 'Remove certain actions from the table. (See below for avalable actions)\n' +
-        '--filter-action-[action] - ' + 'Filter logs by a certain action. (See below for avalable actions)\n\n' +
+        '--remove-action-[action] - ' + 'Remove certain actions from the table. (See below for available actions)\n' +
+        '--filter-action-[action] - ' + 'Filter logs by a certain action. (See below for available actions)\n\n' +
         '* = required\n\n' +
 
         '**Actions**\n' +
-        '`The following actions are only avalable with the audit log flag\n\n' +
+        '`The following actions are only available with the audit log flag\n\n' +
         'emoji_update - ' + 'Add, remove or rename emojis.\n' + //EMOJI_DELETE, EMOJI_UPDATE, EMOJI_CREATE
         'role_update - ' + 'Add, remove or rename roles.\n' + //ROLE_UPDATE
         'member_role_update - ' + 'Member add or remove role.\n' + //MEMBER_ROLE_UPDATE
@@ -31,7 +31,7 @@ function help_embed(message, prefix) {
         'ban_remove - ' + 'Member unbanned.\n' + //MEMBER_BAN_REMOVE
         'kick_add - ' + 'Member kicked.\n' + //MEMBER_KICK
         'bot_add - ' + 'Bot added to the guild.\n\n' + //BOT_ADD
-        '`The following actions are only avalable for the bot log flag\n\n' +
+        '`The following actions are only available for the bot log flag\n\n' +
         'warn_add - ' + 'Member warned.\n' +
         'warn_remove - ' + 'Member warning removed.\n' +
         'mute_add - ' + 'Member muted.\n' +
