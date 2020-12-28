@@ -10,8 +10,8 @@ module.exports = {
         const embed2 = new Discord.MessageEmbed();
         const guildData = require('../../events/client/database/models/guilds.js');
         const logging = require('../../utils/functions.js').logging;
-        async function promoteCmd() {
-            guildData.findOne({ guildId: message.guild.id }).then(result => {
+        function promoteCmd() {
+            guildData.findOne({ guildId: message.guild.id }).then(async result => {
                 let args = message.content.slice(prefix.length).trim().split(/ +/g);
                 let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
                 if (!user) return message.channel.send('Please mention a user to promote');

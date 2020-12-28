@@ -27,7 +27,7 @@ module.exports = (message, prefix, embedColor) => {
         }
       }
 
-        if (args[2] === 'off' && result.levelsEnabled) return message.channel.send(`Levelling is already turned off)
+        if (args[2] === 'off' && result.levelsEnabled) return message.channel.send('Levelling is already turned off')
         guildData.findOneAndUpdate({ guildId: message.guild.id }, { levelsEnabled: false }).then(() => {
           message.channel.send('Levelling has now been turned off');
         });
