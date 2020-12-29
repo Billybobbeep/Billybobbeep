@@ -2,14 +2,14 @@ module.exports = {
     guildOnly: true,
     execute (message, client) {
         const db = require('../../structure/global.js').db;
-        var currentNo = new db.table('counting');
+        let currentNo = new db.table('counting');
         let TE = client.emojis.cache.get('736952966447366154')
         let CE = client.emojis.cache.get('736952985330122772')
         if (db.get(message.guild.id + '.countingChannel') && message.channel.id !== db.get(message.guild.id + '.countingChannel')) return;
         if (message.author.bot) return;
         if (isNaN(message.content)) return;
         if (!currentNo.get(message.guild.id)) currentNo.add(message.guild.id, '0');
-        var curr = currentNo.get(message.guild.id);
+        let curr = currentNo.get(message.guild.id);
         if (message.content.toString() === (curr + 1).toString()) {
             message.react(TE)
             currentNo.add(message.guild.id, 1);

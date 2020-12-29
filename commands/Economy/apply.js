@@ -26,7 +26,7 @@ module.exports = {
             return message.channel.send(embed);
         }
         if (db.get(message.author.id + '.jobs.awaiting') === true) {
-            var cooldown = 300000;
+            let cooldown = 300000;
             let lastApp = db.get(message.author.id + '.jobs.lastApplied');
             if (cooldown - (lastApp - Date.now()) > 0) {
                 let timeObj = ms(cooldown - (Date.now() - lastApp));
@@ -35,7 +35,7 @@ module.exports = {
                 message.channel.send(embed);
             }
         } else {
-            var job = '';
+            let job = '';
             let args1 = args.join(' ').split(/ +/g).slice(1).join(' ').split('-').join(' ');
             if (args.slice(1).join('').toLowerCase() === 'cashier') {
                 job = 'cashier';

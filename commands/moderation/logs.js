@@ -46,7 +46,7 @@ function filter_flags(client, message, prefix) {
     if (message.content.toLowerCase().includes('--filter-logs-bot')) {
 
     } else if (message.content.toLowerCase().includes('--filter-logs-audit')) {
-        var debounce = false;
+        let debounce = false;
         let actions = args.find(f => f.startsWith('--filter-action-') || f.startsWith('--filter-actions-')) || 'Not filtered'
         if (actions !== 'Not filtered') {
             actions = actions.substring(16);

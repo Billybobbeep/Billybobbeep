@@ -26,9 +26,9 @@ module.exports = {
         embed.setFooter('Say \'skip\' to skip this question')
         embed4.setColor(`${guildData.findOne({ guildId: '733442092667502613' }).then(result => result.embedColor) || '#447ba1'}`);
 
-        var subject = '';
-        var body = '';
-        var extra = '';
+        let subject = '';
+        let body = '';
+        let extra = '';
 
         if (message.channel.type === 'dm') {
             let msg = await message.channel.send(embed);
@@ -43,7 +43,7 @@ module.exports = {
                     message.channel.send(embed2);
                 });
                 const mfilter = collected => collected.author.id === message.author.id;
-                var collected = await msg.channel.awaitMessages(mfilter, {
+                let collected = await msg.channel.awaitMessages(mfilter, {
                     max: 1,
                     time: 50000,
                 }).catch(() => {
@@ -132,7 +132,7 @@ module.exports = {
                     message.author.send(embed2);
                 });
                 const mfilter = collected => collected.author.id === message.author.id;
-                var collected = await msg.channel.awaitMessages(mfilter, {
+                let collected = await msg.channel.awaitMessages(mfilter, {
                     max: 1,
                     time: 50000,
                 }).catch(() => {

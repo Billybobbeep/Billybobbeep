@@ -8,8 +8,8 @@ module.exports = {
     const configFile = require('../../structure/config.json');
     const db = require('../../structure/global.js').db;
     const Discord = require('discord.js');
-    var embed1 = new Discord.MessageEmbed();
-    var embed2 = new Discord.MessageEmbed();
+    let embed1 = new Discord.MessageEmbed();
+    let embed2 = new Discord.MessageEmbed();
     const logging = require('../../utils/functions.js').logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     async function unmuteCmd() {
@@ -46,7 +46,7 @@ module.exports = {
         logging(embed2, message, client)
     }
 
-    var debounce = false;
+    let debounce = false;
 
     if (message.member.hasPermission('MANAGE_MESSAGES') || message.member.hasPermission('ADMINISTRATOR')) {
       unmuteCmd()

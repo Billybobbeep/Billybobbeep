@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const configFile = require('../../structure/config.json');
 const db = require('../../structure/global.js').db;
 
-//[Main Varables]\\
+//[Main letables]\\
 let title;
 let description;
 let color;

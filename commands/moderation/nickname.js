@@ -35,7 +35,7 @@ module.exports = {
           message.channel.send('I do not have the permissions to change this users nickname');
       }
     }
-    var debounce = false;
+    let debounce = false;
 
     guildData.findOne({ guildId: message.guild.id }).then(result => {
       if (message.member.hasPermission('MANAGE_GUILD') || message.member.hasPermission('ADMINISTRATOR')) {

@@ -18,12 +18,12 @@ module.exports = {
 
     if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server')
 
-    var workAmt = undefined;
-    var cooldown = info.global.work.cooldown;
+    let workAmt = undefined;
+    let cooldown = info.global.work.cooldown;
     let jobs = db.get(message.author.id + '.jobs') || undefined;
     let lastRun = db.get(message.author.id + '.economy.work');
     let decimal = Math.round(Math.random() * 89) + 10;
-    var gainedXp = 1
+    let gainedXp = 1
 
     let cashier = db.get(message.author.id + '.jobs.job') === 'cashier' ? true : undefined;
     let teacher = db.get(message.author.id + '.jobs.job') === 'teacher' ? true : undefined;
@@ -71,7 +71,7 @@ module.exports = {
       embed.setDescription(`Before you can start working, you need to get a job.\n\nTo Apply for a job use '${prefix}jobs'`);
       message.channel.send(embed)
     } else if (Date.now() < lastRun) {
-      var seco = 'seconds'
+      let seco = 'seconds'
       let time2work = ms(Date.now() - lastRun);
       time2work = time2work.replace('-', '');
       if (time2work.endsWith('ms')) time2work = '1s';
@@ -92,16 +92,16 @@ module.exports = {
         reactionCollection(msg, '📕', '📗', '📙', workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
       }
       else if (waiter !== undefined) {
-        var usedNo = [];
-        var numbers = ['1', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-        var  emojis = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣'];
-        var no1 = Math.floor(Math.random() * emojis.length);
+        let usedNo = [];
+        let numbers = ['1', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        let  emojis = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣'];
+        let no1 = Math.floor(Math.random() * emojis.length);
         if (usedNo.length === numbers.length) usedNo = []
         usedNo.push(numbers[no1]);
-        var no2 = Math.floor(Math.random() * emojis.length);
+        let no2 = Math.floor(Math.random() * emojis.length);
         if (usedNo.includes(numbers[no2])) no2 = Math.floor(Math.random() * emojis.length);
         usedNo.push(numbers[no2]);
-        var no3 = Math.floor(Math.random() * emojis.length);
+        let no3 = Math.floor(Math.random() * emojis.length);
         if (usedNo.includes(numbers[no3])) no3 = Math.floor(Math.random() * emojis.length);
         usedNo.push(numbers[no3]);
         embed.setDescription(`Select a table number:\n\n${emojis[no1]}-${numbers[no1]}\n${emojis[no2]}-${numbers[no2]}\n${emojis[no3]}-${numbers[no3]}`);
@@ -116,7 +116,7 @@ module.exports = {
       else if (receptionist !== undefined) {
         embed.setDescription(`What would you like to do?\n\n📞Answer the phone\n💻Book an appointment\n💰Count the daily earnings`);
         let msg = await message.channel.send(embed);
-        var count = Math.round(Math.random() * 15);
+        let count = Math.round(Math.random() * 15);
         const congratsEmbed1 = new Discord.MessageEmbed()
         .setDescription(`You answered the phone ${count} times and earned **$${workAmt}.${decimal}**!`)
         .setAuthor(message.author.username)
@@ -280,7 +280,7 @@ module.exports = {
         }).catch(() => {
           msg.reactions.removeAll()
           amt = amt / 2
-          var bal = db.get(message.author.id + '.economy.balance') || 0;
+          let bal = db.get(message.author.id + '.economy.balance') || 0;
           if (bal.toString().startsWith('-')) {
             if (
               db.get(message.author.id + '.jobs.timesFired') === 2 ||
@@ -382,12 +382,12 @@ module.exports = {
     }
 
     function mainchef(reaction, msg, emoji, amt) {
-      var emojis = ['🍳', '🥐', '🥑', '🥒', '🥓', '🥔', '🥕', '🥖', '🥗', '🥘', '🥚', '🥜', '🥝', '🥞', '🦐', '🦑'];
-      var names = ['Fry Eggs', 'Croissants', 'Avocado', 'Cucumber', 'Bacon Strips', 'Potatoes', 'Carrots', 'Bread Sticks', 'Salad', 'Curry', 'Boiled Eggs', 'Special Nut Dish', 'Kiwi', 'Pancakes', 'Shrimp', 'Octopus'];
+      let emojis = ['🍳', '🥐', '🥑', '🥒', '🥓', '🥔', '🥕', '🥖', '🥗', '🥘', '🥚', '🥜', '🥝', '🥞', '🦐', '🦑'];
+      let names = ['Fry Eggs', 'Croissants', 'Avocado', 'Cucumber', 'Bacon Strips', 'Potatoes', 'Carrots', 'Bread Sticks', 'Salad', 'Curry', 'Boiled Eggs', 'Special Nut Dish', 'Kiwi', 'Pancakes', 'Shrimp', 'Octopus'];
       if (reaction === 'start') {
-        var no1 = Math.floor(Math.random() * emojis.length);
-        var no2 = Math.floor(Math.random() * emojis.length);
-        var no3 = Math.floor(Math.random() * emojis.length);
+        let no1 = Math.floor(Math.random() * emojis.length);
+        let no2 = Math.floor(Math.random() * emojis.length);
+        let no3 = Math.floor(Math.random() * emojis.length);
         if (no1 === no2) no2 = Math.floor(Math.random() * emojis.length);
         if (no2 === no3) no3 = Math.floor(Math.random() * emojis.length);
         if (no3 === no1) no1 = Math.floor(Math.random() * emojis.length);
@@ -396,8 +396,8 @@ module.exports = {
         chefReact(amt, msg, emojis[no1], emojis[no2], emojis[no3]);
       }
       if (reaction === '1' || reaction === '2' || reaction === '3') {
-        var name;
-        var count = 0;
+        let name;
+        let count = 0;
         emojis.forEach(result => {
           count++;
           if (emoji === result) {
@@ -411,7 +411,7 @@ module.exports = {
         }
         msg.edit(embed);
         setTimeout(() => {
-          var string = '';
+          let string = '';
           if (name.toString().endsWith('s')) string = 'some'; else string = 'a';
           embed.setDescription(`You have successfully prepared ${string} ${name} and earned **$${amt}**!`);
         }, 300);

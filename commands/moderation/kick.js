@@ -33,7 +33,7 @@ module.exports = {
         .then(() => {
           message.channel.send(`Successfully kicked **${user.tag}**`
           );
-            var embed = new Discord.MessageEmbed();
+            let embed = new Discord.MessageEmbed();
             embed.setTitle('Kicked Member');
             embed.setDescription(
               `**Member Tag:** ${member.tag}\n` +
@@ -50,7 +50,7 @@ module.exports = {
           message.reply('I was unable to kick the member you provided');
         });
     }
-    var debounce = false;
+    let debounce = false;
 
     guildData.findOne({ guildId: message.guild.id }).then(result => {
       if (message.member.hasPermission('KICK_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {

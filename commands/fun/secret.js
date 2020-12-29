@@ -1,4 +1,4 @@
-var letters = {
+let letters = {
   a : 'a',
   b : 'b',
   c : 'c',
@@ -102,13 +102,13 @@ module.exports = {
   guildOnly: true,
   execute (message, prefix, client) {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
-    var lines = ['', ''];
+    let lines = ['', ''];
     
     if (!args) return message.channel.send('You must specify a message to send');
 
-    for (var i = 0; i < args.slice(1).join(' ').length; i++) {
-      var letter = args.slice(1).join(' ')[i];
-      for (var j = 0; j < 1; j++) {
+    for (let i = 0; i < args.slice(1).join(' ').length; i++) {
+      let letter = args.slice(1).join(' ')[i];
+      for (let j = 0; j < 1; j++) {
           lines[j] += letters[letter] + '';
       }
   }

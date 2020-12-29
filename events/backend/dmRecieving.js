@@ -7,7 +7,7 @@ module.exports = async (message, client) => {
   const db = require('../../structure/global.js').db;
   const logging = require('../../utils/functions.js').logging;
 
-  var embed = new Discord.MessageEmbed();
+  let embed = new Discord.MessageEmbed();
   embed.setTitle(`DM Recieved`);
   embed.setDescription(
     `**Content:** ${message}\n` +

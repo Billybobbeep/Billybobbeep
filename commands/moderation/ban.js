@@ -43,7 +43,7 @@ module.exports = {
       });
     }
 
-    var debounce = false;
+    let debounce = false;
 
     guildData.findOne({ guildId: message.guild.id }).then(result => {
       if (message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {

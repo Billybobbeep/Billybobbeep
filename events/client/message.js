@@ -4,9 +4,9 @@ const { MessageEmbed } = require('discord.js');
 
 function redirect(message, client) {
     if (message.guild)
-        var prefix = db.get(message.guild.id + '.prefix') || '~';
+        let prefix = db.get(message.guild.id + '.prefix') || '~';
     else
-        var prefix = '~';
+        let prefix = '~';
     
     if (message.channel.id === configFile.PollChannel || message.channel.id === configFile.MemesChannel)
         require('../backend/reactions.js')(message);
@@ -31,9 +31,9 @@ function redirect(message, client) {
 
 function handle(message, client) {
     if (message.guild)
-        var prefix = db.get(message.guild.id + '.prefix') || '~';
+        let prefix = db.get(message.guild.id + '.prefix') || '~';
     else
-        var prefix = '~';
+        let prefix = '~';
 
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     let command = args[0].toLowerCase();
@@ -44,7 +44,7 @@ function handle(message, client) {
         if (client.commands.get(command).bannedRoles) {
             if (message.mentions.users.first()) {
                 let user = message.guild.members.cache.get(message.mentions.users.first().id);
-                var debounce = false;
+                let debounce = false;
                 user.roles.cache.forEach(r => {
                     if (client.commands.get(command).bannedRoles.includes(r)) debounce = true;
                 });

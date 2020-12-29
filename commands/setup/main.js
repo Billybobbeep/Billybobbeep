@@ -8,7 +8,7 @@ module.exports = {
     guildData.findOne({ guildId: message.guild.id }).then(result => {
       const embedColor = result.embedColor ? result.embedColor : '#447ba1';
       const embed = new MessageEmbed();
-      var msg;
+      let msg;
 
       function nonAdmin() {
         embed.setTitle('Billybobbeep | Setup Command')
@@ -35,7 +35,7 @@ module.exports = {
       }
 
       function commands() {
-        var redirect;
+        let redirect;
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         if (message.content.toLowerCase().startsWith(prefix + 'setup logging')) {
           redirect = require('./loggingChannel.js');

@@ -8,4 +8,11 @@ module.exports = async (member) => {
   if (db.get(member.guild.id + '.autoRole')) {
     member.roles.add(db.get(member.guild.id + '.autoRole'))
   }
+
+  const guildMemberData = require('../client/database/models/guildMembers.js');
+  const newData = new guildMemberData({
+    guildId: member.guild.id,
+    memberId: member.user.id
+  });
+  newData.save();
 }

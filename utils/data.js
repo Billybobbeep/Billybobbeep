@@ -1,10 +1,10 @@
 module.exports.data = function(client, callback) {
     const configFile = require('../structure/config.json');
-    var totalNum = client.guilds.cache.get(configFile.ServerId).members.cache.array();
-    var totalOnlineNum = client.guilds.cache.get(configFile.ServerId).members.cache.filter(m => m.presence.status != 'offline').array();
-    var totalBotNum = client.guilds.cache.get(configFile.ServerId).members.cache.filter(m => m.user.bot);
+    let totalNum = client.guilds.cache.get(configFile.ServerId).members.cache.array();
+    let totalOnlineNum = client.guilds.cache.get(configFile.ServerId).members.cache.filter(m => m.presence.status != 'offline').array();
+    let totalBotNum = client.guilds.cache.get(configFile.ServerId).members.cache.filter(m => m.user.bot);
     setTimeout(function() {
-        var jsonArr = {
+        let jsonArr = {
         "TMembers": totalNum.length,
         "TOnline": totalOnlineNum.length,
         "TBots": totalBotNum.size,

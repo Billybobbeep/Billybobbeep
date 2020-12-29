@@ -7,17 +7,17 @@ module.exports = {
   execute (message, prefix, client) {
     const Discord = require('discord.js');
     const db = require('../../structure/global.js').db;
-    var reasons = [];
+    let reasons = [];
     const logging = require('../../utils/functions.js').logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     async function rwarnCmd() {
-      var user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
+      let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
       if (!user) return message.channel.send('Please specify a user');
 
       if (user.id === message.author.id) return message.channel.send('You cannot remove your own warnings');
       if (user.bot) return message.channel.send('Bots cannot be warned');
 
-      var member;
+      let member;
 
       if (db.get(message.guild.id + '_' + user.id + '.warnings') < 1 || !db.get(message.guild.id + '_' + user.id + '.warnings')) {
         return message.channel.send(`${user} does not have any warnings`)
@@ -34,7 +34,7 @@ module.exports = {
 
       if (!member) return message.reply('That user is not in this server');
 
-      var reason = args.splice(2).join(' ');
+      let reason = args.splice(2).join(' ');
       let tw = db.get(message.guild.id + '_' + user.id + '.warnings')
       if (!reason) return message.reply('Please provide a reason');
       message.channel.send(`Removed \`1\` warnings from ${user}`);
@@ -49,9 +49,9 @@ module.exports = {
       }
 
       warnReason = warnReason.split(/ +/g);
-      var index = warnReason.findIndex(result => result === '-');
-      var warnReason2 = '';
-      var i = 0;
+      let index = warnReason.findIndex(result => result === '-');
+      let warnReason2 = '';
+      let i = 0;
       warnReason.forEach(word => {
           i++;
           if (i >= (index + 1)) return;
@@ -63,7 +63,7 @@ module.exports = {
           }
       });
 
-      var log = new Discord.MessageEmbed()
+      let log = new Discord.MessageEmbed()
         .setTimestamp()
         .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
         .setTitle('Warning Removed')
@@ -81,7 +81,7 @@ module.exports = {
         db.subtract(message.guild.id + '_' + user.id + '.warnings', 1);
       }
     }
-    var debounce = false;
+    let debounce = false;
 
     if (message.member.hasPermission("MANAGE_MESSAGES") || message.member.hasPermission("ADMINISTRATOR")) {
       rwarnCmd()

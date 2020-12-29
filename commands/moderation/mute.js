@@ -8,8 +8,8 @@ module.exports = {
     const guildData = require('../../events/client/database/models/guilds.js');
     const mutedMembers = require('../../events/client/database/models/mutedMembers.js');
     const Discord = require('discord.js');
-    var embed1 = new Discord.MessageEmbed();
-    var embed2 = new Discord.MessageEmbed();
+    let embed1 = new Discord.MessageEmbed();
+    let embed2 = new Discord.MessageEmbed();
     const ms = require('ms');
     const logging = require('../../utils/functions.js').logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -63,7 +63,7 @@ module.exports = {
       });
     }
 
-    var debounce = false;
+    let debounce = false;
 
     guildData.findOne({ guildId: message.guild.id }).then(result => {
       if (message.member.hasPermission('MANAGE_MESSAGES') || message.member.hasPermission('ADMINISTRATOR')) {

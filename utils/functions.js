@@ -3,21 +3,21 @@ const guildID = require('../structure/config.json').ServerId;
 
 module.exports.logging = function(msg, message, client, option) {
     if (typeof message === 'number') {
-        var loggingChannel = client.channels.cache.get(db.get(message + '.loggingChannel'));
+        let loggingChannel = client.channels.cache.get(db.get(message + '.loggingChannel'));
         if (loggingChannel) {
             loggingChannel.send(msg).catch(() => {return});
         }
     } else if (message !== undefined) {
         if (message.guild)
-            var loggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
+            let loggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
         else
-            var loggingChannel = client.channels.cache.get(db.get(guildID + '.loggingChannel'));
+            let loggingChannel = client.channels.cache.get(db.get(guildID + '.loggingChannel'));
         
         if (loggingChannel) {
             loggingChannel.send(msg).catch(() => {return});
         }
     } else {
-        var loggingChannel = client.channels.cache.get(db.get(guildID + '.loggingChannel'));
+        let loggingChannel = client.channels.cache.get(db.get(guildID + '.loggingChannel'));
         
         if (loggingChannel) {
             loggingChannel.send(msg).catch((error) => {console.log(error)});
@@ -26,7 +26,7 @@ module.exports.logging = function(msg, message, client, option) {
 }
 
 module.exports.rank = async function(message, avatar, username, discriminator, currentXP, requiredXP, level) {
-    var canvas = require('canvas');
+    let canvas = require('canvas');
     const Discord = require('discord.js');
     const assets = require('@canvacord/assets');
 
@@ -90,9 +90,9 @@ module.exports.rank = async function(message, avatar, username, discriminator, c
         if (!num || isNaN(num)) return "0";
         if (typeof num === "string") num = parseInt(num);
         let decPlaces = Math.pow(10, 1);
-        var abbrev = ["K", "M", "B", "T"];
-        for (var i = abbrev.length - 1; i >= 0; i--) {
-            var size = Math.pow(10, (i + 1) * 3);
+        let abbrev = ["K", "M", "B", "T"];
+        for (let i = abbrev.length - 1; i >= 0; i--) {
+            let size = Math.pow(10, (i + 1) * 3);
             if (size <= num) {
                 num = Math.round((num * decPlaces) / size) / decPlaces;
                 if (num == 1000 && i < abbrev.length - 1) {
@@ -107,7 +107,7 @@ module.exports.rank = async function(message, avatar, username, discriminator, c
     }
 
     function calculateProgress() {
-        var progressWidth = 596.5;
+        let progressWidth = 596.5;
         const cx = currentXP;
         const rx = requiredXP;
 
@@ -137,7 +137,7 @@ module.exports.rank = async function(message, avatar, username, discriminator, c
     if (typeof level !== 'number') throw new Error(`Level must be a number, recieved "${typeof level}"`);
 
     canvas = canvas.createCanvas(932, 282);
-    var ctx = canvas.getContext('2d');
+    let ctx = canvas.getContext('2d');
 
     // reset transparency
     ctx.globalAlpha = 1;
@@ -155,13 +155,13 @@ module.exports.rank = async function(message, avatar, username, discriminator, c
     ctx.font = 'bold 36px Sans';
     ctx.fillStyle = this.data.username.color;
     ctx.textAlign = 'start';
-    var name = shorten(username, 10);
+    let name = shorten(username, 10);
 
     // apply username
     ctx.fillText(`${name}`, 257 + 18.5, 164);
 
     // draw discriminator
-    var discrim = `${discriminator}`;
+    let discrim = `${discriminator}`;
     if (discrim) {
         ctx.font = '36px Sans';
         ctx.fillStyle = this.data.discriminator.color;

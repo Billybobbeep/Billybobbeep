@@ -24,7 +24,7 @@ module.exports.add = (guild, user, client) => {
         embed.setTimestamp(ban.createdTimestamp);
         embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`);
 
-        var loggingChannel = client.channels.cache.get(db.get(guild.id + '.loggingChannel'));
+        let loggingChannel = client.channels.cache.get(db.get(guild.id + '.loggingChannel'));
         if (loggingChannel) {
             loggingChannel.send(msg).catch(() => {return});
         }
@@ -56,7 +56,7 @@ module.exports.remove = (guild, user, client) => {
             )
             embed.setTimestamp(ban.createdTimestamp);
             embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`);
-            var loggingChannel = client.channels.cache.get(db.get(guild.id + '.loggingChannel'));
+            let loggingChannel = client.channels.cache.get(db.get(guild.id + '.loggingChannel'));
             if (loggingChannel) {
                 loggingChannel.send(msg).catch(() => {return});
             }

@@ -15,7 +15,7 @@ module.exports = {
         if (isNaN(args[1])) return message.channel.send('You have entered an invalid number');
         if (args[1] > 100) return message.channel.send('Please enter a number below 100');
         if (args[1] < 2) return message.channel.send('Please enter a number more than 1');
-        var msg1;
+        let msg1;
         message.delete()
         message.channel.bulkDelete(args[1])
           .then(messages => {
@@ -41,7 +41,7 @@ module.exports = {
           .catch(() => message.channel.send('Something went wrong, please ensure the messages are not over 2 weeks old'));
       });
     }
-    var debounce = false;
+    let debounce = false;
 
     if (message.member.hasPermission('MANAGE_MESSAGES') || message.member.hasPermission('ADMINISTRATOR')) {
       purgeCmd()

@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const configFile = require('../../structure/config.json');
-const db = require('../../structure/global.js').db;
+const guildData = require('../../events/client/database/models/guilds.js');
 
 module.exports = {
     name: 'userinfo',
@@ -37,18 +37,20 @@ module.exports = {
         let status = user.presence.status;
         let avatar = user.avatarURL({size: 2048});
 
-        const userinfoembed = new Discord.MessageEmbed()
-        .setAuthor(user.tag, avatar)
-        .setThumbnail(avatar)
-        .setTimestamp()
-        .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-        .addField('ID', user.id, true)
-        .addField('Nickname', nickname, true)
-        .addField('Created Account Date', `${createdate} \nCreated ${created} day(s) ago`, true)
-        .addField('Join Server Date', `${joindate} \nJoined ${joined} day(s) ago`, true)
-        .addField('Status', status, true)
-        .addField('Activity', game(), true)
-        .setFooter(`Requested by: ${message.author.tag}`)
-        message.channel.send(userinfoembed);
+        guildData.findOne({ guildId: message.guild.id }).then(result => {
+            const embed = new Discord.MessageEmbed()
+            .setAuthor(user.tag, avatar)
+            .setThumbnail(avatar)
+            .setTimestamp()
+            .setColor(result.embedColor)
+            .addField('ID', user.id, true)
+            .addField('Nickname', nickname, true)
+            .addField('Created Account Date', `${createdate} \nCreated ${created} day(s) ago`, true)
+            .addField('Join Server Date', `${joindate} \nJoined ${joined} day(s) ago`, true)
+            .addField('Status', status, true)
+            .addField('Activity', game(), true)
+            .setFooter(`Requested by: ${message.author.tag}`)
+            message.channel.send(embed);
+        });
     }
 }

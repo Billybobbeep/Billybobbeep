@@ -30,7 +30,7 @@ $("#accBtn").on("click", async function(event) {
 });
 
 function loginCheck(event) {
-    var discordTag = this.elements.discordTag.value;
+    let discordTag = this.elements.discordTag.value;
     if (discordTag.toString().includes('#')) {
         localStorage.setItem('userAgreed', true);
         return true;

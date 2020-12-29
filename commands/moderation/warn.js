@@ -11,7 +11,7 @@ module.exports = {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
   
     async function warnCmd() {
-      var user = message.mentions.users.first() || message.guild.members.cache.get(args[1])
+      let user = message.mentions.users.first() || message.guild.members.cache.get(args[1])
       if (!user) return message.channel.send('Please specify a user to warn');
       if (!user.id || !user.tag) user = user.user;
 
@@ -19,7 +19,7 @@ module.exports = {
       if (user.bot) return message.channel.send('Bots cannot be warned');
       if (user.id === message.guild.owner.id) return message.channel.send('The server owner cannot be warned');
 
-      var member;
+      let member;
 
       try {
         member = await message.guild.members.fetch(user);
@@ -34,10 +34,10 @@ module.exports = {
       }
       if (user.id === message.guild.owner.id) return message.channel.send('You cannot warn the guild owner');
 
-      var reason = args.splice(2).join(' ');
+      let reason = args.splice(2).join(' ');
       if (!reason) return message.reply('You need to specify a reason');
       db.push(message.guild.id + '_' + user.id + '.warnReasons', reason + ` - ${message.author.tag}(${message.author.id})`);
-      var log = new Discord.MessageEmbed()
+      let log = new Discord.MessageEmbed()
         .setTimestamp()
         .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
         .setTitle('User Warned')
@@ -48,7 +48,7 @@ module.exports = {
       logging(log, message, client);
 
       await message.channel.send(`**${user}** has been warned by **${message.author}**!`);
-      var log2 = new Discord.MessageEmbed()
+      let log2 = new Discord.MessageEmbed()
       log2.setTimestamp()
       log2.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
       log2.setTitle(`You have been warned`);
@@ -63,7 +63,7 @@ module.exports = {
       db.add(message.guild.id + '_' + user.id + '.warnings', 1)
     }
     
-    var debounce = false;
+    let debounce = false;
 
     if (message.member.hasPermission("MANAGE_MESSAGES") || message.member.hasPermission("ADMINISTRATOR")) {
       warnCmd()

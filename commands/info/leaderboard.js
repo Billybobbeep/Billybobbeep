@@ -15,9 +15,9 @@ module.exports = {
         guildMemberData.find(function(err, result) {
             if (err) return message.channel.send('I do not have enough data to run this command');
             if (args[1] && args[1] === 'global') {
-                var allData = [];
-                var levels = [];
-                var finalData = [];
+                let allData = [];
+                let levels = [];
+                let finalData = [];
                 result.forEach(data => {
                     if (data && data.level) {
                         allData.push(`${data.level}_${data.memberId}_${data.guildId}`);
@@ -30,16 +30,16 @@ module.exports = {
                 levels.length = 10;
                 allData = allData.sort((a, b) => b.split('_')[0] - a.split('_')[0]);
                 allData.length = 10;
-                var count = 0;
+                let count = 0;
                 allData.forEach(data => {
-                    var level = data.split('_')[0];
+                    let level = data.split('_')[0];
                     if (levels[count].toString() === level.toString()) {
                         finalData.push(data);
                     }
                     count++;
                 });
 
-                var i = 0;
+                let i = 0;
                 finalData.forEach(data => {
                     i++
                     embed.addField(`#${i}`, `${client.users.cache.get(data.split('_')[1]).tag} - **${data.split('_')[0]}** - ${client.guilds.cache.get(data.split('_')[2]).name}`, false);
@@ -47,9 +47,9 @@ module.exports = {
 
                 message.channel.send(embed);
             } else {
-                var allData = [];
-                var levels = [];
-                var finalData = [];
+                let allData = [];
+                let levels = [];
+                let finalData = [];
                 embed.setFooter('Use "' + prefix + 'leaderboard global" to see the global leaderboard');
                 result.forEach(data => {
                     if (data.guildId !== message.guild.id) return;
@@ -64,16 +64,16 @@ module.exports = {
                 levels.length = 10;
                 allData = allData.sort((a, b) => b.split('_')[0] - a.split('_')[0]);
                 allData.length = 10;
-                var count = 0;
+                let count = 0;
                 allData.forEach(data => {
-                    var level = data.split('_')[0];
+                    let level = data.split('_')[0];
                     if (levels[count].toString() === level.toString()) {
                         finalData.push(data);
                     }
                     count++;
                 });
 
-                var i = 0;
+                let i = 0;
                 finalData.forEach(data => {
                     i++
                     embed.addField(`#${i}`, `<@!${data.split('_')[1]}> - **${data.split('_')[0]}**`);

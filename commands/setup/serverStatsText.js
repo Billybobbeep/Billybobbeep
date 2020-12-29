@@ -39,7 +39,7 @@ module.exports = (message, prefix, embedColor) => {
         if (!isNaN(args[2])) return message.channel.send('You have not specified a stat type');
         if (args[2] === 'bot' || args[2] === 'total' || args[2] === 'member' || args[2] === 'b' || args[2] === 't' || args[2] === 'm') {
         
-            var text = args.slice(3).join(' ');
+            let text = args.slice(3).join(' ');
 
             try {
               if (args[2] === 't' || args[2] === 'total') guildData.findOneAndUpdate({ guildId: message.guild.id }, { serverStats_totalNoText: text });

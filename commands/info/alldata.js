@@ -10,7 +10,7 @@ module.exports = {
 
       embed.setTitle('Total Guild List:');
       embed.setFooter(`${client.users.cache.size} members`);
-      var count = 0;
+      let count = 0;
       client.guilds.cache.forEach(guild => { count++; embed.addField(`Guild ${count}`, guild.name) });
       message.channel.send(embed);
   }

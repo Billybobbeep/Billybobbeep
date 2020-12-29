@@ -6,7 +6,7 @@ module.exports = (message, prefix, embedColor) => {
     .slice(prefix.length)
     .trim()
     .split(/ +/g);
-  var color;
+  let color;
 
   if (!args[2] || args[2].toLowerCase() === 'help') {
     const embed = new MessageEmbed()
@@ -47,13 +47,13 @@ module.exports = (message, prefix, embedColor) => {
     }
 
     if (args[2] && args[2].startsWith('#')) {
-      var match = /(#(?:[a-f\d]{3}){1,2})([^#]+)/gi
-      var result2 = [], m
+      let match = /(#(?:[a-f\d]{3}){1,2})([^#]+)/gi
+      let result2 = [], m
 
       while ((m = match.exec(args[2])) !== null) {
         result2.push([m[1], m[2]]);
       }
-      var result1 = result2.toLocaleString().replace(',', '')
+      let result1 = result2.toLocaleString().replace(',', '')
       if (!result1.length >= 3) return message.channel.send('You have entered a invalid hex code')
       if (result1.length > 8) return message.channel.send('You have entered a invalid hex code')
 

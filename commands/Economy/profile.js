@@ -25,12 +25,12 @@ module.exports = {
         let socialWorker = db.get(message.author.id + '.jobs.job') === 'social worker' ? true : undefined;
         let doctor = db.get(message.author.id + '.jobs.job') === 'doctor' ? true : undefined;
 
-        var job = '';
-        var jobLvl = db.get(message.author.id + '.jobs.level');
-        var streak = db.get(message.author.id + '.economy.tStreak');
-        var timesFired = db.get(message.author.id + '.jobs.timesFired') || 0;
-        var lastFired = moment.utc(db.get(message.author.id + '.jobs.lastFired')).format('DD-MM-YYYY, h:mm:ss a');
-        var lastApplied = moment.utc(db.get(message.author.id + '.jobs.lastApplied')).format('DD-MM-YYYY, h:mm:ss a');
+        let job = '';
+        let jobLvl = db.get(message.author.id + '.jobs.level');
+        let streak = db.get(message.author.id + '.economy.tStreak');
+        let timesFired = db.get(message.author.id + '.jobs.timesFired') || 0;
+        let lastFired = moment.utc(db.get(message.author.id + '.jobs.lastFired')).format('DD-MM-YYYY, h:mm:ss a');
+        let lastApplied = moment.utc(db.get(message.author.id + '.jobs.lastApplied')).format('DD-MM-YYYY, h:mm:ss a');
 
         if (cashier) job = 'Cashier';
         else if (teacher) job = 'Teacher';

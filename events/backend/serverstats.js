@@ -10,9 +10,9 @@ module.exports = (member, client) => {
   }
   
   if (!countChannel.total || !countChannel.member || !countChannel.bots) return;
-  var tu = db.get(member.guild.id + '.serverStats.totalNoText') || 'Total Users:'
-  var tm = db.get(member.guild.id + '.serverStats.memberNoText') || 'Members:';
-  var tb = db.get(member.guild.id + '.serverStats.botNoText') || 'Bots:';
+  let tu = db.get(member.guild.id + '.serverStats.totalNoText') || 'Total Users:'
+  let tm = db.get(member.guild.id + '.serverStats.memberNoText') || 'Members:';
+  let tb = db.get(member.guild.id + '.serverStats.botNoText') || 'Bots:';
   try {
       client.channels.cache.get(countChannel.total).setName(`${tu} ${member.guild.memberCount}`);
       client.channels.cache.get(countChannel.member).setName(`${tm} ${member.guild.members.cache.filter(m => !m.user.bot).size}`);

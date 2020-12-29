@@ -1,5 +1,5 @@
 /*
-        var letters = {
+        let letters = {
             a : '',
             b : '',
             c : '',
@@ -81,8 +81,8 @@ module.exports = {
         const db = require('../../structure/global.js').db;
 
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
-        var lines = ['', ''];
-        var starter = '➳';
+        let lines = ['', ''];
+        let starter = '➳';
         
         function mainEmbed() {
             embed.setTitle('Billybobbeep | Fonts');
@@ -96,7 +96,7 @@ module.exports = {
         if (message.content.toLowerCase() === prefix + 'font' || message.content.toLowerCase() === prefix + 'fonts') return mainEmbed()
         if (!args[1]) return message.channel.send('Please specify a font')
         if (args[1].toLowerCase() === 'fancy') {
-            var letters = {
+            let letters = {
                 a : '𝓪',
                 b : '𝓫',
                 c : '𝓬',
@@ -166,7 +166,7 @@ module.exports = {
                 0 : '0'
             }
         } else if (args[1].toLowerCase() === 'double') {
-            var letters = {
+            let letters = {
                 a : '𝕒',
                 b : '𝕓',
                 c : '𝕔',
@@ -237,7 +237,7 @@ module.exports = {
             }
         }
         else if (args[1].toLowerCase() === 'hand') {
-            var letters = {
+            let letters = {
                 a : '𝒶',
                 b : '𝒷',
                 c : '𝒸',
@@ -307,7 +307,7 @@ module.exports = {
                 0 : '0'
             }
         } else if (args[1].toLowerCase() === 'cursed') {
-            var letters = {
+            let letters = {
                 a : 'a̸̟̲͙͓̮͔̻̍͒͗̒̒́̈́',
                 b : 'b̴͓̘̽̊͂͗',
                 c : 'c̶̢͕͉̫̼͕̭͎͓̭̄͑̔̈̕',
@@ -377,7 +377,7 @@ module.exports = {
                 0 : '0'
             }
         }else if (args[1].toLowerCase() === 'smooth') {
-            var letters = {
+            let letters = {
                 a : 'ᗩ',
                 b : 'ᗷ',
                 c : 'ᑕ',
@@ -447,7 +447,7 @@ module.exports = {
                 0 : '0'
             }
         } else if (args[1].toLowerCase() === 'smol') {
-            var letters = {
+            let letters = {
                 a : 'α',
                 b : 'в',
                 c : '¢',
@@ -524,9 +524,9 @@ module.exports = {
             message.reply('Please specify a message')
         } else {
             try {
-                for (var i = 0; i < args.slice(2).join(' ').length; i++) {
-                    var letter = args.slice(2).join(' ')[i].toLowerCase();
-                    for (var j = 0; j < 1; j++) {
+                for (let i = 0; i < args.slice(2).join(' ').length; i++) {
+                    let letter = args.slice(2).join(' ')[i].toLowerCase();
+                    for (let j = 0; j < 1; j++) {
                         lines[j] += letters[letter] + '';
                     }
                 }

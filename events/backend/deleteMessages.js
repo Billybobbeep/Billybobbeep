@@ -8,7 +8,7 @@ module.exports = async (message, client) => {
 
   let command;
   let pinned;
-  var attachments = [];
+  let attachments = [];
 
   if (!message.guild) return;
   try { if (message.author.bot) return; } catch { return }
@@ -16,7 +16,7 @@ module.exports = async (message, client) => {
   if (!message || !message.author.id) return;
   embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
   let prefix = db.get(message.guild.id + '.prefix') || '~';
-  var content = message.content.length ? message.content : '*This message contained no content.*';
+  let content = message.content.length ? message.content : '*This message contained no content.*';
   message.attachments ? message.attachments.forEach(attachment => attachments.push(attachment.proxyURL)) : attachments.push('Null');
   if (!attachments.includes('Null'))
     attachments = attachments.join('\n');

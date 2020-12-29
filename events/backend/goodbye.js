@@ -6,7 +6,6 @@ module.exports = async (member) => {
     if (!channel) return;
     channel.send(`${member} left the server. (${member.user.tag})`);
   }
-  if (db.get(member.guild.id + '_' + member.user.id)) {
-    db.delete(member.guild.id + '_' + member.user.id)
-  }
+  const guildMemberData = require('../client/database/models/guildMembers.js');
+  guildMemberData.findOneAndRemove({ guildId: member.guild.id, memberId: member.user.id });
 }

@@ -1,5 +1,5 @@
-const { MessageEmbed } = require('discord.js');
-const db = require('../../structure/global.js').db;
+const { MessageEmbed, } = require('discord.js');
+const guildData = require('../client/database/models/guilds.js');
 const configFile = require('../../structure/config.json');
 const embed = new MessageEmbed();
 const logging = require('../../utils/functions.js').logging;
@@ -18,54 +18,52 @@ module.exports.add = async (guild, client) => {
             }
         }
 
-        let channel = await guild.channels.cache.get(guild.systemChannelID || channelID);
-        embed.setTitle('Billybobbeep | Welcome')
-        embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`)
-        embed.setTimestamp()
-        embed.setDescription(`Thank you for adding me to your server.\n\nThe default prefix is \`~\`, You can change the prefix with the command \`~prefix\`\n\nTo view the commands view \`~cmds\` and to customise the bot for your server feel free to check out \`~setup\``)
-        try {
-          setTimeout(() => {
-            channel.send(embed);
-          }, 300);
-        } catch {
-          console.error('Could not send welcome embed in ' + guild.name)
-        }
-      }, 10000);
-
-      var role;
-        guild.roles.create({
-          data: {
-              name: 'Billy 🤩',
-              color: '#e5f7b2',
-              permissions: 8
+        guildData.findOne({ guildId: guild.id }).then(async result => {
+          let channel = await guild.channels.cache.get(guild.systemChannelID || channelID);
+          embed.setTitle('Billybobbeep | Welcome')
+          embed.setColor(`${result.embedColor ? result.embedColor : '#447ba1'}`)
+          embed.setTimestamp()
+          embed.setDescription(`Thank you for adding me to your server.\n\nThe default prefix is \`~\`, You can change the prefix with the command \`~prefix\`\n\nTo view the commands view \`~cmds\` and to customise the bot for your server feel free to check out \`~setup\``)
+          try {
+            setTimeout(() => {
+              channel.send(embed);
+            }, 300);
+          } catch {
+            console.error('Could not send welcome embed in ' + guild.name)
           }
-        }).then(role => {
-          guild.member(client.user).roles.add(role);
-          role.setHoist(true);
-          const highestRole = guild.me.roles.highest;
-          role.setPosition(highestRole.position - 1);
-        }).catch(console.error);
+        }, 10000);
+
+        let role;
+          guild.roles.create({
+            data: {
+                name: 'Billy 🤩',
+                color: '#e5f7b2',
+                permissions: 8
+            }
+          }).then(role => {
+            guild.member(client.user).roles.add(role);
+            role.setHoist(true);
+            const highestRole = guild.me.roles.highest;
+            role.setPosition(highestRole.position - 1);
+          }).catch(console.error);
 
 
-    embed.setTitle('Guild Added')
-    embed.setDescription(
-      `**Guild Name:** ${guild.name}\n` +
-      `**Guild ID:** ${guild.id}`)
-    embed.setColor('#447ba1')
-    embed.setTimestamp()
-    embed.setThumbnail(guild.iconURL({ dynamic: true }))
-    logging(embed, '733442092667502613', client, 'guild');
+      embed.setTitle('Guild Added')
+      embed.setDescription(
+        `**Guild Name:** ${guild.name}\n` +
+        `**Guild ID:** ${guild.id}`)
+      embed.setColor('#447ba1')
+      embed.setTimestamp()
+      embed.setThumbnail(guild.iconURL({ dynamic: true }))
+      logging(embed, '733442092667502613', client, 'guild');
+
+      const guildData = require('../client/database/models/guilds.js');
+      const newData = new guildData({ guildId: member.guild.id });
+      newData.save();
+    });
   }
 
 module.exports.remove = (guild, client) => {
-  if (db.get(guild.id)) db.delete(guild.id);
-
-  db.fetchAll().forEach(data => {
-    if (data.id.split('_').length < 1) return;
-    if (data.id.split('_')[1] === guild.id) {
-      db.delete(data.id)
-    }
-  });
 
   const embed = new MessageEmbed()
     .setTitle('Guild Removed')
@@ -76,4 +74,7 @@ module.exports.remove = (guild, client) => {
     .setTimestamp()
     .setThumbnail(guild.iconURL({ dynamic: true }))
   logging(embed, '733442092667502613', client, 'guild');
+
+  const guildData = require('../client/database/models/guilds.js');
+  guildMemberData.findOneAndRemove({ guildId: member.guild.id });
 }

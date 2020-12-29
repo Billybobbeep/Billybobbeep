@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const configFile = require('../../structure/config.json');
-const db = require('../../structure/global.js').db;
+const guildData = require('../../events/client/database/models/guilds.js');
+const { functionsIn } = require('lodash');
 
 module.exports = {
     name: 'members',
@@ -15,18 +16,20 @@ module.exports = {
             dnd = member.cache.filter(m => m.user.presence.status === 'dnd').size,
             robot = member.cache.filter(m => m.user.bot).size,
             total = message.guild.memberCount;
-            
-        const embed = new Discord.MessageEmbed()
-        .setTitle('Billybobbeep | Server Members')
-        .addField('Total Members:', `${total}`, true)
-        .addField('Offline Members:', `${offline}`, true)
-        .addField('Online Members:', `${online}`, true)
-        .addField('Idle Members:', `${idle}`, true)
-        .addField('DND Members:', `${dnd}`, true)
-        .addField('Bots:', `${robot}`, true)
-        .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-        .setFooter(`Requested by: ${message.author.tag}`)
-        .setTimestamp()
-        message.channel.send(embed)
+        
+        guildData.findOne({ guildId: message.guild.id }).then(result => {
+            const embed = new Discord.MessageEmbed()
+            .setTitle('Billybobbeep | Server Members')
+            .addField('Total Members:', `${total}`, true)
+            .addField('Offline Members:', `${offline}`, true)
+            .addField('Online Members:', `${online}`, true)
+            .addField('Idle Members:', `${idle}`, true)
+            .addField('DND Members:', `${dnd}`, true)
+            .addField('Bots:', `${robot}`, true)
+            .setFooter(`Requested by: ${message.author.tag}`)
+            .setTimestamp()
+            result.embedColor ? embed.setColor(result.embedColor) : embed.setColor('#447ba1');
+            message.channel.send(embed);
+        });
     }
 }

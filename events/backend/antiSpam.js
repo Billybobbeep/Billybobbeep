@@ -12,22 +12,22 @@ module.exports = {
 //        Settings
 //      ------------
         if (message.guild) {
-            var spamEnabled = db.get(message.guild.id + '.antiSpam.enabled') || true;
+            let spamEnabled = db.get(message.guild.id + '.antiSpam.enabled') || true;
         }
 
-        var ignoredChannels = []; //Channels to ignore (ID)
-        var ignoredMembers = []; //Members to ignore (ID)
-        var ignoredRoles = []; //Roles to ignore (ID)
-        var maxDuplicatesInterval = 2000; //Duplicate messages interval
-        var maxInterval = 2000; //Message interval
-        var muteEnabled = true; //If the bot can mute users
-        var muteThreshold = 4; //How many messages sent to get a mute
-        var maxDuplicatesMute = 9; //Amount of the same messages sent in a row to get a mute
-        var warnEnabled = true; //If the bot can warn users
-        var warnThreshold = 4; //How many messages sent to get a warning
-        var maxDuplicatesWarn = 9; //Amount of the same messages sent in a row to get a warning
+        let ignoredChannels = []; //Channels to ignore (ID)
+        let ignoredMembers = []; //Members to ignore (ID)
+        let ignoredRoles = []; //Roles to ignore (ID)
+        let maxDuplicatesInterval = 2000; //Duplicate messages interval
+        let maxInterval = 2000; //Message interval
+        let muteEnabled = true; //If the bot can mute users
+        let muteThreshold = 4; //How many messages sent to get a mute
+        let maxDuplicatesMute = 9; //Amount of the same messages sent in a row to get a mute
+        let warnEnabled = true; //If the bot can warn users
+        let warnThreshold = 4; //How many messages sent to get a warning
+        let maxDuplicatesWarn = 9; //Amount of the same messages sent in a row to get a warning
 
-        var cache = {
+        let cache = {
             messages: [],
             muted: [],
             warned: []
@@ -47,7 +47,7 @@ module.exports = {
             if (ignoredMembers.has(message.author.id)) return false;
             if (ignoredRoles.some(role => member.roles.cache.has(role))) return false;
 
-            var currentMessage = {
+            let currentMessage = {
                 author: message.author.id,
                 ID: message.id,
                 guild: message.guild.id,
@@ -60,7 +60,7 @@ module.exports = {
             const cachedMessages = cache.messages.filter(m => m.author === message.author.id && m.guild === message.guild.id);
             const duplicateMatches = cachedMessages.filter(m => m.content === message.content && (m.sentTimestamp > (currentMessage.sentTimestamp - maxDuplicatesInterval)));
             
-            var spamDuplicates = [];
+            let spamDuplicates = [];
             if (duplicateMatches.length > 0) {
                 let debounce = false;
                 cachedMessages.sort((a, b) => b.sentTimestamp - a.sentTimestamp).forEach(element => {

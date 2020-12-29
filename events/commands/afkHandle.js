@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const configFile = require('../../structure/config.json');
-var embed = new Discord.MessageEmbed();
+let embed = new Discord.MessageEmbed();
 const db = require('../../structure/global.js').db;
 
 module.exports = {
@@ -124,7 +124,7 @@ module.exports = {
     embed.setFooter(`${message.author.tag}`);
     if (message.content.includes('back') || message.content.includes('afk')) return;
     if (message.mentions.users.first()) {
-      var member = [];
+      let member = [];
       message.mentions.users.forEach(user => {
         if (db.get(user.id + '.isAFK')) {
           if (user.id === message.author.id) return;

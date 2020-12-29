@@ -2,7 +2,7 @@ module.exports = async (client) => {
   const express = require('express');
   const app = express();
   const Discord = require('discord.js')
-  var port = 3000;
+  let port = 3000;
   const bot = require('./utils/data.js');
   const db = require('./structure/global.js').db;
   const fs = require('fs');
@@ -23,7 +23,7 @@ module.exports = async (client) => {
     app.get('/api/:key/chatbot', async function(req, res) {
       let message = req.query.message;
       let key = req.params.key;
-      var debounce = false;
+      let debounce = false;
       if (!key) {
         res.json('An invalid API key was sent.');
         res.status(404);
@@ -55,7 +55,7 @@ module.exports = async (client) => {
         }
       }
       if (debounce === true) return;
-      var reply = 'undefined';
+      let reply = 'undefined';
       if (!message) {
         res.json('missing message query')
       }
@@ -145,9 +145,9 @@ module.exports = async (client) => {
         }
         data = JSON.parse(data)
         if (!req.query.from) {
-          var total = data[0].total;
-          var website = data[0].website;
-          var json = [{
+          let total = data[0].total;
+          let website = data[0].website;
+          let json = [{
             'total': total + 1,
             'spoink': data[0].spoink,
             'other': data[0].other,
@@ -158,9 +158,9 @@ module.exports = async (client) => {
           res.redirect('https://discord.com/invite/qNJEj3s');
         } else {
           if (req.query.from === 'spoink' || req.query.from === 'tyler') {
-            var total = data[0].total;
-            var spoink = data[0].spoink;
-            var json = [{
+            let total = data[0].total;
+            let spoink = data[0].spoink;
+            let json = [{
               'total': total + 1,
               'spoink': spoink + 1,
               'other': data[0].other,
@@ -173,9 +173,9 @@ module.exports = async (client) => {
             else if (req.query.from === 'stack') {
               res.redirect('https://discord.com/invite/qNJEj3s')
           } else {
-            var total = data[0].total;
-            var other = data[0].other;
-            var json = [{
+            let total = data[0].total;
+            let other = data[0].other;
+            let json = [{
               'total': total + 1,
               'spoink': data[0].spoink,
               'other': other + 1,
@@ -192,9 +192,9 @@ module.exports = async (client) => {
       res.sendFile(__dirname + '/Public/terms.html');
     });
     app.post('/terms', (req, res) => {
-      var users = new Set()
-      var data;
-      var body = '';
+      let users = new Set()
+      let data;
+      let body = '';
       req.on('data', chunk => {
         body += chunk.toString();
       });

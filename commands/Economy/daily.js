@@ -13,9 +13,9 @@ module.exports = {
 
     if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server');
 
-    var dailyAmt = 10;
-    var cooldown = 8.64e+7;
-    var reward = 75;
+    let dailyAmt = 10;
+    let cooldown = 8.64e+7;
+    let reward = 75;
     let tStreak = db.get(message.author.id + '.economy.tStreak') || 1;
     let streak = db.get(message.author.id + '.economy.streak') || 1;
     let jobs = db.get(message.author.id + '.jobs') || undefined;

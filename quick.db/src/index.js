@@ -7,7 +7,7 @@ let db;
 if (!db) db = new Database('./structure/data.sqlite');
 
 // Declare Methods
-var methods = {
+let methods = {
     fetch: require('./methods/fetch.js'),
     set: require('./methods/set.js'),
     add: require('./methods/add.js'),

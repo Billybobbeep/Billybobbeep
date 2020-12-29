@@ -18,9 +18,9 @@ module.exports = {
         embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
         embed.setAuthor(user.username, user.displayAvatarURL());
 
-        var sym = '$'
+        let sym = '$'
         let bankBal = db.get(user.id + '.bank.balance') || 0;
-        var walletBal = db.get(user.id + '.economy.balance') || 0;
+        let walletBal = db.get(user.id + '.economy.balance') || 0;
 
         if (walletBal.toString().startsWith('-')) sym = '-$';
         embed.addField(`Wallet:`, `${sym}${walletBal.toString().replace('-', '')}`);

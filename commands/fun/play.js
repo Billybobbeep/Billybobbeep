@@ -24,9 +24,9 @@ module.exports = {
         if (!args[1]) return message.channel.send('Please provide a youtube link to play');
         if (!args[1].toLowerCase().includes('you')) return message.channel.send('Please provide a valid youtube link')
 
-        var queue = []
+        let queue = []
 
-        /*var connection = await voiceChannel.join();
+        /*let connection = await voiceChannel.join();
         message.channel.send('Now Playing: ' + args[1]);
         connection.voice.setSelfDeaf(true);
 
@@ -46,7 +46,7 @@ module.exports = {
         } else { queue.push(args[1]); }
 
         async function playNext() {
-            var connection = await voiceChannel.join();
+            let connection = await voiceChannel.join();
             message.channel.send('Now Playing: ' + queue[0]);
             connection.voice.setSelfDeaf(true);
             const dispatcher = connection
@@ -82,16 +82,16 @@ module.exports = {
                 fs.mkdirSync('./temp');
             }
             function makeid(length) {
-                var result = '';
-                var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                var charactersLength = characters.length;
-                for ( var i = 0; i < length; i++ ) {
+                let result = '';
+                let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let charactersLength = characters.length;
+                for ( let i = 0; i < length; i++ ) {
                 result += characters.charAt(Math.floor(Math.random() * charactersLength));
                 }
                 return result;
             }         
             const timestamp = new Date().getTime();
-            var string = `${makeid(5)}_${timestamp}`
+            let string = `${makeid(5)}_${timestamp}`
             const soundPath = `./temp/${string}.wav`;
             say.export(text, null, 1, soundPath, (err) => {
                 if (err) {

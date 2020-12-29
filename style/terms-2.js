@@ -1,8 +1,8 @@
 function loginCheck(event) {
-    var usr = this.elements.userName.value;
-    var psw = this.elements.passWord.value;
-    var username = "admin";
-    var password = "admin";
+    let usr = this.elements.userName.value;
+    let psw = this.elements.passWord.value;
+    let username = "admin";
+    let password = "admin";
     if ((usr == username) && (psw == password)) {
         alert("True Info - submitting form");
     } else {

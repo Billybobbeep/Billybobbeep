@@ -1,18 +1,20 @@
 const Discord = require('discord.js');
-const db = require('../../structure/global.js').db;
-var reasons = [];
+const guildData = require('../../events/client/database/models/guilds.js');
+const guildMemberData = require('../../events/client/database/models/guildMembers.js');
+let reasons = [];
 module.exports = {
   name: 'warnings',
   description: 'View a users warnings',
   catagory: 'info',
   usage: 'warnings [user]',
   guildOnly: true,
-  execute (message, prefix, client) {
+  async execute (message, prefix, client) {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
-    var user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
+    let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
     if (!user) return message.channel.send('Please specify a user');
-    let tWarnings = db.get(message.guild.id + '_' + user.id + '.warnings') || 0
-    var count = 0;
+    let result = await guildMemberData.findOne({ guildData: message.guild.id });
+    let tWarnings = result.warnings || 0;
+    let count = 0;
     if (user.username === undefined) {
       user = user.user
     }

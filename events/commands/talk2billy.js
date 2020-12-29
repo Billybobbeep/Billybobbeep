@@ -21,10 +21,10 @@ module.exports = {
         console.log(text)
         message.channel.send(text.cnt ? text.cnt : (text.status.errorType).replace('bad_request,', 'Bad request, '));
       } else {
-        var table = ['Whale', 'Racoon', 'Kangaroo', 'Koala', 'Birb', 'Fox', 'Panda', 'Cat', 'Dog']
-        var res = Math.floor(Math.random() * table.length)
+        let table = ['Whale', 'Racoon', 'Kangaroo', 'Koala', 'Birb', 'Fox', 'Panda', 'Cat', 'Dog']
+        let res = Math.floor(Math.random() * table.length)
         const response = await fetch('https://some-random-api.ml/img/' + table[res].replace(' ', '%20'));
-        var text = await response.text();
+        let text = await response.text();
         text = message.channel.send(text.replace('link', '').replace(':', '').replace('{', '').replace('}', '').replace('??', '?').replace('???', '?').replace('""', '').replace('"', '').replace('"', '').replace('error', ''));
         if (text.toLocaleString().startsWith('https://')) {
           const attachment = new Discord.MessageAttachment(text);

@@ -43,7 +43,7 @@ module.exports = {
 }
 
 async function reactions(message, msg, db, client) {
-  var job = db.get(message.author.id + '.jobs.job');
+  let job = db.get(message.author.id + '.jobs.job');
 
   let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);
   let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);

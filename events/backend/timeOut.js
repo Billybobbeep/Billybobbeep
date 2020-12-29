@@ -40,7 +40,7 @@ function database(db, client) {
 function application(db, client) {
     const { MessageEmbed } = require('discord.js');
     let appliedUsers = db.get('awaiting');
-    var table = [];
+    let table = [];
     if (!appliedUsers) return;
     appliedUsers.forEach(result => {
         table.push(result);
@@ -54,13 +54,13 @@ function application(db, client) {
         const embed = new MessageEmbed();
         embed.setColor(`${db.get(require('../../structure/config.json').ServerId + '.embedColor') || '#447ba1'}`);
         embed.setAuthor(user.username, user.displayAvatarURL());
-        var failed = false;
+        let failed = false;
         let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);
         let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);
-        var results = [tick, cross, tick];
-        var result1 = Math.floor(Math.random() * result.length);
-        var result2 = Math.floor(Math.random() * result.length);
-        var result3 = Math.floor(Math.random() * result.length);
+        let results = [tick, cross, tick];
+        let result1 = Math.floor(Math.random() * result.length);
+        let result2 = Math.floor(Math.random() * result.length);
+        let result3 = Math.floor(Math.random() * result.length);
         embed.setDescription(`Your application results are the following:\n\n**Qualifications:**\n${results[result1]} Grammar\n${results[result2]} Communications\n${results[result3]} Loyalty\n${results[result2]} Trustworthiness\n\n`);
         if (result1 === 1 && result2 === 1) failed = true;
         if (result2 === 1 && result3 === 1) failed = true;
@@ -89,10 +89,10 @@ function application(db, client) {
 }
 
 function mute(db, client) {
-    var MM = db.get('mutedMembers');
-    var guild;
-    var user;
-    var time;
+    let MM = db.get('mutedMembers');
+    let guild;
+    let user;
+    let time;
 
     if (!MM) return;
     if (MM.length < 1) return;
@@ -123,8 +123,8 @@ function remove(table, db, guild, user, time, client, string) {
     db.set('mutedMembers', table);
     if (string === 'mute') {
         setTimeout(() => {
-            var mutedRole = db.get(guild.id +'.mutedRole');
-            var role = guild.roles.cache.find(role => role.id === mutedRole);
+            let mutedRole = db.get(guild.id +'.mutedRole');
+            let role = guild.roles.cache.find(role => role.id === mutedRole);
             if (member.roles.cache.find(role => role.id === mutedRole)) {
                 member.roles.remove(role.id);
             }
