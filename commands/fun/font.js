@@ -78,19 +78,21 @@ module.exports = {
     execute (message, prefix, client) {
         const { MessageEmbed } = require('discord.js');
         const embed = new MessageEmbed()
-        const db = require('../../structure/global.js').db;
+        const guildData = require('../../events/client/database/models/guilds.js');
 
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let lines = ['', ''];
         let starter = '➳';
         
         function mainEmbed() {
-            embed.setTitle('Billybobbeep | Fonts');
-            embed.setDescription('Supported Fonts:\nDouble\nFancy\nHand\nCursed\nSmooth\nSmol')
-            embed.setFooter(`Requested by: ${message.author.tag}`)
-            embed.setTimestamp()
-            embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-            return message.channel.send(embed)
+            guildData.findOne({ guildId: message.guild.id }).then(result => {
+                embed.setTitle('Billybobbeep | Fonts');
+                embed.setDescription('Supported Fonts:\nDouble\nFancy\nHand\nCursed\nSmooth\nSmol');
+                embed.setFooter(`Requested by: ${message.author.tag}`);
+                embed.setTimestamp();
+                embed.setColor(result.embedColor);
+                return message.channel.send(embed);
+            });
         }
 
         if (message.content.toLowerCase() === prefix + 'font' || message.content.toLowerCase() === prefix + 'fonts') return mainEmbed()

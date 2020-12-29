@@ -9,10 +9,12 @@ module.exports = async (member) => {
     member.roles.add(db.get(member.guild.id + '.autoRole'))
   }
 
-  const guildMemberData = require('../client/database/models/guildMembers.js');
-  const newData = new guildMemberData({
-    guildId: member.guild.id,
-    memberId: member.user.id
-  });
-  newData.save();
+  if (!member.user.bot) {
+    const guildMemberData = require('../client/database/models/guildMembers.js');
+    const newData = new guildMemberData({
+      guildId: member.guild.id,
+      memberId: member.user.id
+    });
+    newData.save();
+  }
 }

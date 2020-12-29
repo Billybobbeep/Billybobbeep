@@ -9,9 +9,9 @@ module.exports.logging = function(msg, message, client, option) {
         }
     } else if (message !== undefined) {
         if (message.guild)
-            let loggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
+            var loggingChannel = client.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
         else
-            let loggingChannel = client.channels.cache.get(db.get(guildID + '.loggingChannel'));
+            var loggingChannel = client.channels.cache.get(db.get(guildID + '.loggingChannel'));
         
         if (loggingChannel) {
             loggingChannel.send(msg).catch(() => {return});

@@ -4,9 +4,9 @@ const { MessageEmbed } = require('discord.js');
 
 function redirect(message, client) {
     if (message.guild)
-        let prefix = db.get(message.guild.id + '.prefix') || '~';
+        var prefix = db.get(message.guild.id + '.prefix') || '~';
     else
-        let prefix = '~';
+        var prefix = '~';
     
     if (message.channel.id === configFile.PollChannel || message.channel.id === configFile.MemesChannel)
         require('../backend/reactions.js')(message);
@@ -31,9 +31,9 @@ function redirect(message, client) {
 
 function handle(message, client) {
     if (message.guild)
-        let prefix = db.get(message.guild.id + '.prefix') || '~';
+        var prefix = db.get(message.guild.id + '.prefix') || '~';
     else
-        let prefix = '~';
+        var prefix = '~';
 
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     let command = args[0].toLowerCase();

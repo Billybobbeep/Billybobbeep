@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const configFile = require('../../structure/config.json');
-const db = require('../../structure/global.js').db;
+const guildData = require('../../events/client/database/models/guilds.js');
 
 module.exports = {
   name: 'image',
@@ -131,36 +131,37 @@ module.exports = {
     `https://cdn.discordapp.com/attachments/729336942998585346/754020113275158558/image0.jpg`,
     `https://cdn.discordapp.com/attachments/729336942998585346/754020109042974840/image0.jpg`]
 
-    if (db.get(message.guild.id + '.cleanFilter')) {
-      return message.channel.send('This server has been set to clean content only')
-    }
+    guildData.findOne({ guildId: message.guild.id }).then(result => {
+      if (result.cleanFilter)
+        return message.channel.send('This server has been set to clean content only');
 
-    embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
-    embed.setTitle(`Billybobbeep | Image Generator`)
-            embed.setDescription(`Please note: These images may include explicit content`)
+      embed.setColor(result.embedColor);
+      embed.setTitle(`Billybobbeep | Image Generator`);
+      embed.setDescription(`Please note: These images may include explicit content`);
 
-    function Generator(lastImage) {
-            let unfunnyMemeSend = randomImage[Math.floor(Math.random() * randomImage.length)]
-            if (unfunnyMemeSend === lastImage) {
-              Generator2(lastImage)
-            }
-            lastImage = unfunnyMemeSend
-            embed.setImage(unfunnyMemeSend)
+      function Generator(lastImage) {
+              let unfunnyMemeSend = randomImage[Math.floor(Math.random() * randomImage.length)]
+              if (unfunnyMemeSend === lastImage) {
+                Generator2(lastImage);
+              }
+              lastImage = unfunnyMemeSend;
+              embed.setImage(unfunnyMemeSend);
+          }
+
+      function Generator2(lastImage) {
+              let unfunnyMemeSend = randomImage[Math.floor(Math.random() * randomImage.length)]
+              if (unfunnyMemeSend === lastImage) {
+                Generator(lastImage)
+              }
+              lastImage = unfunnyMemeSend
+              embed.setImage(unfunnyMemeSend)
+          }
+
+        let lastImage = "";
+        if (msg.startsWith(prefix + "image")) {
+          Generator(lastImage)
+          message.channel.send(embed)
         }
-
-    function Generator2(lastImage) {
-            let unfunnyMemeSend = randomImage[Math.floor(Math.random() * randomImage.length)]
-            if (unfunnyMemeSend === lastImage) {
-              Generator(lastImage)
-            }
-            lastImage = unfunnyMemeSend
-            embed.setImage(unfunnyMemeSend)
-        }
-
-      let lastImage = "";
-      if (msg.startsWith(prefix + "image")) {
-        Generator(lastImage)
-        message.channel.send(embed)
-      }
-    }
+    });
+  }
 }

@@ -18,14 +18,15 @@ client.once('ready', () => {
     });
 });
 client.login(require('./structure/auth.js').token);
-
-/*const mongoose = require('mongoose');
+/*
+const mongoose = require('mongoose');
 const guildData = require('./events/client/database/models/guilds');
 mongoose.connect(require('./structure/auth').mongoDb);
 client.once('ready', () => {
     (client.guilds.cache).array().forEach(guild => {
         let newGuildData = new guildData({
-            guildId: `${guild.id}`
+            guildId: guild.id,
+            embedColor: '#447ba1'
         });
         newGuildData.save().then(() => {
             console.log(chalk.blue('INFO') + ' - ' + guild.name + ' has been added');

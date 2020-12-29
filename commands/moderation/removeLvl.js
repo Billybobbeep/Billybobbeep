@@ -5,7 +5,7 @@ module.exports = {
   catagory: 'moderation',
   usage: 'removelvl [user] [amount]',
   guildOnly: true,
-  execute(message, prefix, client) {
+  async execute(message, prefix, client) {
     const guildMemberData = require('../../events/client/database/models/guildMembers.js');
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     let user = message.guild.members.cache.get(args[1]) || message.mentions.users.first();
@@ -14,7 +14,7 @@ module.exports = {
     if (!user)
       return message.channel.send('Please mention a user');
 
-    let currLvl = guildMemberData.findOne({ memberId: message.author.id, guildId: message.guild.id }).then(result => result.level);
+    let currLvl = await guildMemberData.findOne({ memberId: message.author.id, guildId: message.guild.id }).then(result => result.level) || 0;
     
     if (!args[2])
       return message.channel.send('Please specify an amount');
@@ -34,7 +34,7 @@ module.exports = {
     if (amount < 1)
       return message.channel.send('You hae entered an invalid amount');
 
-    db.subtract(message.guild.id + '_' + user.id + '.level', amount)
+    //db.subtract(message.guild.id + '_' + user.id + '.level', amount)
     message.channel.send(`removed ${amount} level(s) from ${user}`)
   }
 }

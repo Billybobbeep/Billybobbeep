@@ -58,7 +58,7 @@ module.exports.add = async (guild, client) => {
       logging(embed, '733442092667502613', client, 'guild');
 
       const guildData = require('../client/database/models/guilds.js');
-      const newData = new guildData({ guildId: member.guild.id });
+      const newData = new guildData({ guildId: member.guild.id, embedColor: '#447ba1' });
       newData.save();
     });
   }
