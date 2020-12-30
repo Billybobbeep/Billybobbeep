@@ -7,27 +7,30 @@ module.exports = {
     async execute (message, prefix, client) {
         //application_process(message, 'cashier', client);
         const Discord = require('discord.js');
-        const db = require('../../structure/global.js').db;
+        const guildData = require('../../events/client/database/models/guilds.js');
+        const userData = require('../../events/client/database/models/users.js');
+        let guildResult = await guildData.findOne({ guildId: message.guild.id });
+        let userResult = await userData.findOne({ userId: message.author.id });
         const ms = require('ms');
         const embed = new Discord.MessageEmbed();
         const info = require('./jobRequirements.js');
-        embed.setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
+        embed.setColor(guildData.embedColor);
         embed.setAuthor(message.author.username, message.author.displayAvatarURL());
 
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
 
-        let timesFired = db.get(message.author.id + '.jobs.timesFired') || 0;
-        let lastFired = db.get(message.author.id + '.jobs.lastFired') || 0;
-        let level = db.get(message.author.id + '.jobs.level') || 0;
+        let timesFired = userResult.job_timesFired || 0;
+        let lastFired = userResult.job_lastFired || 0;
+        let level = userResult.job_level || 0;
 
         if (!args[1]) {
             embed.setDescription(`Please specify a job`);
             embed.setFooter(`To view the full job list use the command ${prefix}jobs`);
             return message.channel.send(embed);
         }
-        if (db.get(message.author.id + '.jobs.awaiting') === true) {
+        if (userResult.job_awaiting) {
             let cooldown = 300000;
-            let lastApp = db.get(message.author.id + '.jobs.lastApplied');
+            let lastApp = userResult.jobs_lastApplied;
             if (cooldown - (lastApp - Date.now()) > 0) {
                 let timeObj = ms(cooldown - (Date.now() - lastApp));
                 timeObj = timeObj.replace('s', ' seconds').replace('m', ' minutes').replace('h', ' hours');
@@ -250,20 +253,30 @@ module.exports = {
     }
 }
 
-function application_process(message, job, client) {
+async function application_process(message, job, client) {
     const Discord = require('discord.js');
     const embed = new Discord.MessageEmbed();
-    const db = require('../../structure/global.js').db;
+    const guildData = require('../../events/client/database/models/guilds.js');
+    const userData = require('../../events/client/database/models/users.js');
+    const awaitingData = require('../../events/client/database/models/awaiting.js');
+    let guildResult = await guildData.findOne({ guildId: message.guild.id });
+    let userResult = await userData.findOne({ userId: message.author.id });
 
     let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);
     let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);
     
     embed.setDescription(`${tick} Successfully applied for the ${job} job!`);
     embed.setAuthor('You will be DMed your application results soon', message.author.displayAvatarURL());
-    embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
+    embed.setColor(guildResult.embedColor);
     message.channel.send(embed);
-    db.push('awaiting', `${message.author.id}_${Date.now()}_${job}`);
-    db.set(message.author.id + '.jobs.awaiting', true);
+    awaitingData.find(function(err, result) {
+        if (err) return console.error(err);
+        let waitingList;
+        result.waiting ? waitingList = result.waitingList.array() : waitingList = [];
+        waitingList.push(`${message.author.id}_${Date.now()}_${job}`);
+        awaitingData.updateOne({}, { waitingList: waitingList });
+        userData.findOneAndUpdate({ userId: message.author.id }, { job_awaiting: true })
+    });
 }
 async function reactions(message, msg, job, client) {
     let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);

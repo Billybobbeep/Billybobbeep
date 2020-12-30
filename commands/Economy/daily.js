@@ -3,42 +3,45 @@ module.exports = {
   description: 'Collect your daily reward',
   catagory: 'economy',
   guildOnly: true,
-  execute (message, prefix, client) {
+  async execute (message, prefix, client) {
     const Discord = require('discord.js');
-    const db = require('../../structure/global.js').db;
+    const guildData = require('../../events/client/database/models/guilds.js');
+    const userData = require('../../events/client/database/models/users.js');
+    let guildResult = await guildData.findOne({ guildId: message.guild.id });
+    let userResult = await userData.findOne({ userId: message.author.id });
     const ms = require('ms');
     const embed = new Discord.MessageEmbed();
     embed.setFooter(`${message.author.username}`);
-    embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
+    embed.setColor(guildResult.embedColor);
 
-    if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server');
+    if (guildData.ecoEnabled) return message.channel.send('Economy commands have been disabled in your server');
 
     let dailyAmt = 10;
     let cooldown = 8.64e+7;
     let reward = 75;
-    let tStreak = db.get(message.author.id + '.economy.tStreak') || 1;
-    let streak = db.get(message.author.id + '.economy.streak') || 1;
-    let jobs = db.get(message.author.id + '.jobs') || undefined;
-    let balance = db.get(message.author.id + '.economy.balance') || 0;
-    let lastRun = db.get(message.author.id + '.economy.daily') || 0
+    let tStreak = userResult.economy_tStreak || 1;
+    let streak = userResult.economy_streak || 1;
+    let jobs = userResult.job || undefined;
+    let balance = userResult.economy_balance || 0;
+    let lastRun = userResult.economy_daily || 0
     let timeObj = ms(cooldown - (Date.now() - lastRun));
     timeObj = timeObj.replace('s', ' seconds').replace('m', ' minutes').replace('h', ' hours');
 
-    let cashier = db.get(message.author.id + '.jobs.job') === 'cashier' ? true : undefined;
-    let teacher = db.get(message.author.id + '.jobs.job') === 'teacher' ? true : undefined;
-    let waiter = db.get(message.author.id + '.jobs.job') === 'waiter' ? true : undefined;
-    let receptionist = db.get(message.author.id + '.jobs.job') === 'receptionist' ? true : undefined;
-    let architect = db.get(message.author.id + '.jobs.job') === 'architect' ? true : undefined;
-    let lifeGuard = db.get(message.author.id + '.jobs.job') === 'life guard' ? true : undefined;
-    let nurse = db.get(message.author.id + '.jobs.job') === 'nurse' ? true : undefined;
-    let police = db.get(message.author.id + '.jobs.job') === 'police' ? true : undefined;
-    let engineer = db.get(message.author.id + '.jobs.job') === 'engineer' ? true : undefined;
-    let chef = db.get(message.author.id + '.jobs.job') === 'chef' ? true : undefined;
-    let clinicalScientist = db.get(message.author.id + '.jobs.job') === 'clinical scientist' ? true : undefined;
-    let headScientist = db.get(message.author.id + '.jobs.job') === 'head scientist' ? true : undefined;
-    let lawyer = db.get(message.author.id + '.jobs.job') === 'lawyer' ? true : undefined;
-    let socialWorker = db.get(message.author.id + '.jobs.job') === 'social worker' ? true : undefined;
-    let doctor = db.get(message.author.id + '.jobs.job') === 'doctor' ? true : undefined;
+    let cashier = userResult.job === 'cashier' ? true : undefined;
+    let teacher = userResult.job === 'teacher' ? true : undefined;
+    let waiter = userResult.job === 'waiter' ? true : undefined;
+    let receptionist = userResult.job === 'receptionist' ? true : undefined;
+    let architect = userResult.job === 'architect' ? true : undefined;
+    let lifeGuard = userResult.job === 'life guard' ? true : undefined;
+    let nurse = userResult.job === 'nurse' ? true : undefined;
+    let police = userResult.job === 'police' ? true : undefined;
+    let engineer = userResult.job === 'engineer' ? true : undefined;
+    let chef = userResult.job === 'chef' ? true : undefined;
+    let clinicalScientist = userResult.job === 'clinical scientist' ? true : undefined;
+    let headScientist = userResult.job === 'head scientist' ? true : undefined;
+    let lawyer = userResult.job === 'lawyer' ? true : undefined;
+    let socialWorker = userResult.job === 'social worker' ? true : undefined;
+    let doctor = userResult.job === 'doctor' ? true : undefined;
     
     if (jobs !== undefined) {
       if (cashier !== undefined) dailyAmt = 7.25
@@ -66,8 +69,7 @@ module.exports = {
       message.channel.send(embed);
     } else {
       if (lastRun !== null && cooldown - (Date.now() - lastRun) >= 126000000) {
-        db.delete(message.author.id + '.economy.streak');
-        db.delete(message.author.id + '.economy.tStreak');
+        userData.findOneAndUpdate({ userId: message.author.id }, { economy_tStreak: 0, economy_streak: 0 });
       }
       if (streak === 1) semoji = `${sem}${nem}${nem}${nem}${nem}`
       else if (streak === 2) semoji = `${sem}${sem}${nem}${nem}${nem}`
@@ -77,14 +79,10 @@ module.exports = {
         semoji =  `${sem}${sem}${sem}${sem}${sem}`
         embed.setDescription(`You have collected your **$${dailyAmt + reward}** reward.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
         embed.setFooter(`Total Streak: ${tStreak}\nWallet: $${balance + dailyAmt + reward}`);
-        db.set(message.author.id + '.economy.daily', Date.now());
-        db.set(message.author.id + '.economy.streak', 1);
+        userData.findOneAndUpdate({ userId: message.author.id }, { economy_daily: Date.now(), economy_streak: 1 });
         return message.channel.send(embed);
       }
-      db.add(message.author.id + '.economy.streak', 1);
-      db.add(message.author.id + '.economy.tStreak', 1);
-      db.add(message.author.id + '.economy.balance', dailyAmt);
-      db.set(message.author.id + '.economy.daily', Date.now());
+      userData.findOneAndUpdate({ userId: message.author.id }, { $inc: { economy_streak: 1, economy_balance: dailyAmt, economy_tStreak: 1 }});
 
       embed.setDescription(`I have added **$${dailyAmt}** onto your account balance.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
       embed.setFooter(`Total Streak: ${tStreak}\nWallet: $${balance + dailyAmt}`)

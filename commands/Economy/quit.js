@@ -3,24 +3,27 @@ module.exports = {
   description: 'Quit your current job',
   catagory: 'economy',
   guildOnly: true,
-  execute(message, prefix, client) {
-    const db = require('../../structure/global.js').db;
+  async execute(message, prefix, client) {
+    const guildData = require('../../events/client/database/models/guilds.js');
+    const userData = require('../../events/client/database/models/users.js');
+    let guildResult = await guildData.findOne({ guildId: message.guild.id });
+    let userResult = await userData.findOne({ userId: message.author.id });
 
-    let cashier = db.get(message.author.id + '.jobs.job') === 'cashier' ? true : undefined;
-    let teacher = db.get(message.author.id + '.jobs.job') === 'teacher' ? true : undefined;
-    let waiter = db.get(message.author.id + '.jobs.job') === 'waiter' ? true : undefined;
-    let receptionist = db.get(message.author.id + '.jobs.job') === 'receptionist' ? true : undefined;
-    let architect = db.get(message.author.id + '.jobs.job') === 'architect' ? true : undefined;
-    let lifeGuard = db.get(message.author.id + '.jobs.job') === 'life guard' ? true : undefined;
-    let nurse = db.get(message.author.id + '.jobs.job') === 'nurse' ? true : undefined;
-    let police = db.get(message.author.id + '.jobs.job') === 'police' ? true : undefined;
-    let engineer = db.get(message.author.id + '.jobs.job') === 'engineer' ? true : undefined;
-    let chef = db.get(message.author.id + '.jobs.job') === 'chef' ? true : undefined;
-    let clinicalScientist = db.get(message.author.id + '.jobs.job') === 'clinical scientist' ? true : undefined;
-    let headScientist = db.get(message.author.id + '.jobs.job') === 'head scientist' ? true : undefined;
-    let lawyer = db.get(message.author.id + '.jobs.job') === 'lawyer' ? true : undefined;
-    let socialWorker = db.get(message.author.id + '.jobs.job') === 'social worker' ? true : undefined;
-    let doctor = db.get(message.author.id + '.jobs.job') === 'doctor' ? true : undefined;
+    let cashier = userResult.job === 'cashier' ? true : undefined;
+    let teacher = userResult.job === 'teacher' ? true : undefined;
+    let waiter = userResult.job === 'waiter' ? true : undefined;
+    let receptionist = userResult.job === 'receptionist' ? true : undefined;
+    let architect = userResult.job === 'architect' ? true : undefined;
+    let lifeGuard = userResult.job === 'life guard' ? true : undefined;
+    let nurse = userResult.job === 'nurse' ? true : undefined;
+    let police = userResult.job === 'police' ? true : undefined;
+    let engineer = userResult.job === 'engineer' ? true : undefined;
+    let chef = userResult.job === 'chef' ? true : undefined;
+    let clinicalScientist = userResult.job === 'clinical scientist' ? true : undefined;
+    let headScientist = userResult.job === 'head scientist' ? true : undefined;
+    let lawyer = userResult.job === 'lawyer' ? true : undefined;
+    let socialWorker = userResult.job === 'social worker' ? true : undefined;
+    let doctor = userResult.job === 'doctor' ? true : undefined;
 
     if (cashier === undefined &&
       teacher === undefined &&
@@ -38,12 +41,12 @@ module.exports = {
       socialWorker === undefined &&
       doctor === undefined) return message.channel.send(`You do not have a job`);
 
-    message.channel.send(`Are you sure you want to quit your job?\n\nYou will have to re-apply for another job before you can start working again`).then(msg => reactions(message, msg, db, client));
+    message.channel.send(`Are you sure you want to quit your job?\n\nYou will have to re-apply for another job before you can start working again`).then(msg => reactions(message, msg, guildData, client));
   }
 }
 
-async function reactions(message, msg, db, client) {
-  let job = db.get(message.author.id + '.jobs.job');
+async function reactions(message, msg, guildData, client) {
+  let job = userResult.job;
 
   let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);
   let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);
@@ -61,7 +64,7 @@ async function reactions(message, msg, db, client) {
       if (reaction.emoji.id === tick.id) {
         msg.reactions.removeAll();
         message.channel.send(`${tick} Successfully quit your job. (${job})`);
-        db.delete(message.author.id + `.jobs.${job}`);
+        userData.findOneAndUpdate({ userId: message.author.id }, { job: false });
       } else {
         msg.reactions.removeAll();
         message.channel.send(`${cross} Cancelled prompt`);

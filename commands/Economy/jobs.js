@@ -5,29 +5,32 @@ module.exports = {
     catagory: 'economy',
     guildOnly: true,
     async execute (message, prefix, client) {
-        const db = require('../../structure/global.js').db;
+        const guildData = require('../../events/client/database/models/guilds.js');
+        const userData = require('../../events/client/database/models/users.js');
+        let guildResult = await guildData.findOne({ guildId: message.guild.id });
+        let userResult = await userData.findOne({ userId: message.author.id });
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();
         const info = require('./jobRequirements.js');
         embed.setFooter(`${message.author.username}`);
-        embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
-        if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server');
+        embed.setColor(guildResult.embedColor);
+        if (guildResult.ecoEnabled) return message.channel.send('Economy commands have been disabled in your server');
 
-        let cashier = db.get(message.author.id + '.jobs.job') === 'cashier' ? true : undefined;
-        let teacher = db.get(message.author.id + '.jobs.job') === 'teacher' ? true : undefined;
-        let waiter = db.get(message.author.id + '.jobs.job') === 'waiter' ? true : undefined;
-        let receptionist = db.get(message.author.id + '.jobs.job') === 'receptionist' ? true : undefined;
-        let architect = db.get(message.author.id + '.jobs.job') === 'architect' ? true : undefined;
-        let lifeGuard = db.get(message.author.id + '.jobs.job') === 'life guard' ? true : undefined;
-        let nurse = db.get(message.author.id + '.jobs.job') === 'nurse' ? true : undefined;
-        let police = db.get(message.author.id + '.jobs.job') === 'police' ? true : undefined;
-        let engineer = db.get(message.author.id + '.jobs.job') === 'engineer' ? true : undefined;
-        let chef = db.get(message.author.id + '.jobs.job') === 'chef' ? true : undefined;
-        let clinicalScientist = db.get(message.author.id + '.jobs.job') === 'clinical scientist' ? true : undefined;
-        let headScientist = db.get(message.author.id + '.jobs.job') === 'head scientist' ? true : undefined;
-        let lawyer = db.get(message.author.id + '.jobs.job') === 'lawyer' ? true : undefined;
-        let socialWorker = db.get(message.author.id + '.jobs.job') === 'social worker' ? true : undefined;
-        let doctor = db.get(message.author.id + '.jobs.job') === 'doctor' ? true : undefined;
+        let cashier = userResult.job === 'cashier' ? true : undefined;
+        let teacher = userResult.job === 'teacher' ? true : undefined;
+        let waiter = userResult.job === 'waiter' ? true : undefined;
+        let receptionist = userResult.job === 'receptionist' ? true : undefined;
+        let architect = userResult.job === 'architect' ? true : undefined;
+        let lifeGuard = userResult.job === 'life guard' ? true : undefined;
+        let nurse = userResult.job === 'nurse' ? true : undefined;
+        let police = userResult.job === 'police' ? true : undefined;
+        let engineer = userResult.job === 'engineer' ? true : undefined;
+        let chef = userResult.job === 'chef' ? true : undefined;
+        let clinicalScientist = userResult.job === 'clinical scientist' ? true : undefined;
+        let headScientist = userResult.job === 'head scientist' ? true : undefined;
+        let lawyer = userResult.job === 'lawyer' ? true : undefined;
+        let socialWorker = userResult.job === 'social worker' ? true : undefined;
+        let doctor = userResult.job === 'doctor' ? true : undefined;
 
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let args1 = args.join(' ').split(/ +/g).slice(1).join(' ').split('-').join(' ');

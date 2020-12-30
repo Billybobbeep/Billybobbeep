@@ -5,12 +5,15 @@ module.exports = {
     usage: 'donate [user] [amount]',
     catagory: 'economy',
     guildOnly: true,
-    execute(message, prefix, client) {
-        const db = require('../../structure/global.js').db;
+    async execute(message, prefix, client) {
+        const guildData = require('../../events/client/database/models/guilds.js');
+        const userData = require('../../events/client/database/models/users.js');
+        let guildResult = await guildData.findOne({ guildId: message.guild.id });
+        let userResult = await userData.findOne({ userId: message.author.id });
         const ms = require('ms');
 
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
-        if (db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy have been disabled for this server');
+        if (guildResult.ecoEnabled) return message.channel.send('Economy have been disabled for this server');
         let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
         if (!user) return message.channel.send(`You have not mentioned a user`);
         if (!user.id) user = user.user;
@@ -23,10 +26,10 @@ module.exports = {
         if (!args[2]) return message.channel.send(`Please specify an amount`);
         let amt = Number(args[2]);
         if (isNaN(amt)) return message.channel.send(`Please enter a valid number to donate`);
-        if (amt > db.get(message.author.id + '.economy.balance')) return message.channel.send(`You do not have **${amt}** in your wallet`);
+        if (amt > userResult.economy_balance) return message.channel.send(`You do not have **${amt}** in your wallet`);
 
-        if (db.get(message.author.id + '.economy.lastDonated')) {
-            let lastRun = db.get(message.author.id + '.economy.lastDonated');
+        if (userResult.economy_lastDonated) {
+            let lastRun = userResult.economy_lastDonated;
             if (Date.now() < (lastRun + 300000)) {
                 let time = ms(Date.now() - (lastRun + 300000));
                 time = time.replace('-', '');
@@ -38,9 +41,10 @@ module.exports = {
             }
         }
 
-        db.set(message.author.id + '.economy.lastDonated', Date.now());
         message.channel.send(`<@!${message.author.id}> successfully donated **$${amt}** to <@!${user.id}>`);
-        db.subtract(message.author.id + '.economy.balance', amt);
-        db.add(user.id + '.economy.balance', amt);
+        userData.findOneAndUpdate({ userId: message.author.id }, { economy_lastDonated: Date.now(), economy_balance: userResult.economy_balance - amt });
+        userData.findOne({ userId: user.id }).then(result => {
+            userData.findOneAndUpdate({ userId: user.id }, { economy_balance: result.economy_balance + amt });
+        });
     }
 }

@@ -12,11 +12,11 @@ module.exports = {
     let embed2 = new Discord.MessageEmbed();
     const logging = require('../../utils/functions.js').logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
-    async function unmuteCmd() {
+    function unmuteCmd() {
       let user = message.mentions.users.first() || message.guild.members.cache.get(args[1])
       let reason = args.slice(2).join(' ');
       
-      guildData.findOne({ guildId: message.guild.id }).then(result => {
+      guildData.findOne({ guildId: message.guild.id }).then(async result => {
         if (!result.mutedRole) return message.channel.send('Please setup a muted role in your server to use this command');
         if (!user) return message.channel.send('Please mention a user to mute');
         let member = message.guild.members.cache.get(user.id);

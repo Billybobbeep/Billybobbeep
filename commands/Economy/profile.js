@@ -3,34 +3,37 @@ module.exports = {
     description: 'View a users economy profile',
     alias: ['stats'],
     catagory: 'economy',
-    execute(message, prefix, client) {
-        const db = require('../../structure/global.js').db;
+    async execute(message, prefix, client) {
+        const guildData = require('../../events/client/database/models/guilds.js');
+        const userData = require('../../events/client/database/models/users.js');
+        let guildResult = await guildData.findOne({ guildId: message.guild.id });
+        let userResult = await userData.findOne({ userId: message.author.id });
         const moment = require('moment');
         const { MessageEmbed } = require('discord.js');
         const embed = new MessageEmbed();
         
-        let cashier = db.get(message.author.id + '.jobs.job') === 'cashier' ? true : undefined;
-        let teacher = db.get(message.author.id + '.jobs.job') === 'teacher' ? true : undefined;
-        let waiter = db.get(message.author.id + '.jobs.job') === 'waiter' ? true : undefined;
-        let receptionist = db.get(message.author.id + '.jobs.job') === 'receptionist' ? true : undefined;
-        let architect = db.get(message.author.id + '.jobs.job') === 'architect' ? true : undefined;
-        let lifeGuard = db.get(message.author.id + '.jobs.job') === 'life guard' ? true : undefined;
-        let nurse = db.get(message.author.id + '.jobs.job') === 'nurse' ? true : undefined;
-        let police = db.get(message.author.id + '.jobs.job') === 'police' ? true : undefined;
-        let engineer = db.get(message.author.id + '.jobs.job') === 'engineer' ? true : undefined;
-        let chef = db.get(message.author.id + '.jobs.job') === 'chef' ? true : undefined;
-        let clinicalScientist = db.get(message.author.id + '.jobs.job') === 'clinical scientist' ? true : undefined;
-        let headScientist = db.get(message.author.id + '.jobs.job') === 'head scientist' ? true : undefined;
-        let lawyer = db.get(message.author.id + '.jobs.job') === 'lawyer' ? true : undefined;
-        let socialWorker = db.get(message.author.id + '.jobs.job') === 'social worker' ? true : undefined;
-        let doctor = db.get(message.author.id + '.jobs.job') === 'doctor' ? true : undefined;
+        let cashier = userResult.job === 'cashier' ? true : undefined;
+        let teacher = userResult.job === 'teacher' ? true : undefined;
+        let waiter = userResult.job === 'waiter' ? true : undefined;
+        let receptionist = userResult.job === 'receptionist' ? true : undefined;
+        let architect = userResult.job === 'architect' ? true : undefined;
+        let lifeGuard = userResult.job === 'life guard' ? true : undefined;
+        let nurse = userResult.job === 'nurse' ? true : undefined;
+        let police = userResult.job === 'police' ? true : undefined;
+        let engineer = userResult.job === 'engineer' ? true : undefined;
+        let chef = userResult.job === 'chef' ? true : undefined;
+        let clinicalScientist = userResult.job === 'clinical scientist' ? true : undefined;
+        let headScientist = userResult.job === 'head scientist' ? true : undefined;
+        let lawyer = userResult.job === 'lawyer' ? true : undefined;
+        let socialWorker = userResult.job === 'social worker' ? true : undefined;
+        let doctor = userResult.job === 'doctor' ? true : undefined;
 
         let job = '';
-        let jobLvl = db.get(message.author.id + '.jobs.level');
-        let streak = db.get(message.author.id + '.economy.tStreak');
-        let timesFired = db.get(message.author.id + '.jobs.timesFired') || 0;
-        let lastFired = moment.utc(db.get(message.author.id + '.jobs.lastFired')).format('DD-MM-YYYY, h:mm:ss a');
-        let lastApplied = moment.utc(db.get(message.author.id + '.jobs.lastApplied')).format('DD-MM-YYYY, h:mm:ss a');
+        let jobLvl = userResult.job_level || 0;
+        let streak = userResult.economy_tStreak;
+        let timesFired = userResult.job_timesFired || 0;
+        let lastFired = moment.utc(userResult.job_lastFired).format('DD-MM-YYYY, h:mm:ss a');
+        let lastApplied = moment.utc(userResult.job_lastApplied).format('DD-MM-YYYY, h:mm:ss a');
 
         if (cashier) job = 'Cashier';
         else if (teacher) job = 'Teacher';
@@ -49,7 +52,7 @@ module.exports = {
         else if (doctor) job = 'Doctor';
         else job = 'Unemployed';
 
-        message.guild ? embed.setColor(db.get(message.guild.id + '.embedColor') || '#447ba1') : embed.setColor('#447ba1');
+        message.guild ? embed.setColor(guildResult.embedColor) : embed.setColor('#447ba1');
         embed.setAuthor(message.author.username, message.author.displayAvatarURL());
         embed.addField('Job', job, true);
         embed.addField('Job Level', jobLvl, true);
