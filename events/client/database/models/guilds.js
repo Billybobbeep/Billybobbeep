@@ -17,6 +17,8 @@ const guildSchema = new mongoose.Schema({
     serverstats_totalNoText: String,
     serverstats_memberNoText: String,
     serverstats_botNoText: String,
+    //Other
+    embedColor: String
 }, { strict: false });
 
 module.exports = mongoose.model('guilds', guildSchema);

@@ -5,6 +5,7 @@ module.exports = {
         let currentNo = new db.table('counting');
         let TE = client.emojis.cache.get('736952966447366154')
         let CE = client.emojis.cache.get('736952985330122772')
+        if (!db.get(message.guild.id + '.countingChannel')) return;
         if (db.get(message.guild.id + '.countingChannel') && message.channel.id !== db.get(message.guild.id + '.countingChannel')) return;
         if (message.author.bot) return;
         if (isNaN(message.content)) return;
