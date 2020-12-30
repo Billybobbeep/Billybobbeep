@@ -2,13 +2,6 @@ let string = '345'
 
 !isNaN(string) ? console.log(`${string} is a number.`) : console.log(`${string} is not a number`);
 
-const db = require('./structure/global.js').db;
-db.fetchAll().forEach(data => {
-    //console.log(data.id);
-    //console.log(data.data.level);
-    console.log(data);
-});
-
 const Discord = require('discord.js');
 const chalk = require('chalk');
 const client = new Discord.Client();
@@ -18,7 +11,7 @@ client.once('ready', () => {
     });
 });
 client.login(require('./structure/auth.js').token);
-/*
+
 const mongoose = require('mongoose');
 const guildData = require('./events/client/database/models/guilds');
 mongoose.connect(require('./structure/auth').mongoDb);
@@ -34,9 +27,9 @@ client.once('ready', () => {
     });
 });
 
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 const guildMemberData = require('./events/client/database/models/guildMembers');
-mongoose.connect(require('./structure/auth').mongoDb);
+//mongoose.connect(require('./structure/auth').mongoDb);
 client.once('ready', () => {
     (client.guilds.cache).array().forEach(guild => {
         (guild.members.cache).array().forEach(member => {
@@ -52,4 +45,24 @@ client.once('ready', () => {
             }, 10000);
         });
     });
-});*/
+});
+
+//const mongoose = require('mongoose');
+const userData = require('./events/client/database/models/users');
+//mongoose.connect(require('./structure/auth').mongoDb);
+client.once('ready', () => {
+    client.users.cache.array().forEach(user => {
+        setTimeout(() => {
+            if (user.bot) return console.log(chalk.red('ERROR') + ' - ' + user.username + ' is a bot');
+            userData.findOne({ userId: user.id }).then(result => {
+                if (result) return;
+                let newData = new userData({
+                    userId: user.id
+                });
+                newData.save().then(() => {
+                    console.log(chalk.blue('INFO') + ' - ' + user.username + ' has been added');
+                });
+            });
+        }, 10000);
+    });
+});
