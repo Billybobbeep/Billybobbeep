@@ -49,7 +49,7 @@ module.exports.remove = (guild, user, client) => {
             embed.setDescription(
             `**User Tag:** ${ban.target.tag}\n` +
             `**User ID:** ${ban.target.id}\n\n` +
-            `**Banned For:** ${pb.reason ? pb.reason.toString() : 'No reason was provided'}\n\n` +
+            `**Banned For:** ${pb ? pb.reason.toString() : 'No reason was provided'}\n\n` +
             `**Moderator:** ${ban.executor}\n` +
             `**Moderator Tag:** ${ban.executor.tag}\n` +
             `**Moderator ID:** ${ban.executor.id}`
@@ -57,9 +57,8 @@ module.exports.remove = (guild, user, client) => {
             embed.setTimestamp(ban.createdTimestamp);
             embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`);
             let loggingChannel = client.channels.cache.get(db.get(guild.id + '.loggingChannel'));
-            if (loggingChannel) {
+            if (loggingChannel)
                 loggingChannel.send(msg).catch(() => {return});
-            }
         });
     }, 100);
 }
