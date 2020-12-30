@@ -1,3 +1,4 @@
+const { result } = require('lodash');
 const { lifeguard } = require('./jobRequirements.js');
 
 module.exports = {
@@ -7,39 +8,42 @@ module.exports = {
   guildOnly: true,
   async execute (message, prefix, client) {
     const Discord = require('discord.js');
-    const db = require('../../structure/global.js').db;
+    const guildData = require('../../events/client/database/models/guilds.js');
+    const userData = require('../../events/client/database/models/users.js');
+    let guildResult = await guildData.findOne({ guildId: message.guild.id });
+    let userResult = await userData.findOne({ userId: message.author.id });
     const ms = require('ms');
     const embed = new Discord.MessageEmbed();
     const info = require('./jobRequirements.js');
 
     let crossEmoji = client.emojis.cache.get('736952985330122772');
     embed.setAuthor(`${message.author.username}`, message.author.displayAvatarURL());
-    embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
+    embed.setColor(guildResult.embedColor);
 
-    if (db.get(message.guild.id + '.ecoEnabled') && db.get(message.guild.id + '.ecoEnabled') === false) return message.channel.send('Economy commands have been disabled in your server')
+    if (guildResult.ecoEnabled) return message.channel.send('Economy commands have been disabled in your server')
 
     let workAmt = undefined;
     let cooldown = info.global.work.cooldown;
-    let jobs = db.get(message.author.id + '.jobs') || undefined;
-    let lastRun = db.get(message.author.id + '.economy.work');
+    let jobs = userResult.job || undefined;
+    let lastRun = userResult.economy_work;
     let decimal = Math.round(Math.random() * 89) + 10;
     let gainedXp = 1
 
-    let cashier = db.get(message.author.id + '.jobs.job') === 'cashier' ? true : undefined;
-    let teacher = db.get(message.author.id + '.jobs.job') === 'teacher' ? true : undefined;
-    let waiter = db.get(message.author.id + '.jobs.job') === 'waiter' ? true : undefined;
-    let receptionist = db.get(message.author.id + '.jobs.job') === 'receptionist' ? true : undefined;
-    let architect = db.get(message.author.id + '.jobs.job') === 'architect' ? true : undefined;
-    let lifeGuard = db.get(message.author.id + '.jobs.job') === 'life guard' ? true : undefined;
-    let nurse = db.get(message.author.id + '.jobs.job') === 'nurse' ? true : undefined;
-    let police = db.get(message.author.id + '.jobs.job') === 'police' ? true : undefined;
-    let engineer = db.get(message.author.id + '.jobs.job') === 'engineer' ? true : undefined;
-    let chef = db.get(message.author.id + '.jobs.job') === 'chef' ? true : undefined;
-    let clinicalScientist = db.get(message.author.id + '.jobs.job') === 'clinical scientist' ? true : undefined;
-    let headScientist = db.get(message.author.id + '.jobs.job') === 'head scientist' ? true : undefined;
-    let lawyer = db.get(message.author.id + '.jobs.job') === 'lawyer' ? true : undefined;
-    let socialWorker = db.get(message.author.id + '.jobs.job') === 'social worker' ? true : undefined;
-    let doctor = db.get(message.author.id + '.jobs.job') === 'doctor' ? true : undefined;
+    let cashier = userResult.job === 'cashier' ? true : undefined;
+    let teacher = userResult.job === 'teacher' ? true : undefined;
+    let waiter = userResult.job === 'waiter' ? true : undefined;
+    let receptionist = userResult.job === 'receptionist' ? true : undefined;
+    let architect = userResult.job === 'architect' ? true : undefined;
+    let lifeGuard = userResult.job === 'life guard' ? true : undefined;
+    let nurse = userResult.job === 'nurse' ? true : undefined;
+    let police = userResult.job === 'police' ? true : undefined;
+    let engineer = userResult.job === 'engineer' ? true : undefined;
+    let chef = userResult.job === 'chef' ? true : undefined;
+    let clinicalScientist = userResult.job === 'clinical scientist' ? true : undefined;
+    let headScientist = userResult.job === 'head scientist' ? true : undefined;
+    let lawyer = userResult.job === 'lawyer' ? true : undefined;
+    let socialWorker = userResult.job === 'social worker' ? true : undefined;
+    let doctor = userResult.job === 'doctor' ? true : undefined;
 
     if (jobs !== undefined) {
       if (cashier !== undefined) { workAmt = 10; gainedXp = info.cashier.xp; }
@@ -60,11 +64,10 @@ module.exports = {
     }
 
     function lvlUp() {
-      db.delete(message.author.id + '.jobs.xp');
-      db.add(message.author.id + '.jobs.level', 1);
-      embed.setDescription(`You have levelled up! You are now level **${db.get(message.author.id + '.jobs.level')}**!`);
+      userData.findOneAndUpdate({ userId: message.author.id }, { job_xp: 0 });
+      userData.findOneAndUpdate({ userId: message.author.id }, { job_level: userResult.job_level ? userResult.job_level + 1 : 1 });
+      embed.setDescription(`You have levelled up! You are now level **${userResult.job_level + 1}**!`);
       message.channel.send(embed);
-      //db.delete(message.author.id + '.jobs.level');
     }
 
     if (workAmt === undefined) {
@@ -88,7 +91,7 @@ module.exports = {
         .setDescription(`You earned **$${workAmt}.${decimal}** while working!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
+        .setColor(guildResult.embedColor);
         reactionCollection(msg, '📕', '📗', '📙', workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
       }
       else if (waiter !== undefined) {
@@ -110,7 +113,7 @@ module.exports = {
         .setDescription(`You earned **$${workAmt}.${decimal}** while working!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
+        .setColor(guildResult.embedColor);
         reactionCollection(msg, emojis[no1], emojis[no2], emojis[no3], workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
       }
       else if (receptionist !== undefined) {
@@ -121,17 +124,17 @@ module.exports = {
         .setDescription(`You answered the phone ${count} times and earned **$${workAmt}.${decimal}**!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
+        .setColor(guildResult.embedColor);
         const congratsEmbed2 = new Discord.MessageEmbed()
         .setDescription(`You booked an appointment and earned **$${workAmt}.${decimal}**!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
+        .setColor(guildResult.embedColor);
         const congratsEmbed3 = new Discord.MessageEmbed()
         .setDescription(`You countded your daily earnings and it came to a total of **$${workAmt}.${decimal}**!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
+        .setColor(guildResult.embedColor);
         reactionCollection(msg, '📞', '💻', '💰', workAmt, congratsEmbed1, congratsEmbed2, congratsEmbed3);
       }
       else if (lifeGuard !== undefined) {
@@ -139,7 +142,7 @@ module.exports = {
         .setDescription(`You went to work and earnt **$${workAmt}.${decimal}**!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
+        .setColor(guildResult.embedColor);
         message.channel.send(congratsEmbed);
       }
       else if (engineer !== undefined) {
@@ -149,17 +152,17 @@ module.exports = {
         .setDescription(`You earnt **$${workAmt}.${decimal}** whilst fixing the 🚗Regular Car!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
+        .setColor(guildResult.embedColor);
         const congratsEmbed2 = new Discord.MessageEmbed()
         .setDescription(`You earnt **$${workAmt}.${decimal}** whilst fixing the 🚓Police Car!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
+        .setColor(guildResult.embedColor);
         const congratsEmbed3 = new Discord.MessageEmbed()
         .setDescription(`You earnt **$${workAmt}.${decimal}** whilst fixing the 🏎Race Car!`)
         .setAuthor(message.author.username)
         .setThumbnail(message.author.displayAvatarURL())
-        .setColor(db.get(message.guild.id + '.embedColor') || '#447ba1');
+        .setColor(guildResult.embedColor);
         reactionCollection(msg, '🚗', '🚓', '🏎', workAmt, congratsEmbed1, congratsEmbed2, congratsEmbed3);
       }
       else if (chef !== undefined) {
@@ -167,10 +170,56 @@ module.exports = {
         let msg = await message.channel.send(embed)
         chefReact(workAmt, msg, '🟢');
       } else {
-        db.add(message.author.id + '.economy.balance', workAmt);
+        userData.findOneAndUpdate({ userId: message.author.id }, { job_xp: userData.job_xp ? userData.job_xp + gainedXp : gainedXp, economy_work: Date.now() + cooldown });
 
-        db.add(message.author.id + '.jobs.xp', gainedXp);
-        let xp = db.get(message.author.id + '.jobs.xp');
+        userData.findOne({ userId: message.author.id }).then(xp => {
+          xp = xp.job_xp
+          if (cashier !== undefined && xp >= info.global.xp.lower.max) {
+            lvlUp()
+          } else if (teacher !== undefined && xp >= info.global.xp.lower.max) {
+            lvlUp()
+          } else if (waiter !== undefined && xp >= info.global.xp.lower.max) {
+            lvlUp()
+          } else if (receptionist !== undefined && xp >= info.global.xp.lower.max) {
+            lvlUp()
+          } else if (architect !== undefined && xp >= info.global.xp.lower.max) {
+            lvlUp()
+          } else if (lifeguard !== undefined && xp >= info.global.xp.lower.max) {
+            lvlUp()
+          } else if (nurse !== undefined && xp >= info.global.xp.lower.max) {
+            lvlUp()
+          } else if (police !== undefined && xp >= info.global.xp.higher.max) {
+            lvlUp()
+          } else if (engineer !== undefined && xp >= info.global.xp.higher.max) {
+            lvlUp()
+          } else if (chef !== undefined && xp >= info.global.xp.higher.max) {
+            lvlUp()
+          } else if (clinicalScientist !== undefined && xp >= info.global.xp.higher.max) {
+            lvlUp()
+          } else if (headScientist !== undefined && xp >= info.global.xp.higher.max) {
+            lvlUp()
+          } else if (lawyer !== undefined && xp >= info.global.xp.higher.max) {
+            lvlUp()
+          } else if (socialWorker !== undefined && xp >= info.global.xp.higher.max) {
+            lvlUp()
+          } else if (doctor !== undefined && xp >= info.global.xp.higher.max) {
+            lvlUp()
+          }
+
+          embed.setDescription(`You earned **$${workAmt}.${decimal}** while working!`);
+          message.channel.send(embed);
+        });
+      }
+    }
+
+    async function reactionCollection(msg, emoji1, emoji2, emoji3, amt, edit1, edit2, edit3) {
+      await msg.react(emoji1);
+      await msg.react(emoji2);
+      await msg.react(emoji3);
+
+      userData.findOneAndUpdate({ userId: message.author.id }, { job_xp: userResult.job_xp ? userResult.job_xp + gainedXp : 1 });
+      userData.findOne({ userId: message.author.id }).then(xp => {
+        xp = xp.job_xp
         if (cashier !== undefined && xp >= info.global.xp.lower.max) {
           lvlUp()
         } else if (teacher !== undefined && xp >= info.global.xp.lower.max) {
@@ -202,51 +251,7 @@ module.exports = {
         } else if (doctor !== undefined && xp >= info.global.xp.higher.max) {
           lvlUp()
         }
-
-        embed.setDescription(`You earned **$${workAmt}.${decimal}** while working!`);
-        message.channel.send(embed);
-      }
-      db.set(message.author.id + '.economy.work', Date.now() + cooldown);
-    }
-
-    async function reactionCollection(msg, emoji1, emoji2, emoji3, amt, edit1, edit2, edit3) {
-      await msg.react(emoji1);
-      await msg.react(emoji2);
-      await msg.react(emoji3);
-
-      db.add(message.author.id + '.jobs.xp', gainedXp);
-      let xp = db.get(message.author.id + '.jobs.xp');
-      if (cashier !== undefined && xp >= info.global.xp.lower.max) {
-        lvlUp()
-      } else if (teacher !== undefined && xp >= info.global.xp.lower.max) {
-        lvlUp()
-      } else if (waiter !== undefined && xp >= info.global.xp.lower.max) {
-        lvlUp()
-      } else if (receptionist !== undefined && xp >= info.global.xp.lower.max) {
-        lvlUp()
-      } else if (architect !== undefined && xp >= info.global.xp.lower.max) {
-        lvlUp()
-      } else if (lifeguard !== undefined && xp >= info.global.xp.lower.max) {
-        lvlUp()
-      } else if (nurse !== undefined && xp >= info.global.xp.lower.max) {
-        lvlUp()
-      } else if (police !== undefined && xp >= info.global.xp.higher.max) {
-        lvlUp()
-      } else if (engineer !== undefined && xp >= info.global.xp.higher.max) {
-        lvlUp()
-      } else if (chef !== undefined && xp >= info.global.xp.higher.max) {
-        lvlUp()
-      } else if (clinicalScientist !== undefined && xp >= info.global.xp.higher.max) {
-        lvlUp()
-      } else if (headScientist !== undefined && xp >= info.global.xp.higher.max) {
-        lvlUp()
-      } else if (lawyer !== undefined && xp >= info.global.xp.higher.max) {
-        lvlUp()
-      } else if (socialWorker !== undefined && xp >= info.global.xp.higher.max) {
-        lvlUp()
-      } else if (doctor !== undefined && xp >= info.global.xp.higher.max) {
-        lvlUp()
-      }
+      });
 
       const filter = (reaction, user) => {
         return (
@@ -261,26 +266,25 @@ module.exports = {
           if (reaction.emoji.name === emoji1) {
             if (edit1 !== undefined) {
               msg.reactions.removeAll();
-              db.add(message.author.id + '.economy.balance', amt);
-              return msg.edit(edit1);
+              msg.edit(edit1);
             }
           } else if (reaction.emoji.name === emoji2) {
             if (edit2 !== undefined) {
               msg.reactions.removeAll();
-              db.add(message.author.id + '.economy.balance', amt);
-              return msg.edit(edit2)
+              msg.edit(edit2)
             }
           } else if (reaction.emoji.name === emoji3) {
             if (edit3 !== undefined) {
               msg.reactions.removeAll();
-              db.add(message.author.id + '.economy.balance', amt);
-              return msg.edit(edit3);
+              msg.edit(edit3);
             }
           }
+          userData.findOneAndUpdate({ userId: message.author.id }, { economy_balance: userResult.economy_balance ? userResult.economy_balance + amt : amt });
+          return;
         }).catch(() => {
           msg.reactions.removeAll()
           amt = amt / 2
-          let bal = db.get(message.author.id + '.economy.balance') || 0;
+          let bal = userResult.economy_balance || 0;
           if (bal.toString().startsWith('-')) {
             if (
               db.get(message.author.id + '.jobs.timesFired') === 2 ||
