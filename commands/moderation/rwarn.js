@@ -6,7 +6,8 @@ module.exports = {
   usage: 'rwarn [user] [reason]',
   execute (message, prefix, client) {
     const Discord = require('discord.js');
-    const db = require('../../structure/global.js').db;
+    const guildData = require('../../events/client/database/models/guilds.js');
+    const guildMemberData = require('../../events/client/database/models/guildMembers.js');
     let reasons = [];
     const logging = require('../../utils/functions.js').logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -18,10 +19,11 @@ module.exports = {
       if (user.bot) return message.channel.send('Bots cannot be warned');
 
       let member;
+      let memberResult = await guildMemberData.findOne({ guildId: message.guild.id, memberId: user.id });
+      let guildResult = await guildDatafindOne({ guildId: message.guild.id });
 
-      if (db.get(message.guild.id + '_' + user.id + '.warnings') < 1 || !db.get(message.guild.id + '_' + user.id + '.warnings')) {
+      if (memberResult.warnings < 1 || !memberResult.warnings)
         return message.channel.send(`${user} does not have any warnings`)
-      }
 
       try {
         member = await message.guild.members.fetch(user);
@@ -35,18 +37,17 @@ module.exports = {
       if (!member) return message.reply('That user is not in this server');
 
       let reason = args.splice(2).join(' ');
-      let tw = db.get(message.guild.id + '_' + user.id + '.warnings')
-      if (!reason) return message.reply('Please provide a reason');
-      message.channel.send(`Removed \`1\` warnings from ${user}`);
+      let tw = memberResult.warnings;
+      if (!reason) reason = 'No reason was provided';
+      message.channel.send(`Removed \`1\` warning from ${user}`);
 
-      reasons = db.get(message.guild.id + '_' + user.id + '.warnReasons');
+      reasons = memberResult.warnReasons;
       let warnReason = reasons[reasons.length - 1];
       reasons.splice((reasons.length - 1).toString(), 1);
-      if (tw < 2) {
-        db.delete(message.guild.id + '_' + user.id + '.warnReasons');
-      } else {
-        db.set(message.guild.id + '_' + user.id + '.warnReasons', reasons);
-      }
+      if (tw < 2)
+        guildMemberData.findOneAndUpdate({ guildId: message.guild.id, memberId: user.id }, { warnReasons: [] });
+      else
+        guildMemberData.findOneAndUpdate({ guildId: message.guild.id, memberId: user.id }, { warnReasons: reasons });
 
       warnReason = warnReason.split(/ +/g);
       let index = warnReason.findIndex(result => result === '-');
@@ -58,9 +59,8 @@ module.exports = {
           if (i === 1) {
             word = word[0].toUpperCase() + word.substring(1).toLowerCase();
             warnReason2 = `${word}`;
-          } else {
+          } else
             warnReason2 += ` ${word}`;
-          }
       });
 
       let log = new Discord.MessageEmbed()
@@ -71,19 +71,18 @@ module.exports = {
         .addField('By:', message.author, true)
         .addField('Reason:', reason)
         .addField('Warning Reason', warnReason, true)
-        .addField('Total Warnings', db.get(message.guild.id + '_' + user.id + '.warnings') - 1, true)
+        .addField('Total Warnings', memberResult.warnings - 1, true)
       logging(log, message, client);
-      if (db.get(message.guild.id + '_' + user.id + '.warnings') < 1)
+      if (memberResult.warnings < 1)
         message.channel.send(`${user.username} does not have any warnings to remove`);
-      else if (db.get(message.guild.id + '_' + user.id + '.warnings') == 1)
-        db.delete(message.guild.id + '_' + user.id + '.warnings');
-      else {
-        db.subtract(message.guild.id + '_' + user.id + '.warnings', 1);
-      }
+      else if (memberResult.warnings == 1)
+      guildMemberData.findOneAndUpdate({ guildId: message.guild.id, memberId: user.id }, { warnings: 0 });
+      else
+        guildMemberData.findOneAndUpdate({ guildId: message.guild.id, memberId: user.id }, { warnings: memberResult.warnings - 1 });
     }
     let debounce = false;
 
-    if (message.member.hasPermission("MANAGE_MESSAGES") || message.member.hasPermission("ADMINISTRATOR")) {
+    if (message.member.hasPermission('MANAGE_MESSAGES') || message.member.hasPermission('ADMINISTRATOR')) {
       rwarnCmd()
       debounce = true;
     } else if (db.get(message.guild.id + '.modRole')) {
@@ -92,7 +91,7 @@ module.exports = {
         debounce = true;
       }
       if (debounce === false) {
-        message.channel.send('You do not have the permissions to run this command')
+        message.channel.send('You do not have the permissions to use this command')
       }
     }
   }

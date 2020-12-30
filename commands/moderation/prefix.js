@@ -8,7 +8,7 @@ module.exports = {
   usage: 'prefix [new-prefix]',
   execute (message, prefix, client) {
     guildData.findOne({ guildId: message.guild.id }).then(result => {
-      if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send('You need the `Administrator` permissions to run this command');
+      if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send('You need the `Administrator` permissions to use this command');
       let args = message.content.slice(prefix.length).trim().split(/ +/g);
       let newPrefix = args[1].toLowerCase();
       if (!newPrefix && result.prefix === '~') return message.channel.send('Please specify a prefix');

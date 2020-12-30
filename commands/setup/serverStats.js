@@ -3,7 +3,7 @@ module.exports = (message, prefix, embedColor) => {
     const guildData = require('../../events/client/database/models/guilds.js');
 
     guildData.findOne({ guildId: message.guild.id }).then(() => {
-    if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send('You need the `Administrator` permissions to run this command')
+    if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send('You need the `Administrator` permissions to use this command')
     if (message.content.includes('help') || !args[2]) {
       const embed = new Discord.MessageEmbed()
       .setTitle('Billybobbeep | Setup Command')

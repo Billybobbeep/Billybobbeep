@@ -13,7 +13,7 @@ module.exports = {
         embed.setTitle('Levels | Leaderboard');
 
         guildMemberData.find(function(err, result) {
-            if (err) return message.channel.send('I do not have enough data to run this command');
+            if (err) return message.channel.send('I do not have enough data to use this command');
             if (args[1] && args[1] === 'global') {
                 let allData = [];
                 let levels = [];

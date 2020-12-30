@@ -11,7 +11,7 @@ module.exports = {
         if (message.content.startsWith(`${prefix}play`)) {
         const voiceChannel = message.member.voice.channel;
         if (!voiceChannel)
-        return message.channel.send('You need to be in a voice channel to run this command');
+        return message.channel.send('You need to be in a voice channel to use this command');
         const permissions = voiceChannel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT'))
         return message.channel.send(
@@ -120,7 +120,7 @@ module.exports = {
         if (message.content.toLowerCase().includes('https://') || message.content.toLowerCase().includes('http://') || message.content.toLowerCase().includes('www') || message.content.toLowerCase().includes('.com') || message.content.toLowerCase().includes('.co.uk')) return ('You cannot send a link as a tts message');
         if (!args[1]) return message.channel.send('Please provide a message to send')
         const voiceChannel = message.member.voice.channel;
-        if (!voiceChannel) return message.channel.send('You need to be in a voice channel to run this command');
+        if (!voiceChannel) return message.channel.send('You need to be in a voice channel to use this command');
         const permissions = voiceChannel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.channel.send('I don\'t have permissions to connect to a voice channel');
         if (!permissions.has('SPEAK')) return message.channel.send('I don\'t have permissions to speak in a voice channel');

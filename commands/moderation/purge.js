@@ -52,7 +52,7 @@ module.exports = {
         debounce = true;
       }
       if (debounce === false) {
-        message.channel.send('You do not have the permissions to run this command')
+        message.channel.send('You do not have the permissions to use this command')
       }
     }
   }

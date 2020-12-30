@@ -26,7 +26,7 @@ module.exports = {
                 let member = message.guild.members.cache.get(user.id);
 
                 if (member.roles.cache.get(result.modRole)) {
-                    await member.roles.remove(result.modRole).catch(() => { return message.channel.send('I do not have permissions to run this command') });
+                    await member.roles.remove(result.modRole).catch(() => { return message.channel.send('I do not have permissions to use this command') });
                     message.channel.send(`<@!${user.id}> was demoted by <@!${message.author.id}>`)
                     embed.setTitle('User Demoted');
                     embed.setDescription(
@@ -57,6 +57,6 @@ module.exports = {
         if (message.member.hasPermission('ADMINISTRATOR'))
             demoteCmd();
         else 
-            message.channel.send('You do not have the permissions to run this command');
+            message.channel.send('You do not have the permissions to use this command');
     }
 }
