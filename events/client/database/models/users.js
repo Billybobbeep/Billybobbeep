@@ -5,10 +5,10 @@ const userSchema = new mongoose.Schema({
     //General
     dmed: Boolean, //If the user has DMed the bot
     //Economy
-    economy_balance: Number,
+    economy_balance: { type: Number, default: 0 }, 
     economy_work: Number,
-    economy_streak: Number,
-    economy_tStreak: Number,
+    economy_streak: { type: Number, default: 0 },
+    economy_tStreak: { type: Number, default: 0 },
     economy_daily: Number,
     economy_lastDonated: Number,
     //-Jobs
