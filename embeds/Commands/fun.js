@@ -1,13 +1,14 @@
 const Discord = require('discord.js');
 const configFile = require('../../structure/config.json');
-const db = require('../../structure/global.js').db;
+const fs = require('fs');
+const guildData = require('../../events/client/database/models/guilds');
+
 module.exports = async(message, prefix) => {
-  const fs = require('fs');
 
   const PageOne = new Discord.MessageEmbed()
   .setTitle('Billybobbeep | General Commands')
   .setFooter('TIP: Press the arrows to switch pages')
-  message.guild ? PageOne.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : PageOne.setColor('#447ba1');
+  message.guild ? PageOne.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor)) : PageOne.setColor('#447ba1');
 
   const commandFolders = fs.readdirSync('./commands').filter(file => !file.endsWith('.js'));
   for (const folder of commandFolders) {
@@ -34,7 +35,7 @@ module.exports = async(message, prefix) => {
   const PageTwo = new Discord.MessageEmbed()
   .setTitle('Billybobbeep | Economy Commands')
   .setFooter('TIP: Press the arrows to switch pages')
-  message.guild ? PageTwo.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : PageTwo.setColor('#447ba1');
+  message.guild ? PageTwo.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor)) : PageTwo.setColor('#447ba1');
 
   for (const folder of commandFolders) {
     const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
@@ -69,7 +70,7 @@ module.exports = async(message, prefix) => {
   const PageThree = new Discord.MessageEmbed()
   .setTitle('Billybobbeep | Other Commands')
   .setFooter('TIP: Press the arrows to switch pages')
-  message.guild ? PageThree.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : PageThree.setColor('#447ba1');
+  message.guild ? PageThree.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor)) : PageThree.setColor('#447ba1');
 
   for (const folder of commandFolders) {
     const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
@@ -108,7 +109,7 @@ module.exports = async(message, prefix) => {
   const PageFour = new Discord.MessageEmbed()
   .setTitle('Billybobbeep | Generator Commands')
   .setFooter('TIP: Press the arrows to switch pages')
-  message.guild ? PageFour.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : PageFour.setColor('#447ba1');
+  message.guild ? PageFour.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor)) : PageFour.setColor('#447ba1');
 
   for (const folder of commandFolders) {
     const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
@@ -143,7 +144,7 @@ module.exports = async(message, prefix) => {
   const PageFive = new Discord.MessageEmbed()
   .setTitle('Billybobbeep | Information Commands')
   .setFooter('TIP: Press the arrows to switch pages')
-  message.guild ? PageFive.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : PageFive.setColor('#447ba1');
+  message.guild ? PageFive.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor)) : PageFive.setColor('#447ba1');
 
   for (const folder of commandFolders) {
     const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));

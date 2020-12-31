@@ -1,8 +1,14 @@
 module.exports = (client) => {
-    const DiscordBotListAPI = require('dbl-api');
-    const api = new DiscordBotListAPI('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjczMTQ5ODg0MjgxMzM2NjMwNCIsImJvdCI6dHJ1ZSwiaWF0IjoxNjA4MDQ1MDk5fQ.zq-BdK82KBaD8cDLujA-cp0-xcPiz_3I0xmANJpO5NQ', { port: 8080, path: '/some_insanely_secret_path' }, client);
+    const DBL = require("dblapi.js");
+    const api = new DBL('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjczMTQ5ODg0MjgxMzM2NjMwNCIsImJvdCI6dHJ1ZSwiaWF0IjoxNjA4MDQ1MDk5fQ.zq-BdK82KBaD8cDLujA-cp0-xcPiz_3I0xmANJpO5NQ', client);
+    const Discord = require('discord.js');
 
-    api.on('upvote', (user, bot) => {
+    api.getVotes().then(votes => {
+        if (votes.find(vote => vote.id == '697194959119319130')) console.log("Tonkku has voted!!!")
+    });
+
+    api.getVotes().then(votes => {
+    //api.on('upvote', (user, bot) => {
         const embed = new Discord.MessageEmbed();
         embed.setTitle('Vote Added');
         embed.setColor('#447ba1');
@@ -12,14 +18,5 @@ module.exports = (client) => {
         client.channels.cache.get('788331636303200286').send(embed);
         console.log(user);
         client.channels.cache.get('788439092433911860').send(`${user} has upvoted ${bot}`);
-    });
-    
-    api.on('unvote', (user, bot) => {
-        const embed = new Discord.MessageEmbed();
-        embed.setTitle('Vote Removed');
-        embed.setColor('#447ba1');
-        embed.addField('Voter', `**Tag:** ${user.username}#${user.discriminator}\n**ID:** ${user.id}`);
-        embed.addField('Bot', `**Tag:** ${bot.username}#${bot.discriminator}\n**ID:** ${bot.id}`);
-        client.channels.cache.get('788331636303200286').send(embed);
     });
 }

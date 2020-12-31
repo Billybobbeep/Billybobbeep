@@ -22,10 +22,10 @@
   },
   "dependencies": {
     "@canvacord/assets": "^1.0.1",
-    "better-sqlite3": "^7.1.1",
     "canvas": "^2.6.1",
     "chalk": "^4.1.0",
     "dbl-api": "^1.2.1",
+    "dblapi.js": "^2.4.1",
     "discord.js": "^12.5.1",
     "express": "^4.17.1",
     "moment": "^2.29.1",

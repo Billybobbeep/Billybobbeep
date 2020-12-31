@@ -6,15 +6,15 @@ module.exports = {
     const { MessageEmbed, version: djsversion } = require('discord.js');
     const { version } = require('../package.json');
     const { utc } = require('moment');
+    const guildData = require('../events/client/database/models/guilds');
     const os = require('os');
     const ms = require('ms');
-    const db = require('../structure/global.js').db;
 
     const core = os.cpus()[0];
     const embed = new MessageEmbed()
       .setDescription("**Billybobbeep | Bot Info**")
       .setThumbnail(client.user.displayAvatarURL())
-      .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
+      .setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor))
       .setFooter(`Requested by: ${message.author.tag}`)
       .addField('General', [
         `**✰ Name:** ${client.user.tag} (${client.user.id})`,

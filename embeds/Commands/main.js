@@ -1,7 +1,4 @@
 const Discord = require('discord.js');
-const configFile = require('../../structure/config.json');
-const db = require('../../structure/global.js').db;
-
 module.exports = {
     commands: ['cmds', 'c', 'commands'],
     description: 'View billybobbeep\'s commands',

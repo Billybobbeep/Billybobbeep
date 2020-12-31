@@ -12,7 +12,7 @@ module.exports = {
 //        Settings
 //      ------------
         if (message.guild) {
-            let spamEnabled = db.get(message.guild.id + '.antiSpam.enabled') || true;
+            let spamEnabled = db.get(message.guild.id + '.antiSpam.enabled') || false;
         }
 
         let ignoredChannels = []; //Channels to ignore (ID)

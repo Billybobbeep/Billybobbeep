@@ -1,6 +1,6 @@
 module.exports = async (message, client) => {
   const Discord = require('discord.js');
-  const db = require('../../structure/global.js').db;
+  const guildData = require('../client/database/models/guilds');
   const logging = require('../../utils/functions.js').logging;
   const embed = new Discord.MessageEmbed();
   embed.setTitle(`Message Deleted`)
@@ -14,8 +14,8 @@ module.exports = async (message, client) => {
   try { if (message.author.bot) return; } catch { return }
 
   if (!message || !message.author.id) return;
-  embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
-  let prefix = db.get(message.guild.id + '.prefix') || '~';
+  embed.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor));
+  let prefix = guildData.findOne({ guildId: message.guild.id }).then(result => result.prefix) || '~';
   let content = message.content.length ? message.content : '*This message contained no content.*';
   message.attachments ? message.attachments.forEach(attachment => attachments.push(attachment.proxyURL)) : attachments.push('Null');
   if (!attachments.includes('Null'))

@@ -65,7 +65,7 @@ module.exports = {
 
       let log = new Discord.MessageEmbed()
         .setTimestamp()
-        .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
+        .setColor(guildResult.embedColor)
         .setTitle('Warning Removed')
         .addField('User:', user, true)
         .addField('By:', message.author, true)
@@ -81,18 +81,19 @@ module.exports = {
         guildMemberData.findOneAndUpdate({ guildId: message.guild.id, memberId: user.id }, { warnings: memberResult.warnings - 1 });
     }
     let debounce = false;
-
-    if (message.member.hasPermission('MANAGE_MESSAGES') || message.member.hasPermission('ADMINISTRATOR')) {
-      rwarnCmd()
-      debounce = true;
-    } else if (db.get(message.guild.id + '.modRole')) {
-      if (message.member.roles.cache.find(role => role.id === db.get(message.guild.id + '.modRole'))) {
+    guildData.findOne({ guildId: message.guild.id }).then(result => {
+      if (message.member.hasPermission('MANAGE_MESSAGES') || message.member.hasPermission('ADMINISTRATOR')) {
         rwarnCmd()
         debounce = true;
+      } else if (result.modRole) {
+        if (message.member.roles.cache.find(role => role.id === result.modRole)) {
+          rwarnCmd()
+          debounce = true;
+        }
+        if (debounce === false) {
+          message.channel.send('You do not have the permissions to use this command')
+        }
       }
-      if (debounce === false) {
-        message.channel.send('You do not have the permissions to use this command')
-      }
-    }
+    });
   }
 }

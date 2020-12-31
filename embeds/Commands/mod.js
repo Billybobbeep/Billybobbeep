@@ -1,12 +1,12 @@
 module.exports = async(msg, args, prefix, message) => {
         const Discord = require('discord.js');
-        const db = require('../../structure/global.js').db;
+        const guildData = require('../../events/client/database/models/guilds');
         const fs = require('fs');
         const embed = new Discord.MessageEmbed()
         .setTitle('Billybobbeep | Moderation Commands')
         .setFooter(`Requested by: ${message.author.tag}`)
         .setTimestamp()
-        message.guild ? embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : embed.setColor('#447ba1');
+        message.guild ? embed.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor)) : embed.setColor('#447ba1');
         const commandFolders = fs.readdirSync('./commands').filter(file => !file.endsWith('.js'));
         for (const folder of commandFolders) {
                 const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));

@@ -3,7 +3,7 @@ module.exports = {
   description: 'Get help whilst using billybobbeep',
   execute(message, prefix, client) {
     const Discord = require('discord.js');
-    const db = require('../structure/global.js').db;
+    const guildData = require('../events/client/database/models/guilds');
 
     const embed = new Discord.MessageEmbed()
       .setTitle('Billybobbeep | Help')
@@ -22,7 +22,7 @@ module.exports = {
         '*To set up billybobbeep in your own server.*')
       .setFooter(`Requested by: ${message.author.tag}`)
       .setTimestamp()
-      message.guild ? embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : embed.setColor('#447ba1');
+      message.guild ? embed.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor)) : embed.setColor('#447ba1');
     message.channel.send(embed);
   }
 }

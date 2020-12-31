@@ -1,6 +1,6 @@
 module.exports = (newMessage, oldMessage, client) => {
 	const Discord = require('discord.js');
-	const db = require('../../structure/global.js').db;
+	const guildData = require('../client/database/models/guilds');
 	const logging = require('../../utils/functions.js').logging;
 
 	if (!newMessage) return;
@@ -30,7 +30,7 @@ module.exports = (newMessage, oldMessage, client) => {
 				`**Author ID:** ${oldMessage.author.id}`
 			)
 			.setTimestamp()
-			.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
+			.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor));
 		return logging(embed, message, client);
 	}
 	if (oldMessage === newMessage) return;
@@ -61,6 +61,6 @@ module.exports = (newMessage, oldMessage, client) => {
 			`**Author ID:** ${oldMessage.author.id}`
 		)
 		.setTimestamp()
-		.setColor(`${db.get(oldMessage.guild.id + '.embedColor') || '#447ba1'}`);
+		.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor));
 	logging(embed, oldMessage, client);
 }

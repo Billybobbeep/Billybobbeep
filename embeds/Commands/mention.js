@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const configFile = require('../../structure/config.json');
-const db = require('../../structure/global.js').db;
+const guildData = require('../../events/client/database/models/guilds');
 
 module.exports = async(msg, args, prefix, message, client) => {
     const commandEmbed = new Discord.MessageEmbed()
@@ -20,6 +20,6 @@ module.exports = async(msg, args, prefix, message, client) => {
       `welcome <@${client.user.id}>\n` +
       `greetings <@${client.user.id}>\n\n`
     )
-    message.guild ? commandEmbed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`) : commandEmbed.setColor('#447ba1');
+    message.guild ? commandEmbed.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor)) : commandEmbed.setColor('#447ba1');
     message.channel.send(commandEmbed);
 }

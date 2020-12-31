@@ -1,29 +1,32 @@
 module.exports = (client) => {
-    const db = require('../../structure/global.js').db;
-    setInterval(() => {
-        mute(db, client)
+    const mutedData = require('../client/database/models/mutedMembers');
+    const awaitingData = require('../client/database/models/awaiting');
+    const guildMemberData = require('../client/database/models/guildMembers');
+    /*setInterval(() => {
+        mute(mutedData, client)
     }, 300000);
     setInterval(() => {
-        application(db, client)
+        application(awaitingData, client)
     }, 180000);
     //setInterval(() => {
-        database(db, client)
-    //}, 300000);
+        database(guildMemberData, client)
+    //}, 300000);*/
 }
 
 function database(db, client) {
-    db.fetchAll().forEach(data => {
-        if (data.ID.includes('_')) return;
-        if (isNaN(data.ID)) return;
-        let amt = db.get(data.ID + '.economy.balance');
+    db.find(function(err, data) {
+        if (err) return console.error(err);
+        if (!data) return;
+        let amt = data.economy_balance;
         let newAmt;
-        if (amt && amt.toString().includes('')) {
+        console.log(data)
+        /*if (amt && amt.toString().includes('')) {
             amt = amt.toString().split('');
             if (amt[1].length > 2) newAmt = [amt[0]];
             else return;
             newAmt.push(amt[1][0] + amt[1][1]);
             db.set(data.ID + '.economy.balance', Number(newAmt[0]));
-        }
+        }*/
 
         amt = db.get(data.ID + '.bank.balance');
         newAmt = [];

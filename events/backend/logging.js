@@ -1,4 +1,4 @@
-const db = require('../../structure/global.js').db;
+const guildId = require('../client/database/models/guilds');
 const Discord = require('discord.js');
 const embed = new Discord.MessageEmbed();
 const logging = require('../../utils/functions.js').logging;
@@ -22,9 +22,9 @@ module.exports.add = (guild, user, client) => {
             `**Moderator ID:** ${ban.executor.id}`
         )
         embed.setTimestamp(ban.createdTimestamp);
-        embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`);
+        embed.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor));
 
-        let loggingChannel = client.channels.cache.get(db.get(guild.id + '.loggingChannel'));
+        let loggingChannel = client.channels.cache.get(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor.loggingChannel));
         if (loggingChannel) {
             loggingChannel.send(msg).catch(() => {return});
         }
@@ -55,8 +55,8 @@ module.exports.remove = (guild, user, client) => {
             `**Moderator ID:** ${ban.executor.id}`
             )
             embed.setTimestamp(ban.createdTimestamp);
-            embed.setColor(`${db.get(guild.id + '.embedColor') || '#447ba1'}`);
-            let loggingChannel = client.channels.cache.get(db.get(guild.id + '.loggingChannel'));
+            embed.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor));
+            let loggingChannel = client.channels.cache.get(guildData.findOne({ guildId: message.guild.id }).then(result => result.loggingChannel));
             if (loggingChannel)
                 loggingChannel.send(msg).catch(() => {return});
         });

@@ -4,12 +4,9 @@ module.exports = async (client) => {
   const Discord = require('discord.js')
   let port = 3000;
   const bot = require('./utils/data.js');
-  const db = require('./structure/global.js').db;
-  const fs = require('fs');
-  const { parse } = require('querystring');
   const fetch = require('node-fetch');
-  const http = require('http');
   const logging = require('./utils/functions').logging;
+  const guildData = require('./events/client/database/models/guilds');
 
   app.use('/style', express.static('style'));
   app.set('view engine', 'ejs');
@@ -20,50 +17,17 @@ module.exports = async (client) => {
       key = req.params.key;
       bot.data(function(client, data) { res.send(data) });
     });
-    app.get('/api/:key/chatbot', async function(req, res) {
+    app.get('/api/chatbot', async function(req, res) {
       let message = req.query.message;
-      let key = req.params.key;
       let debounce = false;
-      if (!key) {
-        res.json('An invalid API key was sent.');
-        res.status(404);
-        debounce = true;
-      }
-      if (key !== undefined) {
-        let keys = db.get('apiKey');
-        if (!keys || keys === '[]') {
-          res.json('An invalid API key was sent.');
-          res.status(404);
-          debounce = true;
-        } else if (keys.length < 1) {
-          res.json('An invalid API key was sent.');
-          res.status(404);
-          debounce = true;
-        } else {
-          keys.forEach(result => {
-            result = result.replace('_', ' ');
-            result = result.split(/ +/g);
-            if (req.params.key === result[1]) {
-              debounce = '1';
-            }
-          });
-          if (debounce !== '1') {
-            res.json('An invalid API key was sent.');
-            res.status(404);
-            debounce = true;
-          }
-        }
-      }
-      if (debounce === true) return;
-      let reply = 'undefined';
-      if (!message) {
-        res.json('missing message query')
-      }
+
+      let reply = undefined;
+      if (!message) return res.json('missing message query');
       if (message.toLowerCase() === 'hello' || message.toLowerCase() === 'hi' || message.toLowerCase() === 'hiya') reply = message.toLowerCase();
       if (message.toLowerCase().includes('test')) reply = 'test command';
       if (message.toLowerCase().includes('ily')) reply = 'ily2';
       if (message.toLowerCase().startsWith('call') || message.toLowerCase().includes('emergency')) reply = 'I am not responsible for any form of emergency call.\nIf you need any service from the emergency services, please call them yourself or ask another guild member to do it for you.';
-      if (reply === 'undefined') {
+      if (reply === undefined) {
         let response = await fetch('https://some-random-api.ml/chatbot?message=' + message);
         reply = await response.text();
         if (reply.toLowerCase().startsWith('<!doctype html>')) res.json('This channel is causing issues for me. Please try again later.');
@@ -83,11 +47,10 @@ module.exports = async (client) => {
         res.json(reply.replace('?.', '?').replace('..', '.').replace('!.', '!'));
       } else if (req.query.cap && req.query.cap === 'no' && req.query.punc && req.query.punc === 'yes') {
         reply = reply.toLowerCase();
-        if (message.endsWith('?') || message.endsWith('!') || message.endsWith('.') || message.endsWith('/')) {
+        if (message.endsWith('?') || message.endsWith('!') || message.endsWith('.') || message.endsWith('/'))
           reply = reply;
-        } else {
+        else
           reply = reply + '.'
-        }
         res.json(reply.replace('?.', '?').replace('..', '.').replace('!.', '!'));
       } else if (req.query.cap && req.query.cap === 'full' && req.query.punc && req.query.punc === 'yes') {
         reply = reply.toUpperCase();
@@ -116,122 +79,14 @@ module.exports = async (client) => {
       res.sendFile(__dirname + '/Public/index.html');
     });
     app.get('/home/status', function(req, res) {
-      res.sendFile(__dirname + '/Public/status.html');
+      res.redirect('/home/analytics');
     });
     app.get('/home/analytics', (req, res) => {
       res.sendFile(__dirname + '/Public/analytics.html')
     });
-    app.get('/contact/submit', (req, res) => {
-      if (!req.query) res.render('general.ejs');
-      if (!req.query.fName || !req.query.sName || !req.query.discord || !req.query.subject || !req.query.message) res.render('general.ejs');
-      const embed = new Discord.MessageEmbed()
-        .setTitle('Billybobbeep | Contact Us Submissions')
-        .setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`)
-        .setTimestamp()
-        .setDescription(
-          '**First Name:** ' + req.query.fName +
-          '\n**Second Name:** ' + req.query.sName +
-          '\n**Discord Tag:** ' + req.query.discord +
-          '\n**Subject:** ' + req.query.subject +
-          '\n**Message:** ' + req.query.message
-        )
-      logging(embed, undefined, client)
-      res.render('success.ejs');
-    });
     app.get('/discord/invite', function(req, res) {
-      fs.readFile('./Public/analytics/invites.json', 'utf8', function readFileCallback(err, data) {
-        if (err) {
-          return;
-        }
-        data = JSON.parse(data)
-        if (!req.query.from) {
-          let total = data[0].total;
-          let website = data[0].website;
-          let json = [{
-            'total': total + 1,
-            'spoink': data[0].spoink,
-            'other': data[0].other,
-            'website': website + 1
-          }]
-          json = JSON.stringify(json)
-          fs.writeFile('./Public/analytics/invites.json', json, 'utf8', function() { })
-          res.redirect('https://discord.com/invite/qNJEj3s');
-        } else {
-          if (req.query.from === 'spoink' || req.query.from === 'tyler') {
-            let total = data[0].total;
-            let spoink = data[0].spoink;
-            let json = [{
-              'total': total + 1,
-              'spoink': spoink + 1,
-              'other': data[0].other,
-              'website': data[0].website
-            }]
-            json = JSON.stringify(json)
-            fs.writeFile('./Public/analytics/invites.json', json, 'utf8', function() { })
-            res.redirect('https://discord.com/invite/qNJEj3s');
-          }
-            else if (req.query.from === 'stack') {
-              res.redirect('https://discord.com/invite/qNJEj3s')
-          } else {
-            let total = data[0].total;
-            let other = data[0].other;
-            let json = [{
-              'total': total + 1,
-              'spoink': data[0].spoink,
-              'other': other + 1,
-              'website': data[0].website
-            }]
-            json = JSON.stringify(json)
-            fs.writeFile('./Public/analytics/invites.json', json, 'utf8', function() { })
-            res.redirect('https://discord.com/invite/qNJEj3s');
-          }
-        }
-      });
+      res.redirect('https://discord.com/invite/qNJEj3s');
     });
-    app.get('/terms', (req, res) => {
-      res.sendFile(__dirname + '/Public/terms.html');
-    });
-    app.post('/terms', (req, res) => {
-      let users = new Set()
-      let data;
-      let body = '';
-      req.on('data', chunk => {
-        body += chunk.toString();
-      });
-      req.on('end', () => {
-        data = parse(body);
-      });
-      setTimeout(() => {
-        if (req.query.denied) {
-          let channel = client.channels.cache.get('769590641931714602');
-          let accEmbed = new Discord.MessageEmbed();
-          accEmbed.setTitle(`${data.discordTag} denied the terms`);
-          accEmbed.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
-          accEmbed.setTimestamp()
-          try {
-            channel.send(accEmbed)
-          } catch {
-            return res.render('general.ejs');
-          }
-          users.add(data.discordTag)
-          res.render('terms.ejs', { message : 'You have denied the terms.'});
-        } else {
-          if (users.has([data.discordTag])) res.render('terms.ejs', { message : 'You have agreed to the terms.'});
-          let channel = client.channels.cache.get('769590641931714602');
-          let accEmbed = new Discord.MessageEmbed();
-          accEmbed.setTitle(`${data.discordTag} accepted the terms`);
-          accEmbed.setColor(`${db.get('733442092667502613.embedColor') || '#447ba1'}`);
-          accEmbed.setTimestamp()
-          try {
-            channel.send(accEmbed)
-          } catch {
-            return res.render('general.ejs');
-          }
-          users.add(data.discordTag)
-          res.render('terms.ejs', { message : 'You have agreed to the terms.'});
-        }
-        }, 50);
-      });
 
     app.use(function(req, res) {
       if (req.url.toLowerCase().startsWith('/api')) {
@@ -247,9 +102,5 @@ module.exports = async (client) => {
 
   }
 
-  listen()
-
-  setInterval(() => {
-    http.get(`http://localhost:3000/home`);
-  }, 280000);
+  listen();
 }
