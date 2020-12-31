@@ -22,8 +22,8 @@ module.exports = {
         embed.setAuthor(user.username, user.displayAvatarURL());
 
         let sym = '$'
-        let bankBal = userResult.bank_balance || 0;
-        let walletBal = userResult.economy_balance || 0;
+        let bankBal = userResult ? userResult.bank_balance : 0;
+        let walletBal = userResult ? userResult.economy_balance : 0;
 
         if (walletBal.toString().startsWith('-')) sym = '-$';
         embed.addField(`Wallet:`, `${sym}${walletBal.toString().replace('-', '')}`);

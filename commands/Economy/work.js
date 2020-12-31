@@ -287,32 +287,25 @@ module.exports = {
           let bal = userResult.economy_balance || 0;
           if (bal.toString().startsWith('-')) {
             if (
-              db.get(message.author.id + '.jobs.timesFired') === 2 ||
-              db.get(message.author.id + '.jobs.timesFired') === 4 ||
-              db.get(message.author.id + '.jobs.timesFired') === 6 ||
-              db.get(message.author.id + '.jobs.timesFired') === 8
+              userResult.job_timesFired === 2 ||
+              userResult.job_timesFired === 4 ||
+              userResult.job_timesFired === 6 ||
+              userResult.job_timesFired === 8
               ) {
-                db.add(message.author.id + '.jobs.timesFired', 1);
-                db.set(message.author.id + '.jobs.lastFired', Date.now());
+                userData.findOneAndUpdate({ userId: message.author.id }, { job_name: false, $inc: { job_timesFired: 1 }, job_lastFired: Date.now()});
+                
                 embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
-                db.delete(message.author.id + '.jobs.job');
-                db.add(message.author.id + '.jobs.timesFired', 1);
-                db.set(message.author.id + '.jobs.lastFired', Date.now());
-            } else if (db.get(message.author.id + '.jobs.timesFired') === 10) {
-              db.delete(message.author.id + '.jobs.timesFired');
-              db.set(message.author.id + '.jobs.lastFired', Date.now());
+            } else if (userResult.job_timesFired === 10) {
+              userData.findOneAndUpdate({ userId: message.author.id }, { job_name: false, job_timesFired: 0, job_lastFired: Date.now()});
+
               embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
-              db.delete(message.author.id + '.jobs.job');
-              db.add(message.author.id + '.jobs.timesFired', 1);
-              db.set(message.author.id + '.jobs.lastFired', Date.now());
             } else {
               embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
               msg.edit(embed);
-              db.delete(message.author.id + '.jobs.job');
             }
           }
           embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt}**`);
-          db.subtract(message.author.id + '.economy.balance', amt);
+          userData.findOneAndUpdate({ userId: message.author.id }, { $subtract: { economy_balance: amt }});
           msg.edit(embed);
         });
     }
@@ -354,33 +347,24 @@ module.exports = {
         }).catch(() => {
           msg.reactions.removeAll()
           amt = amt / 2
-          if (db.get(message.author.id + '.economy.balance').toString().startsWith('-')) {
+          if ((userResult.economy_balance).toString().startsWith('-')) {
             if (
-              db.get(message.author.id + '.jobs.timesFired') === 2 ||
-              db.get(message.author.id + '.jobs.timesFired') === 4 ||
-              db.get(message.author.id + '.jobs.timesFired') === 6 ||
-              db.get(message.author.id + '.jobs.timesFired') === 8
+              userResult.job_timesFired === 2 ||
+              userResult.job_timesFired === 4 ||
+              userResult.job_timesFired === 6 ||
+              userResult.job_timesFired === 8
               ) {
-                db.add(message.author.id + '.jobs.timesFired', 1);
-                db.set(message.author.id + '.jobs.lastFired', Date.now());
+                userData.findOneAndUpdate({ userId: message.author.id }, { job_name: false, $inc: { job_timesFired: 1 }, job_lastFired: Date.now()});
                 embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
-                db.delete(message.author.id + '.jobs.job');
-                db.add(message.author.id + '.jobs.timesFired', 1);
-                db.set(message.author.id + '.jobs.lastFired', Date.now());
-            } else if (db.get(message.author.id + '.jobs.timesFired') === 10) {
-              db.delete(message.author.id + '.jobs.timesFired');
-              db.set(message.author.id + '.jobs.lastFired', Date.now());
+            } else if (userResult.job_timesFired === 10) {
+              userData.findOneAndUpdate({ userId: message.author.id }, { job_name: false, job_timesFired: 0, job_lastFired: Date.now()});
               embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
-              db.delete(message.author.id + '.jobs.job');
-              db.add(message.author.id + '.jobs.timesFired', 1);
-              db.set(message.author.id + '.jobs.lastFired', Date.now());
             } else {
               embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
-              db.delete(message.author.id + '.jobs.job');
             }
           }
           embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt}**`);
-          db.subtract(message.author.id + '.economy.balance', amt);
+          userData.findOneAndUpdate({ userId: message.author.id }, { $subtract: { economy_balance: amt }});
           msg.edit(embed);
         });
     }

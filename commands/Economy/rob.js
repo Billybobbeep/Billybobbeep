@@ -2,7 +2,7 @@ module.exports = {
     name: 'rob',
     description: 'Take money from other users without them noticing',
     guildOnly: true,
-    execute(message, prefix, client) {
+    async execute(message, prefix, client) {
         const userData = require('../../events/client/database/models/users.js');
         const Discord = require('discord.js');
         const emebd = new Discord.MessageEmbed();

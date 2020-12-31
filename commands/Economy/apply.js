@@ -30,7 +30,7 @@ module.exports = {
         }
         if (userResult.job_awaiting) {
             let cooldown = 300000;
-            let lastApp = userResult.jobs_lastApplied;
+            let lastApp = userResult.job_lastApplied;
             if (cooldown - (lastApp - Date.now()) > 0) {
                 let timeObj = ms(cooldown - (Date.now() - lastApp));
                 timeObj = timeObj.replace('s', ' seconds').replace('m', ' minutes').replace('h', ' hours');
