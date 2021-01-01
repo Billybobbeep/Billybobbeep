@@ -76,9 +76,6 @@ module.exports = {
         } else if (message.content.toLowerCase().startsWith(prefix + 'setup serverstatstext') || args[1].toLowerCase() === 'sst') {
           redirect = require('./serverStatsText.js')
           redirect(message, prefix, embedColor)
-        } else if (message.content.toLowerCase().startsWith(prefix + 'setup talk')) {
-          redirect = require('./talk2billy.js');
-          redirect(message, prefix, embedColor);
         } else if (message.content.toLowerCase().startsWith(prefix + 'setup economy')) {
           redirect = require('./economy.js');
           redirect(message, prefix, embedColor);

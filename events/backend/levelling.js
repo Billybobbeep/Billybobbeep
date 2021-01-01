@@ -43,7 +43,6 @@ module.exports = async (message, client) => {
       let gainedXp = Math.round(Math.random() * 5);
       if (gainedXp < 1) gainedXp = Math.round(Math.random() * 5);
       if (message.author.bot) return;
-      if (message.channel.id === guildResult.talk2billy) return;
       let levelsEnabled = guildResult.levelsEnabled;
       if (levelsEnabled === undefined) levelsEnabled = true;
       if (!levelsEnabled) return;
