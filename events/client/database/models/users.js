@@ -17,7 +17,10 @@ const userSchema = new mongoose.Schema({
     job_level: Number,
     job_xp: Number,
     //-Bank
-    bank_balance: Number
+    bank_balance: Number,
+    //AFK
+    isAfk: Boolean,
+    afkReason: String
 }, { strict: false });
 
 module.exports = mongoose.model('users', userSchema);
