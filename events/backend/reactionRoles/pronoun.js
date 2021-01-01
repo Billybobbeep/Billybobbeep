@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const db = require('../../structure/global.js').db;
+const guildData = require('../../client/database/models/guilds');
 
 module.exports = async (message) => {
     const commandEmbed = new Discord.MessageEmbed()
@@ -8,7 +8,7 @@ module.exports = async (message) => {
         `⚪ Him/he\n` +
         `🔴 She/her\n` +
         `⚫ Them/they`)
-      .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
+      .setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor))
       .setFooter(`React below to claim a role!`)
     message.channel.send(commandEmbed)
     message.delete();

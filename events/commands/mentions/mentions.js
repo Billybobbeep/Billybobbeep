@@ -1,11 +1,11 @@
 module.exports = async (message, client) => {
   const Discord = require('discord.js');
-  const db = require('../../../structure/global.js').db;
+  const guildData = require('../../client/database/models/guilds');
   const embed = new Discord.MessageEmbed();
 
   if (!message.guild) return;
   embed.setTitle('Billybobbeep | Mentioned');
-  embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
+  guildData.findOne({ guildId: message.guild.id }).then(result => embed.setColor(result.embedColor));
   embed.setFooter(`Requested by: ${message.author.tag}`);
   embed.setTimestamp();
 
@@ -91,8 +91,8 @@ module.exports = async (message, client) => {
     if (message.author.bot) return;
     if (!args[0] == '<@!' + client.user.id + '>' || !args[0] == '<@' + client.user.id + '>') return;
     if (messagedUser.tag === client.user.tag) {
-      embed.setDescription(`Prefix: \`${db.get(message.guild.id + '.prefix') || '~'}\`\n` +
-        `For additional help please enter the command: \`${db.get(message.guild.id + '.prefix') || '~'}help\` or enter "help <@${client.user.id}>"`)
+      embed.setDescription(`Prefix: \`${guildData.findOne({ guildId: message.guild.id }).then(result => result.prefix) || '~'}\`\n` +
+        `For additional help please enter the command: \`${guildData.findOne({ guildId: message.guild.id }).then(result => result.prefix) || '~'}help\` or enter "help <@${client.user.id}>"`)
       message.channel.send(embed)
     }
   }

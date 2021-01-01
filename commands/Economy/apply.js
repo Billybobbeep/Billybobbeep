@@ -269,14 +269,14 @@ async function application_process(message, job, client) {
     embed.setAuthor('You will be DMed your application results soon', message.author.displayAvatarURL());
     embed.setColor(guildResult.embedColor);
     message.channel.send(embed);
-    awaitingData.find(function(err, result) {
-        if (err) return console.error(err);
-        let waitingList;
-        result.waiting ? waitingList = result.waitingList.array() : waitingList = [];
-        waitingList.push(`${message.author.id}_${Date.now()}_${job}`);
-        awaitingData.updateOne({}, { waitingList: waitingList });
-        userData.findOneAndUpdate({ userId: message.author.id }, { job_awaiting: true })
+
+    const newData = new awaitingData({
+        memberId: message.author.id,
+        date: Date.now(),
+        job: job
     });
+    newData.save();
+    userData.findOneAndUpdate({ userId: message.author.id }, { job_awaiting: true });
 }
 async function reactions(message, msg, job, client) {
     let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);

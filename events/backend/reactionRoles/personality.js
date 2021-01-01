@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const db = require('../../structure/global.js').db;
+const guildData = require('../../client/database/models/guilds');
 
 module.exports = async (client, message) => {
     const introvert = client.emojis.cache.get('734494044230516767');
@@ -17,7 +17,7 @@ module.exports = async (client, message) => {
         `${loud} Loud\n` +
         `${quiet} Quiet\n` +
         `${sensitive} Sensitive\n`)
-        .setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`)
+        .setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor))
         .setFooter(`React below to claim a role!`)
     let msg = await message.channel.send(embed);
     message.delete();

@@ -1,6 +1,3 @@
-const { result } = require('lodash');
-const { lifeguard } = require('./jobRequirements.js');
-
 module.exports = {
   name: 'work',
   description: 'Go to work',

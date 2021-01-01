@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 
 module.exports = async (message, client) => {
   if (!message.guild) return;
-  guildData.findOne({ guildId: message.guild.id }).then(result => {
+  guildData.findOne({ guildId: message.guild.id }).then(async result => {
     let prefix = result.prefix || '~'
     const embed = new Discord.MessageEmbed()
     const logging = require('../../utils/functions.js').logging;

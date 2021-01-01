@@ -61,6 +61,6 @@ module.exports = (newMessage, oldMessage, client) => {
 			`**Author ID:** ${oldMessage.author.id}`
 		)
 		.setTimestamp()
-		.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor));
+		guildData.findOne({ guildId: newMessage.guild.id }).then(result => embed.setColor(result.embedColor));
 	logging(embed, oldMessage, client);
 }

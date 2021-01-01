@@ -1,4 +1,3 @@
-const db = require('../../../structure/global.js').db;
 
 module.exports.add = async (reaction, user, client) => {
     if (reaction.partial) {

@@ -14,7 +14,7 @@ module.exports = async (message, client) => {
   try { if (message.author.bot) return; } catch { return }
 
   if (!message || !message.author.id) return;
-  embed.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor));
+  guildData.findOne({ guildId: message.guild.id }).then(result => embed.setColor(result.embedColor));
   let prefix = guildData.findOne({ guildId: message.guild.id }).then(result => result.prefix) || '~';
   let content = message.content.length ? message.content : '*This message contained no content.*';
   message.attachments ? message.attachments.forEach(attachment => attachments.push(attachment.proxyURL)) : attachments.push('Null');

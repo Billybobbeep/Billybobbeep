@@ -1,7 +1,5 @@
 const Discord = require('discord.js');
-const configFile = require('../../structure/config.json');
 const guildData = require('../../events/client/database/models/guilds.js');
-const { functionsIn } = require('lodash');
 
 module.exports = {
     name: 'members',
