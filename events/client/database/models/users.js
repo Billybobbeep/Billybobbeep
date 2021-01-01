@@ -10,17 +10,20 @@ const userSchema = new mongoose.Schema({
     economy_streak: { type: Number, default: 0 },
     economy_tStreak: { type: Number, default: 0 },
     economy_daily: Number,
-    economy_lastDonated: Number,
+    economy_lastDonated: String,
     //-Jobs
     job_name: String,
-    job_lastApplied: Number,
-    job_level: Number,
-    job_xp: Number,
+    job_lastApplied: String,
+    job_level: { type: Number, default: 0 },
+    job_xp: { type: Number, default: 0 },
+    job_timesFired: { type: Number, default: 0 },
+    job_lastFired: String,
+    job_awaiting: { type: Boolean, default: false },
     //-Bank
-    bank_balance: Number,
+    bank_balance: { type: Number, default: 0 },
     //AFK
     isAfk: Boolean,
     afkReason: String
-}, { strict: false });
+});
 
 module.exports = mongoose.model('users', userSchema);

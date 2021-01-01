@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const mutedSchema = new mongoose.Schema({
-    memberId: String,
-}, { strict: false });
+    memberId: String
+});
 
 module.exports = mongoose.model('mutedMembers', mutedSchema);

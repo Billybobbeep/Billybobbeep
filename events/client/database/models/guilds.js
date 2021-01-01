@@ -18,7 +18,8 @@ const guildSchema = new mongoose.Schema({
     serverstats_memberNoText: String,
     serverstats_botNoText: String,
     //Other
-    embedColor: String
-}, { strict: false });
+    embedColor: String,
+    counting_number: Number
+});
 
 module.exports = mongoose.model('guilds', guildSchema);
