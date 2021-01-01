@@ -49,9 +49,7 @@ function application(db, client) {
         if (!data) return;
         data.forEach(result => {
             let user = client.users.cache.get(result.memberId);
-            let date = result.date;
             let job = result.job;
-            let emj = client.emojis.cache.get(require('../../structure/config.json').emoji)
             
             const embed = new MessageEmbed();
             embed.setColor('#447ba1');
@@ -60,9 +58,9 @@ function application(db, client) {
             let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);
             let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);
             let results = [tick, cross, tick];
-            let result1 = Math.floor(Math.random() * result.length);
-            let result2 = Math.floor(Math.random() * result.length);
-            let result3 = Math.floor(Math.random() * result.length);
+            let result1 = Math.floor(Math.random() * results.length);
+            let result2 = Math.floor(Math.random() * results.length);
+            let result3 = Math.floor(Math.random() * results.length);
             embed.setDescription(`Your application results are the following:\n\n**Qualifications:**\n${results[result1]} Grammar\n${results[result2]} Communications\n${results[result3]} Loyalty\n${results[result2]} Trustworthiness\n\n`);
             if (result1 === 1 && result2 === 1) failed = true;
             if (result2 === 1 && result3 === 1) failed = true;
@@ -80,9 +78,9 @@ function application(db, client) {
             try {
                 user.send(embed);
             } catch {
-                db.findOneAndRemove({ MemberId: user.id });
+                db.findOneAndDelete({ MemberId: user.id });
             }
-            db.findOneAndRemove({ MemberId: user.id });
+            db.findOneAndDelete({ MemberId: user.id });
         });
     });
 }
