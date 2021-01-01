@@ -48,8 +48,6 @@ function application(db, client) {
     appliedUsers.find(function(err, data) {
         if (!data) return;
         data.forEach(result => {
-            result = result.replace('_', ' ').replace('_', ' ').replace('_', ' ').replace('_', ' ');
-            result = result.split(/ +/g);
             let user = client.users.cache.get(result.memberId);
             let date = result.date;
             let job = result.job;
@@ -82,9 +80,9 @@ function application(db, client) {
             try {
                 user.send(embed);
             } catch {
-                return;
+                db.findOneAndRemove({ MemberId: user.id });
             }
-            db.findOneAndRemove({ MemberId: result.memberId });
+            db.findOneAndRemove({ MemberId: user.id });
         });
     });
 }
