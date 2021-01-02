@@ -2,7 +2,6 @@ const guildData = require('../events/client/database/models/guilds');
 const guildID = require('../structure/config.json').ServerId;
 
 module.exports.logging = function(msg, message, client, option) {
-    console.log('logging')
     if (typeof message === 'string') {
         guildData.findOne({ guildId: message.toString() }).then(result => {
             let loggingChannel = client.channels.cache.get(result.loggingChannel);

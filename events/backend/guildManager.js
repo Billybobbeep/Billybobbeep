@@ -1,6 +1,7 @@
 const { MessageEmbed, } = require('discord.js');
 const guildData = require('../client/database/models/guilds');
 const embed = new MessageEmbed();
+const embed2 = new MessageEmbed();
 const logging = require('../../utils/functions.js').logging;
 
 module.exports.add = async (guild, client) => {
@@ -25,10 +26,10 @@ module.exports.add = async (guild, client) => {
           embed.setDescription(`Thank you for adding me to your server.\n\nThe default prefix is \`~\`, You can change the prefix with the command \`~prefix\`\n\nTo view the commands view \`~cmds\` and to customise the bot for your server feel free to check out \`~setup\``)
           try {
             setTimeout(() => {
-              channel.send(embed);
+              await channel.send(embed);
             }, 300);
           } catch {
-            console.error('Could not send welcome embed in ' + guild.name)
+            console.error('Could not send welcome embed in ' + guild.name);
           }
         }, 10000);
 
@@ -47,15 +48,16 @@ module.exports.add = async (guild, client) => {
           }).catch(console.error);
 
 
-      embed.setTitle('Guild Added')
-      embed.setDescription(
+      embed2.setTitle('Guild Added')
+      embed2.setDescription(
         `**Guild Name:** ${guild.name}\n` +
-        `**Guild ID:** ${guild.id}`)
-      embed.setColor('#447ba1')
-      embed.setTimestamp()
-      embed.setThumbnail(guild.iconURL({ dynamic: true }));
-      embed.setFooter(`Total Guilds: ${client.guilds.cache.size}`);
-      logging(embed, '733442092667502613', client, 'guild');
+        `**Guild ID:** ${guild.id}\n` +
+        `**Guild Owner:** ${guild.owner.tag}`)
+      embed2.setColor('#447ba1')
+      embed2.setTimestamp()
+      embed2.setThumbnail(guild.iconURL({ dynamic: true }));
+      embed2.setFooter(`Total Guilds: ${client.guilds.cache.size}`);
+      logging(embed2, '733442092667502613', client, 'guild');
 
       const newData = new guildData({ guildId: guild.id, embedColor: '#447ba1' });
       newData.save();
@@ -68,7 +70,8 @@ module.exports.remove = (guild, client) => {
     .setTitle('Guild Removed')
     .setDescription(
       `**Guild Name:** ${guild.name}\n` +
-      `**Guild ID:** ${guild.id}`)
+      `**Guild ID:** ${guild.id}\n` +
+      `**Guild Owner:** ${guild.owner.tag}`)
     .setColor('#447ba1')
     .setTimestamp()
     .setThumbnail(guild.iconURL({ dynamic: true }))
