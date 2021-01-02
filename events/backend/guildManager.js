@@ -26,7 +26,7 @@ module.exports.add = async (guild, client) => {
           embed.setDescription(`Thank you for adding me to your server.\n\nThe default prefix is \`~\`, You can change the prefix with the command \`~prefix\`\n\nTo view the commands view \`~cmds\` and to customise the bot for your server feel free to check out \`~setup\``)
           try {
             setTimeout(() => {
-              await channel.send(embed);
+              channel.send(embed);
             }, 300);
           } catch {
             console.error('Could not send welcome embed in ' + guild.name);
