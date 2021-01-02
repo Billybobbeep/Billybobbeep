@@ -10,11 +10,11 @@ client.once('ready', () => {
         console.log(chalk.blue(guild.id) + ' - ' + chalk.green(guild.name) + ' - ' + chalk.red(guild.members.cache.get(client.user.id).hasPermission('ADMINISTRATOR')));
     });
 });
-client.login(require('./structure/auth.js').token);
+client.login(process.env.token);
 
 const mongoose = require('mongoose');
 const guildData = require('./events/client/database/models/guilds');
-mongoose.connect(require('./structure/auth').mongoDb);
+mongoose.connect(process.env.mongoDb);
 client.once('ready', () => {
     (client.guilds.cache).array().forEach(guild => {
         let newGuildData = new guildData({

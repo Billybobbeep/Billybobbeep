@@ -9,7 +9,7 @@ module.exports = () => {
 
     //Connect to mongoDB
     function connect() {
-        mongoose.connect(require('../../../structure/auth.js').mongoDb, dbOptions);
+        mongoose.connect(process.env.mongoDb, dbOptions);
     }
     connect();
     mongoose.set('useFindAndModify', false);

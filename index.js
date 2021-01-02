@@ -6,7 +6,7 @@ const client = new Discord.Client({
   disableMentions: 'everyone'
 });
 
-const token = require('./structure/auth.js').token;
+const token = process.env.token;
 
 client.login(token);
 

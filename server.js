@@ -19,13 +19,13 @@ module.exports = async (client) => {
     res.redirect('/home');
   });
   app.get('/home', function(req, res) {
-    res.sendFile(__dirname + '/Public/index.html');
+    res.sendFile(__dirname + '/public/index.html');
   });
   app.get('/home/status', function(req, res) {
     res.redirect('/home/analytics');
   });
   app.get('/home/analytics', (req, res) => {
-    res.sendFile(__dirname + '/Public/analytics.html')
+    res.sendFile(__dirname + '/public/analytics.html')
   });
   app.get('/discord/invite', function(req, res) {
     res.redirect('https://discord.com/invite/qNJEj3s');
@@ -37,7 +37,7 @@ module.exports = async (client) => {
       res.json({ error: 'Cannot find what you\'re looking for'});
     } else {
       res.status(404);
-      res.sendFile(__dirname + '/Public/error404.html');
+      res.sendFile(__dirname + '/public/error404.html');
     }
   });
 
