@@ -5,10 +5,14 @@ module.exports.logging = async function(msg, message, client, option) {
     console.log('logging')
     if (typeof message === 'string') {
         console.log('logging - isNumber')
-        let loggingChannel = await client.channels.cache.get(guildData.findOne({ guildId: message }).then(result => result.loggingChannel));
-        console.log(loggingChannel)
-        if (loggingChannel)
-            loggingChannel.send(msg).catch((error) => {console.log(error)});
+        guildData.findOne({ guildId: message.toString() }).then(result => {
+            let loggingChannel = client.channels.cache.get(result.loggingChannel);
+            console.log(result.loggingChannel);
+            console.log(loggingChannel)
+            if (loggingChannel)
+                loggingChannel.send(msg).catch((error) => {console.log(error)});
+        })
+
     } else if (message !== undefined) {
         console.log('logging - message is not undefined')
         if (message.guild)
