@@ -1,21 +1,22 @@
 const guildData = require('../events/client/database/models/guilds');
 const guildID = require('../structure/config.json').ServerId;
 
-module.exports.logging = function(msg, message, client, option) {
+module.exports.logging = async function(msg, message, client, option) {
     if (typeof message === 'number') {
-        let loggingChannel = client.channels.cache.get(guildData.findOne({ guildId: message }).then(result => result.loggingChannel));
+        let loggingChannel = await client.channels.cache.get(guildData.findOne({ guildId: message }).then(result => result.loggingChannel));
+        console.log(loggingChannel)
         if (loggingChannel)
             loggingChannel.send(msg).catch((error) => {console.log(error)});
     } else if (message !== undefined) {
         if (message.guild)
-            var loggingChannel = client.channels.cache.get(guildData.findOne({ guildId: message.guild.id }).then(result => result.loggingChannel));
+            var loggingChannel = await client.channels.cache.get(guildData.findOne({ guildId: message.guild.id }).then(result => result.loggingChannel));
         else
-            var loggingChannel = client.channels.cache.get(guildData.findOne({ guildId: guildID }).then(result => result.loggingChannel));
+            var loggingChannel = await client.channels.cache.get(guildData.findOne({ guildId: guildID }).then(result => result.loggingChannel));
         
         if (loggingChannel)
             loggingChannel.send(msg).catch((error) => {console.log(error)});
     } else {
-        let loggingChannel = client.channels.cache.get(guildData.findOne({ guildId: guildID }).then(result => result.loggingChannel));
+        let loggingChannel = await client.channels.cache.get(guildData.findOne({ guildId: guildID }).then(result => result.loggingChannel));
         
         if (loggingChannel)
             loggingChannel.send(msg).catch((error) => {console.log(error)});
