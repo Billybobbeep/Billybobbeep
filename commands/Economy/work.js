@@ -28,21 +28,21 @@ module.exports = {
     let decimal = Math.round(Math.random() * 89) + 10;
     let gainedXp = 1
 
-    let cashier = userResult.job === 'cashier' ? true : undefined;
-    let teacher = userResult.job === 'teacher' ? true : undefined;
-    let waiter = userResult.job === 'waiter' ? true : undefined;
-    let receptionist = userResult.job === 'receptionist' ? true : undefined;
-    let architect = userResult.job === 'architect' ? true : undefined;
-    let lifeGuard = userResult.job === 'life guard' ? true : undefined;
-    let nurse = userResult.job === 'nurse' ? true : undefined;
-    let police = userResult.job === 'police' ? true : undefined;
-    let engineer = userResult.job === 'engineer' ? true : undefined;
-    let chef = userResult.job === 'chef' ? true : undefined;
-    let clinicalScientist = userResult.job === 'clinical scientist' ? true : undefined;
-    let headScientist = userResult.job === 'head scientist' ? true : undefined;
-    let lawyer = userResult.job === 'lawyer' ? true : undefined;
-    let socialWorker = userResult.job === 'social worker' ? true : undefined;
-    let doctor = userResult.job === 'doctor' ? true : undefined;
+    let cashier = userResult.job_name === 'cashier' ? true : undefined;
+    let teacher = userResult.job_name === 'teacher' ? true : undefined;
+    let waiter = userResult.job_name === 'waiter' ? true : undefined;
+    let receptionist = userResult.job_name === 'receptionist' ? true : undefined;
+    let architect = userResult.job_name === 'architect' ? true : undefined;
+    let lifeGuard = userResult.job_name === 'life guard' ? true : undefined;
+    let nurse = userResult.job_name === 'nurse' ? true : undefined;
+    let police = userResult.job_name === 'police' ? true : undefined;
+    let engineer = userResult.job_name === 'engineer' ? true : undefined;
+    let chef = userResult.job_name === 'chef' ? true : undefined;
+    let clinicalScientist = userResult.job_name === 'clinical scientist' ? true : undefined;
+    let headScientist = userResult.job_name === 'head scientist' ? true : undefined;
+    let lawyer = userResult.job_name === 'lawyer' ? true : undefined;
+    let socialWorker = userResult.job_name === 'social worker' ? true : undefined;
+    let doctor = userResult.job_name === 'doctor' ? true : undefined;
 
     if (jobs !== undefined) {
       if (cashier !== undefined) { workAmt = 10; gainedXp = info.cashier.xp; }
