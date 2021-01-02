@@ -2,12 +2,15 @@ const guildData = require('../events/client/database/models/guilds');
 const guildID = require('../structure/config.json').ServerId;
 
 module.exports.logging = async function(msg, message, client, option) {
+    console.log('logging')
     if (typeof message === 'number') {
+        console.log('logging - isNumber')
         let loggingChannel = await client.channels.cache.get(guildData.findOne({ guildId: message }).then(result => result.loggingChannel));
         console.log(loggingChannel)
         if (loggingChannel)
             loggingChannel.send(msg).catch((error) => {console.log(error)});
     } else if (message !== undefined) {
+        console.log('logging - message is not undefined')
         if (message.guild)
             var loggingChannel = await client.channels.cache.get(guildData.findOne({ guildId: message.guild.id }).then(result => result.loggingChannel));
         else
@@ -16,6 +19,7 @@ module.exports.logging = async function(msg, message, client, option) {
         if (loggingChannel)
             loggingChannel.send(msg).catch((error) => {console.log(error)});
     } else {
+        console.log('logging - message is undefined')
         let loggingChannel = await client.channels.cache.get(guildData.findOne({ guildId: guildID }).then(result => result.loggingChannel));
         
         if (loggingChannel)
