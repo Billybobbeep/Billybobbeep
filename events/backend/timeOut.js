@@ -87,7 +87,7 @@ function application(db, client) {
             try {
                 user.send(embed);
             } catch {
-                result.delete();
+                return result.delete();
             }
             result.delete();
         });

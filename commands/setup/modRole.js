@@ -21,7 +21,7 @@ module.exports = (message, prefix, embedColor) => {
 			message.channel.send('Removed moderator role from the database');
 		});
 	} else {
-		guildData.findOne({ guildId: Mmessage.guild.id }).then(result => {
+		guildData.findOne({ guildId: message.guild.id }).then(result => {
 			let role = message.mentions.roles.first() || message.guild.roles.cache.get(args[2]);
 			if (!role)
 				return message.channel.send(`Could not find the role \`${args[2]}\``)
