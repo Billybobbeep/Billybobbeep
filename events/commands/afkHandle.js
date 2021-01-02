@@ -124,7 +124,7 @@ module.exports = {
   mentions(message) {
     embed = new Discord.MessageEmbed();
     embed.setTitle('Billybobbeep | AFK Handling');
-    embed.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor));
+    guildData.findOne({ guildId: message.guild.id }).then(result => embed.setColor(result.embedColor));
     embed.setDescription('The following users you have pinged are marked as AFK');
     embed.setTimestamp();
     embed.setFooter(`${message.author.tag}`);
