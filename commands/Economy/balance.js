@@ -12,10 +12,11 @@ module.exports = {
         const embed = new Discord.MessageEmbed();
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]) || message.author;
-        if (user.bot) return message.channel.send(`Bots do not have wallets`);
+        if (!user.id) user = user.user;
+        if (user.bot) return message.channel.send('Bots do not have wallets');
         if (!isNaN(args[1])) user = user.user;
         let guildResult = await guildData.findOne({ guildId: message.guild.id });
-        let userResult = await guildData.findOne({ userId: user.id });
+        let userResult = await userData.findOne({ userId: user.id });
 
         embed.setFooter(`To bank some cash use: ${prefix}deposit [amount]`);
         embed.setColor(guildResult.embedColor);
