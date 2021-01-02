@@ -20,7 +20,7 @@ module.exports.add = async (guild, client) => {
         guildData.findOne({ guildId: guild.id }).then(async result => {
           let channel = await guild.channels.cache.get(guild.systemChannelID || channelID);
           embed.setTitle('Billybobbeep | Welcome')
-          embed.setColor(`${result.embedColor ? result.embedColor : '#447ba1'}`)
+          embed.setColor('#447ba1')
           embed.setTimestamp()
           embed.setDescription(`Thank you for adding me to your server.\n\nThe default prefix is \`~\`, You can change the prefix with the command \`~prefix\`\n\nTo view the commands view \`~cmds\` and to customise the bot for your server feel free to check out \`~setup\``)
           try {
