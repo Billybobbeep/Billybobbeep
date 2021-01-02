@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
-const embed = new MessageEmbed();
+let embed = new MessageEmbed();
+
 module.exports = {
   name: 'alldata',
   description: 'View all of the data from the database',
@@ -9,9 +10,14 @@ module.exports = {
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
 
       embed.setTitle('Total Guild List:');
-      embed.setFooter(`${client.users.cache.size} members`);
       let count = 0;
       client.guilds.cache.forEach(guild => { count++; embed.addField(`Guild ${count}`, guild.name) });
       message.channel.send(embed);
+      embed = new MessageEmbed();
+      embed.setTitle('Users');
+      embed.addField('Total Users', client.users.cache.size);
+      embed.addField('Members', client.users.cache.size.filter(user => !user.bot));
+      embed.addField('Bots', client.users.cache.size.filter(user => user.bot));
+      message.channel.send(embed)
   }
 }
