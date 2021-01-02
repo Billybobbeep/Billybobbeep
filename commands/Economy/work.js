@@ -1,5 +1,3 @@
-const { now } = require('moment');
-
 module.exports = {
   name: 'work',
   description: 'Go to work',
@@ -186,7 +184,7 @@ module.exports = {
             lvlUp()
           } else if (architect !== undefined && xp >= info.global.xp.lower.max) {
             lvlUp()
-          } else if (lifeguard !== undefined && xp >= info.global.xp.lower.max) {
+          } else if (lifeGuard !== undefined && xp >= info.global.xp.lower.max) {
             lvlUp()
           } else if (nurse !== undefined && xp >= info.global.xp.lower.max) {
             lvlUp()
