@@ -121,7 +121,7 @@ module.exports = {
       }
     });
   },
-  mentions(message) {
+  async mentions(message) {
     embed = new Discord.MessageEmbed();
     embed.setTitle('Billybobbeep | AFK Handling');
     guildData.findOne({ guildId: message.guild.id }).then(result => embed.setColor(result.embedColor));
@@ -132,7 +132,9 @@ module.exports = {
     if (message.mentions.users.first()) {
       let member = [];
       message.mentions.users.forEach(user => {
-        if (userData.findOne({ userId: user.id }).then(result=> result.isAfk)) {
+        let userResult = await userData.findOne({ userId: user.id });
+        let afk = userResult ? userResult.isAfk : false;
+        if (afk) {
           if (user.id === message.author.id) return;
           member.push(`${user.id}_${userData.findOne({ userId: user.id }).then(result=> result.afkReason)}`);
         }
