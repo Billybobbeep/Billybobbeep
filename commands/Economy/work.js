@@ -70,7 +70,7 @@ module.exports = {
       message.channel.send(embed);
     }
 
-    if (workAmt === undefined) {
+    if (!userResult.job_name) {
       embed.setDescription(`Before you can start working, you need to get a job.\n\nTo Apply for a job use '${prefix}jobs'`);
       message.channel.send(embed)
     } else if (Date.now() < lastRun) {
