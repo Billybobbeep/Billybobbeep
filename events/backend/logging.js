@@ -56,7 +56,7 @@ module.exports.remove = (guild, user, client) => {
             `**Moderator ID:** ${ban ? ban.executor.id : 'Unknown'}`
             )
             embed.setTimestamp(ban.createdTimestamp);
-            embed.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor));
+            guildData.findOne({ guildId: message.guild.id }).then(result => embed.setColor(result.embedColor));
             let loggingChannel = client.channels.cache.get(guildData.findOne({ guildId: message.guild.id }).then(result => result.loggingChannel));
             if (loggingChannel)
                 loggingChannel.send(msg).catch(() => {return});

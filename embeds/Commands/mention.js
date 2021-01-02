@@ -3,7 +3,7 @@ const configFile = require('../../structure/config.json');
 const guildData = require('../../events/client/database/models/guilds');
 
 module.exports = async(msg, args, prefix, message, client) => {
-    const commandEmbed = new Discord.MessageEmbed()
+    const embed = new Discord.MessageEmbed()
     .setTitle('Billybobbeep | Mention Commands')
     .setTimestamp()
     .setFooter('Requested by: ' + message.author.tag)
@@ -20,6 +20,6 @@ module.exports = async(msg, args, prefix, message, client) => {
       `welcome <@${client.user.id}>\n` +
       `greetings <@${client.user.id}>\n\n`
     )
-    message.guild ? commandEmbed.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor)) : commandEmbed.setColor('#447ba1');
-    message.channel.send(commandEmbed);
+    message.guild ? guildData.findOne({ guildId: message.guild.id }).then(result => embed.setColor(result.embedColor)) : embed.setColor('#447ba1');
+    message.channel.send(embed);
 }

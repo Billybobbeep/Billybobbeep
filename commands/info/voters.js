@@ -11,7 +11,7 @@ module.exports = {
         const embed = new Discord.MessageEmbed();
 
         let count = 0;
-        embed.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor));
+        guildData.findOne({ guildId: message.guild.id }).then(result => embed.setColor(result.embedColor));
         api.getVotes().then(voters => {
             voters.forEach(voter => {
                 count++;

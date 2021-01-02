@@ -14,7 +14,7 @@ module.exports = {
         const ms = require('ms');
         const embed = new Discord.MessageEmbed();
         const info = require('./jobRequirements.js');
-        embed.setColor(guildData.embedColor);
+        embed.setColor(guildResult.embedColor);
         embed.setAuthor(message.author.username, message.author.displayAvatarURL());
 
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
