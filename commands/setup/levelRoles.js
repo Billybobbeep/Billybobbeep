@@ -29,7 +29,8 @@ module.exports = (message, prefix, embedColor) => {
 		if (count === supportedLevels.length && args[2].toLowerCase() !== 'reset') return message.channel.send('The level number you have entered is not a supported role');
 		if (args[3] && args[3].toLowerCase() === 'reset' || args[2] && args[2].toLowerCase() === 'reset') {
 			if (args[2].toLowerCase() === 'reset') {
-				guildData.findOneAndUpdate({ guildId: message.guild.id }, { lvlRoles: [] }).then(() => {
+				result.lvlRoles = [];
+				result.save().then(() => {
 					message.channel.send(`Removed all level roles from the database`);
 				});
 			} else {
@@ -40,7 +41,14 @@ module.exports = (message, prefix, embedColor) => {
 				});
 				if (found === false) message.channel.send('Could not find a level role for the level ' + args[2]);
 				else {
-					guildData.findOneAndUpdate({ guildId: message.guild.id }, {  }).then(() => {
+					let count = 0;
+					result.lvlRoles.forEach(element => {
+						if (element.level.toString() === args[2].toString()) {
+							result.lvlRoles.splice(count);
+						}
+						count++;
+					});
+					result.save(() => {
 						message.channel.send(`Removed level ${args[2]} role from the database`);
 					});
 				}
@@ -56,14 +64,16 @@ module.exports = (message, prefix, embedColor) => {
 				});
 				if (debounce === true) return message.channel.send(`This role (${role}) has already been used for another level role`);
 				else {
-					guildData.findOneAndUpdate({ guildId: message.guild.id },{ $push: { lvlRoles:  { level: Number(args[2]), role: role.id }}}).then(() => {
+					result.lvlRoles.push({ level: Number(args[2]), role: role.id });
+					result.save().then(() => {
 						message.channel.send(`Your level ${args[2]} role is now set up as ${role}`);
 					});
 				}
 			} else {
-				guildData.findOneAndUpdate({ guildId: message.guild.id },{ $push: { lvlRoles:  { level: Number(args[2]), role: role.id }}}).then(() => {
-					message.channel.send(`Your level ${args[2]} role is now set up as ${role}`);
-				});
+				result.lvlRoles.push({ level: Number(args[2]), role: role.id });
+					result.save().then(() => {
+						message.channel.send(`Your level ${args[2]} role is now set up as ${role}`);
+					});
 			}
 		}
 	});

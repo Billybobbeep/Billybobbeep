@@ -20,15 +20,17 @@ module.exports = (message, prefix, embedColor) => {
     guildData.findOne({ guildId: message.guild.id }).then(result => {
         if (args[2] && args[2].toLowerCase() === 'reset' || args[2] && args[2].toLowerCase() === 'off') {
             if (result.inviteLinks) {
-                guildData.findOneAndUpdate({ guildId: message.guild.id }, { inviteLinks: true }).then(() => {
+                result.inviteLinks = false;
+                result.save().then(() => {
                     message.channel.send('I will no longer delete invite links');
                 });
             } else {
-            message.channel.send('This feature was already turned off');
+                message.channel.send('This feature is already turned off');
             }
         } else if (args[2] && args[2].toLowerCase() === 'on') {
             if (!result.inviteLinks) {
-                guildData.findOneAndUpdate({ guildId: message.guild.id }, { inviteLinks: false }).then(() => {
+                result.inviteLinks = true;
+                result.save().then(() => {
                     message.channel.send('I will no longer ignore invite links');
                 });
             } else {

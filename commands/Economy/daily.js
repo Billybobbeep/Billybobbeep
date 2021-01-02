@@ -69,7 +69,6 @@ module.exports = {
       message.channel.send(embed);
     } else {
       if (lastRun !== null && cooldown - (Date.now() - lastRun) >= 126000000) {
-        userData.findOneAndUpdate({ userId: message.author.id }, { economy_tStreak: 0, economy_streak: 0 });
         userResult.economy_streak = 0;
         userResult.economy_tStreak = 0;
         userResult.save();
@@ -89,7 +88,6 @@ module.exports = {
         userResult.save();
         return message.channel.send(embed);
       }
-      userData.findOneAndUpdate({ userId: message.author.id }, { $inc: { economy_streak: 1, economy_balance: dailyAmt, economy_tStreak: 1 }});
       userResult.economy_tStreak = userResult.economy_tStreak + 1;
       userResult.economy_streak = userResult.economy_streak + 1;
       userResult.economy_daily = Date.now();

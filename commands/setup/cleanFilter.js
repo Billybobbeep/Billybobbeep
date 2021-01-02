@@ -20,7 +20,8 @@ module.exports = (message, prefix, embedColor) => {
   guildData.findOne({ guildId: message.guild.id }).then(result => {
     if (args[2] && args[2].toLowerCase() === 'off' && args[2].toLowerCase() !== 'help') {
         if (result.cleanFilter) {
-          guildData.findOneAndUpdate({ guildId: message.guild.id }, { cleanFilter: false }).then(() => {
+          result.cleanFilter = false;
+          result.save().then(() => {
             message.channel.send('The clean filter has been turned off');
           });
         } else {
@@ -28,7 +29,8 @@ module.exports = (message, prefix, embedColor) => {
         }
     } else if (args[2] && args[2].toLowerCase() === 'on' && args[2].toLowerCase() !== 'help') {
       if (!result.cleanFilter) {
-        guildData.findOneAndUpdate({ guildId: message.guild.id }, { cleanFilter: true }).then(() => {
+        result.cleanFilter = true;
+        result.save().then(() => {
           message.channel.send('The clean filter has been turned on');
         });
       } else {

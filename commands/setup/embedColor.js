@@ -37,8 +37,9 @@ module.exports = (message, prefix, embedColor) => {
         color = '#ebc7ff'
       } else if (args[2].toLowerCase() === 'blue' || args[2].toLowerCase() === 'default') {
           if (result.embedColor) {
-            guildData.findOneAndUpdate({ guildId: message.guild.id }, { embedColor: '#447ba1' }).then(() => {
-              message.channel.send(`The embed color has been reset to default`);
+            result.embedColor = '#447ba1';
+            result.save().then(() => {
+              message.channel.send('The embed color has been reset to default');
             });
           }
       } else {
@@ -64,7 +65,8 @@ module.exports = (message, prefix, embedColor) => {
         if (result.embedColor === color) {
           message.channel.send(`This servers embed color is already set as ${color}`);
         } else {
-          guildData.findOneAndUpdate({ guildId: message.guild.id }, { embedColor: color }).then(() => {
+          result.embedColor = color;
+          result.save().then(() => {
             message.channel.send(`This servers default embed color is now ${color}`);
           });
         }

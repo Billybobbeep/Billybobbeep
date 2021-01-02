@@ -13,12 +13,14 @@ module.exports = (message, prefix, embedColor) => {
     let newPrefix = args[2].toLowerCase();
     if (newPrefix === prefix) return message.channel.send(`Your prefix is already ${newPrefix}`);
     if (newPrefix === '~' || newPrefix === 'reset') {
-      guildData.findOneAndUpdate({ guildId: message.guild.id }, { prefix: '~' }).then(() => {
+      result.prefix = '~';
+      result.save().then(() => {
         message.channel.send(`This servers prefix has been set to ${newPrefix}`);
       });
     } else {
       if (!isNaN(newPrefix)) return message.channel.send('The prefix cannot be a number');
-      guildData.findOneAndUpdate({ guildId: message.guild.id }, { prefix: newPrefix }).then(() => {
+      result.prefix = newPrefix;
+      result.save().then(() => {
         message.channel.send(`This servers prefix has been set to \`${newPrefix}\``);
       });
     }

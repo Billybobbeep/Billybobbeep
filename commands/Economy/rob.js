@@ -29,8 +29,8 @@ module.exports = {
         }
         let able = ran();
         if (able) {
-            userData.findOne({ userId: message.author.id }).then(result => userData.findOneAndUpdate({ userId: message.author.id }, { economy_balance: result.economy_balance + robAmt }));
-            userData.findOne({ userId: user.id }).then(result => userData.findOneAndUpdate({ userId: user.id }, { economy_balance: result.economy_balance - robAmt }));
+            userData.findOne({ userId: message.author.id }).then(result => { result.economy_balance = result.economy_balance + robAmt; result.save() });
+            userData.findOne({ userId: user.id }).then(result => { result.economy_balance = result.economy_balance - robAmt; result.save() });
             let ranMes = ['You have slipped **$(money)** from (user)\'s wallet!', '(user) dropped **$(money)** and you have put it into your wallet', '(user) caught you trying to take their wallet and handed it to you anyway. **+$(money)**'];
             const ranMessFunc = () => {
                 let a = Math.round(Math.random() * ranMes.length);
@@ -42,7 +42,7 @@ module.exports = {
             let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);
             let amt = Math.floor(Math.random() * (30 - 10)) + 10;
             message.channel.send(`${cross} You have been caught! **-$${amt}**`);
-            userData.findOne({ userId: message.author.id }).then(result => userData.findOneAndUpdate({ userId: message.author.id }, { economy_balance: result.economy_balance - robAmt }));
+            userData.findOne({ userId: message.author.id }).then(result => { result.economy_balance = result.economy_balance - robAmt; result.save() });
         }
     }
 }

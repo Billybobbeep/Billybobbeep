@@ -19,7 +19,8 @@ module.exports = (message, prefix, embedColor) => {
     guildData.findOne({ guildId: message.guild.id }).then(result => {
         if (args[2].toLowerCase() === 'reset' || args[2].toLowerCase() === 'on') {
             if (!result.ecoEnabled) {
-                guildData.findOneAndUpdate({ guildId: message.guild.id }, { ecoEnabled: true }).then(() => {
+                result.ecoEnabled = true;
+                result.save().then(() => {
                     message.channel.send('Economic commands has been turned on');
                 });
             } else {
@@ -28,8 +29,9 @@ module.exports = (message, prefix, embedColor) => {
         }
 
         if (args[2] === 'off' && !result.ecoEnabled) return message.channel.send('Economic commands are already turned off');
-        guildData.findOneAndUpdate({ guildId: message.guild.id }, { ecoEnabled: false }).then(() => {
-            message.channel.send('Economic commands has now been turned off')
+        result.ecoEnabled = false;
+        result.save().then(() => {
+            message.channel.send('Economic commands has now been turned off');
         });
     });
 }

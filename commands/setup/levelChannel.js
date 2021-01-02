@@ -35,7 +35,8 @@ module.exports = (message, prefix, embedColor) => {
         return message.channel.send('Please specify a valid channel');
       }
       if (channel.id === result.levelUpChannel) return message.channel.send(`Your levelling channel is already set as ${channel}`);
-      guildData.findOneAndUpdate({ guildId: message.guild.id }, { levelUpChannel: channel.id }).then(() => {
+      result.levelUpChannel = channel.id;
+      result.save().then(() => {
         message.channel.send(`Your levelling channel is now set up as ${channel}`);
       });
     }

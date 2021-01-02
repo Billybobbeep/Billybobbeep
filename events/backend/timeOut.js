@@ -25,7 +25,8 @@ function database(db, client) {
                 if (amt[1].length > 2) newAmt = [amt[0]];
                 else return;
                 newAmt.push(amt[1][0] + amt[1][1]);
-                db.findOneAndUpdate({ memberId: data.memberId }, { economy_balance: Number(newAmt[0])});
+                result.economy_balance = Number(newAmt[0]);
+                result.save();
             }
 
             amt = result.bank_balance;
@@ -35,7 +36,8 @@ function database(db, client) {
                 if (amt[1].length > 2) newAmt = [amt[0]];
                 else return;
                 newAmt.push(amt[1][0] + amt[1][1]);
-                db.findOneAndUpdate({ memberId: data.memberId }, { bank_balance: Number(newAmt[0])});
+                result.bank_balance = Number(newAmt[0]);
+                result.save();
             }
         });
     });
@@ -45,11 +47,13 @@ function application(db, client) {
     const { MessageEmbed } = require('discord.js');
     const moment = require('moment');
     let appliedUsers = require('../client/database/models/awaiting');
+    let userData = require('../client/database/models/users');
     appliedUsers.find(function(err, data) {
         if (!data) return;
-        data.forEach(result => {
+        data.forEach(async result => {
             let user = client.users.cache.get(result.memberId);
             let job = result.job;
+            let userResult = await userData.findOne({ userId: user.id });
             
             const embed = new MessageEmbed();
             embed.setColor('#447ba1');
@@ -69,18 +73,23 @@ function application(db, client) {
             if (failed === true) {
                 embed.addField('Overall Score:', 'Failed');
                 embed.setFooter('Feel free to apply again in 2 minutes');
-                db.findOneAndUpdate({ userId: user.id }, { job_awaiting: false, job_lastApplied: Date.now() });
+                result.job_lastApplied= Date.now();
+                result.job_awaiting = false;
+                result.save();
             } else {
                 embed.addField('Overall Score:', 'Passed');
                 embed.setFooter('Feel free to start working when you\'re ready');
-                db.findOneAndUpdate({ userId: user.id }, { job_awaiting: false, job_lastApplied: Date.now(), job_name: job.toLowerCase() });
+                result.job_lastApplied= Date.now();
+                result.job_awaiting = false;
+                result.job_name = job.toLowerCase();
+                result.save();
             }
             try {
                 user.send(embed);
             } catch {
-                db.findOneAndDelete({ MemberId: user.id });
+                result.delete();
             }
-            db.findOneAndDelete({ MemberId: user.id });
+            result.delete();
         });
     });
 }

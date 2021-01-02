@@ -19,7 +19,8 @@ module.exports = (message, prefix, embedColor) => {
     guildData.findOne({ guildId: message.guild.id }).then(result => {
       if (args[2].toLowerCase() === 'reset' || args[2].toLowerCase() === 'on') {
         if (!result.levelsEnabled) {
-          guildData.findOneAndUpdate({ guildId: message.guild.id }, { levelsEnabled: true }).then(() => {
+          result.levelsEnabled = true;
+        result.save().then(() => {
             message.channel.send('Levelling has been turned on');
           });
         } else {
@@ -27,8 +28,9 @@ module.exports = (message, prefix, embedColor) => {
         }
       }
 
-        if (args[2] === 'off' && result.levelsEnabled) return message.channel.send('Levelling is already turned off')
-        guildData.findOneAndUpdate({ guildId: message.guild.id }, { levelsEnabled: false }).then(() => {
+        if (args[2] === 'off' && result.levelsEnabled) return message.channel.send('Levelling is already turned off');
+        result.levelsEnabled = false;
+        result.save().then(() => {
           message.channel.send('Levelling has now been turned off');
         });
     });

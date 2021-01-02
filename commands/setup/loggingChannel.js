@@ -19,7 +19,8 @@ module.exports = (message, prefix, embedColor) => {
 
   guildData.findOne({ guildId: message.guild.id }).then(result => {
     if (args[2] && args[2].toLowerCase() === 'reset') {
-      guildData.findOneAndUpdate({ guildId: message.guild.id }, { loggingChannel: false }).then(() => {
+      result.loggingChannel = false;
+      result.save().then(() => {
         message.channel.send('Removed logging channel from the database');
       });
     } else {
@@ -27,7 +28,8 @@ module.exports = (message, prefix, embedColor) => {
       if (!channel)
         return message.channel.send('Please specify a valid channel')
       if (channel.id === result.loggingChannel) return message.channel.send(`Your logging channel is already set as ${channel}`);
-      guildData.findOneAndUpdate({ guildId: message.guild.id }, { loggingChannel: channel.id }).then(() => {
+      result.loggingChannel = channel.id;
+      result.save().then(() => {
         message.channel.send(`Your logging channel is now set up as ${channel}`);
       });
     }

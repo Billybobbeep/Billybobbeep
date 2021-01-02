@@ -17,16 +17,20 @@ if (!args[2] || args[2].toLowerCase() === 'help') {
     return message.channel.send(embed)
     }
     if (args[2].toLowerCase() === 'reset') {
-        guildData.findOneAndUpdate({ guildId: message.guild.id }, { autoRole: '' }).then(() => {
-            return message.channel.send('Removed auto role from the database');
+        guildData.findOne({ guildId: message.guild.id }).then(result => {
+            result.autoRole = false;
+            result.save();
+            message.channel.send('Removed auto role from the database');
+        });
+    } else {
+        let role = message.mentions.roles.first() || message.guild.roles.cache.get(args[2]);
+        if (!role) return message.channel.send(`Could not find the role \`${args[2]}\``);
+        guildData.findOne({ guildId: message.guild.id }).then(result => {
+            if (result.autoRole && result.autoRole === role.id) return message.channel.send(`Your auto role is already set as ${role}`);
+            result.autoRole = role.id;
+            result.save().then(result => {
+                message.channel.send(`Your auto role is now set up as ${role}`);
+            });
         });
     }
-    let role = message.mentions.roles.first() || message.guild.roles.cache.get(args[2]);
-    if (!role) return message.channel.send(`Could not find the role \`${args[2]}\``);
-    guildData.findOne({ guildId: message.guild.id }).then(result => {
-        if (result.autoRole && result.autoRole === role.id) return message.channel.send(`Your auto role is already set as ${role}`);
-        guildData.findOneAndUpdate({ guildId: message.guild.id }, { autoRole: role }).then(() => {
-            message.channel.send(`Your auto role is now set up as ${role}`);
-        });
-    });
 }

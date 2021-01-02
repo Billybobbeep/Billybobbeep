@@ -14,13 +14,16 @@ module.exports = {
       if (!newPrefix && result.prefix === '~') return message.channel.send('Please specify a prefix');
       if (!newPrefix && !result.prefix) return message.channel.send('Please specify a prefix');
       if (!newPrefix) {
-        guildData.findOneAndUpdate({ guildId: message.guild.id }, { prefix: '~' }).then(() => {
+        result.prefix = '~';
+        result.save().then(() => {
           message.channel.send('Your prefix has been set to `~`');
         });
       } else {
         if (newPrefix === prefix) return message.channel.send(`Your prefix is already ${newPrefix}`);
-        if (!isNaN(newPrefix)) { return message.channel.send('The prefix cannot be a number') }
-        guildData.findOneAndUpdate({ guildId: message.guild.id }, { prefix: newPrefix }).then(() => {
+        if (!isNaN(newPrefix)) return message.channel.send('The prefix cannot be a number');
+
+        result.prefix = newPrefix;
+        result.save().then(() => {
           message.channel.send(`This servers prefix has been set to \`${newPrefix}\``);
         });
       }

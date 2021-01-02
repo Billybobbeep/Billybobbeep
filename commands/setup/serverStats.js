@@ -13,20 +13,26 @@ module.exports = (message, prefix, embedColor) => {
     } else if (message.content.includes('reset')) {
       if (!result.serverStats) return message.channel.send('This server does not have server stats set up');
       if (args[2] !== 'bot' && args[2] !== 'total'&& args[2] !== 'member' && args[2] !== 'b' && args[2] !== 't' && args[2] !== 'm') {
-        guildData.findOneAndUpdate({ guildId: message.guild.id }, { serverStats: false }).then(() => {
+        result.serverStats_botNo = false;
+        result.serverStats_totalNo = false;
+        result.serverStats_memberNo = false;
+        result.save().then(() => {
           message.channel.send('Removed all server stats from the database');
         });
       } else {
         if (args[2] === 'b' || args[2] === 'bot') {
-          guildData.findOneAndUpdate({ guildId: message.guild.id }, { serverStats_botNo: false }).then(() => {
+          result.serverStats_botNo = false;
+          result.save().then(() => {
             message.channel.send('Removed `bot` server stat from the database');
           });
         } else if (args[2] === 'm' || args[2] === 'member') {
-          guildData.findOneAndUpdate({ guildId: message.guild.id }, { serverStats_memberNo: false }).then(() => {
+          result.serverStats_memberNo = false;
+          result.save().then(() => {
             message.channel.send('Removed `member` server stat from the database');
           });
         } else if (args[2] === 't' || args[2] === 'total') {
-          guildData.findOneAndUpdate({ guildId: message.guild.id }, { serverStats_totalNo: false }).then(() => {
+          result.serverStats_totalNo = false;
+          result.save().then(() => {
             message.channel.send('Removed `total` server stat from the database');
           });
         }
@@ -44,9 +50,10 @@ module.exports = (message, prefix, embedColor) => {
             if ((args[2] === 'b' || args[2] === 'bot') && (result.serverStats_botNo === channel.id)) return message.channel.send(`Your bot server stat channel is already set up as ${channel}`);
 
             try {
-              if (args[2] === 't' || args[2] === 'total') guildData.findOneAndUpdate({ guildId: message.guild.id }, { serverStats_totalNo: channel.id });
-              if (args[2] === 'b' || args[2] === 'bot') guildData.findOneAndUpdate({ guildId: message.guild.id }, { serverStats_botNo: channel.id });
-              if (args[2] === 'm' || args[2] === 'member') guildData.findOneAndUpdate({ guildId: message.guild.id }, { serverStats_memberNo: channel.id });
+              if (args[2] === 't' || args[2] === 'total') result.serverStats_totalNo = channel.id;
+              if (args[2] === 'b' || args[2] === 'bot') result.serverStats_botNo = channel.id;
+              if (args[2] === 'm' || args[2] === 'member') result.serverStats_memberNo = channel.id;
+              result.save();
             } catch {
               message.channel.send(`An error as occured, please make sure the channel you have mentioned is in this server`);
             }

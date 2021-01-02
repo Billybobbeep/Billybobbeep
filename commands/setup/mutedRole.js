@@ -16,7 +16,8 @@ module.exports = (message, prefix, embedColor) => {
 			.setFooter(`Requested by: ${message.author.tag}`)
 		message.channel.send(embed)
 	} else if (args[2].toLowerCase() === 'reset') {
-		guildData.findOneAndUpdate({ guildId: message.guild.id }, { mutedRole: false }).then(() => {
+		result.mutedRole = false;
+        result.save().then(() => {
 			message.channel.send('Removed muted role from the database');
 		});
 	} else {
@@ -25,7 +26,8 @@ module.exports = (message, prefix, embedColor) => {
 			if (!role)
 				return message.channel.send(`Could not find the role \`${args[2]}\``)
 			if (role.id === result.mutedRole) return message.channel.send(`Your muted role is already set as ${role}`)
-			guildData.findOneAndUpdate({ guildId: message.guild.id }, { mutedRole: role.id }).then(() => {
+			result.mutedRole = role.id;
+        	result.save().then(() => {
 				message.channel.send(`Your muted role is now set up as ${role}`);
 			});
 		});

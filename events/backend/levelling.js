@@ -54,9 +54,11 @@ module.exports = async (message, client) => {
         if (args[0].includes(p)) debounce = true;
       });
       if (debounce === true) return;
-      guildMemberData.findOneAndUpdate({ guildId: message.guild.id, memberId: message.author.id }, { $inc: { xp:gainedXp }});
+      memberResult.xp = memberResult.xp ? memberResult.xp + gainedXp : gainedXp;
+      memberResult.save();
       if (memberResult.xp >= xpForLevel) {
-        guildMemberData.findOneAndUpdate({ guildId: message.guild.id, memberId: message.author.id }, { xp: 0, $inc: { level: 1 }});
+        memberResult.xp = 0;
+        memberResult.level = memberResult.level ? memberResult.level + 1 : 1;
         if (!levelUpChannel) {
           message.reply(`is now level ${guildMemberData.findOne({ guildId: message.guild.id, memberId: message.author.id }).then(result => result.level)}`);
         } else {

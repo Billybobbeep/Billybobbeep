@@ -27,6 +27,9 @@ module.exports = async (message, client) => {
     embed.setAuthor(message.author.username, message.author.displayAvatarURL());
     embed.setColor('#447ba1');
     message.channel.send(embed);
-    userData.findOneAndUpdate({ userId: message.author.id }, { dmed: true });
+    userData.findOne({ userId: message.author.id }).then(result => {
+      result.dmed = true;
+      result.save();
+    });
   }
 }

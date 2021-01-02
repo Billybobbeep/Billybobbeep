@@ -1,3 +1,5 @@
+const { now } = require('moment');
+
 module.exports = {
   name: 'work',
   description: 'Go to work',
@@ -61,8 +63,9 @@ module.exports = {
     }
 
     function lvlUp() {
-      userData.findOneAndUpdate({ userId: message.author.id }, { job_xp: 0 });
-      userData.findOneAndUpdate({ userId: message.author.id }, { job_level: userResult.job_level ? userResult.job_level + 1 : 1 });
+      userResult.job_xp = 0;
+      userResult.job_level = userResult.job_level ? userResult.job_level + 1 : 1;
+      userResult.save();
       embed.setDescription(`You have levelled up! You are now level **${userResult.job_level + 1}**!`);
       message.channel.send(embed);
     }
@@ -167,7 +170,9 @@ module.exports = {
         let msg = await message.channel.send(embed)
         chefReact(workAmt, msg, '🟢');
       } else {
-        userData.findOneAndUpdate({ userId: message.author.id }, { job_xp: userData.job_xp ? userData.job_xp + gainedXp : gainedXp, economy_work: Date.now() + cooldown });
+        userResult.job_xp = userResult.job_xp ? userResult.job_xp + gainedXp : gainedXp;
+        userResult.economy_work = Date.now() + cooldown;
+        userResult.save();
 
         userData.findOne({ userId: message.author.id }).then(xp => {
           xp = xp.job_xp
@@ -214,7 +219,7 @@ module.exports = {
       await msg.react(emoji2);
       await msg.react(emoji3);
 
-      userData.findOneAndUpdate({ userId: message.author.id }, { job_xp: userResult.job_xp ? userResult.job_xp + gainedXp : 1 });
+      userResult.job_xp = userResult.job_xp ? userResult.job_xp + gainedXp : gainedXp;
       userData.findOne({ userId: message.author.id }).then(xp => {
         xp = xp.job_xp
         if (cashier !== undefined && xp >= info.global.xp.lower.max) {
@@ -276,7 +281,8 @@ module.exports = {
               msg.edit(edit3);
             }
           }
-          userData.findOneAndUpdate({ userId: message.author.id }, { economy_balance: userResult.economy_balance ? userResult.economy_balance + amt : amt });
+          userResult.economy_balance = userResult.economy_balance + workAmt;
+          userResult.save();
           return;
         }).catch(() => {
           msg.reactions.removeAll()
@@ -289,20 +295,29 @@ module.exports = {
               userResult.job_timesFired === 6 ||
               userResult.job_timesFired === 8
               ) {
-                userData.findOneAndUpdate({ userId: message.author.id }, { job_name: false, $inc: { job_timesFired: 1 }, job_lastFired: Date.now()});
+                userResult.job_name = false;
+                userResult.job_timesFired = userResult.job_timesFired ? userResult.job_timesFired + 1 : 1;
+                userResult.job_lastFired = Date.now();
+                userResult.save();
                 
                 embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
             } else if (userResult.job_timesFired === 10) {
-              userData.findOneAndUpdate({ userId: message.author.id }, { job_name: false, job_timesFired: 0, job_lastFired: Date.now()});
+              userResult.job_name = false;
+              userResult.job_timesFired = 0;
+              userResult.job_lastFired = Date.now();
+              userResult.save();
 
               embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
             } else {
               embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
+              userResult.economy_balance = userResult.economy_balance - amt;
+              userResult.save();
               msg.edit(embed);
             }
           }
           embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt}**`);
-          userData.findOneAndUpdate({ userId: message.author.id }, { $subtract: { economy_balance: amt }});
+          userResult.economy_balance = userResult.economy_balance - amt;
+              userResult.save();
           msg.edit(embed);
         });
     }
@@ -351,17 +366,26 @@ module.exports = {
               userResult.job_timesFired === 6 ||
               userResult.job_timesFired === 8
               ) {
-                userData.findOneAndUpdate({ userId: message.author.id }, { job_name: false, $inc: { job_timesFired: 1 }, job_lastFired: Date.now()});
+                userResult.job_name = false;
+                userResult.job_timesFired = userResult.job_timesFired ? userResult.job_timesFired + 1 : 1;
+                userResult.job_lastFired = Date.now();
+                userResult.save();
                 embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
             } else if (userResult.job_timesFired === 10) {
-              userData.findOneAndUpdate({ userId: message.author.id }, { job_name: false, job_timesFired: 0, job_lastFired: Date.now()});
+              userResult.job_name = false;
+              userResult.job_timesFired = 0;
+              userResult.job_lastFired = Date.now();
+              userResult.save();
               embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
             } else {
+              userResult.economy_balance = userResult.economy_balance - amt;
+              userResult.save();
               embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
+              msg.edit(embed);
             }
           }
           embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt}**`);
-          userData.findOneAndUpdate({ userId: message.author.id }, { $subtract: { economy_balance: amt }});
+          userResult.economy_balance = userResult.economy_balance - amt;
           msg.edit(embed);
         });
     }

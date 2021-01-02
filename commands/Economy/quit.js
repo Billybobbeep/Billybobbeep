@@ -64,7 +64,9 @@ async function reactions(message, msg, guildData, client) {
       if (reaction.emoji.id === tick.id) {
         msg.reactions.removeAll();
         message.channel.send(`${tick} Successfully quit your job. (${job})`);
-        userData.findOneAndUpdate({ userId: message.author.id }, { job_name: false });
+        userData.findOne({ userId: message.author.id }).then(result => {
+          result.job_name = false;
+        });
       } else {
         msg.reactions.removeAll();
         message.channel.send(`${cross} Cancelled prompt`);

@@ -276,7 +276,8 @@ async function application_process(message, job, client) {
         job: job
     });
     newData.save();
-    userData.findOneAndUpdate({ userId: message.author.id }, { job_awaiting: true });
+    userResult.job_awaiting = true;
+    userResult.save();
 }
 async function reactions(message, msg, job, client) {
     let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);

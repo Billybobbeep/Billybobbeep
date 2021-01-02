@@ -19,14 +19,18 @@ module.exports = {
                 if (args[1] === 'a' || args[1] === 'all') {
                     if ((userResult.economy_balance ? userResult.economy_balance : 0) < 1) return message.channel.send('You do not have any cash to withdraw');
                     let amt = userResult.economy_balance ? userResult.economy_balance : 0;
-                    userData.findOneAndUpdate({ userId: message.author.id }, { $subtract: { bank_balance: amt }, $inc: { economy_balance: amt }});
+                    userResult.bank_balance = userResult.bank_balance - amt;
+                    userResult.economy_balance= userResult.economy_balance + amt;
+                    userResult.save();
                     message.channel.send(`Successfully withdrawed **$${amt}**`);
                 } else {
                     let amt = args[1].replace('$', '');
                     if (isNaN(amt)) return message.channel.send(`**${amt}** is not a valid amount`);
                     if ((userResult.economy_balance ? userResult.economy_balance : 0) < amt) return message.channel.send(`You do not have **$${amt}** in your bank account`);
 
-                    userData.findOneAndUpdate({ userId: message.author.id }, { $subtract: { bank_balance: amt }, $inc: { economy_balance: amt }});
+                    userResult.bank_balance = userResult.bank_balance - amt;
+                    userResult.economy_balance= userResult.economy_balance + amt;
+                    userResult.save();
                     message.channel.send(`Successfully withdrawed **$${amt}**`);
                 }
             });

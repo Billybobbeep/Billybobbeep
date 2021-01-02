@@ -32,16 +32,15 @@ module.exports = {
       if (member.user.bot) return message.channel.send('You cannot warn bots')
 
       if (!member) return message.reply('That user is not in this server');
-      if (user.tag === undefined) {
-        user = user.user
-      }
+      if (user.tag === undefined) user = user.user
       if (user.id === message.guild.owner.id) return message.channel.send('You cannot warn the guild owner');
 
       let reason = args.splice(2).join(' ');
       if (!reason) return message.reply('You need to specify a reason');
       let reasons = result.warnReasons.array();
-      reasons.push(reason + ` - ${message.author.tag}(${message.author.id})`);
-      guildMemberData.findOneAndUpdate({ guildId: message.guild.id, memberId: user.id }, { warnReasons: reasons });
+      reasons.push(reason + ` - ${message.author.tag} (${message.author.id})`);
+      memberResult.warnReasons = reasons;
+      memberResult.save();
       
       let log = new Discord.MessageEmbed()
         .setTimestamp()
@@ -66,12 +65,12 @@ module.exports = {
       } catch {
         message.channel.send('The user has not been notfied as they do not have their DM\'s turned on')
       }
-      guildMemberData.findOneAndUpdate({ guildId: message.guild.id, memberId: user.id }, { warnings: memberResult.warnings ? memberResult.warnings + 1 : 1 })
+      memberResult.warnings = memberResult.warnings ? memberResult.warnings + 1 : 1;
     }
     
     let debounce = false;
 
-    if (message.member.hasPermission("MANAGE_MESSAGES") || message.member.hasPermission("ADMINISTRATOR")) {
+    if (message.member.hasPermission('MANAGE_MESSAGES') || message.member.hasPermission('ADMINISTRATOR')) {
       warnCmd()
       debounce = true;
     } else if (guildResult.modRole) {

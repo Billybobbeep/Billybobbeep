@@ -42,9 +42,12 @@ module.exports = {
         }
 
         message.channel.send(`<@!${message.author.id}> successfully donated **$${amt}** to <@!${user.id}>`);
-        userData.findOneAndUpdate({ userId: message.author.id }, { economy_lastDonated: Date.now(), economy_balance: userResult.economy_balance - amt });
+        userResult.economy_lastDonated = Date.now();
+        userResult.economy_balance = userResult.economy_balance - amt;
+        userResult.save();
         userData.findOne({ userId: user.id }).then(result => {
-            userData.findOneAndUpdate({ userId: user.id }, { economy_balance: result.economy_balance + amt });
+            result.economy_balance = resultt.economy_balance + amt;
+            result.save();
         });
     }
 }

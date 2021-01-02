@@ -10,14 +10,17 @@ module.exports = {
             if (message.author.bot) return;
             if (isNaN(message.content)) return;
             if (!result.counting_number) {
-                guildData.findOneAndUpdate({ guildId: message.guild.id }, { counting_number: 0 }).then(() => {
+                result.counting_number = 0;
+                result.save().then(() => {
                     let curr = 0;
                     if (message.content.toString() === (curr + 1).toString()) {
-                        guildData.findOneAndUpdate({ guildId: message.guild.id }, { $inc: { counting_number: 1 }}).then(() => {
+                        result.counting_number = result.counting_number ? result.counting_number + 1 : 1;
+                        result.save().then(() => {
                             message.react(TE);
                         });
                     } else {
-                        guildData.findOneAndUpdate({ guildId: message.guild.id }, { counting_number: 0 }).then(() => {
+                        result.counting_number = 0;
+                        result.save().then(() => {
                             message.react(CE);
                             message.reply('has ruined the chain with an incorrect number.\nThe next number is `1`');
                         });
@@ -26,11 +29,13 @@ module.exports = {
             } else {
                 let curr = result.counting_number;
                 if (message.content.toString() === (curr + 1).toString()) {
-                    guildData.findOneAndUpdate({ guildId: message.guild.id }, { $inc: { counting_number: 1 }}).then(() => {
+                    result.counting_number = result.counting_number ? result.counting_number + 1 : 1;
+                    result.save().then(() => {
                         message.react(TE);
                     });
                 } else {
-                    guildData.findOneAndUpdate({ guildId: message.guild.id }, { counting_number: 0 }).then(() => {
+                    result.counting_number = 0;
+                    result.save().then(() => {
                         message.react(CE);
                         message.reply('has ruined the chain with an incorrect number.\nThe next number is `1`');
                     });

@@ -13,26 +13,28 @@ module.exports = (message, prefix, embedColor) => {
       } else if (message.content.includes('reset')) {
         if (!result.serverStats) return message.channel.send('This server does not have server stats set up');
         if (args[2] !== 'bot' && args[2] !== 'total'&& args[2] !== 'member' && args[2] !== 'b' && args[2] !== 't' && args[2] !== 'm') {
-            guildData.findOneAndUpdate({ guildId: message.guild.id }, { serverStats_botNoText: false }).then(() => {
-              guildData.findOneAndUpdate({ guildId: message.guild.id }, { serverStats_memberNoText: false }).then(() => {
-                guildData.findOneAndUpdate({ guildId: message.guild.id }, { serverStats_totalNoText: false }).then(() => {
-                  message.channel.send('Removed all server stats from the database');
-                });
-              });
+            result.serverStats_botNoText = false;
+            result.serverStats_memberNoText = false;
+            result.serverStats_totalNoText = false;
+            result.save().then(() => {
+              message.channel.send('Removed all server stats from the database');
             });
         } else {
             if (args[2] === 'b' || args[2] === 'bot') {
-                guildData.findOneAndUpdate({ guildId: message.guild.id }, { serverStats_botNoText: false }).then(() => {
-                  message.channel.send('Removed bot server stat from the database');
-                });
+              result.serverStats_botNoText = false;
+              result.save().then(() => {
+                message.channel.send('Removed bot server stat from the database');
+              });
             } else if (args[2] === 'm' || args[2] === 'member') {
-                guildData.findOneAndUpdate({ guildId: message.guild.id }, { serverStats_memberNoText: false }).then(() => {
-                  message.channel.send('Removed member server stat from the database');
-                });
+              result.serverStats_memberNoText = false;
+              result.save().then(() => {
+                message.channel.send('Removed member server stat from the database');
+              });
             } else if (args[2] === 't' || args[2] === 'total') {
-                guildData.findOneAndUpdate({ guildId: message.guild.id }, { serverStats_totalNoText: false }).then(() => {
-                  message.channel.send('Removed total server stat from the database');
-                });
+              result.serverStats_totalNoText = false;
+              result.save().then(() => {
+                message.channel.send('Removed total server stat from the database');
+              });
             }
         }
       } else {
@@ -42,9 +44,10 @@ module.exports = (message, prefix, embedColor) => {
             let text = args.slice(3).join(' ');
 
             try {
-              if (args[2] === 't' || args[2] === 'total') guildData.findOneAndUpdate({ guildId: message.guild.id }, { serverStats_totalNoText: text });
-              if (args[2] === 'b' || args[2] === 'bot') guildData.findOneAndUpdate({ guildId: message.guild.id }, { serverStats_botNoText: text });
-              if (args[2] === 'm' || args[2] === 'member') guildData.findOneAndUpdate({ guildId: message.guild.id }, { serverStats_memberNoText: text });
+              if (args[2] === 't' || args[2] === 'total') result.serverStats_totalNoText = text;
+              if (args[2] === 'b' || args[2] === 'bot') result.serverStats_botNoText = text;
+              if (args[2] === 'm' || args[2] === 'member') result.serverStats_memberNoText = text;
+              result.save();
             } catch {
               return message.channel.send('An error has occured');
             }

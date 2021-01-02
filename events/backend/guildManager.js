@@ -54,7 +54,8 @@ module.exports.add = async (guild, client) => {
         `**Guild ID:** ${guild.id}`)
       embed.setColor('#447ba1')
       embed.setTimestamp()
-      embed.setThumbnail(guild.iconURL({ dynamic: true }))
+      embed.setThumbnail(guild.iconURL({ dynamic: true }));
+      embed.setFooter(`Total Guilds: ${client.guilds.cache.size}`);
       logging(embed, '733442092667502613', client, 'guild');
 
       const guildData = require('../client/database/models/guilds.js');
@@ -73,8 +74,9 @@ module.exports.remove = (guild, client) => {
     .setColor('#447ba1')
     .setTimestamp()
     .setThumbnail(guild.iconURL({ dynamic: true }))
+    .setFooter(`Total Guilds: ${client.guilds.cache.size}`);
   logging(embed, '733442092667502613', client, 'guild');
 
   const guildData = require('../client/database/models/guilds.js');
-  guildMemberData.findOneAndRemove({ guildId: member.guild.id });
+  guildData.findOneAndRemove({ guildId: member.guild.id });
 }

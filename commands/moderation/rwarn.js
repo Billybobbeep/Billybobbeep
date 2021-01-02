@@ -44,10 +44,13 @@ module.exports = {
       reasons = memberResult.warnReasons;
       let warnReason = reasons[reasons.length - 1];
       reasons.splice((reasons.length - 1).toString(), 1);
-      if (tw < 2)
-        guildMemberData.findOneAndUpdate({ guildId: message.guild.id, memberId: user.id }, { warnReasons: [] });
-      else
-        guildMemberData.findOneAndUpdate({ guildId: message.guild.id, memberId: user.id }, { warnReasons: reasons });
+      if (tw < 2) {
+        memberResult.warnReasons = [];
+        memberResult.save();
+      } else {
+        memberResult.warnReasons = reasons;
+        memberResult.save();
+      }
 
       warnReason = warnReason.split(/ +/g);
       let index = warnReason.findIndex(result => result === '-');
@@ -75,10 +78,13 @@ module.exports = {
       logging(log, message, client);
       if (memberResult.warnings < 1)
         message.channel.send(`${user.username} does not have any warnings to remove`);
-      else if (memberResult.warnings == 1)
-      guildMemberData.findOneAndUpdate({ guildId: message.guild.id, memberId: user.id }, { warnings: 0 });
-      else
-        guildMemberData.findOneAndUpdate({ guildId: message.guild.id, memberId: user.id }, { warnings: memberResult.warnings - 1 });
+      else if (memberResult.warnings == 1) {
+        memberResult.warnings = 0;
+        memberResult.save();
+      } else {
+        memberResult.warnings = memberResult.warnings - 1;
+        memberResult.save();
+      }
     }
     let debounce = false;
     guildData.findOne({ guildId: message.guild.id }).then(result => {

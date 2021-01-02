@@ -8,7 +8,7 @@ module.exports = {
   commands: ['afk', 'back'],
   guildOnly: true,
   execute (message, prefix, client) {
-    guildData.findOne({ guildId: message.guild.id }).then(result => {
+    guildData.findOne({ guildId: message.guild.id }).then(async result => {
       embed = new Discord.MessageEmbed();
       if (!message.guild) return;
       let reason = ''
@@ -61,8 +61,11 @@ module.exports = {
           return message.channel.send(embed)
         } else {
           if (use === false) return;
+          let userResult = await userData.findOne({ userId: user.id });
           embed.setDescription(`**${user.tag}** has now been marked as AFK.\n**Reason:** ${reason}`);
-          userData.findOneAndUpdate({ userId: user.id }, { isAfk: true, afkReason: reason });
+          userResult.isAfk = true;
+          userResult.afkReason = reason;
+          userResult.save();
           message.channel.send(embed);
           if (message.author.id === user.id) {
             embed.setDescription(`You have marked yourself as AFK in ${message.guild}\nReason: ${reason}`)
@@ -105,8 +108,11 @@ module.exports = {
         }
 
       if (userData.findOne({ userId: user.id }).then(result => result.isAfk)) {
+        let userResult = await userData.findOne({ userId: user.id });
           embed.setDescription('**' + user.tag + '** has now been removed from the AFK list.\nWelcome back, ' + user.tag);
-          userData.findOneAndUpdate({ userId: user.id }, { isAfk: false, afkReason: 'none' });
+          userResult.isAfk = false;
+          userResult.afkReason = 'none';
+          userResult.save();
           message.channel.send(embed)
         } else {
           embed.setDescription('**' + user.tag + '** ' + 'was not marked as AFK');

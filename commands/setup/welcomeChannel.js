@@ -18,7 +18,8 @@ module.exports = (message, prefix, embedColor) => {
       message.channel.send(embed);
     } else  if (args[2] && args[2].toLowerCase() === 'reset') {
       if (result.welcomeChannel) {
-        guildData.findOneAndUpdate({ guildId: message.guild.id }, { welcomeChannel: false }).then(() => {
+        result.welcomeChannel = false;
+        result.save().then(() => {
           message.channel.send('Removed welcome channel from the database');
         });
       } else {
@@ -30,7 +31,8 @@ module.exports = (message, prefix, embedColor) => {
       if (!channel)
         return message.channel.send('Please specify a valid channel')
       if (channel.id === result.welcomeChannel) return message.channel.send(`Your welcome channel is already set as ${channel}`);
-      guildData.findOneAndUpdate({ guildId: message.guild.id }, { welcomeChannel: channel.id }).then(() => {
+      result.welcomeChannel = channel.id;
+      result.save().then(() => {
         message.channel.send(`Your welcome channel is now set up as ${channel}`);
       });
     }

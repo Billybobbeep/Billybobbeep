@@ -16,7 +16,8 @@ module.exports = (message, prefix, embedColor) => {
 			.setFooter(`Requested by: ${message.author.tag}`)
 		message.channel.send(embed);
 	} else if (args[2].toLowerCase() === 'reset') {
-		guildData.findOneAndUpdate({ guildId: message.guild.id }, { modRole: false }).then(() => {
+		result.modRole = false;
+        result.save().then(() => {
 			message.channel.send('Removed moderator role from the database');
 		});
 	} else {
@@ -25,7 +26,8 @@ module.exports = (message, prefix, embedColor) => {
 			if (!role)
 				return message.channel.send(`Could not find the role \`${args[2]}\``)
 			if (role.id === result.modRole) return message.channel.send(`Your moderator role is already set as ${role}`)
-			guildData.findOneAndUpdate({ guildId: message.guild.id }, { modRole: role.id }).then(() => {
+			result.modRole = role.id;
+        result.save().then(() => {
 				message.channel.send(`Your moderator role is now set up as ${role}`);
 			});
 		});
