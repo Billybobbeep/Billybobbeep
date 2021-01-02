@@ -73,6 +73,9 @@ module.exports = {
     } else {
       if (lastRun !== null && cooldown - (Date.now() - lastRun) >= 126000000) {
         userData.findOneAndUpdate({ userId: message.author.id }, { economy_tStreak: 0, economy_streak: 0 });
+        userResult.economy_streak = 0;
+        userResult.economy_tStreak = 0;
+        userResult.save();
       }
       if (streak === 1) semoji = `${sem}${nem}${nem}${nem}${nem}`
       else if (streak === 2) semoji = `${sem}${sem}${nem}${nem}${nem}`
@@ -82,10 +85,19 @@ module.exports = {
         semoji =  `${sem}${sem}${sem}${sem}${sem}`
         embed.setDescription(`You have collected your **$${dailyAmt + reward}** reward.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
         embed.setFooter(`Total Streak: ${tStreak}\nWallet: $${balance + dailyAmt + reward}`);
-        userData.findOneAndUpdate({ userId: message.author.id }, { economy_daily: Date.now(), economy_streak: 1 });
+        userResult.economy_daily = Date.now();
+        userResult.economy_streak = 0;
+        userResult.economy_tStreak = userResult.economy_tStreak + 1;
+        userResult.economy_balance = userResult.economy_balance + dailyAmt;
+        userResult.save();
         return message.channel.send(embed);
       }
       userData.findOneAndUpdate({ userId: message.author.id }, { $inc: { economy_streak: 1, economy_balance: dailyAmt, economy_tStreak: 1 }});
+      userResult.economy_tStreak = userResult.economy_tStreak + 1;
+      userResult.economy_streak = userResult.economy_streak + 1;
+      userResult.economy_daily = Date.now();
+      userResult.economy_balance = userResult.economy_balance + dailyAmt;
+      userResult.save();
 
       embed.setDescription(`I have added **$${dailyAmt}** onto your account balance.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
       embed.setFooter(`Total Streak: ${tStreak}\nWallet: $${balance + dailyAmt}`)
