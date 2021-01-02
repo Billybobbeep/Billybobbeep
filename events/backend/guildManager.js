@@ -1,6 +1,5 @@
 const { MessageEmbed, } = require('discord.js');
-const guildData = require('../client/database/models/guilds.js');
-const configFile = require('../../structure/config.json');
+const guildData = require('../client/database/models/guilds');
 const embed = new MessageEmbed();
 const logging = require('../../utils/functions.js').logging;
 
@@ -58,7 +57,6 @@ module.exports.add = async (guild, client) => {
       embed.setFooter(`Total Guilds: ${client.guilds.cache.size}`);
       logging(embed, '733442092667502613', client, 'guild');
 
-      const guildData = require('../client/database/models/guilds.js');
       const newData = new guildData({ guildId: member.guild.id, embedColor: '#447ba1' });
       newData.save();
     });
