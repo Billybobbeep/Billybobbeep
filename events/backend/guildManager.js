@@ -57,7 +57,7 @@ module.exports.add = async (guild, client) => {
       embed.setFooter(`Total Guilds: ${client.guilds.cache.size}`);
       logging(embed, '733442092667502613', client, 'guild');
 
-      const newData = new guildData({ guildId: member.guild.id, embedColor: '#447ba1' });
+      const newData = new guildData({ guildId: guild.id, embedColor: '#447ba1' });
       newData.save();
     });
   }
@@ -76,5 +76,5 @@ module.exports.remove = (guild, client) => {
   logging(embed, '733442092667502613', client, 'guild');
 
   const guildData = require('../client/database/models/guilds.js');
-  guildData.findOneAndRemove({ guildId: member.guild.id });
+  guildData.findOneAndRemove({ guildId: guild.id });
 }
