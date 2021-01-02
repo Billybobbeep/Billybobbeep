@@ -4,6 +4,7 @@ const embed = new Discord.MessageEmbed();
 const logging = require('../../utils/functions.js').logging;
 
 module.exports.add = (guild, user, client) => {
+    if (!guild.me.hasPermission('ADMINISTRATOR')) return;
     guild.fetchAuditLogs()
     .then(logs => {
         let ban = logs.entries
@@ -14,24 +15,24 @@ module.exports.add = (guild, user, client) => {
         if (ban.executor.id === client.user.id) return;
         embed.setTitle('User Banned');
         embed.setDescription(
-            `**User Tag:** ${ban.target.tag}\n` +
-            `**User ID:** ${ban.target.id}\n\n` +
+            `**User Tag:** ${user.tag}\n` +
+            `**User ID:** ${user.id}\n\n` +
             `**Reason:** ${ban.reason || 'No reason was provided'}\n\n` +
-            `**Moderator:** ${ban.executor}\n` +
-            `**Moderator Tag:** ${ban.executor.tag}\n` +
-            `**Moderator ID:** ${ban.executor.id}`
+            `**Moderator:** ${ban ? ban.executor : 'Unknown'}\n` +
+            `**Moderator Tag:** ${ban ? ban.executor.tag : 'Unknown'}\n` +
+            `**Moderator ID:** ${ban ? ban.executor.id : 'Unknown'}`
         )
         embed.setTimestamp(ban.createdTimestamp);
-        embed.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor));
+        guildData.findOne({ guildId: guild.id }).then(result => embed.setColor(result.embedColor));
 
-        let loggingChannel = client.channels.cache.get(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor.loggingChannel));
-        if (loggingChannel) {
+        let loggingChannel = client.channels.cache.get(guildData.findOne({ guildId: guild.id }).then(result => result.embedColor.loggingChannel));
+        if (loggingChannel)
             loggingChannel.send(msg).catch(() => {return});
-        }
     });
 }
 
 module.exports.remove = (guild, user, client) => {
+    if (!message.guild.me.hasPermission('ADMINISTRATOR')) return;
     setTimeout(() => {
         guild.fetchAuditLogs()
         .then(logs => {
@@ -50,9 +51,9 @@ module.exports.remove = (guild, user, client) => {
             `**User Tag:** ${ban.target.tag}\n` +
             `**User ID:** ${ban.target.id}\n\n` +
             `**Banned For:** ${pb ? pb.reason.toString() : 'No reason was provided'}\n\n` +
-            `**Moderator:** ${ban.executor}\n` +
-            `**Moderator Tag:** ${ban.executor.tag}\n` +
-            `**Moderator ID:** ${ban.executor.id}`
+            `**Moderator:** ${ban ? ban.executor : 'Unknown'}\n` +
+            `**Moderator Tag:** ${ban ? ban.executor.tag : 'Unknown'}\n` +
+            `**Moderator ID:** ${ban ? ban.executor.id : 'Unknown'}`
             )
             embed.setTimestamp(ban.createdTimestamp);
             embed.setColor(guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor));
