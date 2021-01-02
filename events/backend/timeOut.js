@@ -73,16 +73,16 @@ function application(db, client) {
             if (failed === true) {
                 embed.addField('Overall Score:', 'Failed');
                 embed.setFooter('Feel free to apply again in 2 minutes');
-                result.job_lastApplied= Date.now();
-                result.job_awaiting = false;
-                result.save();
+                userResult.job_lastApplied= Date.now();
+                userResult.job_awaiting = false;
+                userResult.save();
             } else {
                 embed.addField('Overall Score:', 'Passed');
                 embed.setFooter('Feel free to start working when you\'re ready');
-                result.job_lastApplied= Date.now();
-                result.job_awaiting = false;
-                result.job_name = job.toLowerCase();
-                result.save();
+                userResult.job_lastApplied= Date.now();
+                userResult.job_awaiting = false;
+                userResult.job_name = job.toLowerCase();
+                userResult.save();
             }
             try {
                 user.send(embed);
