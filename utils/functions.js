@@ -3,7 +3,7 @@ const guildID = require('../structure/config.json').ServerId;
 
 module.exports.logging = async function(msg, message, client, option) {
     console.log('logging')
-    if (typeof message === 'number') {
+    if (typeof message === 'string') {
         console.log('logging - isNumber')
         let loggingChannel = await client.channels.cache.get(guildData.findOne({ guildId: message }).then(result => result.loggingChannel));
         console.log(loggingChannel)
