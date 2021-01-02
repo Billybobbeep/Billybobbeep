@@ -20,16 +20,16 @@ module.exports.add = async (guild, client) => {
 
         guildData.findOne({ guildId: guild.id }).then(async result => {
           let channel = await guild.channels.cache.get(guild.systemChannelID || channelID);
-          embed.setTitle('Billybobbeep | Welcome')
-          embed.setColor('#447ba1')
-          embed.setTimestamp()
-          embed.setDescription(`Thank you for adding me to your server.\n\nThe default prefix is \`~\`, You can change the prefix with the command \`~prefix\`\n\nTo view the commands view \`~cmds\` and to customise the bot for your server feel free to check out \`~setup\``)
+          embed.setTitle('Billybobbeep | Welcome');
+          embed.setColor('#447ba1');
+          embed.setTimestamp();
+          embed.setDescription(`Thank you for adding me to your server.\n\nThe default prefix is \`~\`, You can change the prefix with the command \`~prefix\`\n\nTo view the commands view \`~cmds\` and to customise the bot for your server feel free to check out \`~setup\``);
           try {
             setTimeout(() => {
               channel.send(embed);
             }, 300);
           } catch {
-            console.error('Could not send welcome embed in ' + guild.name);
+            console.log('Could not send welcome embed in ' + guild.name);
           }
         }, 10000);
 
@@ -45,7 +45,7 @@ module.exports.add = async (guild, client) => {
             role.setHoist(true);
             const highestRole = guild.me.roles.highest;
             role.setPosition(highestRole.position - 1);
-          }).catch(console.error);
+          }).catch(console.log);
 
 
       embed2.setTitle('Guild Added')
