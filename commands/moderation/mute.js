@@ -58,7 +58,7 @@ module.exports = {
           embed2.setColor(`${result.embedColor || '#447ba1'}`);
           embed2.setDescription(`**User:** ${user}\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Time:** ${ms(time).replace('m', ' minute(s)').replace('h', ' hours')}\n**Reason:** ${reason}\n\n**Moderator:** ${message.author}\n**Moderator Tag:** ${message.author.tag}\n**Moderator ID:** ${message.author.id}`);
           logging(embed2, message, client);
-          const newMutedMember = new mutedMembers({ guildId: message.guild.id, userId: user.id, date: (Date.now() + time)});
+          const newMutedMember = new mutedMembers({ guildId: message.guild.id, userId: user.id, time: (Date.now() + time)});
           newMutedMember.save();
       });
     }

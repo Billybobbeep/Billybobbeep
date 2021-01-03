@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const mutedSchema = new mongoose.Schema({
-    memberId: String,
+    userId: String,
     guildId: String,
     time: String
 });
