@@ -6,6 +6,7 @@ module.exports = async (message, client) => {
   if (!message.guild) return;
   guildData.findOne({ guildId: message.guild.id }).then(guildResult => {
     guildMemberData.findOne({ guildId: message.guild.id, memberId: message.author.id }).then(memberResult => {
+      if (!memberResult) return;
       let prefix = guildResult.prefix || '~'
       if (message.content.startsWith(prefix)) return;
       let levelUpChannel = guildResult.levelUpChannel || false;
