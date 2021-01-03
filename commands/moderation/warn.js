@@ -37,7 +37,7 @@ module.exports = {
 
       let reason = args.splice(2).join(' ');
       if (!reason) return message.reply('You need to specify a reason');
-      let reasons = result.warnReasons.array();
+      let reasons = guildResult.warnReasons.array();
       reasons.push(reason + ` - ${message.author.tag} (${message.author.id})`);
       memberResult.warnReasons = reasons;
       memberResult.save();
@@ -55,7 +55,7 @@ module.exports = {
       await message.channel.send(`${user} has been warned by ${message.author}`);
       let log2 = new Discord.MessageEmbed()
       log2.setTimestamp()
-      log2.setColor(result.embedColor)
+      log2.setColor(guildResult.embedColor)
       log2.setTitle(`You have been warned`);
       log2.addField(`Responsible Moderator:`, message.author.tag, true);
       log2.addField(`Reason:`, reason);
