@@ -13,6 +13,8 @@ module.exports = async(msg, args, prefix, message) => {
         .addField(`${prefix}setup`, 'Helps you customise billy for your server', false)
         .setFooter(`Requested by: ${message.author.tag}`)
         .setTimestamp()
-        message.guild ? guildData.findOne({ guildId: message.guild.id }).then(result => embed.setColor(result.embedColor)) : embed.setColor('#447ba1');
-        message.channel.send(embed);
+        guildData.findOne({ guildId: message.guild.id }).then(result => {
+                message.guild ? embed.setColor(result.embedColor) : embed.setColor('#447ba1');
+                message.channel.send(embed);
+        });
 }
