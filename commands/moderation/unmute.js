@@ -5,8 +5,8 @@ module.exports = {
   catagory: 'moderation',
   usage: 'unmute [user] [reason]',
   execute (message, prefix, client) {
-    const configFile = require('../../structure/config.json');
-    const guildData = require('../../events/client/database/models/guilds.js');
+    const mutedMembers = require('../../events/client/database/models/mutedMembers');
+    const guildData = require('../../events/client/database/models/guilds');
     const Discord = require('discord.js');
     let embed1 = new Discord.MessageEmbed();
     let embed2 = new Discord.MessageEmbed();
@@ -17,13 +17,13 @@ module.exports = {
       let reason = args.slice(2).join(' ');
       
       guildData.findOne({ guildId: message.guild.id }).then(async result => {
-        if (!result.mutedRole) return message.channel.send('Please setup a muted role in your server to use this command');
+        if (!result.mutedRole) return message.channel.send('You must setup a muted role in your server to use this command');
         if (!user) return message.channel.send('Please mention a user to mute');
         let member = message.guild.members.cache.get(user.id);
         if (!member) return message.channel.send('I could not find the member you provided');
         if (!member.roles.cache.find(r => r.id === result.mutedRole)) return message.channel.send(`<@!${user.id}> is not muted`);
         if (user.bot) return message.channel.send('You cannot mute bots');
-        if (!reason) return message.channel.send('Please specify a reason');
+        if (reason) reason = 'No reason was provided';
         
         member.roles.remove(message.guild.roles.cache.find(role => role.id === result.mutedRole));
         message.channel.send('Successfully unmuted <@!' + user + '>');
@@ -45,6 +45,7 @@ module.exports = {
           embed2.setColor(result.embedColor);
           embed2.setDescription(`**User:** ${user}\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Reason:** ${reason}\n\n**Moderator:** ${message.author}\n**Moderator Tag:** ${message.author.tag}\n**Moderator ID:** ${message.author.id}`);
           logging(embed2, message, client);
+          mutedMembers.findOne({ userId: user.id, guildId: message.guild.id }).then(result => result.delete());
       });
     }
 
