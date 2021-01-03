@@ -3,8 +3,8 @@ const configFile = require('../../structure/config.json');
 const fs = require('fs');
 const guildData = require('../../events/client/database/models/guilds');
 
-module.exports = async(message, prefix) => {
-  guildData.findOne({ guildId: message.guild.id }).then(result => {
+module.exports = (message, prefix) => {
+  guildData.findOne({ guildId: message.guild.id }).then(async result => {
     const PageOne = new Discord.MessageEmbed()
     .setTitle('Billybobbeep | General Commands')
     .setFooter('TIP: Press the arrows to switch pages')

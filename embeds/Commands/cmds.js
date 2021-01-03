@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const guildData = require('../../events/client/database/models/guilds');
 
 module.exports = async(msg, args, prefix, message) => {
+        if (args[1]) return;
         const embed = new Discord.MessageEmbed()
         .setTitle('Billybobbeep | Commands')
         .setDescription(
