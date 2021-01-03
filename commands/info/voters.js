@@ -1,6 +1,6 @@
 module.exports = {
     name: 'voters',
-    description: 'View all vers who have voted for the bot',
+    description: 'View all users who have voted for the bot',
     catagory: 'info',
     guildOnly: true,
     execute(message, prefix, client) {
