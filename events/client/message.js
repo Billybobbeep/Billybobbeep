@@ -33,8 +33,8 @@ function redirect(message, client) {
                     if (!result) {
                         if (message.author.bot) return;
                         let newData = new guildMemberData({
-                            guildId: guild.id,
-                            memberId: member.user.id
+                            guildId: message.guild.id,
+                            memberId: message.author.id
                         });
                         newData.save();
                     }
@@ -45,8 +45,8 @@ function redirect(message, client) {
             if (!result) {
                 if (message.author.bot) return;
                 let newData = new userData({
-                    guildId: guild.id,
-                    memberId: member.user.id
+                    guildId: message.guild.id,
+                    memberId: message.author.id
                 });
                 newData.save();
             }
