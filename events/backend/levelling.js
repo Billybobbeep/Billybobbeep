@@ -1,6 +1,6 @@
 const guildData = require('../client/database/models/guilds');
 const guildMemberData = require('../client/database/models/guildMembers');
-let punc = ['!', '/', '\'', '"', 'p!', '%', '&', '?', '£', '$', '^', '*', '', '>', ',', '<'];
+let punc = ['!', '/', '"', 'p!', '%', '&', '?', '£', '$', '^', '*', '', '>', ',', '<'];
 
 module.exports = async (message, client) => {
   if (!message.guild) return;
@@ -50,9 +50,9 @@ module.exports = async (message, client) => {
       if (message.content.startsWith(guildResult.prefix || '~')) return;
       let debounce = false;
       punc.forEach(p => {
-        if (debounce === true) return;
+        if (debounce === true || !p || p === ' ' || p === '') return;
         if (message.content.startsWith(p)) debounce = true;
-        if (args[0].includes(p)) debounce = true;
+        else if (args[0].includes(p)) debounce = true;
       });
       if (debounce === true) return;
       memberResult.xp = memberResult.xp ? memberResult.xp + gainedXp : gainedXp;
