@@ -37,7 +37,7 @@ module.exports = {
 
       let reason = args.splice(2).join(' ');
       if (!reason) return message.reply('You need to specify a reason');
-      let reasons = guildResult.warnReasons.array();
+      let reasons = guildResult.warnReasons ? guildResult.warnReasons.array() : [];
       reasons.push(reason + ` - ${message.author.tag} (${message.author.id})`);
       memberResult.warnReasons = reasons;
       memberResult.save();
