@@ -27,12 +27,18 @@ module.exports = {
         if (user.id === message.author.id)return message.channel.send('You cannot mute yourself');
         if (!reason) return message.channel.send('Please specify a reason');
         if (!member) return message.channel.send('I could not find the member you provided');
-        if (time === undefined) return message.channel.send('Please specify a time');
+        if (!time) return message.channel.send('Please specify a time');
+        if (user.id === message.guild.owner.id) message.channel.send('I cannot mute the guild owner');
         try {
           if (time.endsWith('h') || time.endsWith('m')) time = ms(time); else return message.channel.send('The time can only be in hours or minutes');
         } catch {
           return message.channel.send('Please specify a time');
         }
+        if (!message.guild.roles.fetch(r => r.id === result.mutedRole)) return message.channel.send('Please setup a muted role in your server to use this command');
+        member.roles.add(message.guild.roles.cache.find(role => role.id === result.mutedRole)).then(() => message.channel.send('Successfully muted <@!' + user.id + '>')).catch(error => {
+          if (error.toString().includes('permissions')) return message.channel.send('I cannot mute <@!' + user.id + '>. Please make sure my highest role is above <@!' + user.id + '>\'s highest role.');
+          else { return message.channel.send('An unknown error occurred') }
+        });
         embed1.setTimestamp()
         embed1.setColor(`${result.embedColor || '#447ba1'}`)
         embed1.setTitle('You have been muted');
@@ -49,9 +55,6 @@ module.exports = {
         } catch {
           message.channel.send('The user has not been notfied as they do not have their DM\'s turned on')
         }
-        if (!message.guild.roles.fetch(r => r.id === result.mutedRole)) return message.channel.send('Please setup a muted role in your server to use this command');
-        member.roles.add(message.guild.roles.cache.find(role => role.id === result.mutedRole));
-        message.channel.send('Successfully muted <@!' + user + '>')
 
           embed2.setTitle('User Muted');
           embed2.setTimestamp();
