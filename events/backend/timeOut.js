@@ -105,7 +105,7 @@ function mute(db, client) {
 
         data.forEach(result => {
             guild = result.guildId;
-            user =  result.memberId;
+            user =  result.userId;
             time = result.time;
             
             guild = client.guilds.cache.get(guild);
@@ -124,7 +124,7 @@ function remove(db, guild, user, string) {
     const guildData = require('../client/database/models/guilds');
     let member = guild.members.cache.get(user);
     let mutedRole = guildData.findOne({ guildId: guild.id }).then(result => result.mutedRole);
-    db.findOneAndRemove({ memberId: user.id });
+    db.findOneAndRemove({ memberId: user });
     if (string === 'mute') {
         setTimeout(() => {
             let role = guild.roles.cache.find(role => role.id === mutedRole);
