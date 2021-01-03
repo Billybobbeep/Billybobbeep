@@ -24,9 +24,33 @@ function redirect(message, client) {
                 require('../backend/dmRecieving.js')(message, client);
             }
         }
-        if (message.mentions.users.first()) {
+        if (message.mentions.users.first())
             require('../commands/afkHandle.js').mentions(message);
-        }
+
+            if (message.guild) {
+                const guildMemberData = require('./database/models/guildMembers');
+                guildMemberData.findOne({ guildId: message.guiold.id, memberId: message.author.id }).then(result => {
+                    if (!result) {
+                        if (message.author.bot) return;
+                        let newData = new guildMemberData({
+                            guildId: guild.id,
+                            memberId: member.user.id
+                        });
+                        newData.save();
+                    }
+                });
+            }
+        const userData = require('./database/models/users');
+        userData.findOne({ userId: message.author.id }).then(result => {
+            if (!result) {
+                if (message.author.bot) return;
+                let newData = new userData({
+                    guildId: guild.id,
+                    memberId: member.user.id
+                });
+                newData.save();
+            }
+        });
     });
 }
 
