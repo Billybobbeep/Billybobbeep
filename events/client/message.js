@@ -29,7 +29,7 @@ function redirect(message, client) {
 
             if (message.guild) {
                 const guildMemberData = require('./database/models/guildMembers');
-                guildMemberData.findOne({ guildId: message.guiold.id, memberId: message.author.id }).then(result => {
+                guildMemberData.findOne({ guildId: message.guild.id, memberId: message.author.id }).then(result => {
                     if (!result) {
                         if (message.author.bot) return;
                         let newData = new guildMemberData({
