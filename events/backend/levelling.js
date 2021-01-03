@@ -61,10 +61,10 @@ module.exports = async (message, client) => {
         memberResult.xp = 0;
         memberResult.level = memberResult.level ? memberResult.level + 1 : 1;
         if (!levelUpChannel) {
-          message.reply(`is now level ${guildMemberData.findOne({ guildId: message.guild.id, memberId: message.author.id }).then(result => result.level)}`);
+          message.reply(`is now level ${memberResult.level}`);
         } else {
           let channel = message.guild.channels.cache.get(levelUpChannel);
-          channel.send(`<@!${message.author.id}> is now level ${guildMemberData.findOne({ guildId: message.guild.id, memberId: message.author.id }).then(result => result.level)}`);
+          channel.send(`<@!${message.author.id}> is now level ${memberResult.level}`);
         }
       }
       currlev = guildMemberData.findOne({ guildId: message.guild.id, memberId: message.author.id }).then(result => result.level);
