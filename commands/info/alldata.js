@@ -16,8 +16,8 @@ module.exports = {
       embed = new MessageEmbed();
       embed.setTitle('Users');
       embed.addField('Total Users', client.users.cache.size);
-      embed.addField('Members', client.users.cache.size.filter(user => !user.bot));
-      embed.addField('Bots', client.users.cache.size.filter(user => user.bot));
+      embed.addField('Members', client.users.cache.array().filter(user => !user.bot).length);
+      embed.addField('Bots', client.users.cache.array().filter(user => user.bot).length);
       message.channel.send(embed)
   }
 }
