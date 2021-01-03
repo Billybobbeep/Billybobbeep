@@ -66,6 +66,7 @@ module.exports = {
         message.channel.send('The user has not been notfied as they do not have their DM\'s turned on')
       }
       memberResult.warnings = memberResult.warnings ? memberResult.warnings + 1 : 1;
+      memberResult.save();
     }
     
     let debounce = false;
