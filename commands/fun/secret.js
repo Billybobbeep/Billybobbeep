@@ -113,15 +113,8 @@ module.exports = {
       }
   }
     
-    //if (message.content.includes('||')) return message.channel.send('You cannot include `||` in your message');
-    //if (message.content.toLowerCase().includes('/spoiler')) return message.chanel.send('You cannot include `/spoiler` in your message');
-    /*args.forEach(a => {
-      if (a.toLowerCase() === '/spoiler') {
-        args.splice(args.indexOf('/spoiler', 1));
-      }
-    });*/
-    //if (!secretMessage) return;
+    if (!lines) return;
     message.channel.send(`||${lines.join('')}||`);
-    //message.delete();
+    message.delete();
   }
 }

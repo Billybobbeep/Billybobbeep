@@ -158,10 +158,8 @@ module.exports = {
           }
 
         let lastImage = "";
-        if (msg.startsWith(prefix + "image")) {
-          Generator(lastImage)
-          message.channel.send(embed)
-        }
+        Generator(lastImage)
+        message.channel.send(embed);
     });
   }
 }
