@@ -11,12 +11,12 @@ const guildSchema = new mongoose.Schema({
     countingChannel: String,
     loggingChannel: String,
     //Server Stats
-    serverstats_totalNo: String,
-    serverstats_memberNo: String,
-    serverstats_botNo: String,
-    serverstats_totalNoText: String,
-    serverstats_memberNoText: String,
-    serverstats_botNoText: String,
+    serverStats_totalNo: String,
+    serverStats_memberNo: String,
+    serverStats_botNo: String,
+    serverStats_totalNoText: String,
+    serverStats_memberNoText: String,
+    serverStats_botNoText: String,
     //Other
     embedColor: String,
     counting_number: Number,
