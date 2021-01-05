@@ -55,8 +55,9 @@ function redirect(message, client) {
 }
 
 function handle(message, client) {
+  let args = message.content.slice(prefix.length).trim().split(/ +/g);
   let command = args[0].toLowerCase();
-  
+
   if (!message.content.startsWith(prefix)) return;
   if (!message.guild && client.commands.get(command)) return message.channel.send('We do not support DM commands yet');
     guildData.findOne({ guildId: message.guild.id }).then(result => {
@@ -65,7 +66,6 @@ function handle(message, client) {
         else
             var prefix = '~';
 
-        let args = message.content.slice(prefix.length).trim().split(/ +/g);
         if (client.commands.get(command)) {
             if (client.commands.get(command).guildOnly && client.commands.get(command).guildOnly === true && !message.guild) return;
             if (client.commands.get(command).bannedUsers && client.commands.get(command).bannedUsers.includes(message.author.id)) return message.channel.send('You have been banned from using this command');
