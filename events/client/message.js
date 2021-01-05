@@ -13,7 +13,6 @@ function redirect(message, client) {
             require('../commands/counting.js').execute(message, client);
             require('../commands/mentions/mentions.js')(message, client);
             //require('../backend/antiSpam.js').execute(message);
-            //require('../backend/attachments.js')(message, client);
         } else {
             require('../backend/dmRecieving.js')(message, client);
         }
@@ -56,6 +55,10 @@ function redirect(message, client) {
 }
 
 function handle(message, client) {
+  let command = args[0].toLowerCase();
+  
+  if (!message.content.startsWith(prefix)) return;
+  if (!message.guild && client.commands.get(command)) return message.channel.send('We do not support DM commands yet');
     guildData.findOne({ guildId: message.guild.id }).then(result => {
         if (message.guild)
             var prefix = result.prefix || '~';
@@ -63,8 +66,6 @@ function handle(message, client) {
             var prefix = '~';
 
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
-        let command = args[0].toLowerCase();
-        if (!message.content.startsWith(prefix)) return;
         if (client.commands.get(command)) {
             if (client.commands.get(command).guildOnly && client.commands.get(command).guildOnly === true && !message.guild) return;
             if (client.commands.get(command).bannedUsers && client.commands.get(command).bannedUsers.includes(message.author.id)) return message.channel.send('You have been banned from using this command');
