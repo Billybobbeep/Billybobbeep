@@ -3,62 +3,55 @@ const guildData = require('../client/database/models/guilds');
 const { MessageEmbed } = require('discord.js');
 
 function redirect(message, client) {
-    guildData.findOne({ guildId: message.guild.id }).then(result => {
-        if (message.guild)
-            var prefix = result.prefix || '~';
-        else
-            var prefix = '~';
-        
-        if (message.channel.id === configFile.PollChannel || message.channel.id === configFile.MemesChannel)
-            require('../backend/reactions.js')(message);
-        else {
-            if (message.guild) {
-                if (!message.guild.me.hasPermission('ADMINISTRATOR')) return;
-                require('../backend/inviteLinks.js')(message, client);
-                require('../backend/levelling.js')(message, client);
-                require('../commands/counting.js').execute(message, client);
-                require('../commands/mentions/mentions.js')(message, client);
-                //require('../backend/antiSpam.js').execute(message);
-                //require('../backend/attachments.js')(message, client);
-            } else {
-                require('../backend/dmRecieving.js')(message, client);
-            }
+    if (message.channel.id === configFile.PollChannel || message.channel.id === configFile.MemesChannel)
+        require('../backend/reactions.js')(message);
+    else {
+        if (message.guild) {
+            if (!message.guild.me.hasPermission('ADMINISTRATOR')) return;
+            require('../backend/inviteLinks.js')(message, client);
+            require('../backend/levelling.js')(message, client);
+            require('../commands/counting.js').execute(message, client);
+            require('../commands/mentions/mentions.js')(message, client);
+            //require('../backend/antiSpam.js').execute(message);
+            //require('../backend/attachments.js')(message, client);
+        } else {
+            require('../backend/dmRecieving.js')(message, client);
         }
-        if (message.mentions.users.first())
-            require('../commands/afkHandle.js').mentions(message);
+    }
+    if (message.mentions.users.first())
+        require('../commands/afkHandle.js').mentions(message);
 
-            if (message.guild) {
-                const guildMemberData = require('./database/models/guildMembers');
-                guildMemberData.findOne({ guildId: message.guild.id, memberId: message.author.id }).then(result => {
-                    if (!result) {
-                        if (message.author.bot) return;
-                        let newData = new guildMemberData({
-                            guildId: message.guild.id,
-                            memberId: message.author.id
-                        });
-                        newData.save();
-                    }
-                });
-            }
-        const userData = require('./database/models/users');
-        userData.findOne({ userId: message.author.id }).then(result => {
-            if (!result) {
-                if (message.author.bot) return;
-                let newData = new userData({
-                    guildId: message.guild.id,
-                    memberId: message.author.id
-                });
-                newData.save();
-            }
-        });
-        guildData.findOne({ userId: message.author.id }).then(result => {
-            if (!result) {
-                let newData = new guildData({
-                    guildId: message.guild.id
-                });
-                newData.save();
-            }
-        });
+        if (message.guild) {
+            const guildMemberData = require('./database/models/guildMembers');
+            guildMemberData.findOne({ guildId: message.guild.id, memberId: message.author.id }).then(result => {
+                if (!result) {
+                    if (message.author.bot) return;
+                    let newData = new guildMemberData({
+                        guildId: message.guild.id,
+                        memberId: message.author.id
+                    });
+                    newData.save();
+                }
+            });
+        }
+    const userData = require('./database/models/users');
+    userData.findOne({ userId: message.author.id }).then(result => {
+        if (!result) {
+            if (message.author.bot) return;
+            let newData = new userData({
+                guildId: message.guild.id,
+                memberId: message.author.id
+            });
+            newData.save();
+        }
+    });
+    guildData.findOne({ userId: message.author.id }).then(result => {
+        if (!result) {
+            let newData = new guildData({
+                guildId: message.guild.id
+            });
+            newData.save();
+        }
     });
 }
 
