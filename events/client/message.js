@@ -51,6 +51,14 @@ function redirect(message, client) {
                 newData.save();
             }
         });
+        guildData.findOne({ userId: message.author.id }).then(result => {
+            if (!result) {
+                let newData = new guildData({
+                    guildId: message.guild.id
+                });
+                newData.save();
+            }
+        });
     });
 }
 
