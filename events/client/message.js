@@ -55,7 +55,8 @@ function redirect(message, client) {
 }
 
 function handle(message, client) {
-  let command = message.content.split(/ +/g)[0].toLowerCase();
+  let args = message.content.slice(1).trim().split(/ +/g);
+  let command = args[0].toLowerCase();
 
   if (!message.guild && client.commands.get(command)) return message.channel.send('We do not support DM commands yet');
     guildData.findOne({ guildId: message.guild.id }).then(result => {
@@ -65,7 +66,6 @@ function handle(message, client) {
             var prefix = '~';
 
 
-        if (!message.content.startsWith(prefix)) return;
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         if (client.commands.get(command)) {
             if (client.commands.get(command).guildOnly && client.commands.get(command).guildOnly === true && !message.guild) return;
