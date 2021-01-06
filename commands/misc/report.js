@@ -2,12 +2,12 @@ module.exports = {
     name: 'report',
     description: 'Report errors & bugs',
     catagory: 'other',
-    async execute(message, prefix, client) {
+    execute(message, prefix, client) {
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();
         const guildData = require('../../events/client/database/models/guilds.js');
 
-        guildData.findOne({ guildId: message.guild.id }).then(result => {
+        guildData.findOne({ guildId: message.guild.id }).then(async result => {
             embed.setDescription(`Welcome to the ${client.user.username} bug report service.\nHere I will be asking you a series of questions.\nYou can cancel this prompt anytime by entering \`cancel\`.\n\n**Please begin all messages with a** \`~\`**.**`);
             embed.setFooter(`To continue react to this message`);
             embed.setColor(result.embedColor);
