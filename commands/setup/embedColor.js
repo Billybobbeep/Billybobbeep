@@ -12,7 +12,7 @@ module.exports = (message, prefix, embedColor) => {
     const embed = new MessageEmbed()
     .setTitle('Billybobbeep | Setup Command')
     .setDescription(`With this command you can change the default embed color.\n\n**Usage:**\n\`${prefix}setup embed [color]\`\n\n**Built in colors:**\nBuilt in colors usage: \`${prefix}setup embed [built-in-color-name]\`\n\n**Color List:**\nDark-Blue, Light-Blue, Green, Yellow, Orange, Red, Peach, Purple\n\nIf you would like to use your own color use the command:\n \`${prefix}setup embed [hex-code]\``)
-    .setColor(`${embedColor}`)
+    .setColor(embedColor)
     .setTimestamp()
     .setFooter(`Requested by: ${message.author.tag}`)
     message.channel.send(embed)

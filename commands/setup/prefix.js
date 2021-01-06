@@ -7,7 +7,7 @@ module.exports = (message, prefix, embedColor) => {
     const embed = new Discord.MessageEmbed()
     .setTitle('Billybobbeep | Setup Command')
     .setDescription(`With this command you can change the servers default prefix.\n**Usage** \`${prefix}setup prefix [newPrefix]\``)
-    .setColor(`${embedColor}`)
+    .setColor(embedColor)
     message.channel.send(embed)
   } else {
     let newPrefix = args[2].toLowerCase();

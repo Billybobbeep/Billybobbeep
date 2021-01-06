@@ -40,7 +40,7 @@ module.exports = {
           else { return message.channel.send('An unknown error occurred') }
         });
         embed1.setTimestamp()
-        embed1.setColor(`${result.embedColor || '#447ba1'}`)
+        embed1.setColor(result.embedColor)
         embed1.setTitle('You have been muted');
         embed1.addField(`Responsible Moderator:`, message.author.tag);
         embed1.addField(`Reason:`, reason);
@@ -58,7 +58,7 @@ module.exports = {
 
           embed2.setTitle('User Muted');
           embed2.setTimestamp();
-          embed2.setColor(`${result.embedColor || '#447ba1'}`);
+          embed2.setColor(result.embedColor);
           embed2.setDescription(`**User:** ${user}\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Time:** ${ms(time).replace('m', ' minute(s)').replace('h', ' hours')}\n**Reason:** ${reason}\n\n**Moderator:** ${message.author}\n**Moderator Tag:** ${message.author.tag}\n**Moderator ID:** ${message.author.id}`);
           logging(embed2, message, client);
           const newMutedMember = new mutedMembers({ guildId: message.guild.id, userId: user.id, time: (Date.now() + time)});

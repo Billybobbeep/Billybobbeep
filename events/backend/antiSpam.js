@@ -7,7 +7,7 @@ module.exports = {
         */
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();
-        const db = require('../../structure/global.js').db;
+        const guildData = require('../client/database/models/guilds');
 
 //        Settings
 //      ------------
@@ -95,49 +95,50 @@ module.exports = {
         }
 
         async function log(message, type) {
-            let logging = message.guild.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
-            if (!logging) {
-                db.set(message.guild.id + '.antiSpam.enabled', false);
-                embed.setTitle('Spam detection has been turned off');
-                embed.setDescription('Spam detection has been turned off due to an invalid logging channel.\nTo set this back up please view the setup manuals');
-                embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
-                return message.channel.send(embed);
-            }
-            if (type.toString() === 'warn') {
-                embed.setTitle('Billybobbeep | Spam Prevention');
-                embed.setDescription('You have been warned for spamming in ' + message.guild.name);
-                embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
-                embed.setTimestamp();
-                await message.author.send(embed).catch(() => { return log(message, 'err-warn') });
-                embed.setTitle('Spam Detected');
-                embed.setDescription(`**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Action:** Warned`);
-                embed.setTimestamp();
-                logging.send(embed);
-            } else if (type.toString() === 'mute') {
-                embed.setTitle('Billybobbeep | Spam Prevention');
-                embed.setDescription('You have been muted for spamming in ' + message.guild.name);
-                embed.setColor(`${db.get(message.guild.id + '.embedColor') || '#447ba1'}`);
-                embed.setTimestamp();
-                await message.author.send(embed).catch(() => { return log(message, 'err-mute') });
-                embed.setTitle('Spam Detected');
-                embed.setDescription(`**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Action:** Muted`);
-                embed.setTimestamp();
-                logging.send(embed);
-            } else if (type.toString() === 'err-mute') {
-                embed.setTitle('Spam Detected');
-                embed.setDescription(`**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Action:** Muted`);
-                embed.setFooter('User not notified');
-                embed.setTimestamp();
-                logging.send(embed);
-            } else if (type.toString() == 'err-warn') {
-                embed.setTitle('Spam Detected');
-                embed.setDescription(`**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Action:** Warned`);
-                embed.setFooter('User not notified');
-                embed.setTimestamp();
-                logging.send(embed);
-            } else {
-                throw new TypeError('Invalid type argument')
-            }
+            guildData.findOne({ guildId: message.guild.id }).then(result => {
+                let logging = message.guild.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
+                if (!logging) {
+                    db.set(message.guild.id + '.antiSpam.enabled', false);
+                    embed.setTitle('Spam detection has been turned off');
+                    embed.setDescription('Spam detection has been turned off due to an invalid logging channel.\nTo set this back up please view the setup manuals');
+                    embed.setColor(result.embedColor);
+                    return message.channel.send(embed);
+                }
+                if (type.toString() === 'warn') {
+                    embed.setTitle('Billybobbeep | Spam Prevention');
+                    embed.setDescription('You have been warned for spamming in ' + message.guild.name);
+                    embed.setColor(result.embedColor);
+                    embed.setTimestamp();
+                    await message.author.send(embed).catch(() => { return log(message, 'err-warn') });
+                    embed.setTitle('Spam Detected');
+                    embed.setDescription(`**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Action:** Warned`);
+                    embed.setTimestamp();
+                    logging.send(embed);
+                } else if (type.toString() === 'mute') {
+                    embed.setTitle('Billybobbeep | Spam Prevention');
+                    embed.setDescription('You have been muted for spamming in ' + message.guild.name);
+                    embed.setColor(result.embedColor);
+                    embed.setTimestamp();
+                    await message.author.send(embed).catch(() => { return log(message, 'err-mute') });
+                    embed.setTitle('Spam Detected');
+                    embed.setDescription(`**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Action:** Muted`);
+                    embed.setTimestamp();
+                    logging.send(embed);
+                } else if (type.toString() === 'err-mute') {
+                    embed.setTitle('Spam Detected');
+                    embed.setDescription(`**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Action:** Muted`);
+                    embed.setFooter('User not notified');
+                    embed.setTimestamp();
+                    logging.send(embed);
+                } else if (type.toString() == 'err-warn') {
+                    embed.setTitle('Spam Detected');
+                    embed.setDescription(`**Channel:** ${message.channel}\n**Author:** ${message.author}\n**Author Tag:** ${message.author.username}#${message.author.discriminator}\n**Author ID:** ${message.author.id}\n\n**Action:** Warned`);
+                    embed.setFooter('User not notified');
+                    embed.setTimestamp();
+                    logging.send(embed);
+                } else
+                    throw new TypeError('Invalid type argument')
+            });
         }
 
         function warnUser(message) {

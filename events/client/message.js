@@ -103,10 +103,6 @@ function handle(message, client) {
 }
 
 module.exports = (message, client) => {
-    if (message.content.toLowerCase() === '~middle') {
-        let emj = client.emojis.cache.get('772154941489545216');
-        message.channel.send(`${emj}`);
-    }
     if (message.author.bot) return;
     redirect(message, client)
     handle(message, client)

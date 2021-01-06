@@ -11,7 +11,7 @@ module.exports = (message, prefix, embedColor) => {
     const embed = new MessageEmbed()
     .setTitle('Billybobbeep | Setup Command')
     .setDescription(`With this command you can change whether billybobbeep sends explicit content or not.\n\n**Usage:**\n\`${prefix}setup clean [off/on]\``)
-    .setColor(`${embedColor}`)
+    .setColor(embedColor)
     .setTimestamp()
     .setFooter(`Requested by: ${message.author.tag}`)
     message.channel.send(embed);

@@ -11,7 +11,7 @@ module.exports = (message, prefix, embedColor) => {
     const embed = new MessageEmbed()
     .setTitle('Billybobbeep | Setup Command')
     .setDescription(`With this command you can turn off levelling in your server.\n\n**Usage:**\nTo turn off levelling: \`${prefix}setup ${args[1]} off\`\nTo turn on levelling: \`${prefix}setup ${args[1]} on\``)
-    .setColor(`${embedColor}`)
+    .setColor(embedColor)
     .setTimestamp()
     .setFooter(`Requested by: ${message.author.tag}`)
     message.channel.send(embed);

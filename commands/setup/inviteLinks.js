@@ -11,7 +11,7 @@ module.exports = (message, prefix, embedColor) => {
         const embed = new MessageEmbed()
         .setTitle('Billybobbeep | Setup Command')
         .setDescription(`With this command you can choose whether billy deletes invite links or ignores them.\n\n**Usage:**\nTo delete all invite links automatically: \`${prefix}setup ${args[1]} on\`\nTo ignore invite links: \`${prefix}setup ${args[1]} off\``)
-        .setColor(`${embedColor}`)
+        .setColor(embedColor)
         .setTimestamp()
         .setFooter(`Requested by: ${message.author.tag}`)
         message.channel.send(embed)

@@ -11,7 +11,7 @@ module.exports = (message, prefix, embedColor) => {
 		const embed = new MessageEmbed()
 			.setTitle('Billybobbeep | Setup Command')
 			.setDescription(`With this command you can set up a moderator role.\n\n**Usage:**\nTo set up a moderator role: \`${prefix}setup ${args[1]} [role]\`\nTo reset the role: \`${prefix}setup ${args[1]} reset\``)
-			.setColor(`${embedColor}`)
+			.setColor(embedColor)
 			.setTimestamp()
 			.setFooter(`Requested by: ${message.author.tag}`)
 		message.channel.send(embed);

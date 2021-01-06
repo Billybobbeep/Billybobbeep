@@ -11,7 +11,7 @@ module.exports = (message, prefix, embedColor) => {
         const embed = new MessageEmbed()
             .setTitle('Billybobbeep | Setup Command')
             .setDescription(`With this command you can turn off economic commands in your server.\n\n**Usage:**\nTo turn off economic commands: \`${prefix}setup ${args[1]} off\`\nTo turn on economic commands: \`${prefix}setup ${args[1]} on\``)
-            .setColor(`${embedColor}`)
+            .setColor(embedColor)
             .setTimestamp()
             .setFooter(`Requested by: ${message.author.tag}`)
         return message.channel.send(embed)

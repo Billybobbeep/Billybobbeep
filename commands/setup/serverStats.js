@@ -9,7 +9,7 @@ module.exports = (message, prefix, embedColor) => {
     const embed = new Discord.MessageEmbed()
     .setTitle('Billybobbeep | Setup Command')
     .setDescription(`With this command you can setup a server stats channel.\n\n**Usage:**\n\`${prefix}setup ${args[1]} total [channel-id]\` - Set up a total members server stat.\n\`${prefix}setup ${args[1]} member [channel-id]\` - Set up a total humans server stat.\n\`${prefix}setup ${args[1]} bot [channel-id]\` - Set up a total bot server stat`)
-    .setColor(`${embedColor}`)
+    .setColor(embedColor)
     message.channel.send(embed);
   } else if (message.content.includes('reset')) {
     if (!result.serverStats) return message.channel.send('This server does not have server stats set up');

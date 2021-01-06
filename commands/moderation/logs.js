@@ -10,35 +10,37 @@ function handling(client, message) {
     else filter_flags(client, message, prefix);
 }
 function help_embed(message, prefix) {
-    embed.setColor(`${guildData.findOne({ guildId: message.guild.id }).then(result => result.embedColor) || '#447ba1'}`)
-    embed.setFooter('NOTE: All flags require no spaces')
-    embed.setDescription(
-        '**Flags:**\n\n' +
-        '--filter-user-[user-id] - ' + 'Filters all logs by the user ID.\n' +
-        '--filter-logs-[audit/bot] - ' + 'Filters logs by the bot or from the audit logs.*\n' +
-        '--remove-action-[action] - ' + 'Remove certain actions from the table. (See below for available actions)\n' +
-        '--filter-action-[action] - ' + 'Filter logs by a certain action. (See below for available actions)\n\n' +
-        '* = required\n\n' +
+    guildData.findOne({ guildId: message.guild.id }).then(result => {
+        embed.setColor(result.embedColor);
+        embed.setFooter('NOTE: All flags require no spaces')
+        embed.setDescription(
+            '**Flags:**\n\n' +
+            '--filter-user-[user-id] - ' + 'Filters all logs by the user ID.\n' +
+            '--filter-logs-[audit/bot] - ' + 'Filters logs by the bot or from the audit logs.*\n' +
+            '--remove-action-[action] - ' + 'Remove certain actions from the table. (See below for available actions)\n' +
+            '--filter-action-[action] - ' + 'Filter logs by a certain action. (See below for available actions)\n\n' +
+            '* = required\n\n' +
 
-        '**Actions**\n' +
-        '`The following actions are only available with the audit log flag\n\n' +
-        'emoji_update - ' + 'Add, remove or rename emojis.\n' + //EMOJI_DELETE, EMOJI_UPDATE, EMOJI_CREATE
-        'role_update - ' + 'Add, remove or rename roles.\n' + //ROLE_UPDATE
-        'member_role_update - ' + 'Member add or remove role.\n' + //MEMBER_ROLE_UPDATE
-        'channel_update - ' + 'Channel added or removed.\n' + //CHANNEL_CREATE, CHANNEL_DELETE
-        'bulk_delete - ' + 'Purged Messages.\n' + //MESSAGE_BULK_DELETE
-        'ban_add - ' + 'Member banned.\n' + //MEMBER_BAN_ADD
-        'ban_remove - ' + 'Member unbanned.\n' + //MEMBER_BAN_REMOVE
-        'kick_add - ' + 'Member kicked.\n' + //MEMBER_KICK
-        'bot_add - ' + 'Bot added to the guild.\n\n' + //BOT_ADD
-        '`The following actions are only available for the bot log flag\n\n' +
-        'warn_add - ' + 'Member warned.\n' +
-        'warn_remove - ' + 'Member warning removed.\n' +
-        'mute_add - ' + 'Member muted.\n' +
-        'mute_remove - ' + 'Member unmuted.\n\n' +
-        'NOTE: You can filter up to 3 actions.\nIf you did want to filter more than one action use:\n `' + prefix + 'logs --filter-logs[audit] --filter-action-[action1]-[action2]-[action3]`'
-    );
-    message.channel.send(embed)
+            '**Actions**\n' +
+            '`The following actions are only available with the audit log flag\n\n' +
+            'emoji_update - ' + 'Add, remove or rename emojis.\n' + //EMOJI_DELETE, EMOJI_UPDATE, EMOJI_CREATE
+            'role_update - ' + 'Add, remove or rename roles.\n' + //ROLE_UPDATE
+            'member_role_update - ' + 'Member add or remove role.\n' + //MEMBER_ROLE_UPDATE
+            'channel_update - ' + 'Channel added or removed.\n' + //CHANNEL_CREATE, CHANNEL_DELETE
+            'bulk_delete - ' + 'Purged Messages.\n' + //MESSAGE_BULK_DELETE
+            'ban_add - ' + 'Member banned.\n' + //MEMBER_BAN_ADD
+            'ban_remove - ' + 'Member unbanned.\n' + //MEMBER_BAN_REMOVE
+            'kick_add - ' + 'Member kicked.\n' + //MEMBER_KICK
+            'bot_add - ' + 'Bot added to the guild.\n\n' + //BOT_ADD
+            '`The following actions are only available for the bot log flag\n\n' +
+            'warn_add - ' + 'Member warned.\n' +
+            'warn_remove - ' + 'Member warning removed.\n' +
+            'mute_add - ' + 'Member muted.\n' +
+            'mute_remove - ' + 'Member unmuted.\n\n' +
+            'NOTE: You can filter up to 3 actions.\nIf you did want to filter more than one action use:\n `' + prefix + 'logs --filter-logs[audit] --filter-action-[action1]-[action2]-[action3]`'
+        );
+        message.channel.send(embed);
+    });
 }
 function filter_flags(client, message, prefix) {
     let args = message.content.toLowerCase().split(/ +/g)

@@ -37,12 +37,12 @@ module.exports = {
                         `**Moderator:** ${message.author}\n` +
                         `**Moderator Tag:** ${message.author.tag}\n` +
                         `**Moderator ID:** ${message.author.id}`);
-                    embed.setColor(`${result.embedColor || '#447ba1'}`);
+                    embed.setColor(result.embedColor);
                     embed2.setTitle('You have been demoted');
                     embed2.addField(`Responsible Moderator`, message.author.tag);
                     embed2.addField(`Reason`, reason);
                     embed2.addField('Guild:', message.guild.name);
-                    embed2.setColor(`${result.embedColor || '#447ba1'}`);
+                    embed2.setColor(result.embedColor);
                     try {
                         await user.send(embed2);
                     } catch {

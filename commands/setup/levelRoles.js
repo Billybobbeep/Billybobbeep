@@ -14,7 +14,7 @@ module.exports = (message, prefix, embedColor) => {
 			.setTitle('Billybobbeep | Setup Command')
             .setDescription(`With this command you can set up level roles.\n\n**Usage:**\nTo set up a level role: \`${prefix}setup ${args[1]} [level] [role]\`\nTo reset the role: \`${prefix}setup ${args[1]} [level] reset\`\n\n` +
             `**Supported Level Roles:**\n${supportedLevels.join(', ')}`)
-			.setColor(`${embedColor}`)
+			.setColor(embedColor)
 			.setTimestamp()
 			.setFooter(`Requested by: ${message.author.tag}`)
 		return message.channel.send(embed)

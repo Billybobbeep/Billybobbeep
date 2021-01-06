@@ -11,7 +11,7 @@ module.exports = (message, prefix, embedColor) => {
     const embed = new MessageEmbed()
     .setTitle('Billybobbeep | Setup Command')
     .setDescription(`With this command you can change whether billybobbeep sends level ups to a specific channel or the channel the userr is currently in.\n\n**Usage:**\nTo set up a specific channel: \`${prefix}setup ${args[1]} [channel]\`\nTo announce it in the channel the user is in: \`${prefix}setup ${args[1]} reset\``)
-    .setColor(`${embedColor}`)
+    .setColor(embedColor)
     .setTimestamp()
     .setFooter(`Requested by: ${message.author.tag}`)
     message.channel.send(embed)

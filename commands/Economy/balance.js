@@ -5,7 +5,7 @@ module.exports = {
     catagory: 'economy',
     usage: 'balance [user]',
     guildOnly: true,
-    async execute (message, prefix, client) {
+    execute (message, prefix, client) {
         const Discord = require('discord.js');
         const guildData = require('../../events/client/database/models/guilds.js');
         const userData = require('../../events/client/database/models/users.js');
@@ -15,28 +15,29 @@ module.exports = {
         if (!user.id) user = user.user;
         if (user.bot) return message.channel.send('Bots do not have wallets');
         if (!isNaN(args[1])) user = user.user;
-        let guildResult = await guildData.findOne({ guildId: message.guild.id });
-        let userResult = await userData.findOne({ userId: user.id });
+        guildData.findOne({ guildId: message.guild.id }).then(guildResult => {
+            userData.findOne({ userId: user.id }).then(userResult => {
+                embed.setFooter(`To bank some cash use: ${prefix}deposit [amount]`);
+                embed.setColor(guildResult.embedColor);
+                embed.setAuthor(user.username, user.displayAvatarURL());
 
-        embed.setFooter(`To bank some cash use: ${prefix}deposit [amount]`);
-        embed.setColor(guildResult.embedColor);
-        embed.setAuthor(user.username, user.displayAvatarURL());
+                let sym = '$'
+                let bankBal = userResult ? userResult.bank_balance : 0;
+                let walletBal = userResult ? userResult.economy_balance : 0;
 
-        let sym = '$'
-        let bankBal = userResult ? userResult.bank_balance : 0;
-        let walletBal = userResult ? userResult.economy_balance : 0;
+                if (walletBal.toString().startsWith('-')) sym = '-$';
+                embed.addField(`Wallet:`, `${sym}${walletBal.toString().replace('-', '')}`);
 
-        if (walletBal.toString().startsWith('-')) sym = '-$';
-        embed.addField(`Wallet:`, `${sym}${walletBal.toString().replace('-', '')}`);
-
-        sym = '$'
-        if (bankBal.toString().startsWith('-')) sym = '-$';
-        embed.addField(`Bank Account:`, `${sym}${bankBal.toString().replace('-', '')}`);
-        
-        sym = '$'
-        let networth = Number(walletBal) + Number(bankBal);
-        if (networth.toString().startsWith('-')) sym = '-$';
-        embed.addField(`Total Networth:`, sym + networth.toString().replace('-', ''));
-        message.channel.send(embed);
+                sym = '$'
+                if (bankBal.toString().startsWith('-')) sym = '-$';
+                embed.addField(`Bank Account:`, `${sym}${bankBal.toString().replace('-', '')}`);
+                
+                sym = '$'
+                let networth = Number(walletBal) + Number(bankBal);
+                if (networth.toString().startsWith('-')) sym = '-$';
+                embed.addField(`Total Networth:`, sym + networth.toString().replace('-', ''));
+                message.channel.send(embed);
+            });
+        });
     }
 }

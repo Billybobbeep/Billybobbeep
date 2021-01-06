@@ -30,7 +30,7 @@ module.exports = {
                                   `**Moderator Tag:** ${message.author.tag}\n` +
                                   `**Moderator ID:** ${message.author.id}\n`)
               embed.setTimestamp();
-              embed.setColor(`${result.embedColor || '#447ba1'}`);
+              embed.setColor(result.embedColor);
 
               logging(embed, message, client);
 
