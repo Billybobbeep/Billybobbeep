@@ -78,6 +78,16 @@ module.exports.remove = (guild, client) => {
     .setFooter(`Total Guilds: ${client.guilds.cache.size}`);
   logging(embed, '733442092667502613', client, 'guild');
 
-  const guildData = require('../client/database/models/guilds.js');
+  const guildData = require('../client/database/models/guilds');
   guildData.findOneAndRemove({ guildId: guild.id });
+  const guildMemberData = require('../client/database/models/guildMembers');
+  guildMemberData.find(function(err, result) {
+    if (err) return console.log(err);
+    if (!result) return;
+    result.forEach(data => {
+      if (data.guildId && data.guildId === guild.id) {
+        guildMemberData.findOneAndRemove({ guildId: guild.id, memberId: data.memberId });
+      }
+    });
+  });
 }
