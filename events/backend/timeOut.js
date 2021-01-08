@@ -2,15 +2,15 @@ module.exports = (client) => {
     const mutedData = require('../client/database/models/mutedMembers');
     const awaitingData = require('../client/database/models/awaiting');
     const guildMemberData = require('../client/database/models/guildMembers');
+    const guildData = require('../client/database/models/guilds');
     setInterval(() => {
-        mute(mutedData, client)
+        mute(mutedData, client);
+        database(guildMemberData, client);
+        removeDuplicateValues(guildData, client);
     }, 300000);
     setInterval(() => {
         application(awaitingData, client)
     }, 180000);
-    setInterval(() => {
-        database(guildMemberData, client)
-    }, 300000);
 }
 
 function database(db, client) {
@@ -25,7 +25,7 @@ function database(db, client) {
                 if (amt[1].length > 2) newAmt = [amt[0]];
                 else return;
                 newAmt.push(amt[1][0] + amt[1][1]);
-                result.economy_balance = Number(newAmt[0]);
+                result.economy_balance = parseInt(newAmt[0]);
                 result.save();
             }
 
@@ -36,7 +36,7 @@ function database(db, client) {
                 if (amt[1].length > 2) newAmt = [amt[0]];
                 else return;
                 newAmt.push(amt[1][0] + amt[1][1]);
-                result.bank_balance = Number(newAmt[0]);
+                result.bank_balance = parseInt(newAmt[0]);
                 result.save();
             }
         });
@@ -132,4 +132,28 @@ function remove(db, guild, user, string) {
                 member.roles.remove(role.id);
         }, 50);
     }
+}
+
+function removeDuplicateValues(guildData, client) {
+    let table = [];
+    guildData.find(function(err, result) {
+        if (err) return;
+        if (!result) return;
+        result.forEach(data => {
+            table.push(data);
+        });
+        table.forEach(res => {
+            if (!client.guilds.fetch(res.guildId))
+                guildData.findOne({ guildId: res.guildId }).then(guildRes => guildRes.delete());
+        });
+        client.guilds.cache.array().forEach(guild => {
+            table = table.filter(a => a.guildId === guild.id);
+            i = 0;
+            table.forEach(() => {
+                i++;
+                if (i === 1 || i === 0) return;
+                guildData.findOne({ guildId: guild.id }).then(guildRes => guildRes.delete());
+            });
+        });
+    });
 }
