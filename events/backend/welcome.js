@@ -8,8 +8,10 @@ module.exports = async (member) => {
       if (!channel) return;
       channel.send(`Welcome ${member} to the server! (${member.user.tag})`);
     }
-    if (result.autoRole) {
-      member.roles.add(result.autoRole)
+    if (result.autoRoles) {
+      (result.autoRoles).forEach(roleId => {
+        member.roles.add(roleId);
+      });
     }
   });
 }
