@@ -51,8 +51,7 @@ module.exports.add = async (guild, client) => {
       embed2.setTitle('Guild Added')
       embed2.setDescription(
         `**Guild Name:** ${guild.name}\n` +
-        `**Guild ID:** ${guild.id}\n` +
-        `**Guild Owner:** ${guild.owner.tag}`)
+        `**Guild ID:** ${guild.id}`)
       embed2.setColor('#447ba1')
       embed2.setTimestamp()
       embed2.setThumbnail(guild.iconURL({ dynamic: true }));
@@ -70,8 +69,7 @@ module.exports.remove = (guild, client) => {
     .setTitle('Guild Removed')
     .setDescription(
       `**Guild Name:** ${guild.name}\n` +
-      `**Guild ID:** ${guild.id}\n` +
-      `**Guild Owner:** ${guild.owner.tag}`)
+      `**Guild ID:** ${guild.id}`)
     .setColor('#447ba1')
     .setTimestamp()
     .setThumbnail(guild.iconURL({ dynamic: true }))
