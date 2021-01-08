@@ -33,7 +33,7 @@ module.exports = {
                 embed.addField(`Bank Account:`, `${sym}${bankBal.toString().replace('-', '')}`);
                 
                 sym = '$'
-                let networth = Number(walletBal) + Number(bankBal);
+                let networth = parseInt(walletBal) + parseInt(bankBal);
                 if (networth.toString().startsWith('-')) sym = '-$';
                 embed.addField(`Total Networth:`, sym + networth.toString().replace('-', ''));
                 message.channel.send(embed);

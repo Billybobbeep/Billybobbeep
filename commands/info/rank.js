@@ -48,7 +48,7 @@ module.exports = {
                 xpForLevel = 150
             }
 
-            require('../../utils/functions').rank(message, avatar, displayName, Number(discriminator), xp, xpForLevel, level);
+            require('../../utils/functions').rank(message, avatar, displayName, parseInt(discriminator), xp, xpForLevel, level);
             
             msg.delete();
         });

@@ -65,12 +65,12 @@ module.exports = (message, prefix, embedColor) => {
 				if (debounce === true) return message.channel.send(`This role (${role}) has already been used for another level role`);
 				else {
 					if (result.lvlRoles.length > 0) {
-						result.lvlRoles[result.lvlRoles.length] = { level: Number(args[2]), role: role.id }
+						result.lvlRoles[result.lvlRoles.length] = { level: parseInt(args[2]), role: role.id }
 						result.save().then(() => {
 							message.channel.send(`Your level ${args[2]} role is now set up as ${role}`);
 						});
 					} else {
-						result.lvlRoles[0] = { level: Number(args[2]), role: role.id };
+						result.lvlRoles[0] = { level: parseInt(args[2]), role: role.id };
 						result.save().then(() => {
 							message.channel.send(`Your level ${args[2]} role is now set up as ${role}`);
 						});
@@ -78,12 +78,12 @@ module.exports = (message, prefix, embedColor) => {
 				}
 			} else {
 				if (result.lvlRoles) {
-					result.lvlRoles.push({ level: Number(args[2]), role: role.id });
+					result.lvlRoles.push({ level: parseInt(args[2]), role: role.id });
 					result.save().then(() => {
 						message.channel.send(`Your level ${args[2]} role is now set up as ${role}`);
 					});
 				} else {
-					result.lvlRoles = [{ level: Number(args[2]), role: role.id }];
+					result.lvlRoles = [{ level: parseInt(args[2]), role: role.id }];
 					result.save().then(() => {
 						message.channel.send(`Your level ${args[2]} role is now set up as ${role}`);
 					});
