@@ -11,13 +11,5 @@ module.exports = async (member) => {
     if (result.autoRole) {
       member.roles.add(result.autoRole)
     }
-
-    if (!member.user.bot) {
-      const newData = new guildMemberData({
-        guildId: member.guild.id,
-        memberId: member.user.id
-      });
-      newData.save();
-    }
   });
 }

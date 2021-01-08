@@ -44,7 +44,14 @@ module.exports = {
                     let i = 0;
                     finalData.forEach(data => {
                         i++
-                        embed.addField(`#${i}`, `${client.users.cache.get(data.split('_')[1]).tag} - **${data.split('_')[0]}** - ${client.guilds.cache.get(data.split('_')[2]).name}`, false);
+                        let user = client.users.cache.get(data.split('_')[1]) ? client.users.cache.get(data.split('_')[1]).tag : false;
+
+                        if (!user) {
+                          guildMemberData.findOne({ guildId: data.split('_')[2], memberId: data.split('_')[1] }).then(memberResult => memberResult.delete());
+                          user = 'Unknown'
+                        }
+
+                        embed.addField(`#${i}`, `${user} - **${data.split('_')[0]}** - ${client.guilds.cache.get(data.split('_')[2]).name}`, false);
                     });
 
                     message.channel.send(embed);
