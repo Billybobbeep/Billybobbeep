@@ -24,13 +24,13 @@ module.exports.add = async (guild, client) => {
           embed.setColor('#447ba1');
           embed.setTimestamp();
           embed.setDescription(`Thank you for adding me to your server.\n\nThe default prefix is \`~\`, You can change the prefix with the command \`~prefix\`\n\nTo view the commands view \`~cmds\` and to customise the bot for your server feel free to check out \`~setup\``);
-          try {
-            setTimeout(() => {
+          setTimeout(() => {
+            try {
               channel.send(embed);
-            }, 300);
-          } catch {
-            console.log('Could not send welcome embed in ' + guild.name);
-          }
+            } catch {
+              console.log('Could not send welcome embed in ' + guild.name);
+            }
+          }, 300);
         }, 10000);
 
         let role;
