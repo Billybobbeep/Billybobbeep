@@ -4,7 +4,7 @@ const embed = new Discord.MessageEmbed();
 const logging = require('../../utils/functions.js').logging;
 
 module.exports.add = (guild, user, client) => {
-    guildData.findOne({ guildId: message.guild.id }).then(result => {
+    guildData.findOne({ guildId: guild.id }).then(result => {
         if (!guild.me.hasPermission('ADMINISTRATOR')) return;
         guild.fetchAuditLogs()
         .then(logs => {
@@ -34,8 +34,8 @@ module.exports.add = (guild, user, client) => {
 }
 
 module.exports.remove = (guild, user, client) => {
-    guildData.findOne({ guildId: message.guild.id }).then(result => {
-        if (!message.guild.me.hasPermission('ADMINISTRATOR')) return;
+    guildData.findOne({ guildId: guild.id }).then(result => {
+        if (!guild.me.hasPermission('ADMINISTRATOR')) return;
         setTimeout(() => {
             guild.fetchAuditLogs()
             .then(logs => {
