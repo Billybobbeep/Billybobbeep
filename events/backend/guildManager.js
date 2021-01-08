@@ -79,14 +79,14 @@ module.exports.remove = (guild, client) => {
   logging(embed, '733442092667502613', client, 'guild');
 
   const guildData = require('../client/database/models/guilds');
-  guildData.findOneAndRemove({ guildId: guild.id });
+  guildData.findOne({ guildId: guild.id }).then(res => res.delete());
   const guildMemberData = require('../client/database/models/guildMembers');
   guildMemberData.find(function(err, result) {
     if (err) return console.log(err);
     if (!result) return;
     result.forEach(data => {
       if (data.guildId && data.guildId === guild.id) {
-        guildMemberData.findOneAndRemove({ guildId: guild.id, memberId: data.memberId });
+        data.delete();
       }
     });
   });
