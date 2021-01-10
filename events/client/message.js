@@ -44,7 +44,7 @@ function redirect(message, client) {
             newData.save();
         }
     });
-    guildData.findOne({ guildId: message.author.id }).then(result => {
+    guildData.findOne({ guildId: message.guild.id }).then(result => {
         if (!result) {
             let newData = new guildData({
                 guildId: message.guild.id,
