@@ -1,6 +1,6 @@
 const guildData = require('../client/database/models/guilds');
 const guildMemberData = require('../client/database/models/guildMembers');
-let punc = ['!', '/', '"', 'p!', '%', '&', '?', '£', '$', '^', '*', '', '>', ',', '<'];
+let punc = ['!', '/', '"', 'p!', '%', '&', '?', '£', '$', '^', '*', '', '>', ',', '<', 'pls'];
 
 module.exports = async (message, client) => {
   if (!message.guild) return;
