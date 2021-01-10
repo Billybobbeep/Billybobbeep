@@ -1,20 +1,14 @@
 module.exports = {
     name: 'Anti Spam',
     description: 'A backend module to monitor all messages sent',
-    execute (message) {
-        /**
-         * @param {string} message
-        */
+    execute(message) {
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();
         const guildData = require('../client/database/models/guilds');
+        const guildMemberData = require('../client/database/models/guildMembers');
 
 //        Settings
 //      ------------
-        if (message.guild) {
-            let spamEnabled = db.get(message.guild.id + '.antiSpam.enabled') || false;
-        }
-
         let ignoredChannels = []; //Channels to ignore (ID)
         let ignoredMembers = []; //Members to ignore (ID)
         let ignoredRoles = []; //Roles to ignore (ID)
@@ -32,73 +26,78 @@ module.exports = {
             muted: [],
             warned: []
         }
-        message()
 
         //        Script
         //      -----------
-        async function message() {
+        async function checkForSpam() {
             if (!message.guild) return false;
             if (message.author.bot) return false;
-            if (!spamEnabled) return false;
 
-            const member = message.member || await message.guild.members.fetch(message.author);
+            guildData.findOne({ guildId: message.guild.id }).then(result => {
+                if (!result) return;
+                const member = message.member || await message.guild.members.fetch(message.author);
+                const canSpam = result.antiSpam_enabled ? false : true;
 
-            if (ignoredChannels.has(message.channel.id)) return false;
-            if (ignoredMembers.has(message.author.id)) return false;
-            if (ignoredRoles.some(role => member.roles.cache.has(role))) return false;
+                if (canSpam) return;
+                if (ignoredChannels.has(message.channel.id)) return false;
+                if (ignoredMembers.has(message.author.id)) return false;
+                if (ignoredRoles.some(role => member.roles.cache.has(role))) return false;
 
-            let currentMessage = {
-                author: message.author.id,
-                ID: message.id,
-                guild: message.guild.id,
-                channel: message.channel.id,
-                content: message.content,
-                sentTimestamp: message.createdTimestamp
-            }
-            cache.messages.push(currentMessage);
+                let currentMessage = {
+                    author: message.author.id,
+                    ID: message.id,
+                    guild: message.guild.id,
+                    channel: message.channel.id,
+                    content: message.content,
+                    sentTimestamp: message.createdTimestamp
+                }
+                cache.messages.push(currentMessage);
 
-            const cachedMessages = cache.messages.filter(m => m.author === message.author.id && m.guild === message.guild.id);
-            const duplicateMatches = cachedMessages.filter(m => m.content === message.content && (m.sentTimestamp > (currentMessage.sentTimestamp - maxDuplicatesInterval)));
-            
-            let spamDuplicates = [];
-            if (duplicateMatches.length > 0) {
+                const cachedMessages = cache.messages.filter(m => m.author === message.author.id && m.guild === message.guild.id);
+                const duplicateMatches = cachedMessages.filter(m => m.content === message.content && (m.sentTimestamp > (currentMessage.sentTimestamp - maxDuplicatesInterval)));
+                
+                let spamDuplicates = [];
+                if (duplicateMatches.length > 0) {
+                    let debounce = false;
+                    cachedMessages.sort((a, b) => b.sentTimestamp - a.sentTimestamp).forEach(element => {
+                        if (debounce) return;
+                        if (element.content !== duplicateMatches[0].content) debounce = true;
+                        else spamDuplicates.push(element);
+                    });
+                }
+
+                const spamMatches = cachedMessages.filter(m => m.sentTimestamp > (Date.now() - maxInterval));
                 let debounce = false;
-                cachedMessages.sort((a, b) => b.sentTimestamp - a.sentTimestamp).forEach(element => {
-                    if (debounce) return;
-                    if (element.content !== duplicateMatches[0].content) debounce = true;
-                    else spamDuplicates.push(element);
-                });
-            }
 
-            const spamMatches = cachedMessages.filter(m => m.sentTimestamp > (Date.now() - maxInterval));
-            let debounce = false;
+                const userCanBeMuted = muteEnabled && !cache.muted.includes(message.author.id) && !debounce
+                if (userCanBeMuted && (spamMatches.length >= muteThreshold)) {
+                    muteUser(message)
+                    debounce = true
+                } else if (userCanBeMuted && (duplicateMatches.length >= maxDuplicatesMute)) {
+                    muteUser(message)
+                    debounce = true
+                }
 
-            const userCanBeMuted = muteEnabled && !cache.muted.includes(message.author.id) && !debounce
-            if (userCanBeMuted && (spamMatches.length >= muteThreshold)) {
-                muteUser(message)
-                debounce = true
-            } else if (userCanBeMuted && (duplicateMatches.length >= maxDuplicatesMute)) {
-                muteUser(message)
-                debounce = true
-            }
+                const userCanBeWarned = warnEnabled && !cache.warned.includes(message.author.id) && !debounce
+                if (userCanBeWarned && (spamMatches.length >= warnThreshold)) {
+                    warnUser(message)
+                    debounce = true
+                } else if (userCanBeWarned && (duplicateMatches.length >= maxDuplicatesWarn)) {
+                    warnUser(message)
+                    debounce = true
+                }
 
-            const userCanBeWarned = warnEnabled && !cache.warned.includes(message.author.id) && !debounce
-            if (userCanBeWarned && (spamMatches.length >= warnThreshold)) {
-                warnUser(message)
-                debounce = true
-            } else if (userCanBeWarned && (duplicateMatches.length >= maxDuplicatesWarn)) {
-                warnUser(message)
-                debounce = true
-            }
-
-            return debounce;
+                return debounce;
+            });
         }
 
         async function log(message, type) {
             guildData.findOne({ guildId: message.guild.id }).then(result => {
-                let logging = message.guild.channels.cache.get(db.get(message.guild.id + '.loggingChannel'));
+                if (!result) return;
+                let logging = message.guild.channels.cache.get(result.loggingChannel);
                 if (!logging) {
-                    db.set(message.guild.id + '.antiSpam.enabled', false);
+                    result.antiSpam_enabled = false;
+                    result.save();
                     embed.setTitle('Spam detection has been turned off');
                     embed.setDescription('Spam detection has been turned off due to an invalid logging channel.\nTo set this back up please view the setup manuals');
                     embed.setColor(result.embedColor);
@@ -142,24 +141,31 @@ module.exports = {
         }
 
         function warnUser(message) {
-            cache.warnedUsers.push(message.author.id);
-            db.push(message.guild.id + '_' + message.author.id + '.warnReasons', 'Automatic Warning - Spamming');
-            db.add(message.guild.id + '_' + message.author.id + '.warnings', 1);
-            log(message, 'warn');
+            guildMemberData.findOne({ guildId: message.guild.id, memberId: message.author.id }).then(result => {
+                if (!result) return;
+                cache.warnedUsers.push(message.author.id);
+                result.warnings = result.warnings + 1;
+                result.warnReasons[result.warnReasons.length] = 'Automatic Warning - Spamming';
+                result.save();
+                log(message, 'warn');
+            });
         }
 
         async function muteUser(message) {
-            cache.muted.push(message.author.id);
-            const member = message.member || await message.guild.members.fetch(message.author);
-            const role = message.guild.roles.cache.find(role => role.id === db.get(message.guild.id + '.mutedRole'));
-            const userCanBeMuted = role && message.guild.me.hasPermission('MANAGE_ROLES') && (message.guild.me.roles.highest.position > message.member.roles.highest.position);
-            if (!userCanBeMuted) {
-                log(message, 'err-mute');
-                return false;
-            }
-            if (message.member.roles.cache.has(role.id)) return true;
-            await message.member.roles.add(role, 'Spamming');
-            log(message, 'mute');
+            guildData.findOne({ guildId: message.guild.id }).then(result => {
+                if (!result) return;
+                cache.muted.push(message.author.id);
+                const member = message.member || await message.guild.members.fetch(message.author);
+                const role = message.guild.roles.cache.find(role => role.id === result.mutedRole);
+                const userCanBeMuted = role && message.guild.me.hasPermission('MANAGE_ROLES') && (message.guild.me.roles.highest.position > message.member.roles.highest.position);
+                if (!userCanBeMuted) {
+                    log(message, 'err-mute');
+                    return false;
+                }
+                if (message.member.roles.cache.has(role.id)) return true;
+                await message.member.roles.add(role, 'Spamming');
+                log(message, 'mute');
+            });
         }
 
         function reset() {
@@ -169,5 +175,6 @@ module.exports = {
                 warned: []
             }
         }
+        checkForSpam()
     }
 }

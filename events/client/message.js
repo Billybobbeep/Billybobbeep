@@ -12,7 +12,7 @@ function redirect(message, client) {
             require('../backend/levelling.js')(message, client);
             require('../commands/counting.js').execute(message, client);
             require('../commands/mentions/mentions.js')(message, client);
-            //require('../backend/antiSpam.js').execute(message);
+            require('../backend/antiSpam.js').execute(message);
         } else {
             require('../backend/dmRecieving.js')(message, client);
         }
