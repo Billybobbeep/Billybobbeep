@@ -21,7 +21,7 @@ module.exports = {
 
     let workAmt = undefined;
     let cooldown = info.global.work.cooldown;
-    let jobs = userResult.job || undefined;
+    let jobs = userResult.job_name || undefined;
     let lastRun = userResult.economy_work;
     let decimal = Math.round(Math.random() * 89) + 10;
     let gainedXp = 1
