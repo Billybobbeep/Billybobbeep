@@ -9,7 +9,7 @@ module.exports = async (member) => {
     }
     if (!member.user.bot) {
       const guildMemberData = require('../client/database/models/guildMembers.js');
-      guildMemberData.findOne({ guildId: member.guild.id, memberId: member.user.id }).then(memberResult => memberResult.delete());
+      guildMemberData.findOne({ guildId: member.guild.id, memberId: member.user.id }).then(memberResult => { if (memberResult) memberResult.delete() });
     }
   });
 }
