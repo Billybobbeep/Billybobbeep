@@ -39,7 +39,6 @@ module.exports = {
                 const canSpam = result.antiSpam_enabled ? false : true;
 
                 if (canSpam) return;
-                console.log('..')
                 if (ignoredChannels.length > 0 && ignoredChannels.has(message.channel.id)) return false;
                 if (ignoredMembers.length > 0 && ignoredMembers.has(message.author.id)) return false;
                 if (ignoredRoles.length > 0 && ignoredRoles.some(role => member.roles.cache.has(role))) return false;
@@ -53,7 +52,6 @@ module.exports = {
                     sentTimestamp: message.createdTimestamp
                 }
                 cache.messages.push(currentMessage);
-                console.log(cache)
 
                 const cachedMessages = cache.messages.filter(m => m.author === message.author.id && m.guild === message.guild.id);
                 const duplicateMatches = cachedMessages.filter(m => m.content === message.content && (m.sentTimestamp > (currentMessage.sentTimestamp - maxDuplicatesInterval)));
