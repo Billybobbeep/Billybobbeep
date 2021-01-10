@@ -170,6 +170,7 @@ module.exports = {
       } else {
         userResult.job_xp = userResult.job_xp ? userResult.job_xp + gainedXp : gainedXp;
         userResult.economy_work = Date.now() + cooldown;
+        userResult.economy_balance = userResult.economy_balance ? parseInt(userResult.economy_balance) + parseInt(workAmt) : workAmt;
         userResult.save();
 
         userData.findOne({ userId: message.author.id }).then(xp => {
