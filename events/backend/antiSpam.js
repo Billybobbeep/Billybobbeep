@@ -6,6 +6,7 @@ module.exports = {
         const embed = new Discord.MessageEmbed();
         const guildData = require('../client/database/models/guilds');
         const guildMemberData = require('../client/database/models/guildMembers');
+        console.log('antiSpam triggered')
 
 //        Settings
 //      ------------
