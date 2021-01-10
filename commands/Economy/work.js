@@ -279,9 +279,8 @@ module.exports = {
               msg.edit(edit3);
             }
           }
-          userResult.economy_balance = userResult.economy_balance + workAmt;
-          userResult.save();
-          return;
+          userResult.economy_balance = userResult.economy_balance ? parseInt(userResult.economy_balance) + parseInt(workAmt) : workAmt;
+          return userResult.save();
         }).catch(() => {
           msg.reactions.removeAll()
           amt = amt / 2
@@ -315,7 +314,7 @@ module.exports = {
           }
           embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt}**`);
           userResult.economy_balance = userResult.economy_balance - amt;
-              userResult.save();
+          userResult.save();
           msg.edit(embed);
         });
     }
