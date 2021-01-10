@@ -30,11 +30,11 @@ module.exports = {
 
         //        Script
         //      -----------
-        async function checkForSpam() {
+        function checkForSpam() {
             if (!message.guild) return false;
             if (message.author.bot) return false;
 
-            guildData.findOne({ guildId: message.guild.id }).then(result => {
+            guildData.findOne({ guildId: message.guild.id }).then(async result => {
                 if (!result) return;
                 const member = message.member || await message.guild.members.fetch(message.author);
                 const canSpam = result.antiSpam_enabled ? false : true;
