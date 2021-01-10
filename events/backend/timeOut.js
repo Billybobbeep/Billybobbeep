@@ -145,6 +145,8 @@ function removeDuplicateValues(guildData, client) {
         table.forEach(res => {
             if (!client.guilds.fetch(res.guildId))
                 guildData.findOne({ guildId: res.guildId }).then(guildRes => guildRes.delete());
+            if (!res.embedColor)
+                guildData.findOne({ guildId: res.guildId }).then(guildRes => guildRes.delete());
         });
         client.guilds.cache.array().forEach(guild => {
             table = table.filter(a => a.guildId === guild.id);

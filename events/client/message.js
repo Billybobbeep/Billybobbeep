@@ -44,10 +44,11 @@ function redirect(message, client) {
             newData.save();
         }
     });
-    guildData.findOne({ userId: message.author.id }).then(result => {
+    guildData.findOne({ guildId: message.author.id }).then(result => {
         if (!result) {
             let newData = new guildData({
-                guildId: message.guild.id
+                guildId: message.guild.id,
+                embedColor: '#447ba1'
             });
             newData.save();
         }
