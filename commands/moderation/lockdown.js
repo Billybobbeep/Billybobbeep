@@ -21,8 +21,9 @@ module.exports = {
         else if (args[1].toLowerCase().includes('ms') || args[1].toLowerCase().includes('s') || args[1].toLowerCase().includes('m') || args[1].toLowerCase().includes('h') || args[1].toLowerCase().includes('d')) duration = args[1];
         else return message.channel.send('Please mention either a channel or a duration');
 
-        if (!channel) channel = message.channel;
+        if (!duration && !channel) args[1] && args[1].includes('ms') || args[1].includes('s') || args[1].includes('m') || args[1].includes('h') || args[1].includes('d') ? duration = ms(args[1]) : false;
         if (!duration) args[2] && args[2].includes('ms') || args[2].includes('s') || args[2].includes('m') || args[2].includes('h') || args[2].includes('d') ? duration = ms(args[2]) : false;
+        if (!channel) channel = message.channel;
         args[3] ? reason = args[3] : reason = false;
         if (!reason && !duration && args[2]) reason = args.split(2).join(' ');
 
