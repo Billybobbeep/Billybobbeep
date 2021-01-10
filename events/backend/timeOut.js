@@ -6,7 +6,6 @@ module.exports = (client) => {
     setInterval(() => {
         mute(mutedData, client);
         database(guildMemberData, client);
-        removeDuplicateValues(guildData, client);
     }, 300000);
     setInterval(() => {
         application(awaitingData, client)
