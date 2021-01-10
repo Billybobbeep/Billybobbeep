@@ -5,7 +5,7 @@ const guildData = require('../../events/client/database/models/guilds');
 
 module.exports = (message, prefix) => {
   guildData.findOne({ guildId: message.guild.id }).then(async result => {
-    const PageOne = new Discord.MessageEmbed()
+    /*const PageOne = new Discord.MessageEmbed()
     .setTitle('Billybobbeep | General Commands')
     .setFooter('TIP: Press the arrows to switch pages')
     message.guild ? PageOne.setColor(result.embedColor) : PageOne.setColor('#447ba1');
@@ -30,7 +30,7 @@ module.exports = (message, prefix) => {
           );
         }
       }
-    }
+    }*/
 
     const PageTwo = new Discord.MessageEmbed()
     .setTitle('Billybobbeep | Economy Commands')
@@ -176,7 +176,7 @@ module.exports = (message, prefix) => {
       }
     }
 
-    let msg = await message.channel.send(PageOne)
+    let msg = await message.channel.send(PageTwo)
     
     await msg.react('◀')
     await msg.react('▶')
@@ -193,10 +193,10 @@ module.exports = (message, prefix) => {
         const reaction = collected.first();
 
         if (reaction.emoji.name === '▶') {
-          if (msg.embeds[0].title === PageOne.title) {
-            msg.edit(PageTwo);
-            reaction.users.remove(message.author.id);
-          } else if (msg.embeds[0].title === PageTwo.title) {
+          //if (msg.embeds[0].title === PageOne.title) {
+            //msg.edit(PageTwo);
+            //reaction.users.remove(message.author.id);
+          /*} else*/ if (msg.embeds[0].title === PageTwo.title) {
             msg.edit(PageThree);
             reaction.users.remove(message.author.id);
           } else if (msg.embeds[0].title === PageThree.title) {
@@ -208,10 +208,10 @@ module.exports = (message, prefix) => {
           }
           wait()
         } else {
-          if (msg.embeds[0].title === PageTwo.title) {
-            msg.edit(PageOne);
-            reaction.users.remove(message.author.id);
-          } else if (msg.embeds[0].title === PageThree.title) {
+          //if (msg.embeds[0].title === PageTwo.title) {
+            //msg.edit(PageOne);
+            //reaction.users.remove(message.author.id);
+        /*} else*/ if (msg.embeds[0].title === PageThree.title) {
             msg.edit(PageTwo);
             reaction.users.remove(message.author.id);
           } else if (msg.embeds[0].title === PageFour.title) {
