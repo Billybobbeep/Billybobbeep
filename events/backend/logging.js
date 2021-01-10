@@ -13,7 +13,7 @@ module.exports.add = (guild, user, client) => {
             .sort((a, b) => b.createdAt - a.createdAt)
             .first();
             
-            if (ban.executor.id === client.user.id) return;
+            if (ban && ban.executor.id === client.user.id) return;
             embed.setTitle('User Banned');
             embed.setDescription(
                 `**User Tag:** ${user.tag}\n` +
