@@ -1,9 +1,10 @@
 module.exports = {
-    name: 'lockdown',
+    name: 'lock',
     catagory: 'moderation',
     description: 'Lockdown a certain channel',
     guildOnly: true,
     usage: 'lockdown [channel] [duration] [reason]',
+    alias: ['lockdown'],
     execute(message, prefix, client) {
         const { MessageEmbed } = require('discord.js');
         const ms = require('ms');
@@ -16,6 +17,7 @@ module.exports = {
         if (!args[1]) message.channel.send('Invalid arguments - Please mention either a channel or a duration');
         else if (!isNaN(args[1])) channel = message.guild.channels.cache.get(channel);
         else if (message.mentions.channels.first()) channel = message.mentions.channels.first();
+        else if (args[1].includes('server') || args[1].includes('all')) channel = 'all';
         else if (args[1].toLowerCase().includes('ms') || args[1].toLowerCase().includes('s') || args[1].toLowerCase().includes('m') || args[1].toLowerCase().includes('h') || args[1].toLowerCase().includes('d')) duration = args[1];
         else return message.channel.send('Please mention either a channel or a duration');
 
@@ -44,7 +46,22 @@ module.exports = {
                 embed.setFooter('');
                 log(embed);
             });
-            channel.overwritePermissions({ SEND_MESSAGES: false });
+            if (channel !== 'all') {
+                if (channel.type === 'text')
+                    channel.overwritePermissions({ SEND_MESSAGES: false }, reason ? reason : 'No reason was provided');
+                else if (channel.type === 'voice')
+                    channel.overwritePermissions({ CONNECT: false }, reason ? reason : 'No reason was provided');
+                else
+                    channel.overwritePermissions({ SEND_MESSAGES: false }, reason ? reason : 'No reason was provided');
+            } else {
+                message.guild.channels.cache.array().forEach(channel => {
+                    if (channel.type === 'text') {
+                        channel.overwritePermissions({ SEND_MESSAGES: false }, reason ? reason : 'No reason was provided');
+                    } else if (channel.type === 'voice') {
+                        channel.overwritePermissions({ CONNECT: false }, reason ? reason : 'No reason was provided');
+                    }
+                });
+            }
         });
     }
 }
