@@ -14,11 +14,9 @@ module.exports = {
         let channel;
         let reason;
 
-        if (!args[1]) message.channel.send('Invalid arguments - Please mention either a channel or a reason');
-        else if (!isNaN(args[1])) channel = message.guild.channels.cache.get(channel);
+        if (args[1] && !isNaN(args[1])) channel = message.guild.channels.cache.get(channel);
         else if (message.mentions.channels.first()) channel = message.mentions.channels.first();
         else if (args[1].includes('server') || args[1].includes('all')) channel = 'all';
-        else return message.channel.send('Please mention either a channel or a reason');
         
         if (!channel) channel = message.channel;
         args[2] ? reason = args[2] : reason = false;
@@ -52,14 +50,13 @@ module.exports = {
                     channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, allow: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
             } else {
                 message.guild.channels.cache.array().forEach(channel => {
+                    if (channel.id === result.loggingChannel) return;
                     if (channel.type === 'text') {
                         channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, allow: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
                         reason ? embed.setDescription('This channel has been unlocked' + '.\nReason: ' + reason) : embed.setDescription('This channel has been unlocked');
                         if (channel.id !== message.channel.id) channel.send(embed);
                     } else if (channel.type === 'voice')
                         channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, allow: ['CONNECT'] }], reason ? reason : 'No reason was provided');
-                    else
-                        channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, allow: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
                 });
             }
         });
