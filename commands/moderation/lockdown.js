@@ -60,10 +60,10 @@ module.exports = {
                 message.guild.channels.cache.array().forEach(channel => {
                     if (channel.type === 'text') {
                         channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
-                        embed.setDescription('This channel has been locked for ' + duration + '.\nReason: ' + reason);
-                        if (channel.id !== cmessage.channel.id) channel.send(embed);
+                        duration ? embed.setDescription('This channel has been locked for ' + duration + '.\nReason: ' + reason) : embed.setDescription('This channel has been locked till further notice');
+                        if (channel.id !== message.channel.id) channel.send(embed);
                     } else if (channel.type === 'voice')
-                    channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['CONNECT'] }], reason ? reason : 'No reason was provided');
+                        channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['CONNECT'] }], reason ? reason : 'No reason was provided');
                     else
                         channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
                 });
