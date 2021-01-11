@@ -1,6 +1,7 @@
 const configFile = require('../../structure/config.json');
 const guildData = require('../client/database/models/guilds');
 const { MessageEmbed } = require('discord.js');
+const { relativeTimeRounding } = require('moment');
 
 function redirect(message, client) {
     if (message.channel.id === configFile.PollChannel || message.channel.id === configFile.MemesChannel)
@@ -66,7 +67,7 @@ function handle(message, client) {
         else
             var prefix = '~';
 
-
+        if (!message.content.toLowerCase().startsWith(prefix)) return;
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         if (client.commands.get(command)) {
             if (client.commands.get(command).guildOnly && client.commands.get(command).guildOnly === true && !message.guild) return;
@@ -86,7 +87,7 @@ function handle(message, client) {
                     const embed = new MessageEmbed();
                     embed.setTitle('Invalid Permissions');
                     embed.setDescription('Unfortunately, this command requires `administrator` permissions to work correctly');
-                    embed.addField('Don\'t know how?', 'Go to **Server Settings**, **Roles** then find **billybobbeep** and make sure **administrator** is enabled', false)
+                    embed.addField('Don\'t know how?', `Go to **Server Settings**, **Roles** then find **${client.user.username}** and make sure **administrator** is enabled`, false)
                     embed.setFooter(`${message.guild.name}`);
                     embed.setTimestamp();
                     embed.setColor(result.embedColor || '#447ba1');
