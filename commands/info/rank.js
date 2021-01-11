@@ -1,5 +1,3 @@
-const { Canvas } = require('canvas');
-
 module.exports = {
     name: 'rank',
     description: 'View your xp',
@@ -9,14 +7,16 @@ module.exports = {
     async execute (message, prefix, client) {
         const guildMemberData = require('../../events/client/database/models/guildMembers.js');
         const canvas = require('canvas');
+        const fetch = require('node-fetch');
+        const { MessageAttachment } = require('discord.js');
+        const jimp = require('jimp');
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]) || message.author;
         if (!user.username) user = user.user;
         let displayName = `${user.username[0].toUpperCase()}${(user.username).substring(1).toLowerCase()}`;
-        let avatar = await canvas.loadImage(user.displayAvatarURL({ dynamic: false, format: 'png' }));
         let msg = await message.channel.send('Please wait..');
 
-        guildMemberData.findOne({ guildId: message.guild.id, memberId: user.id}).then(result => {
+        guildMemberData.findOne({ guildId: message.guild.id, memberId: user.id}).then(async result => {
             if (!result) msg.edit('No data found');
             let level = result.level || 0;
             let xp = result.xp || 1;
@@ -48,9 +48,10 @@ module.exports = {
                 xpForLevel = 150
             }
 
-            require('../../utils/functions').rank(message, avatar, displayName, parseInt(discriminator), xp, xpForLevel, level);
+            let image = await jimp.read(`https://api.xzusfin.repl.co/rankcard?avatar=${user.displayAvatarURL({ dynamic: false, format: 'png' })}&size=2048&name=${displayName}%23${discriminator}&level=${level}&exp=${xp}&maxexp=${xpForLevel}`.toString());
+            message.channel.send(new MessageAttachment(await image.getBufferAsync(jimp.MIME_PNG))).then(() => msg.delete());
             
-            msg.delete();
+            //require('../../utils/functions').rank(message, avatar, displayName, parseInt(discriminator), xp, xpForLevel, level);
         });
     }
 }
