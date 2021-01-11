@@ -62,7 +62,7 @@ module.exports = {
                     if (channel.permissionsFor(message.guild.roles.everyone).has('SEND_MESSAGES'))
                         channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['CONNECT'] }], reason ? reason : 'No reason was provided');
                     else
-                        message.channel.send(channel + ' is already locked');
+                        message.channel.send(`${channel} is already locked`);
                 } else
                     channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
             } else {

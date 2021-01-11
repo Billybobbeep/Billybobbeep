@@ -51,12 +51,12 @@ module.exports = {
                         log(logEmbed, message, client);
                         channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, allow: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
                     } else
-                        message.channel.send(channel + ' is already unlocked');
+                        message.channel.send(`${channel} is already unlocked`);
                 } else if (channel.type === 'voice') {
                     if (!channel.permissionsFor(message.guild.roles.everyone).has('CONNECT'))
                         channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, allow: ['CONNECT'] }], reason ? reason : 'No reason was provided');
                     else
-                        message.channel.send(channel + ' is already unlocked');
+                        message.channel.send(`${channel} is already unlocked`);
                 } else
                     channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, allow: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
             } else {
