@@ -17,8 +17,8 @@ module.exports = {
 
         if (args[1] && !isNaN(args[1])) channel = message.guild.channels.cache.get(channel);
         else if (message.mentions.channels.first()) channel = message.mentions.channels.first();
-        else if (args[1].includes('server') || args[1].includes('all')) channel = 'all';
-        else if (args[1].toLowerCase().includes('ms') || args[1].toLowerCase().includes('s') || args[1].toLowerCase().includes('m') || args[1].toLowerCase().includes('h') || args[1].toLowerCase().includes('d')) duration = args[1];
+        else if (args[1] && args[1].includes('server') || args[1].includes('all')) channel = 'all';
+        else if (args[1] && args[1].toLowerCase().includes('ms') || args[1].toLowerCase().includes('s') || args[1].toLowerCase().includes('m') || args[1].toLowerCase().includes('h') || args[1].toLowerCase().includes('d')) duration = args[1];
 
         if (!duration && !channel) args[1] && args[1].includes('ms') || args[1].includes('s') || args[1].includes('m') || args[1].includes('h') || args[1].includes('d') ? duration = ms(args[1]) : false;
         if (!duration && args[2]) args[2] && args[2].includes('ms') || args[2].includes('s') || args[2].includes('m') || args[2].includes('h') || args[2].includes('d') ? duration = ms(args[2]) : false;
