@@ -6,8 +6,6 @@ module.exports = {
     guildOnly: true,
     async execute (message, prefix, client) {
         const guildMemberData = require('../../events/client/database/models/guildMembers.js');
-        const canvas = require('canvas');
-        const fetch = require('node-fetch');
         const { MessageAttachment } = require('discord.js');
         const jimp = require('jimp');
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
