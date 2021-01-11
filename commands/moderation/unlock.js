@@ -14,14 +14,16 @@ module.exports = {
         let channel;
         let reason;
 
-        if (args[1] && !isNaN(args[1])) channel = message.guild.channels.cache.get(channel);
-        else if (message.mentions.channels.first()) channel = message.mentions.channels.first();
-        else if (args[1].includes('server') || args[1].includes('all')) channel = 'all';
+        if (args[1]) {
+            if (args[1] && !isNaN(args[1])) channel = message.guild.channels.cache.get(channel);
+            else if (message.mentions.channels.first()) channel = message.mentions.channels.first();
+            else if (args[1].includes('server') || args[1].includes('all')) channel = 'all';
+        }
         
-        if (!channel) channel = message.channel;
-        args[2] ? reason = args[2] : reason = false;
+        args[2] ? reason = args.slice(2).join(' ') : reason = false;
         if (!reason && !channel && args[1]) reason = args.slice(1).join(' ');
         if (!reason) reason = 'No reason was provided';
+        if (!channel) channel = message.channel;
 
         guildData.findOne({ guildId: message.guild.id }).then(result => {
             const embed = new MessageEmbed();
@@ -42,15 +44,23 @@ module.exports = {
                 log(embed, message, client);
             });
             if (channel !== 'all') {
-                if (channel.type === 'text')
-                    channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, allow: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
-                else if (channel.type === 'voice')
-                    channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, allow: ['CONNECT'] }], reason ? reason : 'No reason was provided');
-                else
+                if (channel.type === 'text') {
+                    if (!channel.permissionsFor(message.guild.roles.everyone).has('SEND_MESSAGES'))
+                        channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, allow: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
+                    else
+                        message.channel.send(channel + ' is already unlocked');
+                } else if (channel.type === 'voice') {
+                    if (!channel.permissionsFor(message.guild.roles.everyone).has('CONNECT'))
+                        channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, allow: ['CONNECT'] }], reason ? reason : 'No reason was provided');
+                    else
+                        message.channel.send(channel + ' is already unlocked');
+                } else
                     channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, allow: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
             } else {
                 message.guild.channels.cache.array().forEach(channel => {
                     if (channel.id === result.loggingChannel) return;
+                    if (channel.permissionsFor(message.guild.roles.everyone).has('SEND_MESSAGES')) return;
+                    if (channel.name.toLowerCase().includes('log') || channel.name.toLowerCase().includes('mod')) return;
                     if (channel.type === 'text') {
                         channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, allow: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
                         reason ? embed.setDescription('This channel has been unlocked' + '.\nReason: ' + reason) : embed.setDescription('This channel has been unlocked');
