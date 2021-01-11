@@ -32,29 +32,32 @@ module.exports = {
 
         guildData.findOne({ guildId: message.guild.id }).then(result => {
             const embed = new MessageEmbed();
+            const logEmbed = new MessageEmbed();
             embed.setTitle('Channel Locked');
             duration ? embed.setDescription('This channel has been locked for ' + duration + '.\nReason: ' + reason) : embed.setDescription('This channel has been locked till further notice');
             embed.setFooter('Locked by: ' + message.author.tag);
             embed.setTimestamp();
             embed.setColor(result.embedColor);
-            message.channel.send(embed).then(() => {
-                embed.setDescription(
-                    `**Channel:** ${channel ? channel : 'All'}\n` +
-                    `**Duration:** ${duration ? duration : 'Permanently'}\n` +
-                    `**Reason:** ${reason ? reason : 'No reason was provided'}\n\n` +
-                    `**Moderator:** ${message.author}\n` +
-                    `**Moderator Tag:** ${message.author.tag}\n` +
-                    `**Moderator ID:** ${message.author.id}`
-                )
-                embed.setFooter('');
-                log(embed, message, client);
-            });
+
+            logEmbed.setDescription(
+                `**Channel:** ${channel ? channel : 'All'}\n` +
+                `**Duration:** ${duration ? duration : 'Permanently'}\n` +
+                `**Reason:** ${reason ? reason : 'No reason was provided'}\n\n` +
+                `**Moderator:** ${message.author}\n` +
+                `**Moderator Tag:** ${message.author.tag}\n` +
+                `**Moderator ID:** ${message.author.id}`
+            )
+            logEmbed.setColor(result.embedColor);
+            logEmbed.setTitle('Channel Locked');
+
             if (channel !== 'all') {
                 if (channel.type === 'text') {
-                    if (channel.permissionsFor(message.guild.roles.everyone).has('SEND_MESSAGES'))
+                    if (channel.permissionsFor(message.guild.roles.everyone).has('SEND_MESSAGES')) {
                         channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
-                    else
-                        message.channel.send(channel + ' is already locked');
+                        log(logEmbed, message, client);
+                        channel.send(embed);
+                    } else
+                        message.channel.send(`${channel} is already locked`);
                 } else if (channel.type === 'voice') {
                     if (channel.permissionsFor(message.guild.roles.everyone).has('SEND_MESSAGES'))
                         channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['CONNECT'] }], reason ? reason : 'No reason was provided');
@@ -63,14 +66,16 @@ module.exports = {
                 } else
                     channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
             } else {
+                let logged = false;
                 message.guild.channels.cache.array().forEach(channel => {
                     if (channel.id === result.loggingChannel) return;
                     if (!channel.permissionsFor(message.guild.roles.everyone).has('SEND_MESSAGES')) return;
                     if (channel.name.toLowerCase().includes('log') || channel.name.toLowerCase().includes('mod')) return;
                     if (channel.type === 'text') {
+                        if (!logged) { log(logEmbed, message, client); logged = true; }
                         channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
                         duration ? embed.setDescription('This channel has been locked for ' + duration + '.\nReason: ' + reason) : embed.setDescription('This channel has been locked till further notice');
-                        if (channel.id !== message.channel.id) channel.send(embed);
+                        channel.send(embed);
                     } else if (channel.type === 'voice')
                         channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['CONNECT'] }], reason ? reason : 'No reason was provided');
                 });
