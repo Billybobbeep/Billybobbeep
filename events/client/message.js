@@ -45,15 +45,6 @@ function redirect(message, client) {
             newData.save();
         }
     });
-    guildData.findOne({ guildId: message.guild.id }).then(result => {
-        if (!result) {
-            let newData = new guildData({
-                guildId: message.guild.id,
-                embedColor: '#447ba1'
-            });
-            newData.save();
-        }
-    });
 }
 
 function handle(message, client) {
@@ -62,6 +53,13 @@ function handle(message, client) {
 
   if (!message.guild && client.commands.get(command)) return message.channel.send('We do not support DM commands yet');
     guildData.findOne({ guildId: message.guild.id }).then(result => {
+        if (!result) {
+            let newData = new guildData({
+                guildId: message.guild.id,
+                embedColor: '#447ba1'
+            });
+            newData.save();
+        }
         if (message.guild)
             var prefix = result.prefix || '~';
         else
