@@ -21,6 +21,7 @@ function redirect(message, client) {
     if (message.mentions.users.first())
         require('../commands/afkHandle.js').mentions(message);
 
+    if (!message.author.bot) {
         if (message.guild) {
             const guildMemberData = require('./database/models/guildMembers');
             guildMemberData.findOne({ guildId: message.guild.id, memberId: message.author.id }).then(result => {
@@ -34,17 +35,17 @@ function redirect(message, client) {
                 }
             });
         }
-    const userData = require('./database/models/users');
-    userData.findOne({ userId: message.author.id }).then(result => {
-        if (!result) {
-            if (message.author.bot) return;
-            let newData = new userData({
-                guildId: message.guild.id,
-                memberId: message.author.id
-            });
-            newData.save();
-        }
-    });
+        const userData = require('./database/models/users');
+        userData.findOne({ userId: message.author.id }).then(result => {
+            if (!result) {
+                let newData = new userData({
+                    guildId: message.guild.id,
+                    memberId: message.author.id
+                });
+                newData.save();
+            }
+        });
+    }
 }
 
 function handle(message, client) {
