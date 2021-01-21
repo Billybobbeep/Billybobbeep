@@ -216,37 +216,53 @@ module.exports = {
       await msg.react(emoji3);
 
       userResult.job_xp = userResult.job_xp ? userResult.job_xp + gainedXp : gainedXp;
-      let xp = userResult.job_xp
+      let xp = userResult.job_xp;
+      let levelledUp = false;
       if (cashier !== undefined && xp >= info.global.xp.lower.max) {
-        lvlUp()
+        lvlUp();
+        levelledUp = true;
       } else if (teacher !== undefined && xp >= info.global.xp.lower.max) {
-        lvlUp()
+        lvlUp();
+        levelledUp = true;
       } else if (waiter !== undefined && xp >= info.global.xp.lower.max) {
-        lvlUp()
+        lvlUp();
+        levelledUp = true;
       } else if (receptionist !== undefined && xp >= info.global.xp.lower.max) {
-        lvlUp()
+        lvlUp();
+        levelledUp = true;
       } else if (architect !== undefined && xp >= info.global.xp.lower.max) {
-        lvlUp()
-      } else if (lifeguard !== undefined && xp >= info.global.xp.lower.max) {
-        lvlUp()
+        lvlUp();
+        levelledUp = true;
+      } else if (lifeGuard !== undefined && xp >= info.global.xp.lower.max) {
+        lvlUp();
+        levelledUp = true;
       } else if (nurse !== undefined && xp >= info.global.xp.lower.max) {
-        lvlUp()
+        lvlUp();
+        levelledUp = true;
       } else if (police !== undefined && xp >= info.global.xp.higher.max) {
-        lvlUp()
+        lvlUp();
+        levelledUp = true;
       } else if (engineer !== undefined && xp >= info.global.xp.higher.max) {
-        lvlUp()
+        lvlUp();
+        levelledUp = true;
       } else if (chef !== undefined && xp >= info.global.xp.higher.max) {
-        lvlUp()
+        lvlUp();
+        levelledUp = true;
       } else if (clinicalScientist !== undefined && xp >= info.global.xp.higher.max) {
-        lvlUp()
+        lvlUp();
+        levelledUp = true;
       } else if (headScientist !== undefined && xp >= info.global.xp.higher.max) {
-        lvlUp()
+        lvlUp();
+        levelledUp = true;
       } else if (lawyer !== undefined && xp >= info.global.xp.higher.max) {
-        lvlUp()
+        lvlUp();
+        levelledUp = true;
       } else if (socialWorker !== undefined && xp >= info.global.xp.higher.max) {
-        lvlUp()
+        lvlUp();
+        levelledUp = true;
       } else if (doctor !== undefined && xp >= info.global.xp.higher.max) {
-        lvlUp()
+        lvlUp();
+        levelledUp = true;
       }
 
       const filter = (reaction, user) => {
@@ -276,7 +292,8 @@ module.exports = {
             }
           }
           userResult.economy_balance = userResult.economy_balance ? parseInt(userResult.economy_balance) + workAmt : workAmt;
-          userResult.save();
+          if (!levelledUp)
+            userResult.save();
         }).catch(() => {
           msg.reactions.removeAll()
           amt = amt / 2
