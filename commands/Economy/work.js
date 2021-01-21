@@ -162,53 +162,51 @@ module.exports = {
         .setThumbnail(message.author.displayAvatarURL())
         .setColor(guildResult.embedColor);
         reactionCollection(msg, '🚗', '🚓', '🏎', workAmt, congratsEmbed1, congratsEmbed2, congratsEmbed3);
-      }
-      else if (chef !== undefined) {
+      } else if (chef !== undefined) {
         embed.setDescription(`To begin working click the green circle below`);
-        let msg = await message.channel.send(embed)
+        let msg = await message.channel.send(embed);
         chefReact(workAmt, msg, '🟢');
       } else {
         userResult.job_xp = userResult.job_xp ? userResult.job_xp + gainedXp : gainedXp;
         userResult.economy_work = Date.now() + cooldown;
         userResult.economy_balance = userResult.economy_balance ? parseInt(userResult.economy_balance) + parseInt(workAmt) : workAmt;
 
-        userData.findOne({ userId: message.author.id }).then(xp => {
-          xp = xp.job_xp
-          if (cashier !== undefined && xp >= info.global.xp.lower.max) {
-            lvlUp()
-          } else if (teacher !== undefined && xp >= info.global.xp.lower.max) {
-            lvlUp()
-          } else if (waiter !== undefined && xp >= info.global.xp.lower.max) {
-            lvlUp()
-          } else if (receptionist !== undefined && xp >= info.global.xp.lower.max) {
-            lvlUp()
-          } else if (architect !== undefined && xp >= info.global.xp.lower.max) {
-            lvlUp()
-          } else if (lifeGuard !== undefined && xp >= info.global.xp.lower.max) {
-            lvlUp()
-          } else if (nurse !== undefined && xp >= info.global.xp.lower.max) {
-            lvlUp()
-          } else if (police !== undefined && xp >= info.global.xp.higher.max) {
-            lvlUp()
-          } else if (engineer !== undefined && xp >= info.global.xp.higher.max) {
-            lvlUp()
-          } else if (chef !== undefined && xp >= info.global.xp.higher.max) {
-            lvlUp()
-          } else if (clinicalScientist !== undefined && xp >= info.global.xp.higher.max) {
-            lvlUp()
-          } else if (headScientist !== undefined && xp >= info.global.xp.higher.max) {
-            lvlUp()
-          } else if (lawyer !== undefined && xp >= info.global.xp.higher.max) {
-            lvlUp()
-          } else if (socialWorker !== undefined && xp >= info.global.xp.higher.max) {
-            lvlUp()
-          } else if (doctor !== undefined && xp >= info.global.xp.higher.max) {
-            lvlUp()
-          }
+        let xp = userResult.job_xp;
+        if (cashier !== undefined && xp >= info.global.xp.lower.max) {
+          lvlUp()
+        } else if (teacher !== undefined && xp >= info.global.xp.lower.max) {
+          lvlUp()
+        } else if (waiter !== undefined && xp >= info.global.xp.lower.max) {
+          lvlUp()
+        } else if (receptionist !== undefined && xp >= info.global.xp.lower.max) {
+          lvlUp()
+        } else if (architect !== undefined && xp >= info.global.xp.lower.max) {
+          lvlUp()
+        } else if (lifeGuard !== undefined && xp >= info.global.xp.lower.max) {
+          lvlUp()
+        } else if (nurse !== undefined && xp >= info.global.xp.lower.max) {
+          lvlUp()
+        } else if (police !== undefined && xp >= info.global.xp.higher.max) {
+          lvlUp()
+        } else if (engineer !== undefined && xp >= info.global.xp.higher.max) {
+          lvlUp()
+        } else if (chef !== undefined && xp >= info.global.xp.higher.max) {
+          lvlUp()
+        } else if (clinicalScientist !== undefined && xp >= info.global.xp.higher.max) {
+          lvlUp()
+        } else if (headScientist !== undefined && xp >= info.global.xp.higher.max) {
+          lvlUp()
+        } else if (lawyer !== undefined && xp >= info.global.xp.higher.max) {
+          lvlUp()
+        } else if (socialWorker !== undefined && xp >= info.global.xp.higher.max) {
+          lvlUp()
+        } else if (doctor !== undefined && xp >= info.global.xp.higher.max) {
+          lvlUp()
+        }
 
-          embed.setDescription(`You earned **$${workAmt}.${decimal}** while working!`);
-          message.channel.send(embed);
-        });
+        embed.setDescription(`You earned **$${workAmt}.${decimal}** while working!`);
+        message.channel.send(embed);
+        userResult.save();
       }
     }
 
@@ -277,7 +275,7 @@ module.exports = {
               msg.edit(edit3);
             }
           }
-          userResult.economy_balance = userResult.economy_balance ? parseInt(userResult.economy_balance) + parseInt(workAmt) : workAmt;
+          userResult.economy_balance = userResult.economy_balance ? parseInt(userResult.economy_balance) + workAmt : workAmt;
           userResult.save();
         }).catch(() => {
           msg.reactions.removeAll()
@@ -286,7 +284,7 @@ module.exports = {
           if (bal.toString().startsWith('-')) {
             if (
               userResult.job_timesFired === 2 ||
-              userResult.job_timesFired === 4 ||
+              userResult.job_timesFired === 4 ||  
               userResult.job_timesFired === 6 ||
               userResult.job_timesFired === 8
               ) {
