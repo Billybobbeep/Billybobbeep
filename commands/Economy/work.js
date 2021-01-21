@@ -63,7 +63,6 @@ module.exports = {
     function lvlUp() {
       userResult.job_xp = 0;
       userResult.job_level = userResult.job_level ? userResult.job_level + 1 : 1;
-      userResult.save();
       embed.setDescription(`You have levelled up! You are now level **${userResult.job_level + 1}**!`);
       message.channel.send(embed);
     }
@@ -171,7 +170,6 @@ module.exports = {
         userResult.job_xp = userResult.job_xp ? userResult.job_xp + gainedXp : gainedXp;
         userResult.economy_work = Date.now() + cooldown;
         userResult.economy_balance = userResult.economy_balance ? parseInt(userResult.economy_balance) + parseInt(workAmt) : workAmt;
-        userResult.save();
 
         userData.findOne({ userId: message.author.id }).then(xp => {
           xp = xp.job_xp
@@ -219,40 +217,38 @@ module.exports = {
       await msg.react(emoji3);
 
       userResult.job_xp = userResult.job_xp ? userResult.job_xp + gainedXp : gainedXp;
-      userData.findOne({ userId: message.author.id }).then(xp => {
-        xp = xp.job_xp
-        if (cashier !== undefined && xp >= info.global.xp.lower.max) {
-          lvlUp()
-        } else if (teacher !== undefined && xp >= info.global.xp.lower.max) {
-          lvlUp()
-        } else if (waiter !== undefined && xp >= info.global.xp.lower.max) {
-          lvlUp()
-        } else if (receptionist !== undefined && xp >= info.global.xp.lower.max) {
-          lvlUp()
-        } else if (architect !== undefined && xp >= info.global.xp.lower.max) {
-          lvlUp()
-        } else if (lifeguard !== undefined && xp >= info.global.xp.lower.max) {
-          lvlUp()
-        } else if (nurse !== undefined && xp >= info.global.xp.lower.max) {
-          lvlUp()
-        } else if (police !== undefined && xp >= info.global.xp.higher.max) {
-          lvlUp()
-        } else if (engineer !== undefined && xp >= info.global.xp.higher.max) {
-          lvlUp()
-        } else if (chef !== undefined && xp >= info.global.xp.higher.max) {
-          lvlUp()
-        } else if (clinicalScientist !== undefined && xp >= info.global.xp.higher.max) {
-          lvlUp()
-        } else if (headScientist !== undefined && xp >= info.global.xp.higher.max) {
-          lvlUp()
-        } else if (lawyer !== undefined && xp >= info.global.xp.higher.max) {
-          lvlUp()
-        } else if (socialWorker !== undefined && xp >= info.global.xp.higher.max) {
-          lvlUp()
-        } else if (doctor !== undefined && xp >= info.global.xp.higher.max) {
-          lvlUp()
-        }
-      });
+      let xp = userResult.job_xp
+      if (cashier !== undefined && xp >= info.global.xp.lower.max) {
+        lvlUp()
+      } else if (teacher !== undefined && xp >= info.global.xp.lower.max) {
+        lvlUp()
+      } else if (waiter !== undefined && xp >= info.global.xp.lower.max) {
+        lvlUp()
+      } else if (receptionist !== undefined && xp >= info.global.xp.lower.max) {
+        lvlUp()
+      } else if (architect !== undefined && xp >= info.global.xp.lower.max) {
+        lvlUp()
+      } else if (lifeguard !== undefined && xp >= info.global.xp.lower.max) {
+        lvlUp()
+      } else if (nurse !== undefined && xp >= info.global.xp.lower.max) {
+        lvlUp()
+      } else if (police !== undefined && xp >= info.global.xp.higher.max) {
+        lvlUp()
+      } else if (engineer !== undefined && xp >= info.global.xp.higher.max) {
+        lvlUp()
+      } else if (chef !== undefined && xp >= info.global.xp.higher.max) {
+        lvlUp()
+      } else if (clinicalScientist !== undefined && xp >= info.global.xp.higher.max) {
+        lvlUp()
+      } else if (headScientist !== undefined && xp >= info.global.xp.higher.max) {
+        lvlUp()
+      } else if (lawyer !== undefined && xp >= info.global.xp.higher.max) {
+        lvlUp()
+      } else if (socialWorker !== undefined && xp >= info.global.xp.higher.max) {
+        lvlUp()
+      } else if (doctor !== undefined && xp >= info.global.xp.higher.max) {
+        lvlUp()
+      }
 
       const filter = (reaction, user) => {
         return (
@@ -281,7 +277,7 @@ module.exports = {
             }
           }
           userResult.economy_balance = userResult.economy_balance ? parseInt(userResult.economy_balance) + parseInt(workAmt) : workAmt;
-          return userResult.save();
+          userResult.save();
         }).catch(() => {
           msg.reactions.removeAll()
           amt = amt / 2
@@ -296,27 +292,24 @@ module.exports = {
                 userResult.job_name = false;
                 userResult.job_timesFired = userResult.job_timesFired ? userResult.job_timesFired + 1 : 1;
                 userResult.job_lastFired = Date.now();
-                userResult.save();
                 
                 embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
             } else if (userResult.job_timesFired === 10) {
               userResult.job_name = false;
               userResult.job_timesFired = 0;
               userResult.job_lastFired = Date.now();
-              userResult.save();
 
               embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
             } else {
               embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
               userResult.economy_balance = userResult.economy_balance - amt;
-              userResult.save();
               msg.edit(embed);
             }
           }
           embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt}**`);
           userResult.economy_balance = userResult.economy_balance - amt;
-          userResult.save();
           msg.edit(embed);
+          userResult.save();
         });
     }
 
@@ -367,17 +360,14 @@ module.exports = {
                 userResult.job_name = false;
                 userResult.job_timesFired = userResult.job_timesFired ? userResult.job_timesFired + 1 : 1;
                 userResult.job_lastFired = Date.now();
-                userResult.save();
                 embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
             } else if (userResult.job_timesFired === 10) {
               userResult.job_name = false;
               userResult.job_timesFired = 0;
               userResult.job_lastFired = Date.now();
-              userResult.save();
               embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
             } else {
               userResult.economy_balance = userResult.economy_balance - amt;
-              userResult.save();
               embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
               msg.edit(embed);
             }
@@ -385,6 +375,7 @@ module.exports = {
           embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt}**`);
           userResult.economy_balance = userResult.economy_balance - amt;
           msg.edit(embed);
+          userResult.save();
         });
     }
 
