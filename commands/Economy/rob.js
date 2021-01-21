@@ -1,6 +1,7 @@
 module.exports = {
     name: 'rob',
     description: 'Take money from other users without them noticing',
+    catagory: 'economy',
     guildOnly: true,
     async execute(message, prefix, client) {
         const userData = require('../../events/client/database/models/users.js');
