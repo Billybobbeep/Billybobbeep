@@ -63,8 +63,9 @@ module.exports = {
     function lvlUp() {
       userResult.job_xp = 0;
       userResult.job_level = userResult.job_level ? userResult.job_level + 1 : 1;
-      embed.setDescription(`You have levelled up! You are now level **${userResult.job_level + 1}**!`);
+      embed.setDescription(`You have levelled up! You are now level **${userResult.job_level}**!`);
       message.channel.send(embed);
+      userResult.save();
     }
 
     if (!userResult.job_name) {
