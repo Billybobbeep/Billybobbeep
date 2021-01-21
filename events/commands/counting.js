@@ -3,8 +3,8 @@ module.exports = {
     execute (message, client) {
         const guildData = require('../client/database/models/guilds');
         guildData.findOne({ guildId: message.guild.id }).then(result => {
-            let TE = client.emojis.cache.get('736952966447366154')
-            let CE = client.emojis.cache.get('736952985330122772')
+            let TE = client.emojis.cache.get('736952966447366154');
+            let CE = client.emojis.cache.get('736952985330122772');
             if (!result.countingChannel) return;
             if (message.channel.id !== result.countingChannel) return;
             if (message.author.bot) return;

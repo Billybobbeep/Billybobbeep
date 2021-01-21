@@ -20,7 +20,7 @@ module.exports = {
 
       let member;
       let memberResult = await guildMemberData.findOne({ guildId: message.guild.id, memberId: user.id });
-      let guildResult = await guildDatafindOne({ guildId: message.guild.id });
+      let guildResult = await guildData.findOne({ guildId: message.guild.id });
 
       if (memberResult.warnings < 1 || !memberResult.warnings)
         return message.channel.send(`${user} does not have any warnings`)
@@ -46,10 +46,8 @@ module.exports = {
       reasons.splice((reasons.length - 1).toString(), 1);
       if (tw < 2) {
         memberResult.warnReasons = [];
-        memberResult.save();
       } else {
         memberResult.warnReasons = reasons;
-        memberResult.save();
       }
 
       warnReason = warnReason.split(/ +/g);
@@ -97,7 +95,7 @@ module.exports = {
           debounce = true;
         }
         if (debounce === false) {
-          message.channel.send('You do not have the permissions to use this command')
+          message.channel.send('You do not have the permissions to use this command');
         }
       }
     });
