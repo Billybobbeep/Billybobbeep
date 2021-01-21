@@ -79,21 +79,24 @@ module.exports = async (message, client) => {
       message.content.toLowerCase().startsWith('<@' + client.user.id + '> help') ||
       message.content.toLowerCase().startsWith('help <@' + client.user.id + '>') ||
       message.content.toLowerCase().startsWith('help <@!' + client.user.id + '>')) {
-      require('../../../Embeds/help')(message, client);
+      require('../../../embeds/help')(message, client);
       return;
     }
   }
 
   //Answer when mentioned
   if (message.mentions.users.first()) {
-    let messagedUser = message.mentions.users.first();
-    if (args[1]) return;
-    if (message.author.bot) return;
-    if (!args[0] == '<@!' + client.user.id + '>' || !args[0] == '<@' + client.user.id + '>') return;
-    if (messagedUser.tag === client.user.tag) {
-      embed.setDescription(`Prefix: \`${guildData.findOne({ guildId: message.guild.id }).then(result => result.prefix) || '~'}\`\n` +
-        `For additional help please enter the command: \`${guildData.findOne({ guildId: message.guild.id }).then(result => result.prefix) || '~'}help\` or enter "help <@${client.user.id}>"`)
-      message.channel.send(embed)
-    }
+    guildData.findOne({ guildId: message.guild.id }).then(result => {
+      let messagedUser = message.mentions.users.first();
+      if (args[1]) return;
+      if (message.author.bot) return;
+      if (!args[0] == '<@!' + client.user.id + '>' || !args[0] == '<@' + client.user.id + '>') return;
+      if (messagedUser.tag === client.user.tag) {
+        embed.setDescription(`Prefix: \`${result.prefix || '~'}\`\n` +
+          `For additional help please enter the command: \`${result.prefix || '~'}help\``);
+          embed.setColor(result.embedColor);
+        message.channel.send(embed);
+      }
+    });
   }
 }

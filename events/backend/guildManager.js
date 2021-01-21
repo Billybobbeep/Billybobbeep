@@ -45,7 +45,7 @@ module.exports.add = async (guild, client) => {
             role.setHoist(true);
             const highestRole = guild.me.roles.highest;
             role.setPosition(highestRole.position - 1);
-          }).catch(console.log);
+          }).catch(() => { return });
 
 
       embed2.setTitle('Guild Added')

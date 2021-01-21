@@ -53,6 +53,7 @@ function handle(message, client) {
   let command = args[0].toLowerCase();
 
   if (!message.guild && client.commands.get(command)) return message.channel.send('We do not support DM commands yet');
+  if (!message.guild) return;
     guildData.findOne({ guildId: message.guild.id }).then(result => {
         if (!result) {
             let newData = new guildData({
