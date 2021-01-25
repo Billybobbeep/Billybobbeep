@@ -26,16 +26,16 @@ module.exports = {
                 let walletBal = userResult ? userResult.economy_balance : 0;
 
                 if (walletBal.toString().startsWith('-')) sym = '-$';
-                embed.addField(`Wallet:`, `${sym}${walletBal.toString().replace('-', '')}`);
+                embed.addField(`Wallet:`, `${sym}${walletBal.toFixed().toString().replace('-', '')}`);
 
                 sym = '$'
                 if (bankBal.toString().startsWith('-')) sym = '-$';
-                embed.addField(`Bank Account:`, `${sym}${bankBal.toString().replace('-', '')}`);
+                embed.addField(`Bank Account:`, `${sym}${bankBal.toFixed().toString().replace('-', '')}`);
                 
                 sym = '$'
                 let networth = parseInt(walletBal) + parseInt(bankBal);
                 if (networth.toString().startsWith('-')) sym = '-$';
-                embed.addField(`Total Networth:`, sym + networth.toString().replace('-', ''));
+                embed.addField(`Total Networth:`, sym + networth.toFixed().toString().replace('-', ''));
                 message.channel.send(embed);
             });
         });

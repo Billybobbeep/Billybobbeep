@@ -419,9 +419,9 @@ module.exports = {
           if (name.toString().endsWith('s')) string = 'some'; else string = 'a';
           embed.setDescription(`You have successfully prepared ${string} ${name} and earned **$${amt}**!`);
           msg.edit(embed);
-          userResult.economy_balance = userResult + amt;
+          userResult.economy_balance = (userResult.economy_balance + workAmt).toFixed();
           userResult.save();
-        }, 300);
+        }, 1000);
       }
     }
   }
