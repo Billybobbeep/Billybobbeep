@@ -37,7 +37,7 @@ module.exports = {
                 let a = Math.round(Math.random() * ranMes.length);
                 return ranMes[a];
             }
-            let msg = ranMessFunc().replace('(user)', `<@!${user.id}>`).replace('(money)', robAmt.toString());
+            let msg = ranMessFunc().replace('(user)', `<@!${user.id}>`).replace('(money)', robAmt.toString()).catch(ranMessageFun().replace('(user)', `<@!${user.id}>`).replace('(money)', robAmt.toString()));
             message.channel.send(msg);
         } else {
             let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);

@@ -330,15 +330,13 @@ module.exports = {
     }
 
     async function chefReact(amt, msg, emoji1, emoji2, emoji3) {
-      if (emoji1) {
+      if (emoji1)
         await msg.react(emoji1);
-      }
-      if (emoji2) {
+      if (emoji2)
         await msg.react(emoji2);
-      }
-      if (emoji3) {
+      if (emoji3)
         await msg.react(emoji3);
-      }
+
       const filter = (reaction, user) => {
         return (
           [emoji1, emoji2, emoji3].includes(reaction.emoji.name) && user.id === message.author.id
@@ -349,19 +347,18 @@ module.exports = {
         .then((collected) => {
           const reaction = collected.first();
 
-          if (reaction.emoji.name === '🟢') {
+          if (reaction.emoji.name == '🟢') {
             msg.reactions.removeAll()
-            mainchef('start', msg)
-          }
-          if (reaction.emoji.name === emoji1) {
-            msg.reactions.removeAll()
-            return mainchef('1', msg, emoji1, amt);
+            mainChef('start', msg);
+          } else if (reaction.emoji.name === emoji1) {
+            msg.reactions.removeAll();
+            return mainChef('1', msg, emoji1, amt);
           } else if (reaction.emoji.name === emoji2) {
-            msg.reactions.removeAll()
-            return mainCihef('2', msg, emoji2, amt);
+            msg.reactions.removeAll();
+            return mainChef('2', msg, emoji2, amt);
           } else if (reaction.emoji.name === emoji3) {
-            msg.reactions.removeAll()
-            return mainchef('3', msg, emoji3, amt);
+            msg.reactions.removeAll();
+            return mainChef('3', msg, emoji3, amt);
           }
         }).catch(() => {
           msg.reactions.removeAll()
@@ -395,9 +392,9 @@ module.exports = {
         });
     }
 
-    function mainchef(reaction, msg, emoji, amt) {
+    function mainChef(reaction, msg, emoji, amt) {
       let emojis = ['🍳', '🥐', '🥑', '🥒', '🥓', '🥔', '🥕', '🥖', '🥗', '🥘', '🥚', '🥜', '🥝', '🥞', '🦐', '🦑'];
-      let names = ['Fry Eggs', 'Croissants', 'Avocado', 'Cucumber', 'Bacon Strips', 'Potatoes', 'Carrots', 'Bread Sticks', 'Salad', 'Curry', 'Boiled Eggs', 'Special Nut Dish', 'Kiwi', 'Pancakes', 'Shrimp', 'Octopus'];
+      let names = ['Fried Eggs', 'Croissants', 'Avocado', 'Cucumber', 'Bacon Strips', 'Potatoes', 'Carrots', 'Bread Sticks', 'Salad', 'Curry', 'Boiled Eggs', 'Special Nut Dish', 'Kiwi', 'Pancakes', 'Shrimp', 'Octopus'];
       if (reaction === 'start') {
         let no1 = Math.floor(Math.random() * emojis.length);
         let no2 = Math.floor(Math.random() * emojis.length);
@@ -408,16 +405,9 @@ module.exports = {
         embed.setDescription(`What would you like to prepare first?\n${emojis[no1]} - ${names[no1]}\n${emojis[no2]} - ${names[no2]}\n${emojis[no3]} - ${names[no3]}`);
         msg.edit(embed);
         chefReact(amt, msg, emojis[no1], emojis[no2], emojis[no3]);
-      }
-      if (reaction === '1' || reaction === '2' || reaction === '3') {
+      } else if (reaction === '1' || reaction === '2' || reaction === '3') {
         let name;
-        let count = 0;
-        emojis.forEach(result => {
-          count++;
-          if (emoji === result) {
-            name = names[count]
-          }
-        });
+        name = names[emojis.indexOf(emoji)];
         if (name.toString().endsWith('s')) {
           embed.setDescription(`Preparing some ${name}..`);
         } else {
@@ -428,6 +418,9 @@ module.exports = {
           let string = '';
           if (name.toString().endsWith('s')) string = 'some'; else string = 'a';
           embed.setDescription(`You have successfully prepared ${string} ${name} and earned **$${amt}**!`);
+          msg.edit(embed);
+          userResult.economy_balance = userResult + amt;
+          userResult.save();
         }, 300);
       }
     }
