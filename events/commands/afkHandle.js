@@ -27,41 +27,41 @@ module.exports = {
 
       if (message.content.toLowerCase().startsWith(prefix + 'afk')) {
         if (message.guild === null) {
-          embed.setDescription('This command is not available for direct messaging, please enter the command in a valid server')
-          return message.channel.send(embed)
+          embed.setDescription('This command is not available for direct messaging, please enter the command in a valid server');
+          return message.channel.send(embed);
         }
         if (args[1]) {
           if (args[1] === 'me') {
-            user = message.author
+            user = message.author;
           } else {
             user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
           }
         } else {
           embed.setDescription('Please specify a user to mark as AFK')
-          return message.channel.send(embed)
+          return message.channel.send(embed);
         }
         if (!user) {
           embed.setDescription('Please specify a user to mark as AFK')
-          return message.channel.send(embed)
+          return message.channel.send(embed);
         }
         if (args[2]) {
-          reason = args.slice(2).join(" ")
+          reason = args.slice(2).join(' ');
         } else {
-          reason = 'No reason was provided'
+          reason = 'No reason was provided';
         }
+        let userResult = await userData.findOne({ userId: user.id });
         use = true
-        if (userData.findOne({ userId: user.id }).then(result => result.isAfk)) {
+        if (userResult.isAfk) {
           embed.setDescription(`<@!${user.id}> is already marked as AFK`);
           use = false
-          return message.channel.send(embed)
+          return message.channel.send(embed);
         }
 
         if (user.bot) {
           embed.setDescription('You cannot mark bots as AFK');
-          return message.channel.send(embed)
+          return message.channel.send(embed);
         } else {
           if (use === false) return;
-          let userResult = await userData.findOne({ userId: user.id });
           embed.setDescription(`**${user.tag}** has now been marked as AFK.\n**Reason:** ${reason}`);
           userResult.isAfk = true;
           userResult.afkReason = reason;
