@@ -37,7 +37,7 @@ module.exports = {
                 if (time.endsWith('s') && time !== '1s') time = time.replace('s', ' seconds');
                 if (time.endsWith('s') && time === '1s') time = time.replace('s', ' second');
                 if (time.endsWith('m')) time = time.replace('m', ' minutes');
-                return message.channel.send(`You have to wait **${time}** before donating again`);
+                return message.channel.send(`You have to wait **${ms(time)}** before donating again`);
             }
         }
 

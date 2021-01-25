@@ -26,7 +26,7 @@ module.exports = {
                 } else {
                     let amt = args[1].replace('$', '');
                     if (isNaN(amt)) return message.channel.send(`**${amt}** is not a valid amount`);
-                    if ((userResult.economy_balance ? userResult.economy_balance : 0) < amt) return message.channel.send(`You do not have **$${amt}** in your bank account`);
+                    if ((userResult.bank_balance ? userResult.bank_balance : 0) < amt) return message.channel.send(`You do not have **$${amt}** in your bank account`);
 
                     userResult.bank_balance = userResult.bank_balance - amt;
                     userResult.economy_balance= userResult.economy_balance + amt;
