@@ -20,7 +20,8 @@ module.exports = async (message, client) => {
 
   if (!message.content.toLowerCase().startsWith('~'))
   logging(embed, message, client)
-
+  
+userData.findOne({ userId: message.author.id }).then(result => {
   if (!result.dmed) {
     embed = new Discord.MessageEmbed();
     embed.setDescription('Please remember that all messages sent to billybobbeep are recorded');
