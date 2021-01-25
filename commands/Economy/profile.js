@@ -56,10 +56,10 @@ module.exports = {
         embed.setAuthor(message.author.username, message.author.displayAvatarURL());
         embed.addField('Job', job, true);
         embed.addField('Job Level', jobLvl, true);
-        embed.addField('Last Applied', lastApplied.toString());
+        //embed.addField('Last Applied', lastApplied.toString());
         embed.addField('Daily Streak', streak.toString());
         embed.addField('Times Fired', timesFired.toString(), true);
-        embed.addField('Last Fired', lastFired.toString(), true) //, 'MMMM Do YYYY, h:mm:ss a', true), true);
+        timesFired > 0 ? embed.addField('Last Fired', lastFired.toString(), true) : null;
 
         message.channel.send(embed);
     }
