@@ -169,7 +169,7 @@ module.exports = {
       } else {
         userResult.job_xp = userResult.job_xp ? userResult.job_xp + gainedXp : gainedXp;
         userResult.economy_work = Date.now() + cooldown;
-        userResult.economy_balance = userResult.economy_balance ? parseInt(userResult.economy_balance) + parseInt(workAmt) : workAmt;
+        userResult.economy_balance = userResult.economy_balance ? parseInt(userResult.economy_balance) + parseInt(workAmt + '.' + decimal) : parseInt(workAmt + '.' + decimal);
 
         let xp = userResult.job_xp;
         if (cashier !== undefined && xp >= info.global.xp.lower.max) {
@@ -317,12 +317,12 @@ module.exports = {
 
               embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
             } else {
-              embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
+              embed.setDescription(`${crossEmoji} You have failed your work. -$${amt.toFixed()}`);
               userResult.economy_balance = userResult.economy_balance - amt;
               msg.edit(embed);
             }
           }
-          embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt}**`);
+          embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt.toFixed()}**`);
           userResult.economy_balance = userResult.economy_balance - amt;
           msg.edit(embed);
           userResult.save();
@@ -362,7 +362,7 @@ module.exports = {
           }
         }).catch(() => {
           msg.reactions.removeAll()
-          amt = amt / 2
+          amt = amt / 2;
           if ((userResult.economy_balance).toString().startsWith('-')) {
             if (
               userResult.job_timesFired === 2 ||
@@ -373,19 +373,19 @@ module.exports = {
                 userResult.job_name = false;
                 userResult.job_timesFired = userResult.job_timesFired ? userResult.job_timesFired + 1 : 1;
                 userResult.job_lastFired = Date.now();
-                embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
+                embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt.toFixed()}`);
             } else if (userResult.job_timesFired === 10) {
               userResult.job_name = false;
               userResult.job_timesFired = 0;
               userResult.job_lastFired = Date.now();
-              embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt}`);
+              embed.setDescription(`${crossEmoji} You have failed your work and unfortunately was demoted. -$${amt.toFixed()}`);
             } else {
-              userResult.economy_balance = userResult.economy_balance - amt;
-              embed.setDescription(`${crossEmoji} You have failed your work. -$${amt}`);
+              userResult.economy_balance = userResult.economy_balance - amt.toFixed();
+              embed.setDescription(`${crossEmoji} You have failed your work. -$${amt.toFixed()}`);
               msg.edit(embed);
             }
           }
-          embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt}**`);
+          embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt.toFixed()}**`);
           userResult.economy_balance = userResult.economy_balance - amt;
           msg.edit(embed);
           userResult.save();
@@ -417,7 +417,7 @@ module.exports = {
         setTimeout(() => {
           let string = '';
           if (name.toString().endsWith('s')) string = 'some'; else string = 'a';
-          embed.setDescription(`You have successfully prepared ${string} ${name} and earned **$${amt}**!`);
+          embed.setDescription(`You have successfully prepared ${string} ${name} and earned **$${workAmt.toFixed()}**!`);
           msg.edit(embed);
           userResult.economy_balance = (userResult.economy_balance + workAmt).toFixed();
           userResult.save();
