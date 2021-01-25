@@ -46,7 +46,7 @@ module.exports = {
         userResult.economy_balance = userResult.economy_balance - amt;
         userResult.save();
         userData.findOne({ userId: user.id }).then(result => {
-            result.economy_balance = resultt.economy_balance + amt;
+            result.economy_balance = result.economy_balance + amt;
             result.save();
         });
     }
