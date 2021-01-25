@@ -54,10 +54,8 @@ module.exports = {
         if (userResult.isAfk) {
           embed.setDescription(`<@!${user.id}> is already marked as AFK`);
           use = false
-          return message.channel.send(embed);
-        }
-
-        if (user.bot) {
+          message.channel.send(embed);
+        } else if (user.bot) {
           embed.setDescription('You cannot mark bots as AFK');
           return message.channel.send(embed);
         } else {
