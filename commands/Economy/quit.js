@@ -4,26 +4,24 @@ module.exports = {
   catagory: 'economy',
   guildOnly: true,
   async execute(message, prefix, client) {
-    const guildData = require('../../events/client/database/models/guilds.js');
     const userData = require('../../events/client/database/models/users.js');
-    let guildResult = await guildData.findOne({ guildId: message.guild.id });
-    let userResult = await userData.findOne({ userId: message.author.id });
+    const userResult = await userData.findOne({ userId: message.author.id });
 
-    let cashier = userResult.job === 'cashier' ? true : undefined;
-    let teacher = userResult.job === 'teacher' ? true : undefined;
-    let waiter = userResult.job === 'waiter' ? true : undefined;
-    let receptionist = userResult.job === 'receptionist' ? true : undefined;
-    let architect = userResult.job === 'architect' ? true : undefined;
-    let lifeGuard = userResult.job === 'life guard' ? true : undefined;
-    let nurse = userResult.job === 'nurse' ? true : undefined;
-    let police = userResult.job === 'police' ? true : undefined;
-    let engineer = userResult.job === 'engineer' ? true : undefined;
-    let chef = userResult.job === 'chef' ? true : undefined;
-    let clinicalScientist = userResult.job === 'clinical scientist' ? true : undefined;
-    let headScientist = userResult.job === 'head scientist' ? true : undefined;
-    let lawyer = userResult.job === 'lawyer' ? true : undefined;
-    let socialWorker = userResult.job === 'social worker' ? true : undefined;
-    let doctor = userResult.job === 'doctor' ? true : undefined;
+    let cashier = userResult.job_name === 'cashier' ? true : undefined;
+    let teacher = userResult.job_name === 'teacher' ? true : undefined;
+    let waiter = userResult.job_name === 'waiter' ? true : undefined;
+    let receptionist = userResult.job_name === 'receptionist' ? true : undefined;
+    let architect = userResult.job_name === 'architect' ? true : undefined;
+    let lifeGuard = userResult.job_name === 'life guard' ? true : undefined;
+    let nurse = userResult.job_name === 'nurse' ? true : undefined;
+    let police = userResult.job_name === 'police' ? true : undefined;
+    let engineer = userResult.job_name === 'engineer' ? true : undefined;
+    let chef = userResult.job_name === 'chef' ? true : undefined;
+    let clinicalScientist = userResult.job_name === 'clinical scientist' ? true : undefined;
+    let headScientist = userResult.job_name === 'head scientist' ? true : undefined;
+    let lawyer = userResult.job_name === 'lawyer' ? true : undefined;
+    let socialWorker = userResult.job_name === 'social worker' ? true : undefined;
+    let doctor = userResult.job_name === 'doctor' ? true : undefined;
 
     if (cashier === undefined &&
       teacher === undefined &&
@@ -46,7 +44,7 @@ module.exports = {
 }
 
 async function reactions(message, msg, guildData, client) {
-  let job = userResult.job;
+  let job = userResult.job_name;
 
   let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);
   let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);
@@ -65,7 +63,7 @@ async function reactions(message, msg, guildData, client) {
         msg.reactions.removeAll();
         message.channel.send(`${tick} Successfully quit your job. (${job})`);
         userData.findOne({ userId: message.author.id }).then(result => {
-          result.job_name = false;
+          result.job_name_name = false;
         });
       } else {
         msg.reactions.removeAll();
