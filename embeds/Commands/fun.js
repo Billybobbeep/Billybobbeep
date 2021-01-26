@@ -32,6 +32,7 @@ module.exports = (message, prefix) => {
       }
     }*/
 
+    const commandFolders = fs.readdirSync('./commands').filter(file => !file.endsWith('.js'));
     const PageTwo = new Discord.MessageEmbed()
     .setTitle('Billybobbeep | Economy Commands')
     .setFooter('TIP: Press the arrows to switch pages')
