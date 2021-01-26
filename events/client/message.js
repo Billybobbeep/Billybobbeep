@@ -39,8 +39,7 @@ function redirect(message, client) {
         userData.findOne({ userId: message.author.id }).then(result => {
             if (!result) {
                 let newData = new userData({
-                    guildId: message.guild.id,
-                    memberId: message.author.id
+                    userId: message.author.id
                 });
                 newData.save();
             }
