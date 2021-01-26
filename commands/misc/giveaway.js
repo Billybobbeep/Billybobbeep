@@ -9,6 +9,7 @@ module.exports = {
   usage: 'giveaway [time] [channel] [prize]',
   guildOnly: true,
   execute (message, prefix, client) {
+    if (!message.member.hasPermission('MANAGE_SERVER')) return message.channel.send('You must have `Manage Server` permissions to use this command');
     guildData.findOne({ guildId: message.guild.id }).then(async result => {
       let args = message.content.slice(prefix.length).trim().split(/ +/g);
       if (!args[1]) return message.channel.send('Please specify a time');
