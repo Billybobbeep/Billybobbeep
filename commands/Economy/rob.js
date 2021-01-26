@@ -17,7 +17,7 @@ module.exports = {
         if (user.bot) return message.channel.send('You cannot rob a bot');
         
         if (!userResult) return message.channel.send(`It appears as <@!${user.id}> has not started working yet 🤔`);
-        if (!userResult.economy_balance || userResult.economy_balance === 0) return message.channel.send(`It appears as <@!${user.id}> has not started working yet 🤔`);
+        if (!userResult.economy_balance || userResult.economy_balance < 5) return message.channel.send(`It appears as <@!${user.id}> is bankrupt 🤔`);
         if (userResult.economy_balance < 100) return message.channel.send(`<@!${user.id}> only has \`$${userResult.economy_balance}\`, not worth robbing`);
         if (userData.findOne({ userId: message.author.id }).then(result => result.economy_balance) < 50) return message.channel.send(`You need \`$50+\` to rob a user`);
         

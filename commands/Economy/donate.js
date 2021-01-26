@@ -27,6 +27,7 @@ module.exports = {
         let amt = parseInt(args[2]);
         if (isNaN(amt)) return message.channel.send(`Please enter a valid number to donate`);
         if (amt > userResult.economy_balance) return message.channel.send(`You do not have **${amt}** in your wallet`);
+        if (amt < 5) return message.channel.send(`You cannot donate **$${amt}**, you must donate **$5** or above`)
 
         if (userResult.economy_lastDonated) {
             let lastRun = userResult.economy_lastDonated;
