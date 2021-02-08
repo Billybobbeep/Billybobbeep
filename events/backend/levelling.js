@@ -13,33 +13,8 @@ module.exports = async (message, client) => {
       let args = message.content.split(/ +/g);
       if (args[0].length < 2 && !args[1]) return;
       if (!isNaN(message.content)) return;
-      let xpForLevel = 30;
+      let xpForLevel = 150;
       let currlev = memberResult.level || 0;
-      if (currlev > 20 && currlev < 30) {
-        xpForLevel = 35
-      } else if (currlev >= 30 && currlev < 40) {
-        xpForLevel = 40
-      } else if (currlev >= 40 && currlev < 50) {
-        xpForLevel = 45
-      } else if (currlev >= 50 && currlev < 60) {
-        xpForLevel = 50
-      } else if (currlev >= 70 && currlev < 80) {
-        xpForLevel = 55
-      } else if (currlev >= 90 && currlev < 100) {
-        xpForLevel = 60
-      } else if (currlev >= 100 && currlev < 110) {
-        xpForLevel = 100
-      } else if (currlev >= 110 && currlev < 120) {
-        xpForLevel = 110
-      } else if (currlev >= 120 && currlev < 140) {
-        xpForLevel = 120
-      } else if (currlev >= 140 && currlev < 160) {
-        xpForLevel = 130
-      } else if (currlev >= 160 && currlev < 180) {
-        xpForLevel = 140
-      } else if (currlev >= 180) {
-        xpForLevel = 150
-      }
 
       let gainedXp = Math.round(Math.random() * 5);
       if (gainedXp < 1) gainedXp = Math.round(Math.random() * 5);
