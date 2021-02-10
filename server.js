@@ -10,19 +10,11 @@ module.exports = async (client) => {
   app.use('/style', express.static('style'));
   app.set('view engine', 'ejs');
 
-  app.post('/api/database/:name/get', (req, res) => {
-    if (req.params.name !== 'all') res.json('Error: Invalid database');
-    key = req.params.key;
-    bot.data(function(client, data) { res.send(data) });
-  });
   app.get('/', function(req, res) {
     res.redirect('/home');
   });
   app.get('/home', function(req, res) {
     res.sendFile(__dirname + '/public/index.html');
-  });
-  app.get('/home/status', function(req, res) {
-    res.redirect('/home/analytics');
   });
   app.get('/home/analytics', (req, res) => {
     res.sendFile(__dirname + '/public/analytics.html')
@@ -31,6 +23,14 @@ module.exports = async (client) => {
     res.redirect('https://discord.com/invite/qNJEj3s');
   });
 
+  app.post('/api/:name', (req, res) => {
+    if (req.params.name === 'all') {
+      bot.data(function(client, data) { res.send(data) });
+    } else {
+      res.status(404);
+      res.json('Error: Invalid database');
+    }
+  });
   app.use(function(req, res) {
     if (req.url.toLowerCase().startsWith('/api')) {
       res.status(404);

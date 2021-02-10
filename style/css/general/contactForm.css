@@ -13,7 +13,7 @@ body{
 /* contact form css */
 
 #contact-section{
-  background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.9)),url(/style/Images/contactUsBack.png);
+  background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.9));
   background-size: cover;
   background-position: top;
   height: 100%;
@@ -25,7 +25,7 @@ body{
 
 @media (max-width: 1130px){
   #contact-section {
-    background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.9)),url(/style/Images/Sign\ Model.png);
+    background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.9));
     background-size: cover;
     background-position: top;
     background-repeat: no-repeat;

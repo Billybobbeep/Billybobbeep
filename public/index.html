@@ -3,89 +3,76 @@
 
 <head>
 	<title>Home | Billybobbeep</title>
-  <link href="/style/home.css" rel="stylesheet">
-  <link href="/style/header.css" rel="stylesheet">
-  <link href="/style/contactForm.css" rel="stylesheet">
-  <link href="/style/footer.css" rel="stylesheet">
+  <link href="/style/css/min/global/footer.min.css" rel="stylesheet">
+  <link href="/style/css/min/global/header.min.css" rel="stylesheet">
+  <link href="/style/css/min/general/conatctForm.min.css" rel="stylesheet">
+  <link href="/style/css/min/general/home.min.css" rel="stylesheet">
   <link href="/style/image/sloosh.png" rel="icon">
-  <meta name="viewport" content="width=device-width, inital-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta charset="UTF-8">
+
+  <meta name="twitter:card" value="summary">
+  <meta name="twitter:title" content="Billybobbeep">
+  <meta name="twitter:description" content="Spice up your Discord server with Billybobbeep">
+  <meta name="twitter:image" content="https://billybobbeep.tyler2p.repl.co/icon.png">
+
+  <meta name="og:title" content="Billybobbeep" />
+  <meta name="og:url" content="https://billybobbeep.tyler2p.repl.co/" />
+  <meta name="og:description" content="Spice up your Discord server with Billybobbeep">
+  <meta name="og:image" content="https://billybobbeep.tyler2p.repl.co/icon.png" />
 </head>
-<header>
-	<nav>
-		<div class="hamburger">
-			<div class="line"></div>
-			<div class="line"></div>
-			<div class="line"></div>
-		</div>
-		<ul class="nav-links">
-			<li><a class="menuButton currentPage" href="#">Home</a></li>
-			<li><a class="menuButton" href="/home/status">Status</a></li>
-		</ul>
-	</nav>
-</header>
 <body class="overflow">
-  <img class="firstImage" src="/style/image/cover.webp">
-  <section id="aboutUs">
-	<span class="title">About Billy</span>
-	<ul>
-		<li class="text">Billybobbeep is a discord bot, built for <a id="serverName" href="https://www.discord.com/invite/qNJEj3s" target="null">★𝕊𝕢𝕦𝕚𝕕𝕕𝕚𝕖𝕤🦋</a></li>
-		<li class="text">Created by- <strong>Spoink#2793</strong></li>
-		<li class="text">Scripted by- <strong>Spoink#2793</strong> & <strong>Will Os#9857</strong></li>
-		<li class="text">Name development & suggestions:- <strong>wibbleywobbley♡#1564</strong></li>
-		<li class="para">
-			It has been a huge pleasure to script & develop Billybobbeep and a great thanks for all the support
-			I have received throughout the development processes.
-			However, Billybobbeep is not finished yet! We are working towards a brand-new version 2.0.
-		</li>
-	</ul>
-  </section>
-
-  <section id="contactUs">
-	<div class="container">
-		 <h2 class="title">Contact Us</h2>
-	   <p></p>
-	  <div class="contact-form">
-
-		<div>
+	<header>
+		<div class="logo">
+			<img style="display:flex;justify-content:center;margin:auto;" src="/style/image/Larger sloosh.png" height="200px" width="200px">
+			<div class="text" style="font-family:Arial;">Billybobbeep</div>
 		</div>
-		
-	 <div>
-	 <form action="/contact/submit" autocomplete="off">
-		 <input type="text" id="fName" name="fName" class="first-name field" placeholder="First Name" required>
-		<input type="text" id="sName" name="sName" class="last-name field" placeholder="Last Name"><br>
-		<input type="text" id="discord" name="discord" class="discord field" placeholder="Discord username & tag" required><br>
-		<input type="text" id="subject" name="subject" class="subject field" placeholder="Subject" required><br>
-		<textarea name="message" id="message" class="message-content field" placeholder="Message" rows="5" required></textarea><br>
-		<button class="submit">Send Message</button> 
-	  </form>   
-		</div>
-	  </div>
-	</div>
-	<div class="wrapper">
-		<div class="button">
-			<a class="socialLink" href="https://billybobbeep.tyler2p.repl.co/discord/invite" target="null">
-			<div class="icon">
-				<i class="fab fa-discord"></i></div>
-				<span>Discord</span>
+		<nav>
+			<div class="hamburger">
+				<div class="line"></div>
+				<div class="line"></div>
+				<div class="line"></div>
+			</div>
+			<ul class="nav-links">
+				<li><a class="menuButton currentPage" href="/home">Home</a></li>
+				<li><a class="menuButton" href="/dashboard">Dashboard</a></li>
+				<li><a class="menuButton" href="/home/analytics">Analytics</a></li>
+			</ul>
+		</nav>
+		<div class="h-black-line"></div>
+	</header>
+	<section id="aboutUs">
+		<span class="title">About Billy</span>
+		<ul>
+			<li class="text">Billybobbeep is a discord bot, built for <a id="serverName" href="https://www.discord.com/invite/qNJEj3s" target="null">★𝕊𝕢𝕦𝕚𝕕𝕕𝕚𝕖𝕤🦋</a></li>
+			<li class="text">Created by- <strong>Spoink#2793</strong></li>
+			<li class="text">Scripted by- <strong>Spoink#2793</strong> & <strong>Will Os#9857</strong></li>
+			<li class="text">Name development & suggestions- <strong>wibbleywobbley♡#1564</strong></li>
+		</ul>
+	</section>
+	<section id="contactUs">
+		<div class="wrapper">
+			<div class="button">
+				<a class="socialLink" href="https://billybobbeep.tyler2p.repl.co/discord/invite" target="null">
+					<div class="icon">
+						<i class="fab fa-discord"></i>
+					</div>
+					<span>Discord</span>
 				</a>
 			</div>
-		<div class="button">
-			<a class="socialLink" href="https://github.com/Tyler2P/Billybobbeep" target="null">
-			<div class="icon">
-				<i class="fab fa-github"></i></div>
-				<span>Github</span>
+			<div class="button">
+				<a class="socialLink" href="https://github.com/Tyler2P/Billybobbeep" target="null">
+					<div class="icon">
+						<i class="fab fa-github"></i>
+					</div>
+					<span>Github</span>
 				</a>
 			</div>
 		</div>
 	</section>
-
-  <script src="/style/header.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="/style/contactForm.js"></script>
-  <script src="/style/footer.js"></script>
-   <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-  <script src="/style/removeLinks.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="/style/javascript/min/global/header.min.js"></script>
+	<script src="/style/javascript/min/global/footer.min.js"></script>
+	<script src="/style/javascript/min/global/removeLinks.min.js"></script>
+	<script src="/style/javascript/min/general/contactForm.min.js"></script>
   </body>
 </html>

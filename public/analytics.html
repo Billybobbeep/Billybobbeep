@@ -3,29 +3,27 @@
 
 <head>
 	<title>Analytics | Billybobbeep</title>
-	<link href="/style/events.css" rel="stylesheet">
-	<link href="/style/header.css" rel="stylesheet">
+	<link rel="stylesheet" href="/style/css/min/general/analytics.min.css">
+	<link rel="stylesheet" href="/style/css/min/global/header.min.css">
+	<link rel="stylesheet" href="/style/css/min/global/footer.min.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:400,700">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-	<link href="/style/image/sloosh.png" rel="icon">
+	<link rel="icon" href="/style/image/sloosh.png">
+
 	<meta name="viewport" content="width=device-width, inital-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta charset="UTF-8">
-	<link href="/style/footer.css" rel="stylesheet">
+
+	<meta name="twitter:card" value="summary">
+	<meta name="twitter:title" content="Billybobbeep">
+	<meta name="twitter:description" content="Spice up your Discord server with Billybobbeep">
+	<meta name="twitter:image" content="https://billybobbeep.tyler2p.repl.co/icon.png">
+
+	<meta name="og:title" content="Billybobbeep">
+	<meta name="og:url" content="https://billybobbeep.tyler2p.repl.co/home/analytics">
+	<meta name="og:description" content="Spice up your Discord server with Billybobbeep">
+	<meta name="og:image" content="https://billybobbeep.tyler2p.repl.co/icon.png">
 </head>
-<header>
-	<nav>
-		<div class="hamburger">
-			<div class="line"></div>
-			<div class="line"></div>
-			<div class="line"></div>
-		</div>
-		<ul class="nav-links">
-			<li><a class="menuButton" href="/home">Home</a></li>
-			<li><a class="menuButton currentPage" href="/home/status">Status</a></li>
-		</ul>
-	</nav>
-</header>
 <style>
 	iframe {
 		overflow: hidden;
@@ -33,37 +31,46 @@
 		height: 150vh;
 	}
 </style>
-
 <body class="overflow">
-	<span class="title">Public Analytics</span>
-  <span class="text">Below is some of the data we collect whilst using the site.</span>
-
-  <iframe src="https://stats.uptimerobot.com/51xN6s0O4K"></iframe>
-
-  <span class="text"><u>Discord Server Invites</u></span><br>
-  <span class="text" id="TM">Total Invites: 45</span><br>
-  <span class="text" id="SM">Spoink's Invites: 32</span><br>
-  <span class="text" id="OM">Other Invites: 12</span><br>
-  <span class="text" id="WM">Website Invites: 1</span>
-
-  <section>
-  <div class="wrapper">
-    <div class="button">
-			<a class="socialLink" href="https://billybobbeep.tyler2p.repl.co/discord/invite" target="null">
-			<div class="icon">
-				<i class="fab fa-discord"></i></div>
+	<header>
+		<nav>
+			<div class="hamburger">
+				<div class="line"></div>
+				<div class="line"></div>
+				<div class="line"></div>
+			</div>
+			<ul class="nav-links">
+				<li><a class="menuButton" href="/home">Home</a></li>
+				<li><a class="menuButton" href="/dashboard">Dashboard</a></li>
+				<li><a class="menuButton currentPage" href="/home/analytics">Analytics</a></li>
+			</ul>
+		</nav>
+		<div class="h-black-line"></div>
+	</header>
+	<h1 class="title">Public Analytics</h1>
+	<iframe scrolling="no" src="https://stats.uptimerobot.com/51xN6s0O4K"></iframe>
+	<section>
+		<div class="wrapper">
+			<div class="button">
+				<a class="socialLink" href="https://billybobbeep.tyler2p.repl.co/discord/invite" target="null">
+				<div class="icon">
+					<i class="fab fa-discord"></i>
+				</div>
 				<span>Discord</span>
 				</a>
 			</div>
-		<div class="button">
-			<a class="socialLink" href="https://github.com/Tyler2P/Billybobbeep" target="null">
-			<div class="icon">
-				<i class="fab fa-github"></i></div>
+			<div class="button">
+				<a class="socialLink" href="https://github.com/Tyler2P/Billybobbeep" target="null">
+				<div class="icon">
+					<i class="fab fa-github"></i>
+				</div>
 				<span>Github</span>
 				</a>
 			</div>
 		</div>
 	</section>
-  <script src="/style/footer.js"></script>
+	<script src="/style/javascript/min/global/footer.min.js"></script>
+	<script src="/style/javascript/min/global/header.min.js"></script>
+	<script src="/style/javascript/min/global/removeLinks.min.js"></script>
 </body>
 </html>
