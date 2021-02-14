@@ -169,7 +169,7 @@ module.exports = {
       } else {
         userResult.job_xp = userResult.job_xp ? userResult.job_xp + gainedXp : gainedXp;
         userResult.economy_work = Date.now() + cooldown;
-        userResult.economy_balance = userResult.economy_balance ? parseInt(userResult.economy_balance) + parseInt(workAmt + '.' + decimal) : parseInt(workAmt + '.' + decimal);
+        userResult.economy_balance = userResult.economy_balance ? parseInt(userResult.economy_balance) + Math.round(parseInt(workAmt + '.' + decimal)) : parseInt(workAmt + '.' + decimal);
 
         let xp = userResult.job_xp;
         if (cashier !== undefined && xp >= info.global.xp.lower.max) {
@@ -291,7 +291,7 @@ module.exports = {
               msg.edit(edit3);
             }
           }
-          userResult.economy_balance = userResult.economy_balance ? parseInt(userResult.economy_balance) + workAmt : workAmt;
+          userResult.economy_balance = userResult.economy_balance ? parseInt(userResult.economy_balance) + Math.round(parseInt(workAmt + '.' + decimal)) : parseInt(workAmt + '.' + decimal);
           if (!levelledUp)
             userResult.save();
         }).catch(() => {
@@ -386,7 +386,7 @@ module.exports = {
             }
           }
           embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt.toFixed()}**`);
-          userResult.economy_balance = userResult.economy_balance - amt;
+          userResult.economy_balance = userResult.economy_balance - amt.toFixed();
           msg.edit(embed);
           userResult.save();
         });

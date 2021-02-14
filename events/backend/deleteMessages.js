@@ -27,7 +27,7 @@ module.exports = async (message, client) => {
         : '*This message contained no content.*';
       message.attachments
         ? message.attachments.forEach(attachment =>
-          attachments.push(attachment.proxyURL)
+          attachments.push(`[${attachment.name}](${attachment.proxyURL})`)
         )
         : attachments.push('Null');
       if (!attachments.includes('Null')) attachments = attachments.join('\n');

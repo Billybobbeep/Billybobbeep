@@ -35,7 +35,7 @@ module.exports = (newMessage, oldMessage, client) => {
 		return logging(embed, message, client);
 	  });
 	}
-	if (oldMessage === newMessage) return;
+	if ((oldMessage.content).toLowerCase() === (newMessage.content).toLowerCase()) return;
   
 	if (
 	  (newMessage.content.toLowerCase().includes('https://') &&

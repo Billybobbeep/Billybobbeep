@@ -33,4 +33,5 @@ userData.findOne({ userId: message.author.id }).then(result => {
       result.save();
     });
   }
+});
 }

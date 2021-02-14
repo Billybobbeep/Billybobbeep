@@ -28,7 +28,7 @@ module.exports = {
         if (!reason) return message.channel.send('Please specify a reason');
         if (!member) return message.channel.send('I could not find the member you provided');
         if (!time) return message.channel.send('Please specify a time');
-        if (user.id === message.guild.owner.id) message.channel.send('I cannot mute the guild owner');
+        if (user.id === message.guild.owner.id) return message.channel.send('I cannot mute the guild owner');
         try {
           if (time.endsWith('h') || time.endsWith('m')) time = ms(time); else return message.channel.send('The time can only be in hours or minutes');
         } catch {
