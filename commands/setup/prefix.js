@@ -9,21 +9,23 @@ module.exports = (message, prefix, embedColor) => {
     .setTitle('Billybobbeep | Setup Command')
     .setDescription(`With this command you can change the servers default prefix.\n**Usage** \`${prefix}setup prefix [newPrefix]\``)
     .setColor(embedColor)
-    message.channel.send(embed)
+    message.channel.send(embed);
   } else {
     let newPrefix = args[2].toLowerCase();
     if (newPrefix === prefix) return message.channel.send(`Your prefix is already ${newPrefix}`);
-    if (newPrefix === '~' || newPrefix === 'reset') {
-      result.prefix = '~';
-      result.save().then(() => {
-        message.channel.send(`This servers prefix has been set to ${newPrefix}`);
-      });
-    } else {
-      if (!isNaN(newPrefix)) return message.channel.send('The prefix cannot be a number');
-      result.prefix = newPrefix;
-      result.save().then(() => {
-        message.channel.send(`This servers prefix has been set to \`${newPrefix}\``);
-      });
-    }
+    guildData.findOne({ guildId: message.guild.id }).then(result => {
+      if (newPrefix === '~' || newPrefix === 'reset') {
+        result.prefix = '~';
+        result.save().then(() => {
+          message.channel.send(`This servers prefix has been set to ${newPrefix}`);
+        });
+      } else {
+        if (!isNaN(newPrefix)) return message.channel.send('The prefix cannot be a number');
+        result.prefix = newPrefix;
+        result.save().then(() => {
+          message.channel.send(`This servers prefix has been set to \`${newPrefix}\``);
+        });
+      }
+    });
   }
 }
