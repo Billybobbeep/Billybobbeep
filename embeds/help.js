@@ -14,12 +14,8 @@ module.exports = {
         '*Prompts you to view the commands.*\n' +
         `${prefix}info\n` +
         '*Shows info about the bot.*\n' +
-        `${prefix}credits\n` +
-        '*Provides you with Billybobbeep\'s development credits*\n' +
         `${prefix}help\n` +
-        '*Shows a quick briefing.*\n' +
-        `${prefix}setup\n` +
-        '*To set up billybobbeep in your own server.*')
+        '*Shows a quick briefing.*')
       .setFooter(`Requested by: ${message.author.tag}`)
       .setTimestamp()
       guildData.findOne({ guildId: message.guild.id }).then(result => {
