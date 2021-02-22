@@ -28,7 +28,7 @@ module.exports.add = (guild, user, client) => {
 
             let loggingChannel = client.channels.cache.get(result.loggingChannel);
             if (loggingChannel)
-                loggingChannel.send(msg).catch(() => {return});
+                loggingChannel.send(embed).catch(() => {return});
         });
     });
 }
@@ -62,7 +62,7 @@ module.exports.remove = (guild, user, client) => {
                 embed.setColor(result.embedColor);
                 let loggingChannel = client.channels.cache.get(result.loggingChannel);
                 if (loggingChannel)
-                    loggingChannel.send(msg).catch(() => {return});
+                    loggingChannel.send(embed).catch(() => {return});
             });
         }, 100);
     });
