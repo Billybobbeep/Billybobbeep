@@ -22,9 +22,14 @@ module.exports = async (client) => {
     res.redirect('https://discord.com/oauth2/authorize?client_id=731498842813366304&permissions=8&scope=bot');
   });
 
-  app.post('/images/guilds/:id', function(req, res) {
+  app.get('/images/guilds/:id', function(req, res) {
     if (client.guilds.cache.get(req.params.id)) {
-      res.json({ data: { icon: client.guilds.cache.get(req.params.id).iconURL({ dynamic: true }) }, error: null });
+      //res.json({ data: { icon: client.guilds.cache.get(req.params.id).iconURL({ dynamic: true }) }, error: null });
+      try {
+        res.redirect(client.guilds.cache.get(req.params.id).iconURL({ dynamic: true }));
+      } catch {
+        res.json({ error: 'Internal error', data: null });
+      }
     } else {
       res.status(404);
       res.json({ error: 'Guild not found', data: null });
