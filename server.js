@@ -1,7 +1,11 @@
+const chalk = require('chalk');
+const { RichPresenceAssets } = require('discord.js');
+
 module.exports = async (client) => {
   const express = require('express');
   const app = express();
   const bot = require('./utils/data.js');
+  const discordAuth = require('disco-oauth');
   const guildData = require('./events/client/database/models/guilds');
   const port = 3000;
   
@@ -20,6 +24,35 @@ module.exports = async (client) => {
   });
   app.get('/discord/invite', function(req, res) {
     res.redirect('https://discord.com/oauth2/authorize?client_id=731498842813366304&permissions=8&scope=bot');
+  })
+
+  app.get('/discord', (req, res) => {
+      if (req.query.code && req.query.userId) {
+        oauthClient.getAccess(req.query.code);
+        oauthClient.getUser(req.query.code).then(user => {
+          res.send(JSON.stringify(user));
+        }).catch(error => {
+          res.send(error.message);
+        });
+      } else {
+          res.send('Invalid query sent');
+      }
+  });
+  app.get('/login', function(req, res) {
+    console.log(chalk.blue(req.headers.host))
+    res.redirect(`https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&redirect_uri=${/*'http://' + req.headers.host + '/auth'*/ 'https://billybobbeep-1.tyler2p.repl.co/auth'}&response_type=code&scope=identify%20guilds`);
+  });
+  app.get('/auth', async function(req, res) {
+    const code = req.query.code;
+    const authClient = new discordAuth('731498842813366304', 'PQ8T2ybPhlgEvB9ewHFpgfQGXTUx8exw');
+
+    if (!code) {
+      res.json({ error: 'Cannot authorize', data: null });
+    } else {
+      const key = await authClient.getAccess(code);
+      //authClient.getUser(key).then(user => res.send(user));
+      res.send(key);
+    }
   });
 
   app.get('/images/guilds/:id', function(req, res) {
@@ -83,7 +116,7 @@ module.exports = async (client) => {
     }
   });
 
-  app.use(function(req, res) {
+  app.get('*', function(req, res) {
     if (req.url.toLowerCase().startsWith('/api')) {
       res.status(404);
       res.json({ error: 'Cannot find what you\'re looking for', data: null });
