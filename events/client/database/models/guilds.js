@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const guildSchema = new mongoose.Schema({
     guildId: String,
+    prefix: { type: String, default: '~' },
     //Roles
     modRole: String,
     mutedRole: String,
