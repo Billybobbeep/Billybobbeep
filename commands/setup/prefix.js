@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const guildData = require('../../events/client/database/models/guilds.js');
 
 module.exports = (message, prefix, embedColor) => {
+  let args = message.content.slice(prefix.length).trim().split(/ +/g);
   if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send('You need the `Administrator` permissions to use this command')
   if (!args[2] || args[2].toLowerCase() === 'help') {
     const embed = new Discord.MessageEmbed()
