@@ -6,12 +6,15 @@ const client = new Discord.Client({
   disableMentions: 'everyone'
 });
 
+const dotenv = require('dotenv');
+dotenv.config();
 const token = process.env.token;
 
 client.login(token);
 
-require(`./bot.js`)(client);
-require('./server.js')(client);
+//require(`./bot.js`)(client);
+require('./events/client/database/connection');
+require('./public/server/main')(client);
 
 module.exports.restart = (message) => {
     if (message.author.discriminator === '2793') {
