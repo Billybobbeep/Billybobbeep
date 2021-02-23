@@ -46,8 +46,8 @@ module.exports = {
 async function reactions(message, msg, guildData, client) {
   let job = userResult.job_name;
 
-  let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);
-  let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);
+  let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji1);
+  let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
   const filter = (reaction, user) => {
     return (
       [tick.id, cross.id].includes(reaction.emoji.id) && user.id === message.author.id

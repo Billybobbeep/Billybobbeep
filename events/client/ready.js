@@ -12,7 +12,7 @@ module.exports = (client) => {
 module.exports.reconnecting = (client) => {
   let guild = client.guilds.cache.get('733442092667502613');
   let channel = guild.channels.cache.get('733595548577300542');
-  let user = guild.members.cache.get(require('../../structure/config.json').SpoinkID);
+  let user = guild.members.cache.get(require('../../utils/config.json').SpoinkID);
   try {
     user.send(`${client.user.username} cannot connect`);
   } catch {

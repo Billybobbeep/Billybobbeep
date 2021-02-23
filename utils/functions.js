@@ -1,5 +1,5 @@
 const guildData = require('../events/client/database/models/guilds');
-const guildID = require('../structure/config.json').ServerId;
+const guildID = require('../utils/config.json').ServerId;
 
 module.exports.logging = function(msg, message, client, option) {
     if (typeof message === 'string') {

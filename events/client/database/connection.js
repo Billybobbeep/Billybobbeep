@@ -9,7 +9,7 @@ module.exports = () => {
 
     //Connect to mongoDB
     function connect() {
-        mongoose.connect(process.env.mongoDb, dbOptions);
+        mongoose.connect(process.env.mongoDB, dbOptions).catch(() => console.log(chalk.red('MongoDB connection failed, please check internet connection and activation key.')))
     }
     connect();
     mongoose.set('useFindAndModify', false);

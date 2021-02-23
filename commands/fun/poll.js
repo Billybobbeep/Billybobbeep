@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const configFile = require('../../structure/config.json');
+const configFile = require('../../utils/config.json');
 const guildData = require('../../events/client/database/models/guilds.js');
 
 //[Main letables]\\

@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const configFile = require('../../structure/config.json');
+const configFile = require('../../utils/config.json');
 let embed = new Discord.MessageEmbed();
 const guildData = require('../client/database/models/guilds');
 const userData = require('../client/database/models/users');

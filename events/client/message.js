@@ -1,4 +1,4 @@
-const configFile = require('../../structure/config.json');
+const configFile = require('../../utils/config.json');
 const guildData = require('../client/database/models/guilds');
 const { MessageEmbed } = require('discord.js');
 const { relativeTimeRounding } = require('moment');

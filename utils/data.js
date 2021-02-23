@@ -1,5 +1,5 @@
 module.exports.data = function(client, callback) {
-    const configFile = require('../structure/config.json');
+    const configFile = require('../utils/config.json');
     let totalNum = client.guilds.cache.get(configFile.ServerId).members.cache.array();
     let totalOnlineNum = client.guilds.cache.get(configFile.ServerId).members.cache.filter(m => m.presence.status != 'offline').array();
     let totalBotNum = client.guilds.cache.get(configFile.ServerId).members.cache.filter(m => m.user.bot);

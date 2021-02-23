@@ -1,5 +1,5 @@
 const { Message } = require('discord.js');
-const configFile = require('../../structure/config.json');
+const configFile = require('../../utils/config.json');
 const guildData = require('../client/database/models/guilds');
 
 module.exports = (member, client) => {

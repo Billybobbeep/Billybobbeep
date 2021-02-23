@@ -3,7 +3,7 @@ module.exports = {
     description: 'Update the member stats',
     catagory: 'other',
     execute (message, prefix, client) {
-        const configFile = require('../../structure/config.json');
+        const configFile = require('../../utils/config.json');
         const guildData = require('../../events/client/database/models/guilds.js');
         guildData.findOne({ guildId: message.guild.id }).then(result => {
             let countChannel = {

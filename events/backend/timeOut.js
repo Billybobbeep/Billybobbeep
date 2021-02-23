@@ -58,8 +58,8 @@ function application(db, client) {
             embed.setColor('#447ba1');
             embed.setAuthor(user.username, user.displayAvatarURL());
             let failed = false;
-            let tick = client.emojis.cache.get(require('../../structure/config.json').TickEmoji1);
-            let cross = client.emojis.cache.get(require('../../structure/config.json').CrossEmoji);
+            let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji1);
+            let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
             let results = [tick, cross, tick];
             let result1 = Math.floor(Math.random() * results.length);
             let result2 = Math.floor(Math.random() * results.length);
