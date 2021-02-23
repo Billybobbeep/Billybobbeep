@@ -1,3 +1,5 @@
 module.exports = {
-    token: 'your-token-here'
+    token: 'client-token',
+    secret: 'client-secret',
+    mongoDb: 'mongoDB-connection-key'
 }
