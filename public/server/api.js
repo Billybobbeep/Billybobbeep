@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { Client } = require('discord.js');
 const client = new Client();
-client.login(require('../../structure/auth').token);
+client.login(process.env.token);
 
 router.get('/api/images/guilds/:id', function(req, res) {
     if (client.guilds.cache.get(req.params.id)) {
