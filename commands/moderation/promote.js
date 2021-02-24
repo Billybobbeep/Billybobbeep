@@ -20,7 +20,7 @@ module.exports = {
                     return message.channel.send('You need to set up a mod role in your server to use this command');
 
                 let reason = args.slice(2).join(' ');
-                if (!reason) return message.channel.send('Please specify a reason');
+                if (!reason) reason = 'No reason was provided';
                 let member = message.guild.members.cache.get(user.id);
 
                 if (!member.roles.cache.get(result.modRole)) {
