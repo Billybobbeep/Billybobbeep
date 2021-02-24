@@ -4,9 +4,9 @@ module.exports = {
     guildOnly: true,
     execute(message, prefix, client) {
       const { MessageEmbed, version: djsversion } = require('discord.js');
-      const { version } = require('../package.json');
+      const { version } = require('../../package.json');
       const { utc } = require('moment');
-      const guildData = require('../events/client/database/models/guilds');
+      const guildData = require('../../events/client/database/models/guilds');
       const os = require('os');
       const ms = require('ms');
   
@@ -28,7 +28,7 @@ module.exports = {
             '\u200b'
           ])
           .addField('System', [
-            `**✰ Platform:** ${process.platform}`,
+            `**✰ Platform:** ${(process.platform).replace('win32', 'Windows').replace('linux', 'Linux')}`,
             `**✰ Uptime:** ${ms(os.uptime() * 1000, { long: true })}`,
           ])
           .setTimestamp();

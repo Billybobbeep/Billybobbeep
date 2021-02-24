@@ -1,11 +1,11 @@
 const ytdl = require('ytdl-core');
 
 module.exports = {
-    name: 'play',
+    /*name: 'play',
     description: 'Play a song in a voice channel',
     alias: ['stop', 'tts'],
     catagory: 'general',
-    guildOnly: true,
+    guildOnly: true,*/
     execute (message, prefix, client) {
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         if (message.content.startsWith(`${prefix}play`)) {
