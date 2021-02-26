@@ -23,8 +23,7 @@ const userSchema = new mongoose.Schema({
     bank_balance: { type: Number, default: 0 },
     //AFK
     isAfk: Boolean,
-    afkReason: String,
-    cache: Array
+    afkReason: String
 });
 
 module.exports = mongoose.model('users', userSchema);
