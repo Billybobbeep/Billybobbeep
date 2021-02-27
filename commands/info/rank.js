@@ -77,11 +77,12 @@ module.exports = {
                     xpForLevel = 600
                 }
             }
+            const canvas = require('canvas');
+            let avatar = await canvas.loadImage(user.displayAvatarURL({ dynamic: false, format: 'png' }))
+            require('../../utils/functions').rank(message, avatar, displayName, parseInt(discriminator), xp, xpForLevel, level).then(() => msg.delete());
 
-            let image = await jimp.read(`https://api.xzusfin.repl.co/rankcard?avatar=${user.displayAvatarURL({ dynamic: false, format: 'png' })}&size=2048&name=${displayName}%23${discriminator}&level=${level}&exp=${xp}&maxexp=${xpForLevel}`.toString());
-            message.channel.send(new MessageAttachment(await image.getBufferAsync(jimp.MIME_PNG))).then(() => msg.delete());
-            
-            //require('../../utils/functions').rank(message, avatar, displayName, parseInt(discriminator), xp, xpForLevel, level);
+                        //let image = await jimp.read(`https://api.xzusfin.repl.co/rankcard?avatar=${user.displayAvatarURL({ dynamic: false, format: 'png' })}&size=2048&name=${displayName}%23${discriminator}&level=${level}&exp=${xp}&maxexp=${xpForLevel}`.toString());
+            //message.channel.send(new MessageAttachment(await image.getBufferAsync(jimp.MIME_PNG))).then(() => msg.delete());
         });
     }
 }

@@ -34,7 +34,6 @@ module.exports.logging = function(msg, message, client, option) {
 module.exports.rank = async function(message, avatar, username, discriminator, currentXP, requiredXP, level) {
     let canvas = require('canvas');
     const Discord = require('discord.js');
-    const assets = require('@canvacord/assets');
 
     this.data = {
         background: {
@@ -181,7 +180,7 @@ module.exports.rank = async function(message, avatar, username, discriminator, c
     ctx.fillText(this.data.level.displayText, 800 - ctx.measureText(toAbbrev(parseInt(level))).width, 82);
 
     ctx.font = `bold 32px Sans`;
-    ctx.fillStyle = '#e5f7b2';
+    ctx.fillStyle = '#fff';
     ctx.textAlign = 'end';
     ctx.fillText(toAbbrev(parseInt(level)), 860, 82);
 
