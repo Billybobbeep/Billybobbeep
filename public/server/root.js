@@ -6,13 +6,13 @@ router.get('/', function(req, res) {
     res.redirect('/home');
 });
 router.get('/home', function(req, res) {
-    res.sendFile(path.join(__dirname, '../pages/index.html'));
+    res.sendFile(path.join(__dirname, '../views/root/index.html'));
 });
 router.get('/home/analytics', function(req, res) {
-    res.sendFile(path.join(__dirname, '../pages/analytics.html'))
+    res.sendFile(path.join(__dirname, '../views/root/analytics.html'))
 });
 router.get('/invite', function(req, res) {
-    res.redirect('https://discord.com/oauth2/authorize?client_id=731498842813366304&permissions=8&scope=bot');
+    res.redirect(`https://discord.com/oauth2/authorize?client_id=${process.env.clientId}&permissions=8&scope=bot`);
 });
 
 module.exports = router;
