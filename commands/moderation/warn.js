@@ -36,9 +36,17 @@ module.exports = {
       if (user.id === message.guild.owner.id) return message.channel.send('You cannot warn the guild owner');
 
       let reason = args.splice(2).join(' ');
-      if (!reason) return message.reply('You need to specify a reason');
-      guildResult.warnReasons ? guildResult.warnReasons[guildResult.warnReasons.length] = reason + ` - ${message.author.tag}` : [reason + ` - ${message.author.tag}`];
-      memberResult.save();
+      if (!reason) return reason = "No reason provided";
+
+        let reasons = []
+        if (memberResult.warnReasons && typeof memberResult.warnReasons === 'object') {
+          for (var i=0; i < (memberResult.warnReasons).length; i++) {
+            reasons.push(memberResult.warnReasons[i]);
+          }
+        }
+
+      reasons.push(`${reason} - ${message.author.tag}`)
+      memberResult.warnReasons = reasons
       
       let log = new Discord.MessageEmbed()
         .setTimestamp()

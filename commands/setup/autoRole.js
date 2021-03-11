@@ -27,7 +27,7 @@ if (!args[2] || args[2].toLowerCase() === 'help') {
       if (!role) return message.channel.send(`I could not find the role \`${args[2]}\``);
       guildData.findOne({ guildId: message.guild.id }).then(result => {
         let roles = [];
-        if (result.autoRoles && typeof result.autoRoles === 'array') {
+        if (result.autoRoles && typeof result.autoRoles === 'object') {
           for (var i=0; i < (result.autoRoles).length; i++) {
             roles.push(result.autoRoles[i]);
           }
