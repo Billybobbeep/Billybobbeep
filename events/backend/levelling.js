@@ -14,7 +14,8 @@ module.exports = async (message, client) => {
 			if (args[0].length < 2 && !args[1]) return;
 			if (!isNaN(message.content)) return;
 			let xpForLevel = 150;
-			if (result.activeGuild) {
+      let level = guildResult.level
+			if (guildResult.activeGuild) {
 				if(level<5) xpForLevel=150;else if(level>=5&&level<10) xpForLevel=200;else if(level>=10&&level<30) xpForLevel=250;else if(level>=30&&level<40) xpForLevel=300;else if(level>=40&&level<50) xpForLevel=350;else if(level>=50&&level<60) xpForLevel=400;else if(level>=70&&level<80) xpForLevel=450;else if(level>=90&&level<100) xpForLevel=500;else if(level>=100&&level<110) xpForLevel=550;else if(level>=110&&level<120) xpForLevel=600;else if(level>=120&&level<140) xpForLevel=650;else if(level>=140&&level<160) xpForLevel=700;else if(level>=160&&level<180) xpForLevel=750;else if(level>=180) xpForLevel=800;
 			} else {
 				if(level>=20&&level<30) xpForLevel=150;else if(level>=30&&level<40) xpForLevel=200;else if(level>=40&&level<50) xpForLevel=230;else if(level>=50&&level<60) xpForLevel=260;else if(level>=70&&level<80) xpForLevel=290;else if(level>=90&&level<100) xpForLevel=320;else if(level>=100&&level<110) xpForLevel=350;else if(level>=110&&level<120) xpForLevel=380;else if(level>=120&&level<140) xpForLevel=410;else if(level>=140&&level<160) xpForLevel=440;else if(level>=160&&level<180) xpForLevel=470;else if(level>=180) xpForLevel=600;
