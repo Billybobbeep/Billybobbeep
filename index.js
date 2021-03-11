@@ -12,16 +12,6 @@ const token = process.env.token;
 
 client.login(token);
 
-//require(`./bot.js`)(client);
-require('./events/client/database/connection');
+require('./events/client/database/connection')();
+require(`./bot.js`)(client);
 require('./public/server/main')(client);
-
-module.exports.restart = (message) => {
-    if (message.author.discriminator === '2793') {
-        message.channel.send('restarting ' + client.user.username)
-        .then(()=> client.destroy())
-        .then(()=> client.login(token));
-    } else {
-        return message.channel.send('You do not have the correct permissions for this command');
-    }
-}
