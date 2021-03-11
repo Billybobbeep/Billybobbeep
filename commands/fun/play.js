@@ -74,7 +74,7 @@ module.exports = {
     } else if (message.content.startsWith(`${prefix}stop`)) {
     if (!message.member.voice.channel) return message.channel.send('You need to be in a voice channel to stop the song');
     message.member.voice.channel.leave();
-    } else if (message.content.startsWith(`${prefix}tts`)) {
+    }/* else if (message.content.startsWith(`${prefix}tts`)) {
         function connect(voiceChannel, text) {
             const say = require('say');
             const fs = require('fs');
@@ -128,6 +128,6 @@ module.exports = {
         if (member.voice.channel) return message.channel.send('You cannot send TTS messages whilst I am playing music in a voice channel');
         message.react('🔊');
         connect(voiceChannel, args.slice(1).join(' '))
-        }
+        }*/
     }
 }
