@@ -14,7 +14,7 @@ module.exports = (client) => {
 
 function database(db, client) {
     db.find(function(err, data) {
-        if (err) return console.error(err);
+        if (err) return console.log(err);
         if (!data) return;
         data.forEach(result => {
             let amt = data.economy_balance;
@@ -100,6 +100,7 @@ function mute(db, client) {
         let user;
         let time;
 
+        if (err) return console.log(err)
         if (!data) return;
 
         data.forEach(result => {
@@ -111,19 +112,19 @@ function mute(db, client) {
             let member = guild.members.cache.get(user);
             if (!member) return remove(db, guild, user);
             if (member.roles.cache.find(role => role.id === result.mutedRole)) {
-                if (Date.now() > time)
-                remove(db, guild, user, 'mute');
+                if (Date.now() >= time)
+                    remove(db, guild, user, 'mute');
             } else
                 remove(db, guild, user, 'mute');
         });
     });
 }
 
-function remove(db, guild, user, string) {
+async function remove(db, guild, user, string) {
     const guildData = require('../client/database/models/guilds');
     let member = guild.members.cache.get(user);
-    let mutedRole = guildData.findOne({ guildId: guild.id }).then(result => result.mutedRole);
-    db.findOneAndRemove({ memberId: user });
+    let mutedRole = await guildData.findOne({ guildId: guild.id }).then(result => result.mutedRole);
+    await db.findOne({ memberId: user }).then(result => { result.delete() });
     if (string === 'mute') {
         setTimeout(() => {
             let role = guild.roles.cache.find(role => role.id === mutedRole);
