@@ -4,7 +4,7 @@ const configFile = require('../../utils/config.json');
 module.exports = {
     name: 'avatar',
     description: 'Announce a message in a different channel',
-    alias: ['pfp', 'myavatar'],
+    alias: ['pfp', 'myavatar', 'av'],
     catagory: 'info',
     usage: 'avatar [user]',
     guildOnly: true,
