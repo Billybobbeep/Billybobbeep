@@ -6,7 +6,7 @@ module.exports = (client) => {
     setInterval(() => {
         mute(mutedData, client);
         database(guildMemberData, client);
-    }, 300000);
+    }, 20000);
     setInterval(() => {
         application(awaitingData, client)
     }, 180000);
@@ -124,7 +124,7 @@ async function remove(db, guild, user, string) {
     const guildData = require('../client/database/models/guilds');
     let member = guild.members.cache.get(user);
     let mutedRole = await guildData.findOne({ guildId: guild.id }).then(result => result.mutedRole);
-    await db.findOne({ memberId: user }).then(result => { result.delete() });
+    await db.findOne({ memberId: user }).then(result => { if (result) result.delete() });
     if (string === 'mute') {
         setTimeout(() => {
             let role = guild.roles.cache.find(role => role.id === mutedRole);
