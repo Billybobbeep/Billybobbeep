@@ -49,7 +49,7 @@ module.exports = {
 				embed.setTimestamp();
 				user.send(log).catch(() => embed.setFooter('DM could not be sent').toString());
 				
-				reason = reason + ' - ' + user.tag.toString()
+				reason = reason + ' - ' + message.author.tag
 				member.kick({ reason: reason })
 				.then(() => {
 					message.channel.send(`Successfully kicked **${user.tag}**`);

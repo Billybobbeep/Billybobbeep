@@ -45,7 +45,7 @@ module.exports = {
 				log.addField(`Guild:`, message.guild);
 				user.send(log).catch(() => embed.setFooter('DM could not be sent'));
 
-				reason = reason + ' - ' + user.tag.toString()
+				reason = reason + ' - ' + message.author.tag.toString()
 				member.ban({ days: 0, reason: reason })
 				.then(() => {
 					message.channel.send(`Successfully banned **${user.tag}**`);
