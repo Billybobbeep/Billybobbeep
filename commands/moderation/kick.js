@@ -38,8 +38,8 @@ module.exports = {
 				let embed = new Discord.MessageEmbed();
 				embed.setTitle('Kicked Member');
 				embed.setDescription(
-					`**Member Tag:** ${member.tag}\n` +
-					`**Member ID:** ${member.id}\n\n` +
+					`**Member Tag:** ${user.tag}\n` +
+					`**Member ID:** ${user.id}\n\n` +
 					`**Moderator:** ${message.author}\n` +
 					`**Moderator Tag:** ${message.author.tag}\n` +
 					`**Moderator ID:** ${message.author.id}`

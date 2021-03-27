@@ -27,8 +27,8 @@ module.exports = {
 				let embed = new Discord.MessageEmbed()
 				embed.setTitle('User Banned');
 				embed.setDescription(
-				`**User Tag:** ${member.tag}\n` +
-				`**User ID:** ${member.id}\n` +
+				`**User Tag:** ${user.tag}\n` +
+				`**User ID:** ${user.id}\n` +
 				`**Reason:** ${reason}\n\n`
 				`**Moderator:** ${message.author}\n` +
 				`**Moderator Tag:** ${message.author.tag}\n` +
