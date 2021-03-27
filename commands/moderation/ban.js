@@ -24,19 +24,19 @@ module.exports = {
 				if (!reason) reason = 'No reason was provided';
 				if (user.tag === undefined || user.id === undefined) user = user.user;
 
-				let embed = new Discord.MessageEmbed()
-				embed.setTitle('User Banned');
+				let embed = new Discord.MessageEmbed();
+				embed.setTitle('Member Banned');
 				embed.setDescription(
-				`**User Tag:** ${user.tag}\n` +
-				`**User ID:** ${user.id}\n` +
-				`**Reason:** ${reason}\n\n`
-				`**Moderator:** ${message.author}\n` +
-				`**Moderator Tag:** ${message.author.tag}\n` +
-				`**Moderator ID:** ${message.author.id}\n`
-				)
+					`**Member Tag:** ${user.tag}\n` +
+					`**Member ID:** ${user.id}\n` +
+					`**Reason:** ${reason}\n\n` +
+					`**Moderator:** ${message.author}\n` +
+					`**Moderator Tag:** ${message.author.tag}\n` +
+					`**Moderator ID:** ${message.author.id}`
+				);
 				embed.setTimestamp();
 				embed.setColor(result.embedColor);
-				let log = new Discord.MessageEmbed()
+				let log = new Discord.MessageEmbed();
 				log.setTimestamp();
 				log.setColor(result.embedColor);
 				log.setTitle(`You have been banned`);
@@ -45,7 +45,8 @@ module.exports = {
 				log.addField(`Guild:`, message.guild);
 				user.send(log).catch(() => embed.setFooter('DM could not be sent'));
 
-				member.ban({ days: 0, reason: (reason + ' - ' + user.tag) })
+				reason = reason + ' - ' + user.tag.toString()
+				member.ban({ days: 0, reason: reason })
 				.then(() => {
 					message.channel.send(`Successfully banned **${user.tag}**`);
 				}).catch(() => {

@@ -28,7 +28,7 @@ module.exports = {
 				if (user.tag === undefined || user.id === undefined) user = user.user;
 				if (!reason) reason = 'No reason provided';
 
-				let log = new Discord.MessageEmbed()
+				let log = new Discord.MessageEmbed();
 				log.setTimestamp();
 				log.setColor(result.embedColor);
 				log.setTitle(`You have been kicked`);
@@ -36,20 +36,21 @@ module.exports = {
 				log.addField(`Reason:`, reason);
 				log.addField(`Guild:`, message.guild);
 				let embed = new Discord.MessageEmbed();
-				embed.setTitle('Kicked Member');
+				embed.setTitle('Member Kicked');
 				embed.setDescription(
 					`**Member Tag:** ${user.tag}\n` +
-					`**Member ID:** ${user.id}\n\n` +
+					`**Member ID:** ${user.id}\n` +
+					`**Reason:** ${reason}\n\n` +
 					`**Moderator:** ${message.author}\n` +
 					`**Moderator Tag:** ${message.author.tag}\n` +
 					`**Moderator ID:** ${message.author.id}`
 				);
 				embed.setColor(result.embedColor);
 				embed.setTimestamp();
-				user.send(log).catch(() => embed.setFooter('DM could not be sent'));
+				user.send(log).catch(() => embed.setFooter('DM could not be sent').toString());
 				
-				member
-				.kick({ reason: (reason + ' - ' + user.tag) })
+				reason = reason + ' - ' + user.tag.toString()
+				member.kick({ reason: reason })
 				.then(() => {
 					message.channel.send(`Successfully kicked **${user.tag}**`);
 				})
