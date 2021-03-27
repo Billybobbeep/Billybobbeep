@@ -38,7 +38,7 @@ module.exports = {
 				embed.setColor(result.embedColor);
 				let log = new Discord.MessageEmbed()
 				log.setTimestamp();
-				log.setColor(guildResult.embedColor);
+				log.setColor(result.embedColor);
 				log.setTitle(`You have been banned`);
 				log.addField(`Responsible Moderator:`, message.author.tag, true);
 				log.addField(`Reason:`, reason);

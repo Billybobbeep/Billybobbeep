@@ -30,7 +30,7 @@ module.exports = {
 
 				let log = new Discord.MessageEmbed()
 				log.setTimestamp();
-				log.setColor(guildResult.embedColor);
+				log.setColor(result.embedColor);
 				log.setTitle(`You have been kicked`);
 				log.addField(`Responsible Moderator:`, message.author.tag, true);
 				log.addField(`Reason:`, reason);
