@@ -16,30 +16,43 @@ module.exports = {
 
 				let member = message.guild.member(user);
 				let reason = args.slice(2).join(' ');
+				let succ = true
 
 				if (!user) return message.channel.send('Please specify a user to ban');
 				if (user.id === message.author.id) return message.channel.send('You cannot ban yourself from the server');
 				if (user.id === client.user.id) return message.channel.send('You cannot ban me');
 				if (!reason) reason = 'No reason was provided';
 				if (user.tag === undefined || user.id === undefined) user = user.user;
-				member.ban({ days: 5, reason: reason }).then(() => {
-				message.channel.send(`Successfully banned **${user.tag}**`);
-					embed.setTitle('User Banned');
-					embed.setDescription(
-					`**User Tag:** ${member.tag}\n` +
-					`**User ID:** ${member.id}\n` +
-					`**Reason:** ${reason}\n\n`
-					`**Moderator:** ${message.author}\n` +
-					`**Moderator Tag:** ${message.author.tag}\n` +
-					`**Moderator ID:** ${message.author.id}\n`
-					)
-					embed.setTimestamp()
-					embed.setColor(result.embedColor)
-					logging(embed, message, client);
-				}).catch(err => {
-				console.log(err);
-				message.reply('I was unable to ban the member you provided');
+
+				let embed = new Discord.MessageEmbed()
+				embed.setTitle('User Banned');
+				embed.setDescription(
+				`**User Tag:** ${member.tag}\n` +
+				`**User ID:** ${member.id}\n` +
+				`**Reason:** ${reason}\n\n`
+				`**Moderator:** ${message.author}\n` +
+				`**Moderator Tag:** ${message.author.tag}\n` +
+				`**Moderator ID:** ${message.author.id}\n`
+				)
+				embed.setTimestamp();
+				embed.setColor(result.embedColor);
+				let log = new Discord.MessageEmbed()
+				log.setTimestamp();
+				log.setColor(guildResult.embedColor);
+				log.setTitle(`You have been banned`);
+				log.addField(`Responsible Moderator:`, message.author.tag, true);
+				log.addField(`Reason:`, reason);
+				log.addField(`Guild:`, message.guild);
+				user.send(log).catch(() => embed.setFooter('DM could not be sent'));
+
+				member.ban({ days: 0, reason: (reason + ' - ' + user.tag) })
+				.then(() => {
+					message.channel.send(`Successfully banned **${user.tag}**`);
+				}).catch(() => {
+					succ = false
+					message.reply('I was unable to ban the member you provided');
 				});
+				if (succ) logging(embed, message, client);
 			});
 		}
 
@@ -56,7 +69,7 @@ module.exports = {
 						banCmd()
 						debounce = true;
 					}
-				} 
+				}
 			}
 			if (debounce === false)
 				message.channel.send('You do not have the permissions to use this command');

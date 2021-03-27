@@ -18,6 +18,7 @@ module.exports = {
 
 				let member = message.guild.member(user);
 				let reason = args.slice(2).join(' ');
+				let succ = true
 
 				if (!user) return message.channel.send('Please mention a user to kick');
 				if (user.id === message.author.id)
@@ -27,26 +28,36 @@ module.exports = {
 				if (user.tag === undefined || user.id === undefined) user = user.user;
 				if (!reason) reason = 'No reason provided';
 
+				let log = new Discord.MessageEmbed()
+				log.setTimestamp();
+				log.setColor(guildResult.embedColor);
+				log.setTitle(`You have been kicked`);
+				log.addField(`Responsible Moderator:`, message.author.tag, true);
+				log.addField(`Reason:`, reason);
+				log.addField(`Guild:`, message.guild);
+				let embed = new Discord.MessageEmbed();
+				embed.setTitle('Kicked Member');
+				embed.setDescription(
+					`**Member Tag:** ${member.tag}\n` +
+					`**Member ID:** ${member.id}\n\n` +
+					`**Moderator:** ${message.author}\n` +
+					`**Moderator Tag:** ${message.author.tag}\n` +
+					`**Moderator ID:** ${message.author.id}`
+				);
+				embed.setColor(result.embedColor);
+				embed.setTimestamp();
+				user.send(log).catch(() => embed.setFooter('DM could not be sent'));
+				
 				member
-				.kick({ reason: reason })
+				.kick({ reason: (reason + ' - ' + user.tag) })
 				.then(() => {
 					message.channel.send(`Successfully kicked **${user.tag}**`);
-					let embed = new Discord.MessageEmbed();
-					embed.setTitle('Kicked Member');
-					embed.setDescription(
-						`**Member Tag:** ${member.tag}\n` +
-						`**Member ID:** ${member.id}\n\n` +
-						`**Moderator:** ${message.author}\n` +
-						`**Moderator Tag:** ${message.author.tag}\n` +
-						`**Moderator ID:** ${message.author.id}`
-					);
-					embed.setColor(result.embedColor);
-					embed.setTimestamp();
-					logging(embed, message, client);
 				})
-				.catch(err => {
+				.catch(() => {
 					message.reply('I was unable to kick the member you provided');
+					succ = false
 				});
+				if (succ) logging(embed, message, client);
 			});
 		}
 		let debounce = false;
