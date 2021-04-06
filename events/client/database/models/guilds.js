@@ -22,7 +22,8 @@ const guildSchema = new mongoose.Schema({
     embedColor: String,
     counting_number: Number,
     lvlRoles: Array,
-    autoRoles: Array
+    autoRoles: Array,
+    inviteLinks: Boolean
 });
 
 module.exports = mongoose.model('guilds', guildSchema);
