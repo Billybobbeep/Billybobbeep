@@ -118,7 +118,7 @@ function mute(db, client) {
     });
 }
 
-async function remove(db, guild, user, string) {
+async function remove(db, guild, user, string, client) {
     const { MessageEmbed } = require('discord.js');
     const guildData = require('../client/database/models/guilds');
     let member = guild.members.cache.get(user);
