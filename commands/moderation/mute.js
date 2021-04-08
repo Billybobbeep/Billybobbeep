@@ -27,38 +27,36 @@ module.exports = {
                 if (user.id === message.author.id)return message.channel.send('You cannot mute yourself');
                 if (!reason) reason = 'No reason was provided';
                 if (!member) return message.channel.send('I could not find the member you provided');
-                if (!time) return message.channel.send('Please specify a time');
+                if (!time) return message.channel.send('Please specify a time or reason');
                 if (user.id === message.guild.owner.id) return message.channel.send('You cannot mute the guild owner');
                 try {
-                    if (time.endsWith('h') || time.endsWith('m')) time = ms(time); else return message.channel.send('The time can only be in hours or minutes');
+                    if (time.endsWith('h') || time.endsWith('m')) time = ms(time); else time = false;
                 } catch {
-                    return message.channel.send('Please specify a time');
+                    time = false
                 }
                 if (!message.guild.roles.fetch(r => r.id === result.mutedRole)) return message.channel.send('You must setup a muted role in your server to use this command');
                 member.roles.add(message.guild.roles.cache.find(role => role.id === result.mutedRole)).then(() => message.channel.send('Successfully muted <@!' + user.id + '>')).catch(error => {
                     if (error.toString().includes('permissions')) return message.channel.send('I cannot mute <@!' + user.id + '>. Please make sure my highest role is above <@!' + user.id + '>\'s highest role.');
                     else { return message.channel.send('An unknown error occurred') }
                 });
-                embed1.setTimestamp()
-                embed1.setColor(result.embedColor)
+                embed1.setTimestamp();
+                embed1.setColor(result.embedColor);
                 embed1.setTitle('You have been muted');
-                embed1.addField(`Responsible Moderator:`, message.author.tag);
-                embed1.addField(`Reason:`, reason);
-                embed1.addField(`Guild:`, message.guild.name);
+                embed1.addField('Responsible Moderator:', message.author.tag);
+                embed1.addField('Reason:', reason);
+                embed1.addField('Guild:', message.guild.name);
+                time ? embed1.addField('Time:', ms(time).replace('m', ' minute(s)').replace('h', ' hours')) : null;
                 try {
-                    embed1.addField(`Time:`, ms(time).replace('m', ' minute(s)').replace('h', ' hours'));
+                    user.send(embed1);
                 } catch {
-                    return message.channel.send('Please specify a time');
-                }
-                try {
-                    await user.send(embed1)
-                } catch {
-                    message.channel.send('The user has not been notfied as they do not have their DM\'s turned on')
+                    embed2.setFooter('DM could not be sent');
                 }
                 embed2.setTitle('User Muted');
                 embed2.setTimestamp();
                 embed2.setColor(result.embedColor);
-                embed2.setDescription(`**User:** ${user}\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Time:** ${ms(time).replace('m', ' minute(s)').replace('h', ' hours')}\n**Reason:** ${reason}\n\n**Moderator:** ${message.author}\n**Moderator Tag:** ${message.author.tag}\n**Moderator ID:** ${message.author.id}`);
+                time ? 
+                embed2.setDescription(`**User:** ${user}\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Time:** ${ms(time).replace('m', ' minute(s)').replace('h', ' hours')}\n**Reason:** ${reason}\n\n**Moderator:** ${message.author}\n**Moderator Tag:** ${message.author.tag}\n**Moderator ID:** ${message.author.id}`)
+                : embed2.setDescription(`**User:** ${user}\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Time:** Until unmuted\n**Reason:** ${reason}\n\n**Moderator:** ${message.author}\n**Moderator Tag:** ${message.author.tag}\n**Moderator ID:** ${message.author.id}`);
                 logging(embed2, message, client);
                 const newMutedMember = new mutedMembers({ guildId: message.guild.id, userId: user.id, time: (Date.now() + time)});
                 newMutedMember.save();

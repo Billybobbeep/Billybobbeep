@@ -2,7 +2,6 @@ module.exports = (client) => {
     const mutedData = require('../client/database/models/mutedMembers');
     const awaitingData = require('../client/database/models/awaiting');
     const guildMemberData = require('../client/database/models/guildMembers');
-    const guildData = require('../client/database/models/guilds');
     setInterval(() => {
         mute(mutedData, client);
         database(guildMemberData, client);
@@ -110,9 +109,9 @@ function mute(db, client) {
             
             guild = client.guilds.cache.get(guild);
             let member = guild.members.cache.get(user);
-            if (!member) return remove(db, guild, user);
+            if (!member) return remove(db, guild, user, 'mute', client);
             if (Date.now() >= time) {
-              remove(db, guild, user, 'mute');
+              remove(db, guild, user, 'mute', client);
               result.delete();
             }
         });
@@ -120,15 +119,24 @@ function mute(db, client) {
 }
 
 async function remove(db, guild, user, string) {
+    const { MessageEmbed } = require('discord.js');
     const guildData = require('../client/database/models/guilds');
     let member = guild.members.cache.get(user);
-    let mutedRole = await guildData.findOne({ guildId: guild.id }).then(result => result.mutedRole);
-    if (string === 'mute') {
+    let guildRes = guildData.findOne({ guildId: guild.id })
+    let mutedRole = guildRes.mutedRole;
+    if (string == 'mute') {
         setTimeout(() => {
             let role = guild.roles.cache.find(role => role.id === mutedRole);
             if (member.roles.cache.find(role => role.id === mutedRole))
                 member.roles.remove(role.id);
         }, 50);
+        const logging = require('../../utils/functions.js').logging;
+        const embed = new MessageEmbed();
+        embed.setTitle('User Unmuted');
+        embed.setTimestamp();
+        embed.setColor(guildRes.embedColor);
+        embed.setDescription(`**User:** <@!${user.id}>\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Reason:** Authomatic unmute\n\n**Moderator:** <@!${client.user.id}>\n**Moderator Tag:** ${client.user.tag}\n**Moderator ID:** ${client.user.id}`);
+        logging(embed2, (guild.id).toString(), client);
     }
 }
 
