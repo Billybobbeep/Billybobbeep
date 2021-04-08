@@ -136,7 +136,7 @@ async function remove(db, guild, user, string, client) {
         embed.setTimestamp();
         embed.setColor(guildRes.embedColor);
         embed.setDescription(`**User:** <@!${user.id}>\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Reason:** Authomatic unmute\n\n**Moderator:** <@!${client.user.id}>\n**Moderator Tag:** ${client.user.tag}\n**Moderator ID:** ${client.user.id}`);
-        logging(embed2, (guild.id).toString(), client);
+        logging(embed, (guild.id).toString(), client);
     }
 }
 
