@@ -2,7 +2,7 @@ const guildData = require('../events/client/database/models/guilds');
 const guildID = require('../utils/config.json').ServerId;
 
 module.exports.logging = function(msg, message, client, option) {
-    if (typeof message === 'string') {
+    if (typeof message == 'string') {
         guildData.findOne({ guildId: message.toString() }).then(result => {
             let loggingChannel = client.channels.cache.get(result.loggingChannel);
             if (loggingChannel)
@@ -25,7 +25,6 @@ module.exports.logging = function(msg, message, client, option) {
     } else {
         guildData.findOne({ guildId: guildID }).then(result => {
             let loggingChannel = client.channels.cache.get(result.embedColor);
-            
             if (loggingChannel) loggingChannel.send(msg).catch((error) => { console.log(error) });
         });
     }
