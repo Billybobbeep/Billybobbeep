@@ -30,7 +30,48 @@ module.exports.logging = function(msg, message, client, option) {
     }
 }
 
-module.exports.rank = async function(message, avatar, username, discriminator, currentXP, requiredXP, level) {
+module.exports.cleanDatabase = function(client) {
+    const guildData = require('../events/client/database/models/guilds');
+    const userData = require('../events/client/database/models/users');
+    guildData.find(function(err, result) {
+        if (err) return;
+        if (!result) return;
+        result.forEach(res => {
+            if (!client.guilds.cache.get(res.guildId))
+                res.delete();
+            if (!res.embedColor)
+                res.delete();
+        });
+        client.guilds.cache.array().forEach(guild => {
+            let table = result.filter(a => a.guildId == guild.id);
+            let i = 0;
+            table.forEach(() => {
+                i++;
+                if (i == 1 || i == 0) return;
+                guildData.findOne({ guildId: guild.id }).then(guildRes => guildRes.delete());
+            });
+        });
+    });
+    userData.find(function(err, result) {
+        if (err) return;
+        if (!result) return;
+        result.forEach(res => {
+            if (!client.users.fetch(res.userId))
+                res.delete();
+        });
+        client.users.cache.array().forEach(user => {
+            let table = result.filter(a => a.userId == user.id);
+            let i = 0;
+            table.forEach(() => {
+                i++;
+                if (i == 1 || i == 0) return;
+                userData.findOne({ userId: user.id }).then(userRes => userRes.delete());
+            });
+        });
+    });
+}
+
+module.exports.rank = function(message, avatar, username, discriminator, currentXP, requiredXP, level) {
     let canvas = require('canvas');
     const Discord = require('discord.js');
 
