@@ -23,7 +23,7 @@ module.exports = {
 				if (!member) return message.channel.send('I could not find the member you provided');
 				if (!member.roles.cache.find(r => r.id === result.mutedRole)) return message.channel.send(`<@!${user.id}> is not muted`);
 				if (user.bot) return message.channel.send('You cannot mute bots');
-				if (reason) reason = 'No reason was provided';
+				if (!reason) reason = 'No reason was provided';
 
 				member.roles.remove(message.guild.roles.cache.find(role => role.id === result.mutedRole));
 				message.channel.send('Successfully unmuted <@!' + user + '>');
