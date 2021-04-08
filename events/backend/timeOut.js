@@ -7,8 +7,11 @@ module.exports = (client) => {
         database(guildMemberData, client);
     }, 20000);
     setInterval(() => {
-        application(awaitingData, client)
+        application(awaitingData, client);
     }, 180000);
+    application(awaitingData, client);
+    mute(mutedData, client);
+    database(guildMemberData, client);
 }
 
 function database(db, client) {
