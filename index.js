@@ -2,8 +2,8 @@
 
 const Discord = require('discord.js');
 const client = new Discord.Client({
-  partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
-  disableMentions: 'everyone'
+	partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+	disableMentions: 'everyone'
 });
 
 const dotenv = require('dotenv');
@@ -11,7 +11,5 @@ dotenv.config();
 const token = process.env.token;
 
 client.login(token);
-
 require('./events/client/database/connection')();
 require(`./bot.js`)(client);
-require('./public/server/main')(client);
