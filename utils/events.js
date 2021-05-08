@@ -5,6 +5,7 @@ module.exports = (client) => {
     client.on('message', (message) => event('message')(message, client));
     client.on('guildMemberAdd', (member) => event('member').add(member, client));
     client.on('guildMemberRemove', (member) => event('member').remove(member, client));
+    client.on('guildMemberUpdate', (oldMember, newMember) => events('roles')(oldMember, newMember, client));
     client.on('guildBanAdd', (guild, user) => events('logging').add(guild, user, client));
     client.on('guildBanRemove', (guild, user) => events('logging').remove(guild, user, client));
     client.on('guildCreate', (guild) => events('guildManager').add(guild, client));
