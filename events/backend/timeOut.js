@@ -5,7 +5,7 @@ module.exports = (client) => {
     setInterval(() => {
         mute(mutedData, client);
         database(guildMemberData, client);
-    }, 20000);
+    }, 200);
     setInterval(() => {
         application(awaitingData, client);
     }, 180000);
@@ -117,7 +117,7 @@ async function remove(db, guild, user, string, client) {
     const { MessageEmbed } = require('discord.js');
     const guildData = require('../client/database/models/guilds');
     let member = guild.members.cache.get(user);
-    let guildRes = guildData.findOne({ guildId: guild.id })
+    let guildRes = await guildData.findOne({ guildId: guild.id });
     let mutedRole = guildRes.mutedRole;
     if (string == 'mute') {
         setTimeout(() => {

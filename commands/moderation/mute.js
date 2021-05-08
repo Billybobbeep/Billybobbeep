@@ -29,7 +29,7 @@ module.exports = {
                 if (!time) return message.channel.send('Please specify a time or reason');
                 if (user.id === message.guild.owner.id) return message.channel.send('You cannot mute the guild owner');
                 try {
-                    if (time.endsWith('h') || time.endsWith('m')) time = ms(time); else time = false;
+                    if (time.endsWith('h') || time.endsWith('m') || time.endsWith('s')) time = ms(time); else time = false;
                 } catch {
                     time = false
                 }
@@ -46,7 +46,7 @@ module.exports = {
                 embed1.addField('Responsible Moderator:', message.author.tag);
                 embed1.addField('Reason:', reason);
                 embed1.addField('Guild:', message.guild.name);
-                time ? embed1.addField('Time:', ms(time).replace('m', ' minute(s)').replace('h', ' hours')) : null;
+                time ? embed1.addField('Time:', ms(time).replace('s', 'second(s)').replace('m', ' minute(s)').replace('h', ' hour(s)')) : null;
                 try {
                     user.send(embed1);
                 } catch {

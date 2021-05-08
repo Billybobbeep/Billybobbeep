@@ -44,7 +44,7 @@ module.exports = {
 				embed2.setColor(result.embedColor);
 				embed2.setDescription(`**User:** ${user}\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Reason:** ${reason}\n\n**Moderator:** ${message.author}\n**Moderator Tag:** ${message.author.tag}\n**Moderator ID:** ${message.author.id}`);
 				logging(embed2, message, client);
-				mutedMembers.findOne({ userId: user.id, guildId: message.guild.id }).then(result => result.delete());
+				mutedMembers.findOne({ userId: user.id, guildId: message.guild.id }).then(result => result.delete()).catch(() => {return});
 			});
 		}
 

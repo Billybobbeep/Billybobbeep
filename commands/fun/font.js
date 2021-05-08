@@ -83,6 +83,7 @@ module.exports = {
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let lines = ['', ''];
         let starter = '➳';
+        let letters;
         
         function mainEmbed() {
             guildData.findOne({ guildId: message.guild.id }).then(result => {
@@ -98,7 +99,7 @@ module.exports = {
         if (message.content.toLowerCase() === prefix + 'font' || message.content.toLowerCase() === prefix + 'fonts') return mainEmbed()
         if (!args[1]) return message.channel.send('Please specify a font')
         if (args[1].toLowerCase() === 'fancy') {
-            let letters = {
+            letters = {
                 a : '𝓪',
                 b : '𝓫',
                 c : '𝓬',
@@ -168,7 +169,7 @@ module.exports = {
                 0 : '0'
             }
         } else if (args[1].toLowerCase() === 'double') {
-            let letters = {
+            letters = {
                 a : '𝕒',
                 b : '𝕓',
                 c : '𝕔',
@@ -237,9 +238,8 @@ module.exports = {
                 9 : '9',
                 0 : '0'
             }
-        }
-        else if (args[1].toLowerCase() === 'hand') {
-            let letters = {
+        } else if (args[1].toLowerCase() === 'hand') {
+            letters = {
                 a : '𝒶',
                 b : '𝒷',
                 c : '𝒸',
@@ -309,7 +309,7 @@ module.exports = {
                 0 : '0'
             }
         } else if (args[1].toLowerCase() === 'cursed') {
-            let letters = {
+            letters = {
                 a : 'a̸̟̲͙͓̮͔̻̍͒͗̒̒́̈́',
                 b : 'b̴͓̘̽̊͂͗',
                 c : 'c̶̢͕͉̫̼͕̭͎͓̭̄͑̔̈̕',
@@ -378,8 +378,8 @@ module.exports = {
                 9 : '9',
                 0 : '0'
             }
-        }else if (args[1].toLowerCase() === 'smooth') {
-            let letters = {
+        } else if (args[1].toLowerCase() === 'smooth') {
+            letters = {
                 a : 'ᗩ',
                 b : 'ᗷ',
                 c : 'ᑕ',
@@ -449,7 +449,7 @@ module.exports = {
                 0 : '0'
             }
         } else if (args[1].toLowerCase() === 'smol') {
-            let letters = {
+            letters = {
                 a : 'α',
                 b : 'в',
                 c : '¢',
@@ -522,9 +522,9 @@ module.exports = {
             return message.channel.send('You have entered an invalid font')
         }
 
-        if (!args[2]) {
+        if (!args[2])
             message.reply('Please specify a message')
-        } else {
+        else {
             try {
                 for (let i = 0; i < args.slice(2).join(' ').length; i++) {
                     let letter = args.slice(2).join(' ')[i].toLowerCase();
@@ -533,7 +533,8 @@ module.exports = {
                     }
                 }
             message.channel.send(starter + lines.join('\n'))
-            } catch {
+            } catch(err) {
+                console.log(err)
                 return message.channel.send('You have entered some invalid arguments');
             }
         }
