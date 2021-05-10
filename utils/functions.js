@@ -73,7 +73,9 @@ module.exports.cleanDatabase = function(client) {
 
 module.exports.rank = function(message, avatar, username, discriminator, currentXP, requiredXP, level) {
     let canvas = require('canvas');
+    const { registerFont } = require('canvas');
     const Discord = require('discord.js');
+    registerFont('./structure/fonts/OpenSans.ttf', { family: 'Sans' });
 
     this.data = {
         background: {

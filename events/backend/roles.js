@@ -1,4 +1,6 @@
 const logging = require('../../utils/functions').logging
+const Discord = require('discord.js');
+
 module.exports = async (oldMember, newMember, client) => {
     if (oldMember.roles.cache.size > newMember.roles.cache.size) {
         const embed = new Discord.MessageEmbed();
