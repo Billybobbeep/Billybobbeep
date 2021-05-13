@@ -20,8 +20,8 @@ module.exports = {
                         .setTitle(json.word)
                         .setDescription(json.definition)
                         .setColor(result.embedColor)
-                        .setFooter('Billybobbeep is not responsible for what you search | Written by: ' + json.author)
-                        .addField('Upvotes', json.thumbs_up, true)
+                        .setFooter('Billybobbeep is not responsible for what you search | Written by: ' + (json.author || 'Unknown'))
+                        .addField('Upvotes', json.thumbs_up || 0, true)
                         .addField('Downvotes', json.thumb_down || 0, true)
                     let msgEmbed = await message.channel.send(embed);
                     await msgEmbed.react('👍');
@@ -36,8 +36,8 @@ module.exports = {
                         .setTitle(json.word)
                         .setDescription(json.definition)
                         .setColor(result.embedColor)
-                        .setFooter('Billybobbeep is not responsible for what you search | Written by: ' + json.author)
-                        .addField('Upvotes', json.thumbs_up, true)
+                        .setFooter('Billybobbeep is not responsible for what you search | Written by: ' + (json.author || 'Unknown'))
+                        .addField('Upvotes', json.thumbs_up || 0, true)
                         .addField('Downvotes', json.thumb_down || 0, true)
                     let msgEmbed = await message.channel.send(embed);
                     await msgEmbed.react('👍');
