@@ -1,12 +1,12 @@
 const guildData = require('../events/client/database/models/guilds');
 const guildID = require('../utils/config.json').ServerId;
 
-module.exports.logging = function(msg, message, client, option) {
+module.exports.logging = function (msg, message, client, option) {
     if (typeof message == 'string') {
         guildData.findOne({ guildId: message.toString() }).then(result => {
             let loggingChannel = client.channels.cache.get(result.loggingChannel);
             if (loggingChannel)
-                loggingChannel.send(msg).catch((error) => {console.log(error)});
+                loggingChannel.send(msg).catch((error) => { console.log(error) });
         })
 
     } else if (typeof message === 'object') {
@@ -30,10 +30,41 @@ module.exports.logging = function(msg, message, client, option) {
     }
 }
 
-module.exports.cleanDatabase = function(client) {
+// module.exports.slashCommands = {
+//     reply: async function (interaction, response, callback) {
+//         if (!interaction || !response) if (callback) return callback(false); else return false;
+//         const createAPIMessage = async (interaction, content) => {
+//             const { data, files } = await DiscordJS.APIMessage.create(
+//                 client.channels.resolve(interaction.channel_id),
+//                 content
+//             )
+//                 .resolveData()
+//                 .resolveFiles()
+
+//             return { ...data, files }
+//         }
+
+//         let data = {
+//             content: response,
+//         }
+
+//         if (typeof response === 'object') {
+//             data = await createAPIMessage(interaction, response)
+//         }
+
+//         client.api.interactions(interaction.id, interaction.token).callback.post({
+//             data: {
+//                 type: 4,
+//                 data,
+//             },
+//         }).then(() => { if (callback) (callback(true)); else return true });
+//     }
+// }
+
+module.exports.cleanDatabase = function (client) {
     const guildData = require('../events/client/database/models/guilds');
     const userData = require('../events/client/database/models/users');
-    guildData.find(function(err, result) {
+    guildData.find(function (err, result) {
         if (err) return;
         if (!result) return;
         result.forEach(res => {
@@ -52,7 +83,7 @@ module.exports.cleanDatabase = function(client) {
             });
         });
     });
-    userData.find(function(err, result) {
+    userData.find(function (err, result) {
         if (err) return;
         if (!result) return;
         result.forEach(res => {
@@ -71,7 +102,7 @@ module.exports.cleanDatabase = function(client) {
     });
 }
 
-module.exports.rank = function(message, avatar, username, discriminator, currentXP, requiredXP, level) {
+module.exports.rank = function (message, avatar, username, discriminator, currentXP, requiredXP, level) {
     let canvas = require('canvas');
     const { registerFont } = require('canvas');
     const Discord = require('discord.js');
@@ -132,7 +163,7 @@ module.exports.rank = function(message, avatar, username, discriminator, current
             color: "#FFFFFF"
         },
     };
-    
+
     function abbrev(num) {
         if (!num || isNaN(num)) return "0";
         if (typeof num === "string") num = parseInt(num);
@@ -231,7 +262,7 @@ module.exports.rank = function(message, avatar, username, discriminator, current
     ctx.fillStyle = this.data.requiredXP.color;
     ctx.textAlign = "start";
     ctx.fillText("/ " + toAbbrev(requiredXP), 670 + ctx.measureText(toAbbrev(currentXP)).width + 15, 164);
-    
+
     ctx.fillStyle = this.data.currentXP.color;
     ctx.fillText(toAbbrev(currentXP), 670, 164);
 
