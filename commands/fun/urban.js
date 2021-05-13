@@ -22,7 +22,7 @@ module.exports = {
                         .setColor(result.embedColor)
                         .setFooter('Billybobbeep is not responsible for what you search | Written by: ' + json.author)
                         .addField('Upvotes', json.thumbs_up, true)
-                        .addField('Downvotes', json.thumb_down, true)
+                        .addField('Downvotes', json.thumb_down || 0, true)
                     let msgEmbed = await message.channel.send(embed);
                     await msgEmbed.react('👍');
                     await msgEmbed.react('👎');
@@ -38,7 +38,7 @@ module.exports = {
                         .setColor(result.embedColor)
                         .setFooter('Billybobbeep is not responsible for what you search | Written by: ' + json.author)
                         .addField('Upvotes', json.thumbs_up, true)
-                        .addField('Downvotes', json.thumb_down, true)
+                        .addField('Downvotes', json.thumb_down || 0, true)
                     let msgEmbed = await message.channel.send(embed);
                     await msgEmbed.react('👍');
                     await msgEmbed.react('👎');
