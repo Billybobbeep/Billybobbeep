@@ -1,4 +1,4 @@
-const guildData = require('../../events/client/database/models/guilds');
+const guildData = require('../events/client/database/models/guilds');
 const express = require('express');
 const router = express.Router();
 const { Client } = require('discord.js');
