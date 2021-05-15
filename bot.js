@@ -1,10 +1,8 @@
 module.exports = async (client) => {
 	const Discord = require('discord.js');
-	const DS = require("discord.js-slash-command");
-	const slash = new DS.Slash(client);
 	const fs = require('fs');
 
-	require('./utils/events.js')(client);
+	require('./utils/events')(client);
 	client.commands = new Discord.Collection();
 
 	const commandFolders = fs.readdirSync('./commands').filter(file => !file.endsWith('.js') && !file.endsWith('.json'));
