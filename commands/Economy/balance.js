@@ -19,7 +19,7 @@ module.exports = {
             if (!isNaN(args[1])) user = user.user;
             guildData.findOne({ guildId: message.guild.id }).then(guildResult => {
                 userData.findOne({ userId: user.id }).then(userResult => {
-                    embed.setFooter(`To bank some cash use: ${prefix}deposit [amount]`);
+                    embed.setFooter(`To bank some cash use: /deposit`);
                     embed.setColor(guildResult.embedColor);
                     embed.setAuthor(user.username, user.displayAvatarURL());
 
@@ -50,7 +50,7 @@ module.exports = {
             if (user.bot) return require('../../utils/functions').slashCommands.reply(message, client, 'Bots do not have wallets');
             guildData.findOne({ guildId: message.guild_id }).then(guildResult => {
                 userData.findOne({ userId: user.id }).then(userResult => {
-                    embed.setFooter(`To bank some cash use: /deposit or ${prefix}deposit [amount]`);
+                    embed.setFooter(`To bank some cash use: /deposit`);
                     embed.setColor(guildResult.embedColor);
                     user.id !== message.member.user.id ? embed.setAuthor(user.username, user.displayAvatarURL()) : null;
 
