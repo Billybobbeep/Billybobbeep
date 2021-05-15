@@ -13,5 +13,5 @@ module.exports = (client) => {
     client.on('messageDelete', (message) => events('deleteMessages')(message, client));
     client.on('messageReactionAdd', (reaction, user) => require('../events/backend/reactionRoles/main.js').add(reaction, user, client));
     client.on('messageUpdate', (oldMessage, newMessage) => events('editMessage')(newMessage, oldMessage, client));
-    //client.ws.on('INTERACTION_CREATE', async interaction => require('../events/commands/slash/main')(interaction));
+    client.ws.on('INTERACTION_CREATE', async interaction => event('message')(interaction, client));
 }

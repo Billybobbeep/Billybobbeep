@@ -1,5 +1,6 @@
 const guildData = require('../events/client/database/models/guilds');
 const guildID = require('../utils/config.json').ServerId;
+const Discord = require('discord.js');
 
 module.exports.logging = function (msg, message, client, option) {
     if (typeof message == 'string') {
@@ -30,36 +31,33 @@ module.exports.logging = function (msg, message, client, option) {
     }
 }
 
-// module.exports.slashCommands = {
-//     reply: async function (interaction, response, callback) {
-//         if (!interaction || !response) if (callback) return callback(false); else return false;
-//         const createAPIMessage = async (interaction, content) => {
-//             const { data, files } = await DiscordJS.APIMessage.create(
-//                 client.channels.resolve(interaction.channel_id),
-//                 content
-//             )
-//                 .resolveData()
-//                 .resolveFiles()
+module.exports.slashCommands = {
+    reply: async function (interaction, client, response, callback) {
+        if (!interaction || !response) if (callback) return callback(false); else return false;
+        const createAPIMessage = async (interaction, content) => {
+            const { data, files } = await Discord.APIMessage.create(
+                client.channels.resolve(interaction.channel_id),
+                content
+            )
+                .resolveData()
+                .resolveFiles()
 
-//             return { ...data, files }
-//         }
+            return { ...data, files }
+        }
 
-//         let data = {
-//             content: response,
-//         }
-
-//         if (typeof response === 'object') {
-//             data = await createAPIMessage(interaction, response)
-//         }
-
-//         client.api.interactions(interaction.id, interaction.token).callback.post({
-//             data: {
-//                 type: 4,
-//                 data,
-//             },
-//         }).then(() => { if (callback) (callback(true)); else return true });
-//     }
-// }
+        let data = {
+            content: response,
+        }
+        if (typeof response === 'object')
+            data = await createAPIMessage(interaction, response)
+        client.api.interactions(interaction.id, interaction.token).callback.post({
+            data: {
+                type: 4,
+                data,
+            },
+        }).then(() => { if (callback) (callback(true, { message: { id: interaction.id, token: interaction.token } })); else return true });
+    }
+}
 
 module.exports.cleanDatabase = function (client) {
     const guildData = require('../events/client/database/models/guilds');

@@ -4,7 +4,8 @@ const { MessageEmbed } = require('discord.js');
 const { relativeTimeRounding } = require('moment');
 
 function redirect(message, client) {
-    if (message.channel.id === configFile.PollChannel || message.channel.id === configFile.MemesChannel)
+    if (message.data) return;
+    if (message.channel.id == configFile.PollChannel || message.channel.id == configFile.MemesChannel)
         require('../backend/reactions.js')(message);
     else {
         if (message.guild) {
@@ -48,11 +49,11 @@ function redirect(message, client) {
 }
 
 function handle(message, client) {
-  let args = message.content.slice(1).trim().split(/ +/g);
-  let command = args[0].toLowerCase();
+    let args = message.content.slice(1).trim().split(/ +/g);
+    let command = args[0].toLowerCase();
 
-  if (!message.guild && client.commands.get(command)) return message.channel.send('We do not support DM commands yet');
-  if (!message.guild) return;
+    if (!message.guild && client.commands.get(command)) return message.channel.send('We do not support DM commands yet');
+    if (!message.guild) return;
     guildData.findOne({ guildId: message.guild.id }).then(result => {
         if (!result) {
             let newData = new guildData({
@@ -67,21 +68,9 @@ function handle(message, client) {
             var prefix = '~';
 
         if (!message.content.toLowerCase().startsWith(prefix)) return;
-        let args = message.content.slice(prefix.length).trim().split(/ +/g);
         if (client.commands.get(command)) {
-            if (client.commands.get(command).guildOnly && client.commands.get(command).guildOnly === true && !message.guild) return;
-            if (client.commands.get(command).bannedUsers && client.commands.get(command).bannedUsers.includes(message.author.id)) return message.channel.send('You have been banned from using this command');
-            if (client.commands.get(command).bannedRoles) {
-                if (message.mentions.users.first()) {
-                    let user = message.guild.members.cache.get(message.mentions.users.first().id);
-                    let debounce = false;
-                    user.roles.cache.forEach(r => {
-                        if (client.commands.get(command).bannedRoles.includes(r)) debounce = true;
-                    });
-                    if (debounce === true) return message.channel.send(`You cannot use that command on ${user.user}`);
-                }
-            }
-            if (message.guild && client.commands.get(command).catagory && client.commands.get(command).catagory === 'moderation') {
+            if (client.commands.get(command).guildOnly && client.commands.get(command).guildOnly == true && !message.guild) return;
+            if (message.guild && client.commands.get(command).catagory && client.commands.get(command).catagory == 'moderation') {
                 if (!message.guild.me.hasPermission('ADMINISTRATOR')) {
                     const embed = new MessageEmbed();
                     embed.setTitle('Invalid Permissions');
@@ -94,8 +83,46 @@ function handle(message, client) {
                 }
             }
             try {
-                client.commands.get(command).execute(message, prefix, client)
-            } catch(err) {
+                client.commands.get(command).execute(message, prefix, client);
+            } catch (err) {
+                if (err.toString().includes('client.commands.get(...).execute is not a function')) return;
+                else console.error(err);
+            }
+        }
+    });
+}
+
+function handleSlashCommands(interaction, client) {
+    const command = (interaction.data.name).toLowerCase();
+    const args = interaction.data.options;
+
+    if (!interaction.guild_id && client.commands.get(command)) return require('../../utils/functions').slashCommands.reply(interaction, client, 'We do not support DM commands yet');
+    if (!interaction.guild_id) return;
+    guildData.findOne({ guildId: interaction.guild_id }).then(result => {
+        if (!result) {
+            let newData = new guildData({
+                guildId: interaction.guild_id,
+                embedColor: '#447ba1'
+            });
+            newData.save();
+        }
+
+        if (client.commands.get(command)) {
+            if (client.commands.get(command).guildOnly && client.commands.get(command).guildOnly == true && !interaction.guild_id) return;
+            if (interaction.guild_id && client.commands.get(command).catagory && client.commands.get(command).catagory == 'moderation') {
+                if (!client.guilds.members.fetch(client.user.id).hasPermission('ADMINISTRATOR')) {
+                    const embed = new MessageEmbed();
+                    embed.setTitle('Invalid Permissions');
+                    embed.setDescription('Unfortunately, this command requires `administrator` permissions to work correctly');
+                    embed.addField('Don\'t know how?', `Go to **Server Settings**, **Roles** then find **${client.user.username}** and make sure **administrator** is enabled`, false)
+                    embed.setTimestamp();
+                    embed.setColor(result.embedColor || '#447ba1');
+                    return require('../../utils/functions').slashCommands.reply(interaction, client, embed);
+                }
+            }
+            try {
+                client.commands.get(command).execute(interaction, '/', client);
+            } catch (err) {
                 if (err.toString().includes('client.commands.get(...).execute is not a function')) return;
                 else console.error(err);
             }
@@ -104,7 +131,12 @@ function handle(message, client) {
 }
 
 module.exports = (message, client) => {
-    if (message.author.bot) return;
-    redirect(message, client)
-    handle(message, client)
+    if (!message.data) {
+        if (message.author.bot) return;
+        redirect(message, client);
+        handle(message, client);
+    } else {
+        if (message.member.user.bot) return;
+        handleSlashCommands(message, client);
+    }
 }
