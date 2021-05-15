@@ -5,7 +5,7 @@ module.exports = async (message, client) => {
   if (message.author.bot) return;
   if (message.author.id === client.user.id) return;
   const userData = require('../client/database/models/users');
-  const logging = require('../../utils/functions.js').logging;
+  const logging = require('../../utils/functions').logging;
 
   let embed = new Discord.MessageEmbed();
   embed.setTitle('DM Recieved');

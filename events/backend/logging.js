@@ -1,7 +1,7 @@
 const guildData = require('../client/database/models/guilds');
 const Discord = require('discord.js');
 const embed = new Discord.MessageEmbed();
-const logging = require('../../utils/functions.js').logging;
+const logging = require('../../utils/functions').logging;
 
 module.exports.add = (guild, user, client) => {
     guildData.findOne({ guildId: guild.id }).then(result => {

@@ -1,7 +1,7 @@
 module.exports = (newMessage, oldMessage, client) => {
 	const Discord = require('discord.js');
 	const guildData = require('../client/database/models/guilds');
-	const logging = require('../../utils/functions.js').logging;
+	const logging = require('../../utils/functions').logging;
   
 	if (!newMessage) return;
 	if (!oldMessage) return;

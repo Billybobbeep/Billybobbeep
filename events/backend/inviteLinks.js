@@ -6,7 +6,7 @@ module.exports = async (message, client) => {
   guildData.findOne({ guildId: message.guild.id }).then(async result => {
     let prefix = result.prefix || '~'
     const embed = new Discord.MessageEmbed()
-    const logging = require('../../utils/functions.js').logging;
+    const logging = require('../../utils/functions').logging;
     if (message.author.bot) return;
 
     //Invite link detecting

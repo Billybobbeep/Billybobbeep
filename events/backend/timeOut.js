@@ -125,7 +125,7 @@ async function remove(db, guild, user, string, client) {
             if (member.roles.cache.find(role => role.id == mutedRole))
                 member.roles.remove(role.id);
         }, 50);
-        const logging = require('../../utils/functions.js').logging;
+        const logging = require('../../utils/functions').logging;
         const embed = new MessageEmbed();
         embed.setTitle('User Unmuted');
         embed.setTimestamp();
