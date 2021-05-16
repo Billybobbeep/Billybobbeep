@@ -10,7 +10,7 @@ module.exports = (client) => {
         application(awaitingData, client);
     }, 180000);
     application(awaitingData, client);
-    mute(mutedData, client);
+    mute(client);
     database(guildMemberData, client);
 }
 
@@ -90,7 +90,7 @@ function application(db, client) {
     });
 }
 
-function mute(db, client) {
+function mute(client) {
     let MM = require('../client/database/models/mutedMembers');
     MM.find(function(err, data) {
         let guild;
@@ -104,21 +104,21 @@ function mute(db, client) {
             time = result.time;
             guild = client.guilds.cache.get(guild);
             let member = guild.members.cache.get(user);
-            if (!member) return remove(db, guild, user, 'mute', client);
+            if (!member) return remove(result, guild, user, 'mute', client);
             if (Date.now() >= time) {
-              remove(db, guild, user, 'mute', client);
-              result.delete();
+              remove(result, guild, user, 'mute', client);
             }
         });
     });
 }
 
-async function remove(db, guild, user, string, client) {
+async function remove(result, guild, user, string, client) {
     const { MessageEmbed } = require('discord.js');
     const guildData = require('../client/database/models/guilds');
     let member = guild.members.cache.get(user);
     let guildRes = await guildData.findOne({ guildId: guild.id });
     let mutedRole = guildRes.mutedRole;
+    if (!member) return result.delete();
     if (string == 'mute') {
         setTimeout(() => {
             let role = guild.roles.cache.find(role => role.id == mutedRole);
@@ -132,5 +132,6 @@ async function remove(db, guild, user, string, client) {
         embed.setColor(guildRes.embedColor);
         embed.setDescription(`**User:** <@!${member.user.id}>\n**User Tag:** ${member.user.tag}\n**User ID:** ${member.user.id}\n\n**Reason:** Authomatic unmute\n\n**Moderator:** <@!${client.user.id}>\n**Moderator Tag:** ${client.user.tag}\n**Moderator ID:** ${client.user.id}`);
         logging(embed, (guild.id).toString(), client);
+        result.delete();
     }
 }
