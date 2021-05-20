@@ -1,13 +1,17 @@
-module.exports = async (client) => {
+module.exports = async client => {
 	const Discord = require('discord.js');
 	const fs = require('fs');
 
 	require('./utils/events')(client);
 	client.commands = new Discord.Collection();
 
-	const commandFolders = fs.readdirSync('./commands').filter(file => !file.endsWith('.js') && !file.endsWith('.json'));
+	const commandFolders = fs
+		.readdirSync('./commands')
+		.filter(file => !file.endsWith('.js') && !file.endsWith('.json'));
 	for (const folder of commandFolders) {
-		const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
+		const commandFiles = fs
+			.readdirSync(`./commands/${folder}`)
+			.filter(file => file.endsWith('.js'));
 		for (const file of commandFiles) {
 			const command = require(`./commands/${folder}/${file}`);
 			client.commands.set(command.name, command);
@@ -19,7 +23,9 @@ module.exports = async (client) => {
 		}
 	}
 
-	const commandFiles1 = fs.readdirSync('./embeds').filter(file => file.endsWith('.js'));
+	const commandFiles1 = fs
+		.readdirSync('./embeds')
+		.filter(file => file.endsWith('.js'));
 	for (const file of commandFiles1) {
 		var command = require(`./embeds/${file}`);
 		client.commands.set(command.name, command);
