@@ -3,7 +3,7 @@ module.exports = (client) => {
     const awaitingData = require('../client/database/models/awaiting');
     const guildMemberData = require('../client/database/models/guildMembers');
     setInterval(() => {
-        mute(mutedData, client);
+        mute(client);
         database(guildMemberData, client);
     }, 200);
     setInterval(() => {
@@ -91,6 +91,7 @@ function application(db, client) {
 }
 
 function mute(client) {
+  if (!client || !client.guilds) return;
     let MM = require('../client/database/models/mutedMembers');
     MM.find(function(err, data) {
         let guild;
@@ -130,7 +131,7 @@ async function remove(result, guild, user, string, client) {
         embed.setTitle('User Unmuted');
         embed.setTimestamp();
         embed.setColor(guildRes.embedColor);
-        embed.setDescription(`**User:** <@!${member.user.id}>\n**User Tag:** ${member.user.tag}\n**User ID:** ${member.user.id}\n\n**Reason:** Authomatic unmute\n\n**Moderator:** <@!${client.user.id}>\n**Moderator Tag:** ${client.user.tag}\n**Moderator ID:** ${client.user.id}`);
+        embed.setDescription(`**User:** <@!${member.user.id}>\n**User Tag:** ${member.user.tag}\n**User ID:** ${member.user.id}\n\n**Reason:** Automatic unmute\n\n**Moderator:** <@!${client.user.id}>\n**Moderator Tag:** ${client.user.tag}\n**Moderator ID:** ${client.user.id}`);
         logging(embed, (guild.id).toString(), client);
         result.delete();
     }
