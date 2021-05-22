@@ -9,7 +9,7 @@ module.exports = {
     const guildData = require('../../events/client/database/models/guilds.js');
     const guildMemberData = require('../../events/client/database/models/guildMembers.js');
     let reasons = [];
-    const logging = require('../../utils/functions.js').logging;
+    const logging = require('../../utils/functions').logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     async function rwarnCmd() {
       let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
@@ -70,8 +70,8 @@ module.exports = {
         .setTitle('Warning Removed')
         .addField('User:', user, true)
         .addField('By:', message.author, true)
-        .addField('Reason:', reason)
-        .addField('Warning Reason', warnReason, true)
+        .addField('Reason:', reason, false)
+        .addField('Warning Reason', warnReason, false)
         .addField('Total Warnings', memberResult.warnings - 1, true)
       logging(log, message, client);
       if (memberResult.warnings < 1)
