@@ -5,6 +5,7 @@ const Discord = require('discord.js');
 module.exports.logging = function (msg, message, client, option) {
     if (typeof message == 'string') {
         guildData.findOne({ guildId: message.toString() }).then(result => {
+            if (!result) return;
             let loggingChannel = client.channels.cache.get(result.loggingChannel);
             if (loggingChannel)
                 loggingChannel.send(msg).catch((error) => { console.log(error) });
@@ -14,19 +15,25 @@ module.exports.logging = function (msg, message, client, option) {
         let loggingChannel;
         if (message.guild) {
             guildData.findOne({ guildId: message.guild.id }).then(result => {
+                if (!result) return;
                 loggingChannel = client.channels.cache.get(result.loggingChannel);
-                if (loggingChannel) loggingChannel.send(msg).catch((error) => { console.log(error) });
+                if (loggingChannel)
+                    loggingChannel.send(msg).catch((error) => { console.log(error) });
             });
         } else {
             guildData.findOne({ guildId: guildID }).then(result => {
+                if (!result) return;
                 loggingChannel = client.channels.cache.get(result.loggingChannel);
-                if (loggingChannel) loggingChannel.send(msg).catch((error) => { console.log(error) });
+                if (loggingChannel)
+                    loggingChannel.send(msg).catch((error) => { console.log(error) });
             });
         }
     } else {
         guildData.findOne({ guildId: guildID }).then(result => {
+            if (!result) return;
             let loggingChannel = client.channels.cache.get(result.embedColor);
-            if (loggingChannel) loggingChannel.send(msg).catch((error) => { console.log(error) });
+            if (loggingChannel)
+                loggingChannel.send(msg).catch((error) => { console.log(error) });
         });
     }
 }
