@@ -90,6 +90,9 @@ function application(db, client) {
     });
 }
 
+let cache = {
+  lastUnmuted: false
+}
 function mute(client) {
   if (!client || !client.guilds) return;
     let MM = require('../client/database/models/mutedMembers');
@@ -100,6 +103,7 @@ function mute(client) {
         if (err) return console.log(err)
         if (!data) return;
         data.forEach(result => {
+          if (cache.lastUnmuted && cache.lastUnmuted.u == result.userId && cache.lastUnmuted.g == result.guildId) return;
             guild = result.guildId;
             user =  result.userId;
             time = result.time;
@@ -108,6 +112,7 @@ function mute(client) {
             if (!member) return remove(result, guild, user, 'mute', client);
             if (Date.now() >= time) {
               remove(result, guild, user, 'mute', client);
+              cache.lastUnmuted = { u: result.userId, g: result.guildId }
             }
         });
     });
