@@ -4,6 +4,7 @@ module.exports = {
     alias: ['job'],
     catagory: 'economy',
     guildOnly: true,
+    options: [],
     async execute (message, prefix, client) {
         const guildData = require('../../events/client/database/models/guilds.js');
         const userData = require('../../events/client/database/models/users.js');

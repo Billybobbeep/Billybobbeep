@@ -9,11 +9,11 @@ module.exports = {
         const embed = new Discord.MessageEmbed();
         const embed2 = new Discord.MessageEmbed();
         const guildData = require('../../events/client/database/models/guilds.js');
-        const logging = require('../../utils/functions.js').logging;
+        const logging = require('../../utils/functions').logging;
         function promoteCmd() {
             guildData.findOne({ guildId: message.guild.id }).then(async result => {
                 let args = message.content.slice(prefix.length).trim().split(/ +/g);
-                let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
+                let user = message.mentions.users.first() || message.guild.members.fetch(args[1]);
                 if (!user) return message.channel.send('Please mention a user to promote');
                 if (!user.tag) user = user.user;
                 if (!result.modRole)
@@ -21,9 +21,9 @@ module.exports = {
 
                 let reason = args.slice(2).join(' ');
                 if (!reason) reason = 'No reason was provided';
-                let member = message.guild.members.cache.get(user.id);
+                let member = message.guild.members.fetch(user.id);
 
-                if (!member.roles.cache.get(result.modRole)) {
+                if (!member.roles.fetch(result.modRole)) {
                     await member.roles.add(result.modRole).catch(() => { return message.channel.send('I do not have permissions to use this command') });
                     message.channel.send(`<@!${user.id}> was promoted by <@!${message.author.id}>`)
                     embed.setTitle('User Promoted');

@@ -124,7 +124,7 @@ module.exports = {
         const permissions = voiceChannel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.channel.send('I don\'t have permissions to connect to a voice channel');
         if (!permissions.has('SPEAK')) return message.channel.send('I don\'t have permissions to speak in a voice channel');
-        let member = message.guild.members.cache.get(client.user.id);
+        let member = message.guild.members.fetch(client.user.id);
         if (member.voice.channel) return message.channel.send('You cannot send TTS messages whilst I am playing music in a voice channel');
         message.react('🔊');
         connect(voiceChannel, args.slice(1).join(' '))

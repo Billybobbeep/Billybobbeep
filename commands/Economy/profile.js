@@ -3,6 +3,7 @@ module.exports = {
     description: 'View a users economy profile',
     alias: ['stats'],
     catagory: 'economy',
+    options: [],
     async execute(message, prefix, client) {
         const guildData = require('../../events/client/database/models/guilds.js');
         const userData = require('../../events/client/database/models/users.js');
@@ -30,7 +31,7 @@ module.exports = {
 
         let job = '';
         let jobLvl = userResult.job_level || 0;
-        let streak = userResult.economy_tStreak;
+        let streak = userResult.economy_tStreak || 0;
         let timesFired = userResult.job_timesFired || 0;
         let lastFired = moment.utc(userResult.job_lastFired).format('DD-MM-YYYY, h:mm:ss a');
         let lastApplied = moment.utc(userResult.job_lastApplied).format('DD-MM-YYYY, h:mm:ss a');

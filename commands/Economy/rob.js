@@ -3,13 +3,14 @@ module.exports = {
     description: 'Take money from other users without them noticing',
     catagory: 'economy',
     guildOnly: true,
+    options: [{ name: 'user', description: 'The user you\'d like to rob', type: 6, required: true }],
     async execute(message, prefix, client) {
         const userData = require('../../events/client/database/models/users.js');
         const Discord = require('discord.js');
         const emebd = new Discord.MessageEmbed();
 
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
-        let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
+        let user = message.mentions.users.first() || message.guild.members.fetch(args[1]);
         if (!user) return message.channel.send('Please specify a user to rob');
         if (!user.id || !user.tag || !user.displayAvatarURL()) user = user.user;
         if (user.id === message.author.id) return message.channel.send('You cannot rob yourself');
@@ -40,7 +41,7 @@ module.exports = {
             let msg = ranMessFunc().replace('(user)', `<@!${user.id}>`).replace('(money)', robAmt.toString()).catch(ranMessageFun().replace('(user)', `<@!${user.id}>`).replace('(money)', robAmt.toString()));
             message.channel.send(msg);
         } else {
-            let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
+            let cross = client.emojis.fetch(require('../../utils/config.json').CrossEmoji);
             let amt = Math.floor(Math.random() * (30 - 10)) + 10;
             message.channel.send(`${cross} You have been caught! **-$${amt}**`);
             userData.findOne({ userId: message.author.id }).then(result => { result.economy_balance = result.economy_balance - robAmt; result.save() });

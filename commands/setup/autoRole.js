@@ -23,7 +23,7 @@ if (!args[2] || args[2].toLowerCase() === 'help') {
             message.channel.send('Removed auto role from the database');
         });
     } else {
-      let role = message.mentions.roles.first() || message.guild.roles.cache.get(args[2]);
+      let role = message.mentions.roles.first() || message.guild.roles.fetch(args[2]);
       if (!role) return message.channel.send(`I could not find the role \`${args[2]}\``);
       guildData.findOne({ guildId: message.guild.id }).then(result => {
         let roles = [];

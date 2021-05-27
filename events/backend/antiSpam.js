@@ -94,7 +94,7 @@ module.exports = {
         function log(message, type) {
             guildData.findOne({ guildId: message.guild.id }).then(async result => {
                 if (!result) return;
-                let logging = message.guild.channels.cache.get(result.loggingChannel);
+                let logging = message.guild.channels.fetch(result.loggingChannel);
                 if (!logging) {
                     result.antiSpam_enabled = false;
                     result.save();

@@ -29,7 +29,7 @@ module.exports = (message, prefix, embedColor) => {
     }
 
     if (args[2] && args[2].toLowerCase() !== 'reset' && args[2].toLowerCase() !== 'help') {
-      let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[2])
+      let channel = message.mentions.channels.first() || message.guild.channels.fetch(args[2])
 
       if (!channel) {
         return message.channel.send('Please specify a valid channel');

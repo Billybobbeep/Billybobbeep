@@ -263,8 +263,8 @@ async function application_process(message, job, client) {
     let guildResult = await guildData.findOne({ guildId: message.guild.id });
     let userResult = await userData.findOne({ userId: message.author.id });
 
-    let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji1);
-    let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
+    let tick = client.emojis.fetch(require('../../utils/config.json').TickEmoji1);
+    let cross = client.emojis.fetcht(require('../../utils/config.json').CrossEmoji);
     
     embed.setDescription(`${tick} Successfully applied for the ${job} job!`);
     embed.setAuthor('You will be DMed your application results soon', message.author.displayAvatarURL());
@@ -281,8 +281,8 @@ async function application_process(message, job, client) {
     userResult.save();
 }
 async function reactions(message, msg, job, client) {
-    let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji1);
-    let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
+    let tick = client.emojis.fetch(require('../../utils/config.json').TickEmoji1);
+    let cross = client.emojis.fetch(require('../../utils/config.json').CrossEmoji);
     const filter = (reaction, user) => {
         return (
         [tick.id, cross.id].includes(reaction.emoji.id) && user.id === message.author.id

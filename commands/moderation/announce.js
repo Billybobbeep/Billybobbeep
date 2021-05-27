@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const guildData = require('../../events/client/database/models/guilds.js');
-const logging = require('../../utils/functions.js').logging;
+const logging = require('../../utils/functions').logging;
 
 module.exports = {
     name: 'announce',

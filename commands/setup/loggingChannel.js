@@ -24,7 +24,7 @@ module.exports = (message, prefix, embedColor) => {
         message.channel.send('Removed logging channel from the database');
       });
     } else {
-      let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[2])
+      let channel = message.mentions.channels.first() || message.guild.channels.fetch(args[2])
       if (!channel)
         return message.channel.send('Please specify a valid channel')
       if (channel.id === result.loggingChannel) return message.channel.send(`Your logging channel is already set as ${channel}`);

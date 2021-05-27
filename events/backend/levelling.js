@@ -44,7 +44,7 @@ module.exports = async (message, client) => {
 				if (!levelUpChannel) {
 					message.channel.send(`<@!${message.author.id}> is now level ${memberResult.level}`);
 				} else {
-					let channel = message.guild.channels.cache.get(levelUpChannel);
+					let channel = message.guild.channels.fetch(levelUpChannel);
 					channel.send(`<@!${message.author.id}> is now level ${memberResult.level}`);
 				}
 			}

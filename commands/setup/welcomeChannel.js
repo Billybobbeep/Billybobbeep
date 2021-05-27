@@ -26,7 +26,7 @@ module.exports = (message, prefix, embedColor) => {
         message.channel.send('There is no welcome channel set up yet');
       }
     } else {
-      let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[2]);
+      let channel = message.mentions.channels.first() || message.guild.channels.fetch(args[2]);
 
       if (!channel)
         return message.channel.send('Please specify a valid channel')

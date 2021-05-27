@@ -8,13 +8,13 @@ module.exports = {
 		const Discord = require('discord.js');
 		const configFile = require('../../utils/config.json');
 		const guildData = require('../../events/client/database/models/guilds.js');
-		const logging = require('../../utils/functions.js').logging;
+		const logging = require('../../utils/functions').logging;
 		let args = message.content.slice(prefix.length).trim().split(/ +/g);
 		function kickCmd() {
 			guildData.findOne({ guildId: message.guild.id }).then(result => {
 				let user =
 				message.mentions.users.first() ||
-				message.guild.members.cache.get(args[1]);
+				message.guild.members.fetch(args[1]);
 
 				let member = message.guild.member(user);
 				let reason = args.slice(2).join(' ');

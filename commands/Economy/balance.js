@@ -5,6 +5,7 @@ module.exports = {
     catagory: 'economy',
     usage: 'balance [user]',
     guildOnly: true,
+    isSlashEnabled: true,
     options: [{ name: 'user', description: 'The user you\'d like to check the balance of', type: 6, required: false }],
     execute(message, prefix, client) {
         const Discord = require('discord.js');
@@ -13,7 +14,7 @@ module.exports = {
         const embed = new Discord.MessageEmbed();
         if (!message.data) {
             let args = message.content.slice(prefix.length).trim().split(/ +/g);
-            let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]) || message.author;
+            let user = message.mentions.users.first() || message.guild.members.fetch(args[1]) || message.author;
             if (!user.id) user = user.user;
             if (user.bot) return message.channel.send('Bots do not have wallets');
             if (!isNaN(args[1])) user = user.user;
@@ -44,7 +45,7 @@ module.exports = {
         } else {
             let args = message.data.options;
             let user;
-            if (typeof args !== 'undefined' && args[0].value) user = client.guilds.cache.get(message.guild_id).members.cache.get(args[0].value);
+            if (typeof args !== 'undefined' && args[0].value) user = client.guilds.fetch(message.guild_id).members.fetch(args[0].value);
             else user = message.member;
             user = user.user;
             if (user.bot) return require('../../utils/functions').slashCommands.reply(message, client, 'Bots do not have wallets');

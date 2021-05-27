@@ -5,6 +5,7 @@ module.exports = {
     catagory: 'economy',
     usage: 'withdraw [amount]',
     guildOnly: true,
+    isSlashEnabled: true,
     options: [{ name: 'amount', description: 'The amount you\'d like to withdraw', type: 3, required: true }],
     execute(message, prefix, client) {
         const userData = require('../../events/client/database/models/users');

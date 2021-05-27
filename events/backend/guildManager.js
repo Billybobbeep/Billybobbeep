@@ -2,7 +2,7 @@ const { MessageEmbed, } = require('discord.js');
 const guildData = require('../client/database/models/guilds');
 const embed = new MessageEmbed();
 const embed2 = new MessageEmbed();
-const logging = require('../../utils/functions.js').logging;
+const logging = require('../../utils/functions').logging;
 
 module.exports.add = async (guild, client) => {
     if (!guild.name) return;
@@ -20,7 +20,7 @@ module.exports.add = async (guild, client) => {
         }
 
         guildData.findOne({ guildId: guild.id }).then(async result => {
-            let channel = await guild.channels.cache.get(guild.systemChannelID || channelID);
+            let channel = await guild.channels.fetch(guild.systemChannelID || channelID);
             embed.setTitle('Billybobbeep | Welcome');
             embed.setColor('#447ba1');
             embed.setTimestamp();

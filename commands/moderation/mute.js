@@ -11,14 +11,14 @@ module.exports = {
         let embed1 = new Discord.MessageEmbed();
         let embed2 = new Discord.MessageEmbed();
         const ms = require('ms');
-        const logging = require('../../utils/functions.js').logging;
+        const logging = require('../../utils/functions').logging;
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         function muteCmd() {
             guildData.findOne({ guildId: message.guild.id }).then(async result => {
-                let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
+                let user = message.mentions.users.first() || message.guild.members.fetch(args[1]);
                 let reason = args.slice(3).join(' ');
                 let time = args[2] || undefined;
-                let member = message.guild.members.cache.get(user.id);
+                let member = message.guild.members.fetch(user.id);
                 if (member.roles.cache.find(r => r.id === result.mutedRole)) return message.channel.send(`<@!${user.id}> is already muted`);
                 if (user.bot) return message.channel.send('You cannot mute bots');
                 if (!result.mutedRole) return message.channel.send('You must setup a muted role in your server to use this command');

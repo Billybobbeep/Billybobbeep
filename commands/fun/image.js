@@ -7,6 +7,7 @@ module.exports = {
   description: 'Generate a random image',
   catagory: 'generator',
   guildOnly: true,
+  options: [],
   execute (message, prefix, client) {
     const embed = new Discord.MessageEmbed()
 

@@ -11,7 +11,7 @@ module.exports = {
         let reasons = [];
         
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
-        let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
+        let user = message.mentions.users.first() || message.guild.members.fetch(args[1]);
         if (!user) return message.channel.send('Please specify a user');
         if (user.bot || user.user && user.user.bot) return message.channel.send('Bots do not have warnings');
         let memberResult = await guildMemberData.findOne({ guildId: message.guild.id, memberId: user.id });

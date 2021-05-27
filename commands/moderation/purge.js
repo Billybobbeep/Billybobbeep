@@ -7,7 +7,7 @@ module.exports = {
 	execute (message, prefix, client) {
 		const Discord = require('discord.js');
 		const guildData = require('../../events/client/database/models/guilds.js');
-		const logging = require('../../utils/functions.js').logging;
+		const logging = require('../../utils/functions').logging;
 		let args = message.content.slice(prefix.length).trim().split(/ +/g);
 		function purgeCmd() {
 			guildData.findOne({ guildId: message.guild.id }).then(result => {

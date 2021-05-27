@@ -3,6 +3,7 @@ module.exports = {
   description: 'Quit your current job',
   catagory: 'economy',
   guildOnly: true,
+  options: [],
   async execute(message, prefix, client) {
     const userData = require('../../events/client/database/models/users.js');
     const userResult = await userData.findOne({ userId: message.author.id });
@@ -46,8 +47,8 @@ module.exports = {
 async function reactions(message, msg, guildData, client) {
   let job = userResult.job_name;
 
-  let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji1);
-  let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
+  let tick = client.emojis.fetch(require('../../utils/config.json').TickEmoji1);
+  let cross = client.emojis.fetch(require('../../utils/config.json').CrossEmoji);
   const filter = (reaction, user) => {
     return (
       [tick.id, cross.id].includes(reaction.emoji.id) && user.id === message.author.id

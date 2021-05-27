@@ -5,6 +5,8 @@ module.exports = {
     usage: 'donate [user] [amount]',
     catagory: 'economy',
     guildOnly: true,
+    options: [{ name: 'user', description: 'The user you\'d like to donate to', type: 6, required: true },
+        { name: 'amount', description: 'The amount you\d like to donate', type: 3, required: true }],
     async execute(message, prefix, client) {
         const guildData = require('../../events/client/database/models/guilds.js');
         const userData = require('../../events/client/database/models/users.js');
@@ -14,11 +16,11 @@ module.exports = {
 
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         if (guildResult.ecoEnabled) return message.channel.send('Economy have been disabled for this server');
-        let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
+        let user = message.mentions.users.first() || message.guild.members.fetch(args[1]);
         if (!user) return message.channel.send(`You have not mentioned a user`);
         if (!user.id) user = user.user;
 
-        let emoji = client.emojis.cache.get(require('../../utils/config.json').blobSmile);
+        let emoji = client.emojis.fetch(require('../../utils/config.json').blobSmile);
         if (user.id === client.user.id) return message.channel.send(`I do not need money, thanks though. ${emoji}`)
         if (user.bot) return message.channel.send(`You cannot donate to a bot`);
         if (user.id === message.author.id) return message.channel.send(`You cannot donate to yourself`);

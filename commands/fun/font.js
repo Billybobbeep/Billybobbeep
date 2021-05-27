@@ -75,6 +75,8 @@ module.exports = {
     description: 'Put your message into a new font',
     alias: ['fonts'],
     catagory: 'generator',
+    //options: [{ name: 'fontName', description: 'The name of the font you\'d like to use', type: 3, required: true },
+        //{ name: 'message', description: 'The message you\'d like to convert', type: 3, required: true }],
     execute (message, prefix, client) {
         const { MessageEmbed } = require('discord.js');
         const embed = new MessageEmbed()

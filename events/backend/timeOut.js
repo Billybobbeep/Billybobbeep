@@ -51,7 +51,7 @@ function application(db, client) {
     appliedUsers.find(function(err, data) {
         if (!data) return;
         data.forEach(async result => {
-            let user = client.users.cache.get(result.memberId);
+            let user = client.users.fetch(result.memberId);
             let job = result.job;
             let userResult = await userData.findOne({ userId: user.id });
             
@@ -59,8 +59,8 @@ function application(db, client) {
             embed.setColor('#447ba1');
             embed.setAuthor(user.username, user.displayAvatarURL());
             let failed = false;
-            let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji1);
-            let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
+            let tick = client.emojis.fetch(require('../../utils/config.json').TickEmoji1);
+            let cross = client.emojis.fetch(require('../../utils/config.json').CrossEmoji);
             let results = [tick, cross, tick];
             let result1 = Math.floor(Math.random() * results.length);
             let result2 = Math.floor(Math.random() * results.length);
@@ -107,8 +107,8 @@ function mute(client) {
             guild = result.guildId;
             user =  result.userId;
             time = result.time;
-            guild = client.guilds.cache.get(guild);
-            let member = guild.members.cache.get(user);
+            guild = client.guilds.fetch(guild);
+            let member = guild.members.fetch(user);
             if (!member) return remove(result, guild, user, 'mute', client);
             if (Date.now() >= time) {
               remove(result, guild, user, 'mute', client);
@@ -121,7 +121,7 @@ function mute(client) {
 async function remove(result, guild, user, string, client) {
     const { MessageEmbed } = require('discord.js');
     const guildData = require('../client/database/models/guilds');
-    let member = guild.members.cache.get(user);
+    let member = guild.members.fetch(user);
     let guildRes = await guildData.findOne({ guildId: guild.id });
     let mutedRole = guildRes.mutedRole;
     if (!member) return result.delete();

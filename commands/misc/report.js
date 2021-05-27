@@ -99,8 +99,8 @@ module.exports = {
 
 
                     msg = await message.channel.send(embed5);
-                    let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji1);
-                    let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
+                    let tick = client.emojis.fetch(require('../../utils/config.json').TickEmoji1);
+                    let cross = client.emojis.fetch(require('../../utils/config.json').CrossEmoji);
                     await msg.react(tick);
                     await msg.react(cross);
 
@@ -112,7 +112,7 @@ module.exports = {
                         let reaction = collected.first();
 
                         if (reaction.emoji.id === tick.id) {
-                            let channel = client.channels.cache.get('734398769831084102');
+                            let channel = client.channels.fetch('734398769831084102');
                             channel.send(embed6).catch(e => console.error(e));
                             message.channel.send('Your report has been sent');
                         } else {
@@ -188,8 +188,8 @@ module.exports = {
 
 
                     msg = await message.author.send(embed5);
-                    let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji1);
-                    let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
+                    let tick = client.emojis.fetch(require('../../utils/config.json').TickEmoji1);
+                    let cross = client.emojis.fetch(require('../../utils/config.json').CrossEmoji);
                     await msg.react(tick);
                     await msg.react(cross);
 
@@ -201,7 +201,7 @@ module.exports = {
                         let reaction = collected.first();
 
                         if (reaction.emoji.id === tick.id) {
-                            let channel = client.channels.cache.get('734398769831084102');
+                            let channel = client.channels.fetch('734398769831084102');
                             channel.send(embed6).catch(e => console.error(e));
                             message.author.send('Your report has been sent');
                         } else {
