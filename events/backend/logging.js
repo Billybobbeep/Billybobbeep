@@ -26,7 +26,7 @@ module.exports.add = (guild, user, client) => {
             embed.setTimestamp(ban.createdTimestamp);
             embed.setColor(result.embedColor);
 
-            let loggingChannel = client.channels.fetch(result.loggingChannel);
+            let loggingChannel = client.channels.cache.get(result.loggingChannel);
             if (loggingChannel)
                 loggingChannel.send(embed).catch(() => {return});
         });
