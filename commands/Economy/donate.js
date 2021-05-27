@@ -16,7 +16,7 @@ module.exports = {
 
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         if (guildResult.ecoEnabled) return message.channel.send('Economy have been disabled for this server');
-        let user = message.mentions.users.first() || message.guild.members.fetch(args[1]);
+        let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
         if (!user) return message.channel.send(`You have not mentioned a user`);
         if (!user.id) user = user.user;
 

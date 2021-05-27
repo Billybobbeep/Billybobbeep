@@ -9,7 +9,7 @@ module.exports = {
     guildOnly: true,
     execute (message, prefix, client) {
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
-        let user = message.mentions.users.first() || message.guild.members.fetch(args[1]) || message.author;
+        let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]) || message.author;
         const moment = require('moment');
         if (!user) return message.channel.send('Please specify a user')
         if (!user.avatarURL) user = user.user
@@ -26,7 +26,7 @@ module.exports = {
         }
 
         let x = Date.now() - user.createdAt; //When the user created their account.
-        let y = Date.now() - message.guild.members.fetch(user.id).joinedAt; //When the user joined the server.
+        let y = Date.now() - message.guild.members.cache.get(user.id).joinedAt; //When the user joined the server.
         let created = Math.floor(x / 86400000); //5 digits-zero
         let joined = Math.floor(y / 86400000);
 

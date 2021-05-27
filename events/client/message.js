@@ -110,7 +110,7 @@ function handleSlashCommands(interaction, client) {
         if (client.commands.get(command)) {
             if (client.commands.get(command).guildOnly && client.commands.get(command).guildOnly == true && !interaction.guild_id) return;
             if (interaction.guild_id && client.commands.get(command).catagory && client.commands.get(command).catagory == 'moderation') {
-                if (!client.guilds.members.fetch(client.user.id).hasPermission('ADMINISTRATOR')) {
+                if (!client.guilds.members.cache.get(client.user.id).hasPermission('ADMINISTRATOR')) {
                     const embed = new MessageEmbed();
                     embed.setTitle('Invalid Permissions');
                     embed.setDescription('Unfortunately, this command requires `administrator` permissions to work correctly');

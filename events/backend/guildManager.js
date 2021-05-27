@@ -20,7 +20,7 @@ module.exports.add = async (guild, client) => {
         }
 
         guildData.findOne({ guildId: guild.id }).then(async result => {
-            let channel = await guild.channels.fetch(guild.systemChannelID || channelID);
+            let channel = await guild.channels.cache.get(guild.systemChannelID || channelID);
             embed.setTitle('Billybobbeep | Welcome');
             embed.setColor('#447ba1');
             embed.setTimestamp();

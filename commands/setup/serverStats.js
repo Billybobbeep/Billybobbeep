@@ -42,7 +42,7 @@ module.exports = (message, prefix, embedColor) => {
     if (!isNaN(args[2])) return message.channel.send('You have not specified a stat type');
     if (args[2] === 'bot' || args[2] === 'total' || args[2] === 'member' || args[2] === 'b' || args[2] === 't' || args[2] === 'm') {
     
-        let channel = message.guild.channels.fetch(args[3]);
+        let channel = message.guild.channels.cache.get(args[3]);
         if (!channel) return message.channel.send('You have not provided a channel');
 
         guildData.findOne({ guildId: message.guild.id }).then(result => {

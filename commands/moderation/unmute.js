@@ -13,13 +13,13 @@ module.exports = {
 		const logging = require('../../utils/functions').logging;
 		let args = message.content.slice(prefix.length).trim().split(/ +/g);
 		function unmuteCmd() {
-			let user = message.mentions.users.first() || message.guild.members.fetch(args[1])
+			let user = message.mentions.users.first() || message.guild.members.cache.get(args[1])
 			let reason = args.slice(2).join(' ');
 
 			guildData.findOne({ guildId: message.guild.id }).then(async result => {
 				if (!result.mutedRole) return message.channel.send('You must setup a muted role in your server to use this command');
 				if (!user) return message.channel.send('Please mention a user to mute');
-				let member = message.guild.members.fetch(user.id);
+				let member = message.guild.members.cache.get(user.id);
 				if (!member) return message.channel.send('I could not find the member you provided');
 				if (!member.roles.cache.find(r => r.id === result.mutedRole)) return message.channel.send(`<@!${user.id}> is not muted`);
 				if (user.bot) return message.channel.send('You cannot mute bots');

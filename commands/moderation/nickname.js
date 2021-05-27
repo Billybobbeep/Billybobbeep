@@ -12,11 +12,11 @@ module.exports = {
 	execute(message, prefix, client) {
 		async function nicknameCmd() {
 			let args = message.content.slice(prefix.length).trim().split(/ +/g);
-			let user = message.mentions.users.first() || message.guild.members.fetch(args[1]);
+			let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
 			if (!user) return message.channel.send('Please mention a user');
 
 			let nick = args.slice(2).join(' ');
-			let member = message.guild.members.fetch(user.id);
+			let member = message.guild.members.cache.get(user.id);
 			if (!nick) {
 				try {
 					await member.setNickname('');
@@ -38,11 +38,11 @@ module.exports = {
 		async function nicknameSlashCommand() {
 			let args = message.data.options;
 			let user;
-			args[1] && args[1].value ? user = client.guilds.fetch(message.guild_id).members.fetch(args[1].value).user : user = message.member.user;
+			args[1] && args[1].value ? user = client.guilds.cache.get(message.guild_id).members.cache.get(args[1].value).user : user = message.member.user;
 			if (!user) return require('../../utils/functions').slashCommands.reply(message, client, 'Please provide a user');
 
 			let nick = args[0].value
-			let member = message.guild.members.fetch(user.id);
+			let member = message.guild.members.cache.get(user.id);
 			if (!nick) {
 				try {
 					await member.setNickname('');

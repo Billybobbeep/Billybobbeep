@@ -2,7 +2,7 @@
 module.exports.add = async (reaction, user, client) => {
     if (reaction.partial) {
 		try {
-			await reaction.fetch();
+			await reaction.cache.get();
 		} catch (error) {
 			return;
 		}

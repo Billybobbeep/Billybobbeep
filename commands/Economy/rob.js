@@ -10,7 +10,7 @@ module.exports = {
         const emebd = new Discord.MessageEmbed();
 
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
-        let user = message.mentions.users.first() || message.guild.members.fetch(args[1]);
+        let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
         if (!user) return message.channel.send('Please specify a user to rob');
         if (!user.id || !user.tag || !user.displayAvatarURL()) user = user.user;
         if (user.id === message.author.id) return message.channel.send('You cannot rob yourself');

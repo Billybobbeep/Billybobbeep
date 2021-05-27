@@ -54,7 +54,7 @@ module.exports = (message, prefix, embedColor) => {
 				}
 			}
 		} else {
-			let role = message.mentions.roles.first() || message.guild.roles.fetch(args[3]);
+			let role = message.mentions.roles.first() || message.guild.roles.cache.get(args[3]);
 			if (!role)
 				return message.channel.send(`Could not find the role \`${args[3]}\``);
 			let debounce = false;

@@ -73,7 +73,7 @@ module.exports.cleanDatabase = function (client) {
         if (err) return;
         if (!result) return;
         result.forEach(res => {
-            if (!client.guilds.fetch(res.guildId))
+            if (!client.guilds.cache.get(res.guildId))
                 res.delete();
             if (!res.embedColor)
                 res.delete();
@@ -92,7 +92,7 @@ module.exports.cleanDatabase = function (client) {
         if (err) return;
         if (!result) return;
         result.forEach(res => {
-            if (!client.users.fetch(res.userId))
+            if (!client.users.cache.get(res.userId))
                 res.delete();
         });
         client.users.cache.array().forEach(user => {

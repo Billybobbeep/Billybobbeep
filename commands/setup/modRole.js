@@ -22,7 +22,7 @@ module.exports = (message, prefix, embedColor) => {
 		});
 	} else {
 		guildData.findOne({ guildId: message.guild.id }).then(result => {
-			let role = message.mentions.roles.first() || message.guild.roles.fetch(args[2]);
+			let role = message.mentions.roles.first() || message.guild.roles.cache.get(args[2]);
 			if (!role)
 				return message.channel.send(`Could not find the role \`${args[2]}\``)
 			if (role.id === result.modRole) return message.channel.send(`Your moderator role is already set as ${role}`)

@@ -3,7 +3,7 @@ module.exports = (message, client) => {
 
     if (message.attachments.size < 1) return;
     (message.attachments.array()).forEach(async image => {
-        let output = await fetch(image.url);
+        let output = await cache.get(image.url);
         console.log(await output.text());
     });
 }

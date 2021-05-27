@@ -14,7 +14,7 @@ module.exports = {
 			guildData.findOne({ guildId: message.guild.id }).then(result => {
 				let user =
 				message.mentions.users.first() ||
-				message.guild.members.fetch(args[1]);
+				message.guild.members.cache.get(args[1]);
 
 				let member = message.guild.member(user);
 				let reason = args.slice(2).join(' ');

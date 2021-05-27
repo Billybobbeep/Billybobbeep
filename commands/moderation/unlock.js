@@ -16,7 +16,7 @@ module.exports = {
 
         function unlock() {
             if (args[1]) {
-                if (args[1] && !isNaN(args[1])) channel = message.guild.channels.fetch(channel);
+                if (args[1] && !isNaN(args[1])) channel = message.guild.channels.cache.get(channel);
                 else if (message.mentions.channels.first()) channel = message.mentions.channels.first();
                 else if (args[1].includes('server') || args[1].includes('all')) channel = 'all';
             }

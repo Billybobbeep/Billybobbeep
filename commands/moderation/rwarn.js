@@ -12,7 +12,7 @@ module.exports = {
     const logging = require('../../utils/functions').logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     async function rwarnCmd() {
-      let user = message.mentions.users.first() || message.guild.members.fetch(args[1]);
+      let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
       if (!user) return message.channel.send('Please specify a user');
 
       if (user.id === message.author.id) return message.channel.send('You cannot remove your own warnings');
@@ -26,7 +26,7 @@ module.exports = {
         return message.channel.send(`${user} does not have any warnings`)
 
       try {
-        member = await message.guild.members.fetch(user);
+        member = await message.guild.members.cache.get(user);
       } catch (err) {
         member = null;
       }

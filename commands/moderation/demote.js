@@ -13,7 +13,7 @@ module.exports = {
         function demoteCmd() {
             guildData.findOne({ guildId: message.guild.id }).then(async result => {
                 let args = message.content.slice(prefix.length).trim().split(/ +/g);
-                let user = message.mentions.users.first() || message.guild.members.fetch(args[1]);
+                let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
                 if (!user) return message.channel.send('Please mention a user to demote');
                 if (!user.tag) {
                     user = user.user;
@@ -23,9 +23,9 @@ module.exports = {
 
                 let reason = args.slice(2).join(' ');
                 if (!reason) reason = 'No reason was provided';
-                let member = message.guild.members.fetch(user.id);
+                let member = message.guild.members.cache.get(user.id);
 
-                if (member.roles.fetch(result.modRole)) {
+                if (member.roles.cache.get(result.modRole)) {
                     await member.roles.remove(result.modRole).catch(() => { return message.channel.send('I do not have permissions to use this command') });
                     message.channel.send(`<@!${user.id}> was demoted by <@!${message.author.id}>`)
                     embed.setTitle('User Demoted');

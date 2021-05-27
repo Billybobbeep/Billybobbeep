@@ -35,7 +35,7 @@ module.exports = {
 
             guildData.findOne({ guildId: message.guild.id }).then(async result => {
                 if (!result) return;
-                const member = message.member || await message.guild.members.fetch(message.author);
+                const member = message.member || await message.guild.members.cache.get(message.author);
                 const canSpam = result.antiSpam_enabled ? false : true;
 
                 if (canSpam) return;
@@ -94,7 +94,7 @@ module.exports = {
         function log(message, type) {
             guildData.findOne({ guildId: message.guild.id }).then(async result => {
                 if (!result) return;
-                let logging = message.guild.channels.fetch(result.loggingChannel);
+                let logging = message.guild.channels.cache.get(result.loggingChannel);
                 if (!logging) {
                     result.antiSpam_enabled = false;
                     result.save();
@@ -155,7 +155,7 @@ module.exports = {
             guildData.findOne({ guildId: message.guild.id }).then(async result => {
                 if (!result) return;
                 cache.muted.push(message.author.id);
-                const member = message.member || await message.guild.members.fetch(message.author);
+                const member = message.member || await message.guild.members.cache.get(message.author);
                 const role = message.guild.roles.cache.find(role => role.id === result.mutedRole);
                 const userCanBeMuted = role && message.guild.me.hasPermission('MANAGE_ROLES') && (message.guild.me.roles.highest.position > message.member.roles.highest.position);
                 if (!userCanBeMuted) {

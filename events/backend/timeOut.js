@@ -51,7 +51,7 @@ function application(db, client) {
     appliedUsers.find(function(err, data) {
         if (!data) return;
         data.forEach(async result => {
-            let user = client.users.fetch(result.memberId);
+            let user = client.users.cache.get(result.memberId);
             let job = result.job;
             let userResult = await userData.findOne({ userId: user.id });
             
@@ -107,8 +107,8 @@ function mute(client) {
             guild = result.guildId;
             user =  result.userId;
             time = result.time;
-            guild = client.guilds.fetch(guild);
-            let member = guild.members.fetch(user);
+            guild = client.guilds.cache.get(guild);
+            let member = guild.members.cache.get(user);
             if (!member) return remove(result, guild, user, 'mute', client);
             if (Date.now() >= time) {
               remove(result, guild, user, 'mute', client);
@@ -121,7 +121,7 @@ function mute(client) {
 async function remove(result, guild, user, string, client) {
     const { MessageEmbed } = require('discord.js');
     const guildData = require('../client/database/models/guilds');
-    let member = guild.members.fetch(user);
+    let member = guild.members.cache.get(user);
     let guildRes = await guildData.findOne({ guildId: guild.id });
     let mutedRole = guildRes.mutedRole;
     if (!member) return result.delete();
