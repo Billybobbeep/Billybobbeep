@@ -35,7 +35,7 @@ module.exports = {
                 }
                 if (!time) reason = args.slice(2).join(' ');
                 if (!reason) reason = 'No reason was provided';
-                if (!message.guild.roles.cache.get(r => r.id === result.mutedRole)) return message.channel.send('You must setup a muted role in your server to use this command');
+                if (!message.guild.roles.fetch(r => r.id === result.mutedRole)) return message.channel.send('You must setup a muted role in your server to use this command');
                 member.roles.add(message.guild.roles.cache.find(role => role.id === result.mutedRole)).then(() => message.channel.send('Successfully muted <@!' + user.id + '>')).catch(error => {
                     if (error.toString().includes('permissions')) return message.channel.send('I cannot mute <@!' + user.id + '>. Please make sure my highest role is above <@!' + user.id + '>\'s highest role.');
                     else { return message.channel.send('An unknown error occurred') }

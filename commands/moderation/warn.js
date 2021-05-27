@@ -13,7 +13,7 @@ module.exports = {
     let guildResult = await guildData.findOne({ guildId: message.guild.id });
   
     async function warnCmd() {
-      let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
+      let user = message.mentions.users.first() || message.guild.members.fetch(args[1]);
       if (!user) return message.channel.send('Please specify a user to warn');
       if (!user.id || !user.tag) user = user.user;
 
@@ -22,14 +22,14 @@ module.exports = {
       if (user.id === message.guild.owner.id) return message.channel.send('The server owner cannot be warned');
 
       let member;
-      let memberResult = await guildMemberData.findOne({ guildId: message.guild.id, memberId: user.id });   
+      let memberResult = await guildMemberData.findOne({ guildId: message.guild.id, memberId: user.id });
 
       try {
-        member = await message.guild.members.cache.get(user);
+        member = await message.guild.members.fetch(user.id);
       } catch (err) {
         member = null;
       }
-      if (member.user.bot) return message.channel.send('You cannot warn bots')
+      if (member && member.user.bot) return message.channel.send('You cannot warn bots');
 
       if (!member) return message.reply('That user is not in this server');
       if (user.tag === undefined) user = user.user
@@ -40,9 +40,8 @@ module.exports = {
 
         let reasons = []
         if (memberResult.warnReasons && typeof memberResult.warnReasons === 'object') {
-          for (var i=0; i < (memberResult.warnReasons).length; i++) {
+          for (var i=0; i < (memberResult.warnReasons).length; i++)
             reasons.push(memberResult.warnReasons[i]);
-          }
         }
 
       reasons.push(`${reason} - ${message.author.tag}`)
