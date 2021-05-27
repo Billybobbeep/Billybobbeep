@@ -16,9 +16,9 @@ module.exports = (member, client) => {
     let tm = result.serverStats_memberNoText || 'Members:';
     let tb = result.serverStats_botNoText || 'Bots:';
     try {
-        client.channels.fetch(countChannel.total).setName(`${tu} ${member.guild.memberCount}`);
-        client.channels.fetch(countChannel.member).setName(`${tm} ${member.guild.members.cache.filter(m => !m.user.bot).size}`);
-        client.channels.fetch(countChannel.bots).setName(`${tb} ${member.guild.members.cache.filter(m => m.user.bot).size}`);
+        client.channels.cache.get(countChannel.total).setName(`${tu} ${member.guild.memberCount}`);
+        client.channels.cache.get(countChannel.member).setName(`${tm} ${member.guild.members.cache.filter(m => !m.user.bot).size}`);
+        client.channels.cache.get(countChannel.bots).setName(`${tb} ${member.guild.members.cache.filter(m => m.user.bot).size}`);
     } catch {
         return;
     }

@@ -17,9 +17,9 @@ module.exports = {
             let tm = result.serverStats_memberNoText || 'Members:';
             let tb = result.serverStats_botNoText || 'Bots:';
             try {
-                client.channels.fetch(countChannel.total).setName(`${tu} ${message.guild.memberCount}`);
-                client.channels.fetch(countChannel.member).setName(`${tm} ${message.guild.members.cache.filter(m => !m.user.bot).size}`);
-                client.channels.fetch(countChannel.bots).setName(`${tb} ${message.guild.members.cache.filter(m => m.user.bot).size}`);
+                client.channels.cache.get(countChannel.total).setName(`${tu} ${message.guild.memberCount}`);
+                client.channels.cache.get(countChannel.member).setName(`${tm} ${message.guild.members.cache.filter(m => !m.user.bot).size}`);
+                client.channels.cache.get(countChannel.bots).setName(`${tb} ${message.guild.members.cache.filter(m => m.user.bot).size}`);
                 message.channel.send('Successfully updated the server stats');
             } catch {
                 message.channel.send('There was an error whilst updating the server stats');

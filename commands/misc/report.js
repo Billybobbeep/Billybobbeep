@@ -112,7 +112,7 @@ module.exports = {
                         let reaction = collected.first();
 
                         if (reaction.emoji.id === tick.id) {
-                            let channel = client.channels.fetch('734398769831084102');
+                            let channel = client.channels.cache.get('734398769831084102');
                             channel.send(embed6).catch(e => console.error(e));
                             message.channel.send('Your report has been sent');
                         } else {
@@ -201,7 +201,7 @@ module.exports = {
                         let reaction = collected.first();
 
                         if (reaction.emoji.id === tick.id) {
-                            let channel = client.channels.fetch('734398769831084102');
+                            let channel = client.channels.cache.get('734398769831084102');
                             channel.send(embed6).catch(e => console.error(e));
                             message.author.send('Your report has been sent');
                         } else {
