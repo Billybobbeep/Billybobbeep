@@ -15,7 +15,7 @@ module.exports = {
 		const embed = new Discord.MessageEmbed();
 		const info = require('./jobRequirements.js');
 
-		let crossEmoji = client.emojis.fetch('736952985330122772');
+		let crossEmoji = client.emojis.cache.get('736952985330122772');
 		embed.setAuthor(`${message.author.username}`, message.author.displayAvatarURL());
 		embed.setColor(guildResult.embedColor);
 

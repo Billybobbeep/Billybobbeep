@@ -60,8 +60,8 @@ module.exports = {
 			if (socialWorker !== undefined) dailyAmt = 27.71
 			if (doctor !== undefined) dailyAmt = 52.25
 		}
-		let nem = client.emojis.fetch('767351869856940063');
-		let sem = client.emojis.fetch('767365396474101831');
+		let nem = client.emojis.cache.get('767351869856940063');
+		let sem = client.emojis.cache.get('767365396474101831');
 		let semoji = `${nem}${nem}${nem}${nem}${nem}`
 
 		if (lastRun !== null && cooldown - (Date.now() - lastRun) > 0) {

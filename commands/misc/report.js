@@ -99,8 +99,8 @@ module.exports = {
 
 
                     msg = await message.channel.send(embed5);
-                    let tick = client.emojis.fetch(require('../../utils/config.json').TickEmoji1);
-                    let cross = client.emojis.fetch(require('../../utils/config.json').CrossEmoji);
+                    let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji1);
+                    let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
                     await msg.react(tick);
                     await msg.react(cross);
 
@@ -188,8 +188,8 @@ module.exports = {
 
 
                     msg = await message.author.send(embed5);
-                    let tick = client.emojis.fetch(require('../../utils/config.json').TickEmoji1);
-                    let cross = client.emojis.fetch(require('../../utils/config.json').CrossEmoji);
+                    let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji1);
+                    let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
                     await msg.react(tick);
                     await msg.react(cross);
 

@@ -41,7 +41,7 @@ module.exports = {
             let msg = ranMessFunc().replace('(user)', `<@!${user.id}>`).replace('(money)', robAmt.toString()).catch(ranMessageFun().replace('(user)', `<@!${user.id}>`).replace('(money)', robAmt.toString()));
             message.channel.send(msg);
         } else {
-            let cross = client.emojis.fetch(require('../../utils/config.json').CrossEmoji);
+            let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
             let amt = Math.floor(Math.random() * (30 - 10)) + 10;
             message.channel.send(`${cross} You have been caught! **-$${amt}**`);
             userData.findOne({ userId: message.author.id }).then(result => { result.economy_balance = result.economy_balance - robAmt; result.save() });

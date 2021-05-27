@@ -20,7 +20,7 @@ module.exports = {
         if (!user) return message.channel.send(`You have not mentioned a user`);
         if (!user.id) user = user.user;
 
-        let emoji = client.emojis.fetch(require('../../utils/config.json').blobSmile);
+        let emoji = client.emojis.cache.get(require('../../utils/config.json').blobSmile);
         if (user.id === client.user.id) return message.channel.send(`I do not need money, thanks though. ${emoji}`)
         if (user.bot) return message.channel.send(`You cannot donate to a bot`);
         if (user.id === message.author.id) return message.channel.send(`You cannot donate to yourself`);
