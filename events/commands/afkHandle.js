@@ -34,7 +34,7 @@ module.exports = {
           if (args[1] === 'me') {
             user = message.author;
           } else {
-            user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
+            user = message.mentions.users.first() || message.guild.members.fetch(args[1]);
           }
         } else {
           embed.setDescription('Please specify a user to mark as AFK')
@@ -94,7 +94,7 @@ module.exports = {
           if (args[1] === 'me') {
             user = message.author
           } else {
-            user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
+            user = message.mentions.users.first() || message.guild.members.fetch(args[1]);
           }
         } else {
           embed.setDescription('Please specify a user')
@@ -140,7 +140,7 @@ module.exports = {
       if (member.length > 0) {
         member.forEach(r => {
           r = r.replace('_', ' ').split(/ +/g);
-          let user = message.guild.members.cache.get(r[0]);
+          let user = message.guild.members.fetch(r[0]);
           user = user.user;
           let reason = r.slice(1).join(' ');
           embed.addField(`${user.username}#${user.discriminator}`, reason);
