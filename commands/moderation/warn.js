@@ -13,7 +13,7 @@ module.exports = {
     let guildResult = await guildData.findOne({ guildId: message.guild.id });
   
     async function warnCmd() {
-      let user = message.mentions.users.first() || message.guild.members.fetch(args[1]);
+      let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
       if (!user) return message.channel.send('Please specify a user to warn');
       if (!user.id || !user.tag) user = user.user;
 
