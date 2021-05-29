@@ -60,7 +60,7 @@ module.exports = {
                 : embed2.setDescription(`**User:** ${user}\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Time:** Until unmuted\n**Reason:** ${reason}\n\n**Moderator:** ${message.author}\n**Moderator Tag:** ${message.author.tag}\n**Moderator ID:** ${message.author.id}`);
                 logging(embed2, message, client);
                 const newMutedMember = new mutedMembers({ guildId: message.guild.id, userId: user.id, time: (Date.now() + time)});
-                newMutedMember.save();
+                time ? newMutedMember.save() : null;
             });
         }
         let debounce = false;
