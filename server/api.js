@@ -1,8 +1,9 @@
-const guildData = require('../events/client/database/models/guilds');
-const express = require('express');
-const router = express.Router();
+const { Router } = require('express');
+const router = Router();
 const { Client, MessageEmbed } = require('discord.js');
 const client = new Client();
+const guildData = require('../events/client/database/models/guilds');
+const userData = require('../events/client/database/models/users');
 client.login(process.env.token);
 
 let cache = {
@@ -13,10 +14,9 @@ let cache = {
 async function userVoted(req, res) {
     let user = false;
     user = await client.users.fetch(req.body.user).catch(() => res.json({ error: 'Could not find user' }));
-    if (cache.lastVotedDate && cache.lastVoteDate < new Date().getTime() + 60000) return;
+    if (cache.lastVoteDate < new Date().getTime() + 60000 && cache.lastVote && cache.lastVote.user == req.body.user && cache.lastVote.bot == req.body.bot) return res.send({ error: user.username + ' has already voted' });
     if (user && (req.body.bot).toString() == (client.user.id).toString() && (req.body.type).toLowerCase() == 'upvote') {
         if (!user) return res.json({ error: 'Could not find user' });
-        const userData = require('../events/client/database/models/users');
         userData.findOne({ userId: req.body.user }).then(async result => {
             if (!result) return;
             const embed = new MessageEmbed();
@@ -26,10 +26,13 @@ async function userVoted(req, res) {
             await user.send(embed).catch(err => res.json({ error: 'User has DMs turned off' }));
             result.economy_balance = result.economy_balance + 100;
             result.save();
-            cache.lastVoteDate = new Date().getTime();
             res.json({ response: 200 });
             let votersChannel = await client.channels.fetch('847150442558390282');
-            if (votersChannel) votersChannel.send(`${user.username} has ${req.body.type}d`);
+            embed.setTitle(`${user.username}#${user.discriminator} ${req.body.type}d`);
+            embed.setDescription(`${user.username} has ${req.body.type}d on [top.gg](https://top.gg/bot/${client.user.id}/vote)`);
+            if (votersChannel) votersChannel.send(embed);
+            cache.lastVoteDate = new Date().getTime();
+            cache.lastVote = { user: req.body.user, bot: req.body.bot }
         });
     } else {
         res.json({ error: 'Internal Error' });
