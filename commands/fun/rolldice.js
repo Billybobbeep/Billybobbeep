@@ -4,7 +4,12 @@ module.exports = {
     alias: ['roll', 'dice'],
     catagory: 'generator',
     options: [],
-    execute (message, prefix, client) {
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
+    execute (message, _prefix, _client) {
         const rollDice = () => Math.floor(Math.random() * 6) + 1;
         message.reply("rolled a " + rollDice());
     }

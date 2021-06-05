@@ -6,7 +6,12 @@ module.exports = {
     alias: ['stop', 'tts'],
     catagory: 'general',
     guildOnly: true,*/
-    execute (message, prefix, client) {
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
+    execute (message, prefix, _client) {
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         if (message.content.startsWith(`${prefix}play`)) {
         const voiceChannel = message.member.voice.channel;

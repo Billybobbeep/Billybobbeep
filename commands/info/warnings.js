@@ -4,7 +4,12 @@ module.exports = {
     catagory: 'info',
     usage: 'warnings [user]',
     guildOnly: true,
-    async execute (message, prefix, client) {
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
+    async execute (message, prefix, _client) {
         const Discord = require('discord.js');
         const guildData = require('../../events/client/database/models/guilds.js');
         const guildMemberData = require('../../events/client/database/models/guildMembers.js');

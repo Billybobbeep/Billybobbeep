@@ -2,7 +2,12 @@ module.exports = {
 	name: 'invite',
 	description: 'Generate a bot invite',
 	catagory: 'info',
-	execute (message, prefix, client) {
+	/**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
+	execute (message, _prefix, client) {
 		const guildData = require('../../events/client/database/models/guilds');
 		const Discord = require('discord.js');
 		const embed = new Discord.MessageEmbed();

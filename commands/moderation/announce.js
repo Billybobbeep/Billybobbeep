@@ -8,7 +8,12 @@ module.exports = {
     guildOnly: true,
     catagory: 'moderation',
     usage: 'announce',
-    execute (message, prefix, client) {
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
+    execute (message, _prefix, client) {
         if (!message.guild) return;
         guildData.findOne({ guildId: message.guild.id }).then(result => {
             const embed = new Discord.MessageEmbed()

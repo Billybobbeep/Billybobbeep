@@ -4,7 +4,12 @@ module.exports = {
     catagory: 'info',
     alias: ['cl', 'currlvl', 'xp'],
     guildOnly: true,
-    async execute (message, prefix, client) {
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
+    async execute (message, prefix, _client) {
         const guildMemberData = require('../../events/client/database/models/guildMembers.js');
         const { MessageAttachment } = require('discord.js');
         const jimp = require('jimp');

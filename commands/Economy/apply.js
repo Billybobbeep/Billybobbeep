@@ -4,6 +4,11 @@ module.exports = {
     catagory: 'economy',
     usage: 'apply [job name]',
     guildOnly: true,
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
     execute (message, prefix, client) {
         const Discord = require('discord.js');
         const guildData = require('../../events/client/database/models/guilds.js');

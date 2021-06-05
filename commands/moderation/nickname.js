@@ -9,6 +9,11 @@ module.exports = {
 	guildOnly: true,
 	catagory: 'moderation',
 	usage: 'nickname [user] [nickname]',
+	/**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
 	execute(message, prefix, client) {
 		async function nicknameCmd() {
 			let args = message.content.slice(prefix.length).trim().split(/ +/g);

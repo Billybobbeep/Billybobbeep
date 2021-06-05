@@ -4,6 +4,11 @@ module.exports = {
 	guildOnly: true,
 	catagory: 'moderation',
 	usage: 'unmute [user] [reason]',
+	/**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
 	execute(message, prefix, client) {
 		const mutedMembers = require('../../events/client/database/models/mutedMembers');
 		const guildData = require('../../events/client/database/models/guilds');

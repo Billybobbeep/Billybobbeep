@@ -5,8 +5,13 @@ module.exports = {
     catagory: 'economy',
     usage: 'balance [user]',
     guildOnly: true,
-    isSlashEnabled: true,
+    isSlashEnabled: { type: true, public: false },
     options: [{ name: 'user', description: 'The user you\'d like to check the balance of', type: 6, required: false }],
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
     execute(message, prefix, client) {
         const Discord = require('discord.js');
         const guildData = require('../../events/client/database/models/guilds.js');

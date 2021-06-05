@@ -3,7 +3,12 @@ module.exports = {
     description: 'View the reaction times',
     catagory: 'info',
     guildOnly: true,
-    async execute (message, prefix, client) {
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
+    async execute (message, _prefix, client) {
         let serverResponse;
         let messageResponse;
         let msg = await message.channel.send('Ping: Receiving Data..');

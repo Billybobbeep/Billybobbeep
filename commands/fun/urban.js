@@ -9,6 +9,11 @@ module.exports = {
     catagory: 'generator',
     guildOnly: true,
     options: [{ name: 'word', description: 'A word to search in the dictionary.', type: 3, required: true }],
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
     execute (message, prefix, client) {
         if (!message.data) {
             guildData.findOne({ guildId: message.guild.id }).then(result => {

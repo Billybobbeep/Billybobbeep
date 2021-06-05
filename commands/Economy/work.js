@@ -3,8 +3,13 @@ module.exports = {
 	description: 'Go to work',
 	catagory: 'economy',
 	guildOnly: true,
-	//isSlashEnabled: true,
+	//isSlashEnabled: { type: true, public: false },
 	options: [],
+	/**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
 	async execute(message, prefix, client) {
 		const Discord = require('discord.js');
 		const guildData = require('../../events/client/database/models/guilds.js');

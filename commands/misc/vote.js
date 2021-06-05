@@ -2,7 +2,12 @@ module.exports = {
     name: 'vote',
     description: 'Vote for billybobbeep',
     guildOnly: true,
-    execute(message, client) {
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
+    execute(message, _prefix, client) {
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();
         const guildData = require('../../events/client/database/models/guilds');

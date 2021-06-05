@@ -2,7 +2,12 @@ module.exports = {
     name: 'info',
     description: 'View billybobbeep\'s info',
     guildOnly: true,
-    execute(message, prefix, client) {
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
+    execute(message, _prefix, client) {
       const { MessageEmbed, version: djsversion } = require('discord.js');
       const { version } = require('../../package.json');
       const { utc } = require('moment');

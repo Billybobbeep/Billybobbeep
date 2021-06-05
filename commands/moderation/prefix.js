@@ -6,6 +6,11 @@ module.exports = {
 	guildOnly: true,
 	catagory: 'moderation',
 	usage: 'prefix [new-prefix]',
+	/**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
 	execute (message, prefix, client) {
 		function prefixCmd() {
 			guildData.findOne({ guildId: message.guild.id }).then(result => {

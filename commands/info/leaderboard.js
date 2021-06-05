@@ -3,6 +3,11 @@ module.exports = {
     description: 'View this servers level leaderboard',
     guildOnly: true,
     catagory: 'info',
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
     execute(message, prefix, client) {
         const guildData = require('../../events/client/database/models/guilds.js');
         const guildMemberData = require('../../events/client/database/models/guildMembers.js');

@@ -38,7 +38,12 @@ module.exports = {
 	alias: ['server'],
 	catagory: 'info',
 	guildOnly: true,
-	execute (message, prefix, client) {
+	/**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
+	execute (message, _prefix, _client) {
 		const roles = message.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
 		const members = message.guild.members.cache;
 		const channels = message.guild.channels.cache;

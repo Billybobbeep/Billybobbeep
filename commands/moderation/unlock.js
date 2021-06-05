@@ -5,6 +5,11 @@ module.exports = {
     guildOnly: true,
     usage: 'unlock [channel] [reason]',
     alias: ['lockdown'],
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
     execute(message, prefix, client) {
         const { MessageEmbed } = require('discord.js');
         const ms = require('ms');

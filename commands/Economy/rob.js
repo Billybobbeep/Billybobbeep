@@ -4,6 +4,11 @@ module.exports = {
     catagory: 'economy',
     guildOnly: true,
     options: [{ name: 'user', description: 'The user you\'d like to rob', type: 6, required: true }],
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
     async execute(message, prefix, client) {
         const userData = require('../../events/client/database/models/users.js');
         const Discord = require('discord.js');

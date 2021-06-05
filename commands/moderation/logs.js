@@ -246,7 +246,12 @@ module.exports = {
     guildOnly: true,
     catagory: 'moderation',
     usage: 'logs help',
-    execute (message, prefix, client) {
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
+    execute (message, _prefix, client) {
         if (message.member.roles.cache.has(['VIEW_AUDIT_LOG', 'ADMINISTRATOR']) && !message.member.roles.cache.find(role => role.id === guildData.findOne({ guildId: message.guild.id }).then(result => result.modRole)))
             return message.channel.send('You must have the `View Audit Log` permissions to use this command');
         else handling(client, message);

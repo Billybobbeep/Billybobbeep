@@ -15,7 +15,12 @@ module.exports = {
     catagory: 'generator',
     guildOnly: true,
     //options: [{ name: 'description', description: 'The poll description', type: 3, required: true }, { name: 'title', description: 'The poll title', type: 3, required: false }, { name: 'channel', description: 'The channel to send the poll in', type: 7, required: false }],
-    execute (message, prefix, client) {
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
+    execute (message, prefix, _client) {
         if (!message.data) {
             guildData.findOne({ guildId: message.guild.id }).then(async result => {
                 let args = message.content.slice(prefix.length).trim().split(/ +/g);

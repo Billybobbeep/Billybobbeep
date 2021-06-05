@@ -5,8 +5,13 @@ module.exports = {
     catagory: 'economy',
     usage: 'withdraw [amount]',
     guildOnly: true,
-    isSlashEnabled: true,
+    isSlashEnabled: { type: true, public: false },
     options: [{ name: 'amount', description: 'The amount you\'d like to withdraw', type: 3, required: true }],
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
     execute(message, prefix, client) {
         const userData = require('../../events/client/database/models/users');
         const guildData = require('../../events/client/database/models/guilds');
