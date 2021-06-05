@@ -4,79 +4,113 @@ module.exports = {
 	guildOnly: true,
 	catagory: 'moderation',
 	usage: 'kick [user] [reason]',
-	execute (message, prefix, client) {
+	isSlashEnabled: { type: true, public: false, options: { mod: true } },
+	options: [{ name: 'user', description: 'The user you\'d like to kick', type: 6, required: true }, { name: 'reason', description: 'Reason to kick', type: 3, required: false }],
+	/**
+	 * @param {object} message The message that was sent
+	 * @param {string} prefix The servers prefix
+	 * @param {objects} client The bots client
+	 */
+	execute(message, prefix, client) {
 		const Discord = require('discord.js');
-		const configFile = require('../../utils/config.json');
 		const guildData = require('../../events/client/database/models/guilds.js');
 		const logging = require('../../utils/functions').logging;
-		let args = message.content.slice(prefix.length).trim().split(/ +/g);
-		function kickCmd() {
-			guildData.findOne({ guildId: message.guild.id }).then(result => {
-				let user =
-				message.mentions.users.first() ||
-				message.guild.members.cache.get(args[1]);
 
-				let member = message.guild.member(user);
-				let reason = args.slice(2).join(' ');
-				let succ = true
+		async function kickCmdInteraction() {
+			let slash = (!message.content && message.data ? true : false);
+			let args = !slash ? message.content.slice(prefix.length).trim().split(/ +/g) : message.data.options;
+			let channel;
+			slash ?
+			channel = {
+				send(...msg) {
+					require('../../utils/functions').slashCommands.reply(message, client, msg)
+				},
+				reply(user, ...msg) {
+					require('../../utils/functions').slashCommands.reply(message, client, `<@!${user.id}>, ${msg}`)
+				}
+			} : channel = message.channel;
+			let guild = await client.guilds.fetch(message.guild ? message.guild.id : message.guild_id);
+			guildData.findOne({ guildId: guild.id }).then(async result => {
+				let user = slash ? message.data.options[0].value : message.mentions.users.first() || message.guild.members.cache.get(args[1]);
+				let reason = typeof args == 'object' ? (args[1] ? args[1].value : false) : (args ? args.slice(2).join(' ') : false);
+				let succ = true;
+				let member;
 
-				if (!user) return message.channel.send('Please mention a user to kick');
-				if (user.id === message.author.id)
-					return message.channel.send('You cannot kick yourself from the server');
-				if (user.id === client.user.id)
-					return message.channel.send('You cannot kick me');
-				if (user.tag === undefined || user.id === undefined) user = user.user;
+				if (typeof user == 'string') {
+					member = await guild.members.fetch(user);
+					user = await client.users.fetch(user);
+				} else if (typeof user == 'object') {
+					if (!user.id || user.user) user = user.user;
+					member = await guild.members.fetch(user.id);
+				} else
+					return channel.send('Please mention a user to kick');
+
+				if (user.id == (message.author ? message.author.id : message.member.user.id))
+					return channel.send('You cannot kick yourself from the server');
+				if (user.id == client.user.id)
+					return channel.send('You cannot kick me from the server');
+
 				if (!reason) reason = 'No reason provided';
+				if (member.roles.highest <= message.member.roles.highest) return channel.send('You cannot kick ' + user.username);
 
-				let log = new Discord.MessageEmbed();
-				log.setTimestamp();
-				log.setColor(result.embedColor);
-				log.setTitle(`You have been kicked`);
-				log.addField(`Responsible Moderator:`, message.author.tag, true);
-				log.addField(`Reason:`, reason);
-				log.addField(`Guild:`, message.guild);
-				let embed = new Discord.MessageEmbed();
-				embed.setTitle('Member Kicked');
-				embed.setDescription(
-					`**Member Tag:** ${user.tag}\n` +
-					`**Member ID:** ${user.id}\n` +
-					`**Reason:** ${reason}\n\n` +
-					`**Moderator:** ${message.author}\n` +
-					`**Moderator Tag:** ${message.author.tag}\n` +
-					`**Moderator ID:** ${message.author.id}`
-				);
-				embed.setColor(result.embedColor);
-				embed.setTimestamp();
-				user.send(log).catch(() => embed.setFooter('DM could not be sent').toString());
-				
-				reason = reason + ' - ' + message.author.tag
+				let log = new Discord.MessageEmbed()
+					.setTimestamp()
+					.setColor(result.embedColor)
+					.setTitle('You have been kicked')
+					.addField('Responsible Moderator:', (message.author ? message.author.tag : `${message.member.user.username}#${message.member.user.discriminator}`), true)
+					.addField('Reason:', reason)
+					.addField('Guild:', (message.guild ? message.guild.name : client.guilds.cache.get(message.guild_id).name));
+				let embed = new Discord.MessageEmbed()
+					.setTitle('Member Kicked')
+					.setDescription(
+						`**Member Tag:** ${user.tag}\n` +
+						`**Member ID:** ${user.id}\n` +
+						`**Reason:** ${reason}\n\n` +
+						`**Moderator:** ${message.author ? message.author : message.member.user}\n` +
+						`**Moderator Tag:** ${message.author ? message.author.tag : (message.member.user.username + '#' + message.member.user.discriminator)}\n` +
+						`**Moderator ID:** ${message.author ? message.author.id : message.member.user.id}`
+					)
+					.setColor(result.embedColor)
+					.setTimestamp();
+
+				reason = reason + ' - ' + (message.author ? message.author.tag : (message.member.user.username + '#' + message.member.user.discriminator))
 				member.kick({ reason: reason })
-				.then(() => {
-					message.channel.send(`Successfully kicked **${user.tag}**`);
-				})
-				.catch(() => {
-					message.reply('I was unable to kick the member you provided');
-					succ = false
-				});
-				if (succ) logging(embed, message, client);
+					.then(() => {
+						channel.send(`Successfully kicked **${user.tag}**`);
+					})
+					.catch(() => {
+						channel.reply('I was unable to kick the member you provided');
+						succ = false
+					});
+				if (succ) {
+					await user.send(log).catch(() => embed.setFooter('DM could not be sent').toString());
+					logging(embed, (message.guild ? message.guild.id : message.guild_id), client);
+				}
 			});
 		}
 		let debounce = false;
 
-		guildData.findOne({ guildId: message.guild.id }).then(result => {
-			if (message.member.hasPermission('KICK_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
-				kickCmd()
+		guildData.findOne({ guildId: (message.guild_id || message.guild.id) }).then(async result => {
+			if (!result || result) await client.guilds.cache.get(message.guild_id || message.guild.id);
+			if (client.guilds.cache.get(message.guild_id || message.guild.id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('KICK_MEMBERS') ||
+				client.guilds.cache.get(message.guild_id || message.guild.id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('ADMINISTRATOR')) {
+				// if (message.guild_id || message.data)
+					kickCmdInteraction();
+				// else
+				// 	kickCmd();
 				debounce = true;
 			} else if (result.modRole) {
-				if (message.member.roles.cache.find(role => role.id === result.modRole)) {
+				if (message.member.roles.cache.find(role => role.id == result.modRole)) {
 					if (result.modsCanKick) {
-						if (message.guild.id === '733442092667502613') return;
-						kickCmd()
+						// if (message.guild_id || message.data)
+							kickCmdInteraction();
+						// else
+						// 	kickCmd();
 						debounce = true;
 					}
 				}
 			}
-			if (debounce === false)
+			if (!debounce)
 				message.channel.send('You do not have the permissions to use this command');
 		});
 	}

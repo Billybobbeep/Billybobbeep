@@ -71,16 +71,8 @@ function handle(message, client) {
         if (client.commands.get(command)) {
             if (client.commands.get(command).guildOnly && client.commands.get(command).guildOnly == true && !message.guild) return;
             if (message.guild && client.commands.get(command).catagory && client.commands.get(command).catagory == 'moderation') {
-                if (!message.guild.me.hasPermission('ADMINISTRATOR')) {
-                    const embed = new MessageEmbed();
-                    embed.setTitle('Invalid Permissions');
-                    embed.setDescription('Unfortunately, this command requires `administrator` permissions to work correctly');
-                    embed.addField('Don\'t know how?', `Go to **Server Settings**, **Roles** then find **${client.user.username}** and make sure **administrator** is enabled`, false)
-                    embed.setFooter(`${message.guild.name}`);
-                    embed.setTimestamp();
-                    embed.setColor(result.embedColor || '#447ba1');
-                    return message.channel.send(embed);
-                }
+                if (!require('../../utils/functions').guildPerms.clientHasPermissions(message, client.commands.get(command)))
+                    require('../../utils/functions').guildPerms.permissionCallback(message, client, (client.commands.get(command).permissions || 'UNKNOWN'))
             }
             try {
                 client.commands.get(command).execute(message, prefix, client);
@@ -108,17 +100,11 @@ function handleSlashCommands(interaction, client) {
         }
 
         if (client.commands.get(command)) {
-            if (client.commands.get(command).guildOnly && client.commands.get(command).guildOnly == true && !interaction.guild_id) return;
+            if (client.commands.get(command).guildOnly && client.commands.get(command).guildOnly == true && !interaction.guild_id)
+                return require('../../utils/functions').slashCommands.reply(interaction, client, `${client.user.username} does not support DM commands, consider using commands via a server`);
             if (interaction.guild_id && client.commands.get(command).catagory && client.commands.get(command).catagory == 'moderation') {
-                if (!client.guilds.members.cache.get(client.user.id).hasPermission('ADMINISTRATOR')) {
-                    const embed = new MessageEmbed();
-                    embed.setTitle('Invalid Permissions');
-                    embed.setDescription('Unfortunately, this command requires `administrator` permissions to work correctly');
-                    embed.addField('Don\'t know how?', `Go to **Server Settings**, **Roles** then find **${client.user.username}** and make sure **administrator** is enabled`, false)
-                    embed.setTimestamp();
-                    embed.setColor(result.embedColor || '#447ba1');
-                    return require('../../utils/functions').slashCommands.reply(interaction, client, embed);
-                }
+                if (!require('../../utils/functions').slashCommands.clientHasPermissions(interaction, client.commands.get(command)))
+                    require('../../utils/functions').slashCommands.permissionCallback(interaction, client, (client.commands.get(command).permissions || 'UNKNOWN'))
             }
             try {
                 client.commands.get(command).execute(interaction, '/', client);
