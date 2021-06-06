@@ -1,11 +1,11 @@
 const guildData = require('../client/database/models/guilds');
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
+const { logging } = require('../../utils/functions');
 const axios = require('axios');
 let il = ['dsc.gg', 'discord.gg', 'discord.com/invite'];
 
 async function getInvite(guildResult, inviteResponse, message, client) {
-	const embed = new Discord.MessageEmbed();
-	const logging = require('../../utils/functions').logging;
+	const embed = new MessageEmbed();
 	embed.setTitle(`Billybobbeep | Invite Links`);
 	embed.setTimestamp();
 	embed.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
@@ -14,7 +14,7 @@ async function getInvite(guildResult, inviteResponse, message, client) {
 		`**Connected Server:** ${inviteResponse.guild.name}\n` +
 		`**Detected Invite Link:** https://discord.gg/${inviteResponse.code}`
 	);
-	await message.author.send(embed);
+	message.author.send(embed).catch(() => embed.setFooter('DM was not sent'));
 
 	embed.setTitle('Invite Link Detected');
 	embed.setDescription(
@@ -30,14 +30,18 @@ async function getInvite(guildResult, inviteResponse, message, client) {
 	logging(embed, message, client);
 }
 module.exports = (message, client) => {
+	let found = false;
 	if (!message.guild) return;
 	guildData.findOne({ guildId: message.guild.id }).then(result => {
 		if (message.author.bot) return;
 		let inviteLinks = result.preferences ? result.preferences.inviteLinks : false;
 		if (!inviteLinks) return;
 
-		//if (message.guild.owner.id == message.author.id) return;
-		if ((message.content).toLowerCase().includes(il)) {
+		if (message.guild.owner.id == message.author.id) return;
+		il.forEach(link => {
+			if ((message.content).toLowerCase().includes(link)) found = true;
+		});
+		if (found) {
 			message.delete();
 			(message.content).split(/ +/g).forEach(word => {
 				if (il.includes(word.toLowerCase())) {
