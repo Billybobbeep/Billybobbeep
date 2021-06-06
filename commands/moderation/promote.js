@@ -21,15 +21,15 @@ module.exports = {
                 let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
                 if (!user) return message.channel.send('Please mention a user to promote');
                 if (!user.tag) user = user.user;
-                if (!result.modRole)
+                if (!result.preferences.modRole)
                     return message.channel.send('You need to set up a mod role in your server to use this command');
 
                 let reason = args.slice(2).join(' ');
                 if (!reason) reason = 'No reason was provided';
                 let member = message.guild.members.cache.get(user.id);
 
-                if (!member.roles.cache.get(result.modRole)) {
-                    await member.roles.add(result.modRole).catch(() => { return message.channel.send('I do not have permissions to use this command') });
+                if (!member.roles.cache.get(result.preferences.modRole)) {
+                    await member.roles.add(result.preferences.modRole).catch(() => { return message.channel.send('I do not have permissions to use this command') });
                     message.channel.send(`<@!${user.id}> was promoted by <@!${message.author.id}>`)
                     embed.setTitle('User Promoted');
                     embed.setDescription(
@@ -40,12 +40,12 @@ module.exports = {
                         `**Moderator:** ${message.author}\n` +
                         `**Moderator Tag:** ${message.author.tag}\n` +
                         `**Moderator ID:** ${message.author.id}`);
-                    embed.setColor(result.embedColor);
+                    embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
                     embed2.setTitle('You have been promoted');
                     embed2.addField(`Moderator`, message.author.tag);
                     embed2.addField(`Reason`, reason);
                     embed2.addField('Guild:', message.guild.name);
-                    embed2.setColor(result.embedColor);
+                    embed2.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
                     try {
                         await user.send(embed2)
                     } catch {

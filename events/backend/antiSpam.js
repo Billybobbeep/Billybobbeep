@@ -1,6 +1,11 @@
 module.exports = {
     name: 'Anti Spam',
     description: 'A backend module to monitor all messages sent',
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
     execute(message) {
         const Discord = require('discord.js');
         const embed = new Discord.MessageEmbed();
@@ -94,19 +99,19 @@ module.exports = {
         function log(message, type) {
             guildData.findOne({ guildId: message.guild.id }).then(async result => {
                 if (!result) return;
-                let logging = message.guild.channels.cache.get(result.loggingChannel);
+                let logging = message.guild.channels.cache.get(result.preferences.loggingChannel);
                 if (!logging) {
                     result.antiSpam_enabled = false;
                     result.save();
                     embed.setTitle('Spam detection has been turned off');
                     embed.setDescription('Spam detection has been turned off due to an invalid logging channel.\nTo set this back up please view the setup manuals');
-                    embed.setColor(result.embedColor);
+                    embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
                     return message.channel.send(embed);
                 }
                 if (type.toString() === 'warn') {
                     embed.setTitle('Billybobbeep | Spam Prevention');
                     embed.setDescription('You have been warned for spamming in ' + message.guild.name);
-                    embed.setColor(result.embedColor);
+                    embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
                     embed.setTimestamp();
                     await message.author.send(embed).catch(() => { return log(message, 'err-warn') });
                     embed.setTitle('Spam Detected');
@@ -116,7 +121,7 @@ module.exports = {
                 } else if (type.toString() === 'mute') {
                     embed.setTitle('Billybobbeep | Spam Prevention');
                     embed.setDescription('You have been muted for spamming in ' + message.guild.name);
-                    embed.setColor(result.embedColor);
+                    embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
                     embed.setTimestamp();
                     await message.author.send(embed).catch(() => { return log(message, 'err-mute') });
                     embed.setTitle('Spam Detected');
@@ -144,7 +149,7 @@ module.exports = {
             guildMemberData.findOne({ guildId: message.guild.id, memberId: message.author.id }).then(result => {
                 if (!result) return;
                 cache.warnedUsers.push(message.author.id);
-                result.warnings = result.warnings + 1;
+                result.warnReasons.length = result.warnReasons.length + 1;
                 result.warnReasons[result.warnReasons.length] = 'Automatic Warning - Spamming';
                 result.save();
                 log(message, 'warn');
@@ -156,7 +161,7 @@ module.exports = {
                 if (!result) return;
                 cache.muted.push(message.author.id);
                 const member = message.member || await message.guild.members.cache.get(message.author);
-                const role = message.guild.roles.cache.find(role => role.id === result.mutedRole);
+                const role = message.guild.roles.cache.find(role => role.id === result.preferences.mutedRole);
                 const userCanBeMuted = role && message.guild.me.hasPermission('MANAGE_ROLES') && (message.guild.me.roles.highest.position > message.member.roles.highest.position);
                 if (!userCanBeMuted) {
                     log(message, 'err-mute');

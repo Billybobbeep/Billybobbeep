@@ -36,7 +36,7 @@ module.exports = {
 					`**Host:** ${message.author.tag}\n` + `**Prize:** ${prize}`
 				)
 				.setTimestamp(Date.now() + ms(args[1]))
-				.setColor(result.embedColor);
+				.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 
 			let m = await channel.send(Embed);
 			m.react('🎉');
@@ -58,7 +58,7 @@ module.exports = {
 						`**Host:** ${message.author.tag}\n` + `**Prize:** ${prize}\n` + `**Winner:** ${winner.tag}\n` + `\n` + `*This giveaway has now ended.*`
 					)
 					.setTimestamp(Date.now() + ms(args[1]))
-					.setColor(result.embedColor);
+					.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 				m.edit(winningEmbed)
 			}, ms(args[1]));
 		});

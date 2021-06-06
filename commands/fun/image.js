@@ -8,7 +8,7 @@ module.exports = {
 	description: 'Generate a random image',
 	catagory: 'generator',
 	guildOnly: true,
-	isSlashEnabled: { type: true, public: false },
+	slashInfo: { enabled: true, public: false },
 	options: [],
 	/**
 	 * @param {object} message The message that was sent
@@ -140,7 +140,7 @@ module.exports = {
 			if (result.cleanFilter)
 				return !message.data ? message.channel.send('This server has been set to clean content only') : require('../../utils/functions').slashCommands.reply(message, client, 'This server has been set to clean content only');
 
-			embed.setColor(result.embedColor);
+			embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 			embed.setTitle('Billybobbeep | Image Generator');
 			embed.setDescription('Please note: These images may include content some viewers may find disturbing');
 

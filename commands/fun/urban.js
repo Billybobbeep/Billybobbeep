@@ -24,7 +24,7 @@ module.exports = {
                     let embed = new Discord.MessageEmbed()
                         .setTitle(json.word)
                         .setDescription(json.definition)
-                        .setColor(result.embedColor)
+                        .setColor(result.preferences ? result.preferences.embedColor : '#447ba1')
                         .setFooter('Billybobbeep is not responsible for what you search | Written by: ' + (json.author || 'Unknown'))
                         .addField('Upvotes', json.thumbs_up || 0, true)
                         .addField('Downvotes', json.thumb_down || 0, true)
@@ -43,7 +43,7 @@ module.exports = {
                         .addField('Upvotes', json.thumbs_up || 0, true)
                         .addField('Downvotes', json.thumb_down || 0, true)
                         .setFooter('Billybobbeep is not responsible for what you search | Written by: ' + (json.author || 'Unknown'))
-                        .setColor(result.embedColor)
+                        .setColor(result.preferences ? result.preferences.embedColor : '#447ba1')
                     require('../../utils/functions').slashCommands.reply(message, client, embed);
                 });
             });

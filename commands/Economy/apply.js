@@ -18,7 +18,7 @@ module.exports = {
                 const ms = require('ms');
                 const embed = new Discord.MessageEmbed();
                 const info = require('./jobRequirements.js');
-                embed.setColor(guildResult.embedColor);
+                embed.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
                 embed.setAuthor(message.author.username, message.author.displayAvatarURL());
 
                 let args = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -273,7 +273,7 @@ async function application_process(message, job, client) {
     
     embed.setDescription(`${tick} Successfully applied for the ${job} job!`);
     embed.setAuthor('You will be DMed your application results soon', message.author.displayAvatarURL());
-    embed.setColor(guildResult.embedColor);
+    embed.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
     message.channel.send(embed);
 
     const newData = new awaitingData({

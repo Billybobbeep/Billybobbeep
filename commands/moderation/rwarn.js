@@ -27,7 +27,7 @@ module.exports = {
       let memberResult = await guildMemberData.findOne({ guildId: message.guild.id, memberId: user.id });
       let guildResult = await guildData.findOne({ guildId: message.guild.id });
 
-      if (memberResult.warnings < 1 || !memberResult.warnings)
+      if (memberResult.warnReasons.length < 1 || !memberResult.warnReasons.length)
         return message.channel.send(`${user} does not have any warnings`)
 
       try {
@@ -42,7 +42,7 @@ module.exports = {
       if (!member) return message.reply('That user is not in this server');
 
       let reason = args.splice(2).join(' ');
-      let tw = memberResult.warnings;
+      let tw = memberResult.warnReasons.length;
       if (!reason) reason = 'No reason was provided';
       message.channel.send(`Removed \`1\` warning from ${user}`);
 
@@ -71,21 +71,21 @@ module.exports = {
 
       let log = new Discord.MessageEmbed()
         .setTimestamp()
-        .setColor(guildResult.embedColor)
+        .setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1')
         .setTitle('Warning Removed')
         .addField('User:', user, true)
         .addField('By:', message.author, true)
         .addField('Reason:', reason, false)
         .addField('Warning Reason', warnReason, false)
-        .addField('Total Warnings', memberResult.warnings - 1, true)
+        .addField('Total Warnings', memberResult.warnReasons.length - 1, true)
       logging(log, message, client);
-      if (memberResult.warnings < 1)
+      if (memberResult.warnReasons.length < 1)
         message.channel.send(`${user.username} does not have any warnings to remove`);
-      else if (memberResult.warnings == 1) {
-        memberResult.warnings = 0;
+      else if (memberResult.warnReasons.length == 1) {
+        memberResult.warnReasons.length = 0;
         memberResult.save();
       } else {
-        memberResult.warnings = memberResult.warnings - 1;
+        memberResult.warnReasons.length = memberResult.warnReasons.length - 1;
         memberResult.save();
       }
     }
@@ -94,8 +94,8 @@ module.exports = {
       if (message.member.hasPermission('MANAGE_MESSAGES') || message.member.hasPermission('ADMINISTRATOR')) {
         rwarnCmd()
         debounce = true;
-      } else if (result.modRole) {
-        if (message.member.roles.cache.find(role => role.id === result.modRole)) {
+      } else if (result.preferences.modRole) {
+        if (message.member.roles.cache.find(role => role.id === result.preferences.modRole)) {
           rwarnCmd()
           debounce = true;
         }

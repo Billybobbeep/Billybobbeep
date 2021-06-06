@@ -19,7 +19,7 @@ module.exports = {
             const embed = new Discord.MessageEmbed()
             embed.setTitle(`Announcement Sent`)
             embed.setTimestamp()
-            embed.setColor(result.embedColor)
+            embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1')
             let filter = m => m.author.id === message.author.id;
             let q1 = new Discord.MessageCollector(message.channel, filter, {
                 max: 1

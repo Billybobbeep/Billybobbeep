@@ -5,9 +5,7 @@ const guildMemberSchema = new mongoose.Schema({
     guildId: String,
     xp: { type: Number, default: 0 },
     level: { type: Number, default: 0 },
-    warnings: { type: Number, default: 0 },
     warnReasons: Array,
-
 });
 
 module.exports = mongoose.model('guildMembers', guildMemberSchema);

@@ -19,7 +19,7 @@ module.exports = {
         const embed = new Discord.MessageEmbed();
         const info = require('./jobRequirements.js');
         embed.setFooter(`${message.author.username}`);
-        embed.setColor(guildResult.embedColor);
+        embed.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
         if (guildResult.ecoEnabled) return message.channel.send('Economy commands have been disabled in your server');
 
         let cashier = userResult.job === 'cashier' ? true : undefined;

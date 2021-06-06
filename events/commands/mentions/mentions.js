@@ -5,7 +5,7 @@ module.exports = async (message, client) => {
 
   if (!message.guild) return;
   embed.setTitle('Billybobbeep | Mentioned');
-  guildData.findOne({ guildId: message.guild.id }).then(result => embed.setColor(result.embedColor));
+  guildData.findOne({ guildId: message.guild.id }).then(result => embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1'));
   embed.setFooter(`Requested by: ${message.author.tag}`);
   embed.setTimestamp();
 
@@ -94,7 +94,7 @@ module.exports = async (message, client) => {
       if (messagedUser.tag === client.user.tag) {
         embed.setDescription(`Prefix: \`${result.prefix || '~'}\`\n` +
           `For additional help please enter the command: \`${result.prefix || '~'}help\``);
-          embed.setColor(result.embedColor);
+          embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
         message.channel.send(embed);
       }
     });

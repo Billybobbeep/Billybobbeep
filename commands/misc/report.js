@@ -15,23 +15,23 @@ module.exports = {
         guildData.findOne({ guildId: message.guild.id }).then(async result => {
             embed.setDescription(`Welcome to the ${client.user.username} bug report service.\nHere I will be asking you a series of questions.\nYou can cancel this prompt anytime by entering \`cancel\`.\n\n**Please begin all messages with a** \`~\`**.**`);
             embed.setFooter(`To continue react to this message`);
-            embed.setColor(result.embedColor);
+            embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 
             const embed2 = new Discord.MessageEmbed();
             embed2.setTitle('Question: 1/3');
             embed2.setDescription(`What is your bug about?`);
-            embed2.setColor(result.embedColor);
+            embed2.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 
             const embed3 = new Discord.MessageEmbed();
             embed3.setTitle('Question: 2/3');
             embed3.setDescription('What is your bug?\n*Please provide as much detail as you can*');
-            embed3.setColor(result.embedColor);
+            embed3.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 
             const embed4 = new Discord.MessageEmbed();
             embed4.setTitle('Question: 3/3');
             embed4.setDescription(`Any additional information the moderator should know?`);
             embed.setFooter('Say \'skip\' to skip this question')
-            embed4.setColor(result.embedColor);
+            embed4.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 
             let subject = '';
             let body = '';
@@ -91,7 +91,7 @@ module.exports = {
                     embed5.addField(`Subject`, subject.toString().replace('~', ''));
                     embed5.addField(`Message`, body.toString().replace('~', ''));
                     embed5.addField(`Additional Information`, extra.toString().replace('~', ''));
-                    embed5.setColor(result.embedColor);
+                    embed5.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 
                     const embed6 = new Discord.MessageEmbed();
                     embed6.setTitle('Bug Report');
@@ -100,7 +100,7 @@ module.exports = {
                     embed6.addField(`Additional Information`, extra.toString().replace('~', ''));
                     embed6.addField(`Sent From`, message.author.tag);
                     message.guild ? embed6.addField(`Guild`, message.guild.name) : '';
-                    embed6.setColor(result.embedColor);
+                    embed6.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 
 
                     msg = await message.channel.send(embed5);
@@ -180,7 +180,7 @@ module.exports = {
                     embed5.addField(`Subject`, subject.toString().replace('~', ''));
                     embed5.addField(`Message`, body.toString().replace('~', ''));
                     embed5.addField(`Additional Information`, extra.toString().replace('~', ''));
-                    embed5.setColor(result.embedColor);
+                    embed5.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 
                     const embed6 = new Discord.MessageEmbed();
                     embed6.setTitle('Bug Report');
@@ -189,7 +189,7 @@ module.exports = {
                     embed6.addField(`Additional Information`, extra.toString().replace('~', ''));
                     embed6.addField(`Sent From`, message.author.tag);
                     message.guild ? embed6.addField(`Guild`, message.guild.name) : '';
-                    embed6.setColor(result.embedColor);
+                    embed6.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 
 
                     msg = await message.author.send(embed5);

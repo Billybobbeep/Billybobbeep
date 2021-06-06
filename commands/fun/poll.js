@@ -30,7 +30,7 @@ module.exports = {
                 let embedPoll = new Discord.MessageEmbed()
                     .setTitle('New Poll!')
                     .setDescription(pollDescription)
-                    .setColor(result.embedColor)
+                    .setColor(result.preferences ? result.preferences.embedColor : '#447ba1')
                     .setFooter(`Poll created by: ${message.author.tag}`)
                 let msgEmbed = await pollChannel.send(embedPoll);
                 await msgEmbed.react('👍');
@@ -43,7 +43,7 @@ module.exports = {
                 let embedPoll = new Discord.MessageEmbed()
                     .setTitle(message.data.options.title || 'New Poll!')
                     .setDescription(message.data.options.description)
-                    .setColor(result.embedColor)
+                    .setColor(result.preferences ? result.preferences.embedColor : '#447ba1')
                     .setFooter(`Poll created by: ${message.author_tag}`)
                 let msgEmbed = await pollChannel.send(embedPoll);
                 await msgEmbed.react('👍');

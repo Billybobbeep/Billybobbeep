@@ -34,7 +34,7 @@ module.exports = {
 											`**Moderator Tag:** ${message.author.tag}\n` +
 											`**Moderator ID:** ${message.author.id}\n`)
 						embed.setTimestamp();
-						embed.setColor(result.embedColor);
+						embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 						logging(embed, message, client);
 						msg1.delete({ timeout: 3000 });
 					}
@@ -48,8 +48,8 @@ module.exports = {
 		if (message.member.hasPermission('MANAGE_MESSAGES') || message.member.hasPermission('ADMINISTRATOR')) {
 			purgeCmd()
 			debounce = true;
-		} else if (result.modRole) {
-			if (message.member.roles.cache.find(role => role.id === result.modRole)) {
+		} else if (result.preferences.modRole) {
+			if (message.member.roles.cache.find(role => role.id === result.preferences.modRole)) {
 				purgeCmd()
 				debounce = true;
 			}

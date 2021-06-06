@@ -40,8 +40,8 @@ module.exports = {
 			if (message.member.hasPermission('MANAGE_GUILD') || message.member.hasPermission('ADMINISTRATOR')) {
 				prefixCmd()
 				debounce = true;
-			} else if (result.modRole) {
-				if (message.member.roles.cache.find(role => role.id === result.modRole)) {
+			} else if (result.preferences.modRole) {
+				if (message.member.roles.cache.find(role => role.id === result.preferences.modRole)) {
 					prefixCmd()
 					debounce = true;
 				}

@@ -16,7 +16,7 @@ module.exports = {
         guildData.findOne({ guildId: message.guild.id }).then(guildResult => {
             let args = message.content.slice(prefix.length).trim().split(/ +/g);
             const embed = new MessageEmbed();
-            embed.setColor(guildResult.embedColor);
+            embed.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
             embed.setTitle('Levels | Leaderboard');
 
             guildMemberData.find(function(err, result) {

@@ -22,7 +22,7 @@ module.exports = {
         let memberResult = await guildMemberData.findOne({ guildId: message.guild.id, memberId: user.id });
         let guildResult = await guildData.findOne({ guildId: message.guild.id });
         if (!memberResult) return noWarnings();
-        let tWarnings = memberResult.warnings || 0;
+        let tWarnings = memberResult.warnReasons.length || 0;
         let count = 0;
         if (user.username === undefined)
             user = user.user
@@ -33,22 +33,24 @@ module.exports = {
             const embed = new Discord.MessageEmbed()
                 .setDescription(`${user.username} has **${tWarnings}** warnings`)
                 .setTimestamp()
-                .setColor(guildResult.embedColor)
+                .setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1')
                 .setAuthor(`${user.tag}`)
             reasons.forEach(result => {
+                if (typeof result !== 'object') return;
                 count++;
-                embed.addField(`Case #${count}`, result);
+                let u = result.reason
+                let r = result.moderator
+                embed.addField(`Case #${count}`, `**Reason:** ${r}\n**Moderator:** ${u}`);
             });
             message.channel.send(embed);
-        } else {
+        } else
             noWarnings();
-        }
 
         function noWarnings() {
             const embed = new Discord.MessageEmbed()
                 .setDescription(`${user.username} has 0 warnings`)
                 .setTimestamp()
-                .setColor(guildResult.embedColor)
+                .setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1')
                 .setAuthor(`${user.tag}`)
             message.channel.send(embed);
         }

@@ -38,7 +38,7 @@ module.exports = {
                 reason ? embed.setDescription('This channel has been unlocked' + '.\nReason: ' + reason) : embed.setDescription('This channel has been unlocked');
                 embed.setFooter('Unlocked by: ' + message.author.tag);
                 embed.setTimestamp();
-                embed.setColor(result.embedColor);
+                embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 
                 logEmbed.setDescription(
                     `**Channel:** ${channel ? channel : 'All'}\n` +
@@ -47,7 +47,7 @@ module.exports = {
                     `**Moderator Tag:** ${message.author.tag}\n` +
                     `**Moderator ID:** ${message.author.id}`
                 )
-                logEmbed.setColor(result.embedColor);
+                logEmbed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
                 logEmbed.setTitle('Channel Unlocked');
 
                 if (channel !== 'all') {
@@ -68,7 +68,7 @@ module.exports = {
                 } else {
                     let logged = false;
                     message.guild.channels.cache.array().forEach(channel => {
-                        if (channel.id === result.loggingChannel) return;
+                        if (channel.id === result.preferences.loggingChannel) return;
                         if (channel.permissionsFor(message.guild.roles.everyone).has('SEND_MESSAGES')) return;
                         if (channel.name.toLowerCase().includes('log') || channel.name.toLowerCase().includes('mod')) return;
                         if (channel.type === 'text') {
@@ -88,8 +88,8 @@ module.exports = {
             if (message.member.hasPermission('MANAGE_SERVER') || message.member.hasPermission('ADMINISTRATOR')) {
               unlock();
               debounce = true;
-            } else if (result.modRole) {
-              if (message.member.roles.cache.find(role => role.id === result.modRole)) {
+            } else if (result.preferences.modRole) {
+              if (message.member.roles.cache.find(role => role.id === result.preferences.modRole)) {
                 unlock();
                 debounce = true;
               }

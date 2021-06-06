@@ -17,7 +17,7 @@ module.exports = {
 		const ms = require('ms');
 		const embed = new Discord.MessageEmbed();
 		embed.setFooter(message.author.username);
-		embed.setColor(guildResult.embedColor);
+		embed.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
 
 		if (guildData.ecoEnabled) return message.channel.send('Economy commands have been disabled in your server');
 

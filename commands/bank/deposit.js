@@ -5,7 +5,7 @@ module.exports = {
     catagory: 'economy',
     usage: 'deposit [amount]',
     guildOnly: true,
-    isSlashEnabled: { type: true, public: false },
+    slashInfo: { enabled: true, public: false },
     options: [{ name: 'amount', description: 'The amount you\'d like to deposit', type: 3, required: true }],
     /**
      * @param {object} message The message that was sent

@@ -21,7 +21,7 @@ module.exports = async(msg, args, prefix, message, client) => {
       `greetings <@${client.user.id}>\n\n`
     )
     guildData.findOne({ guildId: message.guild.id }).then(result => {
-      message.guild ? embed.setColor(result.embedColor) : embed.setColor('#447ba1');
+      message.guild ? embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1') : embed.setColor('#447ba1');
       message.channel.send(embed);
     });
 }

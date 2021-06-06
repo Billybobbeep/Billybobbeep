@@ -4,7 +4,7 @@ module.exports = {
 	guildOnly: true,
 	catagory: 'moderation',
 	usage: 'kick [user] [reason]',
-	isSlashEnabled: { type: true, public: false, options: { mod: true } },
+	slashInfo: { enabled: true, public: false, options: { mod: true } },
 	options: [{ name: 'user', description: 'The user you\'d like to kick', type: 6, required: true }, { name: 'reason', description: 'Reason to kick', type: 3, required: false }],
 	/**
 	 * @param {object} message The message that was sent
@@ -16,19 +16,18 @@ module.exports = {
 		const guildData = require('../../events/client/database/models/guilds.js');
 		const logging = require('../../utils/functions').logging;
 
-		async function kickCmdInteraction() {
+		async function kickCmd() {
 			let slash = (!message.content && message.data ? true : false);
 			let args = !slash ? message.content.slice(prefix.length).trim().split(/ +/g) : message.data.options;
-			let channel;
-			slash ?
-			channel = {
-				send(...msg) {
-					require('../../utils/functions').slashCommands.reply(message, client, msg)
-				},
-				reply(user, ...msg) {
-					require('../../utils/functions').slashCommands.reply(message, client, `<@!${user.id}>, ${msg}`)
-				}
-			} : channel = message.channel;
+			let channel = slash ?
+				{
+					send(...msg) {
+						require('../../utils/functions').slashCommands.reply(message, client, msg)
+					},
+					reply(user, ...msg) {
+						require('../../utils/functions').slashCommands.reply(message, client, `<@!${user.id}>, ${msg}`)
+					}
+				} : message.channel;
 			let guild = await client.guilds.fetch(message.guild ? message.guild.id : message.guild_id);
 			guildData.findOne({ guildId: guild.id }).then(async result => {
 				let user = slash ? message.data.options[0].value : message.mentions.users.first() || message.guild.members.cache.get(args[1]);
@@ -55,7 +54,7 @@ module.exports = {
 
 				let log = new Discord.MessageEmbed()
 					.setTimestamp()
-					.setColor(result.embedColor)
+					.setColor(result.preferences ? result.preferences.embedColor : '#447ba1')
 					.setTitle('You have been kicked')
 					.addField('Responsible Moderator:', (message.author ? message.author.tag : `${message.member.user.username}#${message.member.user.discriminator}`), true)
 					.addField('Reason:', reason)
@@ -70,7 +69,7 @@ module.exports = {
 						`**Moderator Tag:** ${message.author ? message.author.tag : (message.member.user.username + '#' + message.member.user.discriminator)}\n` +
 						`**Moderator ID:** ${message.author ? message.author.id : message.member.user.id}`
 					)
-					.setColor(result.embedColor)
+					.setColor(result.preferences ? result.preferences.embedColor : '#447ba1')
 					.setTimestamp();
 
 				reason = reason + ' - ' + (message.author ? message.author.tag : (message.member.user.username + '#' + message.member.user.discriminator))
@@ -83,7 +82,7 @@ module.exports = {
 						succ = false
 					});
 				if (succ) {
-					await user.send(log).catch(() => embed.setFooter('DM could not be sent').toString());
+					await user.send(log).catch(() => embed.setFooter('DM could not be sent'));
 					logging(embed, (message.guild ? message.guild.id : message.guild_id), client);
 				}
 			});
@@ -94,18 +93,12 @@ module.exports = {
 			if (!result || result) await client.guilds.cache.get(message.guild_id || message.guild.id);
 			if (client.guilds.cache.get(message.guild_id || message.guild.id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('KICK_MEMBERS') ||
 				client.guilds.cache.get(message.guild_id || message.guild.id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('ADMINISTRATOR')) {
-				// if (message.guild_id || message.data)
-					kickCmdInteraction();
-				// else
-				// 	kickCmd();
+				kickCmd();
 				debounce = true;
-			} else if (result.modRole) {
-				if (message.member.roles.cache.find(role => role.id == result.modRole)) {
+			} else if (result.preferences.modRole) {
+				if (message.member.roles.cache.find(role => role.id == result.preferences.modRole)) {
 					if (result.modsCanKick) {
-						// if (message.guild_id || message.data)
-							kickCmdInteraction();
-						// else
-						// 	kickCmd();
+						kickCmd();
 						debounce = true;
 					}
 				}

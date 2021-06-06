@@ -26,7 +26,7 @@ module.exports = {
             .addField('Bots:', `${robot}`, true)
             .setFooter(`Requested by: ${message.author.tag}`)
             .setTimestamp()
-            result.embedColor ? embed.setColor(result.embedColor) : embed.setColor('#447ba1');
+            result.preferences.embedColor ? embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1') : embed.setColor('#447ba1');
             message.channel.send(embed);
         });
     }

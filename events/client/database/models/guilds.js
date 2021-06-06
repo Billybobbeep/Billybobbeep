@@ -1,29 +1,31 @@
 const mongoose = require('mongoose');
 
 const guildSchema = new mongoose.Schema({
-    guildId: String,
+    guildId: { type: String },
     prefix: { type: String, default: '~' },
-    //Roles
-    modRole: String,
-    mutedRole: String,
-    //Channels
-    welcomeChannel: String,
-    talkToBilly: String,
-    countingChannel: String,
-    loggingChannel: String,
-    //Server Stats
-    serverStats_totalNo: String,
-    serverStats_memberNo: String,
-    serverStats_botNo: String,
-    serverStats_totalNoText: String,
-    serverStats_memberNoText: String,
-    serverStats_botNoText: String,
-    //Other
-    embedColor: String,
-    counting_number: Number,
-    lvlRoles: Array,
-    autoRoles: Array,
-    inviteLinks: Boolean
+
+    counting_number: { type: Number },
+
+    preferences: {
+        inviteLinks: { type: Boolean },
+        autoRoles: { type: Array },
+        lvlRoles: { type: Array },
+        embedColor: { type: String, default: '#447ba1' },
+
+        serverStats_totalNo: { type: String },
+        serverStats_memberNo: { type: String },
+        serverStats_botNo: { type: String },
+        serverStats_totalNoText: { type: String },
+        serverStats_memberNoText: { type: String },
+        serverStats_botNoText: { type: String },
+
+        welcomeChannel: { type: String },
+        countingChannel: { type: String },
+        loggingChannel: { type: String },
+
+        modRole: { type: String },
+        mutedRole: { type: String },
+    }
 });
 
 module.exports = mongoose.model('guilds', guildSchema);

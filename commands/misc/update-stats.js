@@ -12,15 +12,15 @@ module.exports = {
         guildData.findOne({ guildId: message.guild.id }).then(result => {
             if (!result) return message.channel.send('This server has not been set up to use this command');
             let data = {
-                total: result.serverStats_totalNo,
-                member: result.serverStats_memberNo,
-                bots: result.serverStats_botNo,
+                total: result.preferences.serverStats_totalNo,
+                member: result.preferences.serverStats_memberNo,
+                bots: result.preferences.serverStats_botNo,
                 serverID: message.guild.id
             }
             if (!data.total || !data.member || !data.bots) return message.channel.send('This server has not been set up to use this command');
-            let tu = result.serverStats_totalNoText || 'Total Users:'
-            let tm = result.serverStats_memberNoText || 'Members:';
-            let tb = result.serverStats_botNoText || 'Bots:';
+            let tu = result.preferences.serverStats_totalNoText || 'Total Users:'
+            let tm = result.preferences.serverStats_memberNoText || 'Members:';
+            let tb = result.preferences.serverStats_botNoText || 'Bots:';
             try {
                 client.channels.cache.get(data.total).setName(`${tu} ${message.guild.memberCount}`);
                 client.channels.cache.get(data.member).setName(`${tm} ${message.guild.members.cache.filter(m => !m.user.bot).size}`);

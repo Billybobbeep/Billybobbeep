@@ -14,13 +14,13 @@ module.exports = (client) => {
 		const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
 		for (const file of commandFiles) {
 			const command = require(`../../commands/${folder}/${file}`);
-			if (command.options && (command.isSlashEnabled && command.isSlashEnabled.type)) {
+			if (command.options && (command.slashInfo && command.slashInfo.enabled)) {
 				let data = {
 					name: command.name,
 					description: command.description,
 					options: command.options
 				}
-				if ((typeof command.isSlashEnabled.options == 'object' && command.isSlashEnabled.options.mod)) {
+				if ((typeof command.slashInfo.options == 'object' && command.slashInfo.options.mod)) {
 					data.permissions = [];
 					guildData.find(function(err, data1) {
 						if (err || !data) return;
@@ -38,7 +38,7 @@ module.exports = (client) => {
 						});
 					});
 				} else {
-					if (command.isSlashEnabled.public) {
+					if (command.slashInfo.public) {
 						client.api.applications(client.user.id).commands.post({
 							data
 						});

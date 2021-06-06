@@ -14,7 +14,7 @@ module.exports = {
         if (typeof message == 'string') {
             guildData.findOne({ guildId: message.toString() }).then(result => {
                 if (!result) return;
-                let loggingChannel = client.channels.cache.get(result.loggingChannel);
+                let loggingChannel = client.channels.cache.get(result.preferences.loggingChannel);
                 if (loggingChannel && typeof loggingChannel == 'object')
                     loggingChannel.send(msg).catch((error) => { console.log(error) });
             })
@@ -24,14 +24,14 @@ module.exports = {
             if (message.guild) {
                 guildData.findOne({ guildId: message.guild.id }).then(result => {
                     if (!result) return;
-                    loggingChannel = client.channels.cache.get(result.loggingChannel);
+                    loggingChannel = client.channels.cache.get(result.preferences.loggingChannel);
                     if (loggingChannel && typeof loggingChannel == 'object')
                         loggingChannel.send(msg).catch((error) => { console.log(error) });
                 });
             } else {
                 guildData.findOne({ guildId: guildID }).then(result => {
                     if (!result) return;
-                    loggingChannel = client.channels.cache.get(result.loggingChannel);
+                    loggingChannel = client.channels.cache.get(result.preferences.loggingChannel);
                     if (loggingChannel && typeof loggingChannel == 'object')
                         loggingChannel.send(msg).catch((error) => { console.log(error) });
                 });
@@ -39,7 +39,7 @@ module.exports = {
         } else {
             guildData.findOne({ guildId: guildID }).then(result => {
                 if (!result) return;
-                let loggingChannel = client.channels.cache.get(result.loggingChannel);
+                let loggingChannel = client.channels.cache.get(result.preferences.loggingChannel);
                 if (loggingChannel && typeof loggingChannel == 'object')
                     loggingChannel.send(msg).catch((error) => { console.log(error) });
             });
@@ -134,7 +134,7 @@ module.exports = {
             embed.addField('Don\'t know how?', `Go to **Server Settings**, **Roles** then find the role **${client.user.username}** and make sure **${permission}** is enabled`, false)
             embed.setFooter(`${client.guilds.fetch(interaction.guild_id).name}`);
             embed.setTimestamp();
-            embed.setColor(result.embedColor || '#447ba1');
+            embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
             this.reply(interaction, client, embed);
         }
     },
@@ -277,7 +277,7 @@ module.exports = {
             embed.addField('Don\'t know how?', `Go to **Server Settings**, **Roles** then find the role **${client.user.username}** and make sure **${permission}** is enabled`, false)
             embed.setFooter(`${message.guild.name}`);
             embed.setTimestamp();
-            embed.setColor(result.embedColor || '#447ba1');
+            embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
             message.channel.send(embed);
         }
     },

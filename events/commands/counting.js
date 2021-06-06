@@ -1,12 +1,17 @@
 module.exports = {
     guildOnly: true,
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
     execute (message, client) {
         const guildData = require('../client/database/models/guilds');
         guildData.findOne({ guildId: message.guild.id }).then(result => {
             let TE = client.emojis.cache.get('736952966447366154');
             let CE = client.emojis.cache.get('736952985330122772');
-            if (!result.countingChannel) return;
-            if (message.channel.id !== result.countingChannel) return;
+            if (!result.preferences.countingChannel) return;
+            if (message.channel.id !== result.preferences.countingChannel) return;
             if (message.author.bot) return;
             if (isNaN(message.content)) return;
             if (!result.counting_number) {

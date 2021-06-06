@@ -75,7 +75,7 @@ module.exports = {
     description: 'Put your message into a new font',
     alias: ['fonts'],
     catagory: 'generator',
-    isSlashEnabled: { type: true, public: false },
+    slashInfo: { enabled: true, public: false },
     options: [{ name: 'font_name', description: 'The name of the font you\'d like to use', type: 3, required: true },
     { name: 'message', description: 'The message you\'d like to convert', type: 3, required: true }],
     /**
@@ -523,7 +523,7 @@ module.exports = {
             embed.setDescription('Supported Fonts:\nDouble\nFancy\nHand\nCursed\nSmooth\nSmol');
             embed.setFooter(`Requested by: ${(message.author ? message.author.tag : message.member.user.username + message.member.user.discriminator)}`);
             embed.setTimestamp();
-            embed.setColor(result.embedColor);
+            embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
             return embed;
         });
     },

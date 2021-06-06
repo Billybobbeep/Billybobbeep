@@ -5,7 +5,7 @@ module.exports = {
     catagory: 'economy',
     usage: 'balance [user]',
     guildOnly: true,
-    isSlashEnabled: { type: true, public: false },
+    slashInfo: { enabled: true, public: false },
     options: [{ name: 'user', description: 'The user you\'d like to check the balance of', type: 6, required: false }],
     /**
      * @param {object} message The message that was sent
@@ -26,7 +26,7 @@ module.exports = {
             guildData.findOne({ guildId: message.guild.id }).then(guildResult => {
                 userData.findOne({ userId: user.id }).then(userResult => {
                     embed.setFooter(`To bank some cash use: /deposit`);
-                    embed.setColor(guildResult.embedColor);
+                    embed.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
                     embed.setAuthor(user.username, user.displayAvatarURL());
 
                     let sym = '$'
@@ -57,7 +57,7 @@ module.exports = {
             guildData.findOne({ guildId: message.guild_id }).then(guildResult => {
                 userData.findOne({ userId: user.id }).then(userResult => {
                     embed.setFooter(`To bank some cash use: /deposit`);
-                    embed.setColor(guildResult.embedColor);
+                    embed.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
                     user.id !== message.member.user.id ? embed.setAuthor(user.username, user.displayAvatarURL()) : null;
 
                     let sym = '$'

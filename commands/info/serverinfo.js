@@ -52,7 +52,7 @@ module.exports = {
 		guildData.findOne({ guildId: message.guild.id }).then(result => {
 			const embed = new MessageEmbed()
 				.setDescription(`**Billybobbeep | Server Information**`)
-				.setColor(result.embedColor)
+				.setColor(result.preferences ? result.preferences.embedColor : '#447ba1')
 				.setThumbnail(message.guild.iconURL({ dynamic: true }))
 				.setFooter(`Requested by: ${message.author.tag}`)
 				.addField('General', [

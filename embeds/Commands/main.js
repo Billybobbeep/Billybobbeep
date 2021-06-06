@@ -2,6 +2,11 @@ const Discord = require('discord.js');
 module.exports = {
     commands: ['cmds', 'c', 'commands'],
     description: 'View billybobbeep\'s commands',
+    /**
+     * @param {object} message The message that was sent
+     * @param {string} prefix The servers prefix
+     * @param {objects} client The bots client
+     */
     execute(message, prefix, client) {
         let msg = message.content.toLowerCase();
         let args = message.content.slice(prefix.length).trim().split(/ +/g);

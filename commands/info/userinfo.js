@@ -47,7 +47,7 @@ module.exports = {
             .setAuthor(user.tag, avatar)
             .setThumbnail(avatar)
             .setTimestamp()
-            .setColor(result.embedColor)
+            .setColor(result.preferences ? result.preferences.embedColor : '#447ba1')
             .addField('ID', user.id, true)
             .addField('Nickname', nickname, true)
             .addField('Created Account Date', `${createdate} \nCreated ${created} day(s) ago`, true)

@@ -58,7 +58,7 @@ module.exports = {
         else if (doctor) job = 'Doctor';
         else job = 'Unemployed';
 
-        message.guild ? embed.setColor(guildResult.embedColor) : embed.setColor('#447ba1');
+        message.guild ? embed.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1') : embed.setColor('#447ba1');
         embed.setAuthor(message.author.username, message.author.displayAvatarURL());
         embed.addField('Job', job, true);
         embed.addField('Job Level', jobLvl, true);

@@ -17,7 +17,7 @@ module.exports = async (message, client) => {
   guildData
     .findOne({ guildId: message.guild.id })
     .then(result => {
-      embed.setColor(result.embedColor);
+      embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
       let prefix =
         guildData
           .findOne({ guildId: message.guild.id })
@@ -33,17 +33,6 @@ module.exports = async (message, client) => {
       if (!attachments.includes('Null')) attachments = attachments.join('\n');
       else attachments = '*This message did not contain any attachments.*';
 
-      if (message.content.startsWith(prefix)) {
-        command = true;
-      } else {
-        command = false;
-      }
-      if (message.pinned) {
-        pinned = true;
-      } else {
-        pinned = false;
-      }
-
       if (message.content.toLowerCase().startsWith(prefix + `purge`)) return;
 
       embed.setDescription(
@@ -58,10 +47,6 @@ module.exports = async (message, client) => {
         message.author.tag +
         '\n**Author ID:** ' +
         message.author.id +
-        '\n\n**Command:** ' +
-        command +
-        '\n**Pinned:** ' +
-        pinned +
         `${attachments ? `\n**Attachments:\n** ${attachments}` : ''}`
       );
 

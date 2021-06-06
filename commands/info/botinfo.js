@@ -20,7 +20,7 @@ module.exports = {
         const embed = new MessageEmbed()
           .setDescription("**Billybobbeep | Bot Info**")
           .setThumbnail(client.user.displayAvatarURL())
-          .setColor(result.embedColor)
+          .setColor(result.preferences ? result.preferences.embedColor : '#447ba1')
           .setFooter(`Requested by: ${message.author.tag}`)
           .addField('General', [
             `**Name:** ${client.user.tag} (${client.user.id})`,

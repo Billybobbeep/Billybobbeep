@@ -31,7 +31,7 @@ module.exports = (newMessage, oldMessage, client) => {
 			`**Author ID:** ${oldMessage.author.id}`
 		  )
 		  .setTimestamp()
-		  .setColor(result.embedColor);
+		  .setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 		return logging(embed, message, client);
 	  });
 	}
@@ -63,7 +63,7 @@ module.exports = (newMessage, oldMessage, client) => {
 		  `**Author ID:** ${oldMessage.author.id}`
 		)
 		.setTimestamp()
-		.setColor(result.embedColor);
+		.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 	  logging(embed, oldMessage, client);
 	});
 }

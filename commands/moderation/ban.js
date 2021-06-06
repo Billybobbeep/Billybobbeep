@@ -40,10 +40,10 @@ module.exports = {
 					`**Moderator ID:** ${message.author.id}`
 				);
 				embed.setTimestamp();
-				embed.setColor(result.embedColor);
+				embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 				let log = new Discord.MessageEmbed();
 				log.setTimestamp();
-				log.setColor(result.embedColor);
+				log.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 				log.setTitle(`You have been banned`);
 				log.addField(`Responsible Moderator:`, message.author.tag, true);
 				log.addField(`Reason:`, reason);
@@ -68,7 +68,7 @@ module.exports = {
 			if (message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
 				banCmd()
 				debounce = true;
-			} else if (result.modRole) {
+			} else if (result.preferences.modRole) {
 				if (message.member.roles.cache.find(role => role.id === result.modsRole)) {
 					if (result.modsCanBan) {
 						if (message.guild.id === '733442092667502613') return;

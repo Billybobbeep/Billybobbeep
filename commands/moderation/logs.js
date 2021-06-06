@@ -11,7 +11,7 @@ function handling(client, message) {
 }
 function help_embed(message, prefix) {
     guildData.findOne({ guildId: message.guild.id }).then(result => {
-        embed.setColor(result.embedColor);
+        embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
         embed.setFooter('NOTE: All flags require no spaces')
         embed.setDescription(
             '**Flags:**\n\n' +
@@ -252,7 +252,7 @@ module.exports = {
      * @param {objects} client The bots client
      */
     execute (message, _prefix, client) {
-        if (message.member.roles.cache.has(['VIEW_AUDIT_LOG', 'ADMINISTRATOR']) && !message.member.roles.cache.find(role => role.id === guildData.findOne({ guildId: message.guild.id }).then(result => result.modRole)))
+        if (message.member.roles.cache.has(['VIEW_AUDIT_LOG', 'ADMINISTRATOR']) && !message.member.roles.cache.find(role => role.id === guildData.findOne({ guildId: message.guild.id }).then(result => result.preferences.modRole)))
             return message.channel.send('You must have the `View Audit Log` permissions to use this command');
         else handling(client, message);
     }

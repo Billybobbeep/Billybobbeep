@@ -3,7 +3,7 @@ module.exports = {
 	description: 'Go to work',
 	catagory: 'economy',
 	guildOnly: true,
-	//isSlashEnabled: { type: true, public: false },
+	//slashInfo: { enabled: true, public: false },
 	options: [],
 	/**
      * @param {object} message The message that was sent
@@ -22,7 +22,7 @@ module.exports = {
 
 		let crossEmoji = client.emojis.cache.get('736952985330122772');
 		embed.setAuthor(`${message.author.username}`, message.author.displayAvatarURL());
-		embed.setColor(guildResult.embedColor);
+		embed.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
 
 		if (guildResult.ecoEnabled) return message.channel.send('Economy commands have been disabled in your server')
 
@@ -96,7 +96,7 @@ module.exports = {
 					.setDescription(`You earned **$${workAmt}.${decimal}** while working!`)
 					.setAuthor(message.author.username)
 					.setThumbnail(message.author.displayAvatarURL())
-					.setColor(guildResult.embedColor);
+					.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
 				reactionCollection(msg, '📕', '📗', '📙', workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
 			}
 			else if (waiter !== undefined) {
@@ -118,7 +118,7 @@ module.exports = {
 					.setDescription(`You earned **$${workAmt}.${decimal}** while working!`)
 					.setAuthor(message.author.username)
 					.setThumbnail(message.author.displayAvatarURL())
-					.setColor(guildResult.embedColor);
+					.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
 				reactionCollection(msg, emojis[no1], emojis[no2], emojis[no3], workAmt, congratsEmbed, congratsEmbed, congratsEmbed);
 			}
 			else if (receptionist !== undefined) {
@@ -129,17 +129,17 @@ module.exports = {
 					.setDescription(`You answered the phone ${count} times and earned **$${workAmt}.${decimal}**!`)
 					.setAuthor(message.author.username)
 					.setThumbnail(message.author.displayAvatarURL())
-					.setColor(guildResult.embedColor);
+					.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
 				const congratsEmbed2 = new Discord.MessageEmbed()
 					.setDescription(`You booked an appointment and earned **$${workAmt}.${decimal}**!`)
 					.setAuthor(message.author.username)
 					.setThumbnail(message.author.displayAvatarURL())
-					.setColor(guildResult.embedColor);
+					.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
 				const congratsEmbed3 = new Discord.MessageEmbed()
 					.setDescription(`You countded your daily earnings and it came to a total of **$${workAmt}.${decimal}**!`)
 					.setAuthor(message.author.username)
 					.setThumbnail(message.author.displayAvatarURL())
-					.setColor(guildResult.embedColor);
+					.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
 				reactionCollection(msg, '📞', '💻', '💰', workAmt, congratsEmbed1, congratsEmbed2, congratsEmbed3);
 			}
 			else if (lifeGuard !== undefined) {
@@ -147,7 +147,7 @@ module.exports = {
 					.setDescription(`You went to work and earnt **$${workAmt}.${decimal}**!`)
 					.setAuthor(message.author.username)
 					.setThumbnail(message.author.displayAvatarURL())
-					.setColor(guildResult.embedColor);
+					.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
 				message.channel.send(congratsEmbed);
 			}
 			else if (engineer !== undefined) {
@@ -157,17 +157,17 @@ module.exports = {
 					.setDescription(`You earnt **$${workAmt}.${decimal}** whilst fixing the 🚗Regular Car!`)
 					.setAuthor(message.author.username)
 					.setThumbnail(message.author.displayAvatarURL())
-					.setColor(guildResult.embedColor);
+					.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
 				const congratsEmbed2 = new Discord.MessageEmbed()
 					.setDescription(`You earnt **$${workAmt}.${decimal}** whilst fixing the 🚓Police Car!`)
 					.setAuthor(message.author.username)
 					.setThumbnail(message.author.displayAvatarURL())
-					.setColor(guildResult.embedColor);
+					.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
 				const congratsEmbed3 = new Discord.MessageEmbed()
 					.setDescription(`You earnt **$${workAmt}.${decimal}** whilst fixing the 🏎Race Car!`)
 					.setAuthor(message.author.username)
 					.setThumbnail(message.author.displayAvatarURL())
-					.setColor(guildResult.embedColor);
+					.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
 				reactionCollection(msg, '🚗', '🚓', '🏎', workAmt, congratsEmbed1, congratsEmbed2, congratsEmbed3);
 			} else if (chef !== undefined) {
 				embed.setDescription(`To begin working click the green circle below`);
