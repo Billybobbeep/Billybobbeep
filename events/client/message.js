@@ -58,7 +58,6 @@ function handle(message, client) {
         if (!result) {
             let newData = new guildData({
                 guildId: message.guild.id,
-                embedColor: '#447ba1'
             });
             newData.save();
         }

@@ -2,6 +2,7 @@ const guildData = require('../client/database/models/guilds');
 
 module.exports = (member, client) => {
 	guildData.findOne({ guildId: member.guild.id }).then(result => {
+		if (!result || !result.preferences) return;
 		let data = {
 			total: result.preferences.serverStats_totalNo,
 			member: result.preferences.serverStats_memberNo,
