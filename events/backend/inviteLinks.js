@@ -5,7 +5,6 @@ const axios = require('axios');
 let il = ['dsc.gg', 'discord.gg', 'discord.com/invite'];
 
 async function getInvite(guildResult, inviteResponse, message, client) {
-	console.log(inviteResponse);
 	const embed = new MessageEmbed();
 	embed.setTitle(`Billybobbeep | Invite Links`);
 	embed.setTimestamp();
