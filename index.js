@@ -12,5 +12,5 @@ const token = process.env.token;
 
 client.login(token);
 require('./events/client/database/connection')();
-// require('./bot')(client);
+require('./bot')(client);
 require('./server/main');
