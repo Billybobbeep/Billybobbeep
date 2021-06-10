@@ -1,5 +1,3 @@
-//https://billybobbeep.tyler2p.repl.co/
-
 const Discord = require('discord.js');
 const client = new Discord.Client({
 	partials: ['MESSAGE', 'CHANNEL', 'REACTION'],

@@ -1,5 +1,3 @@
-const Discord = require('discord.js');
-const configFile = require('../../utils/config.json');
 const guildData = require('../../events/client/database/models/guilds.js');
 
 module.exports = {
