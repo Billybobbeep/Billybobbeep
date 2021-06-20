@@ -28,14 +28,15 @@ module.exports = {
 				reply(user, ...msg) {
 					require('../../utils/functions').slashCommands.reply(message, client, `<@!${user.id}>, ${msg}`)
 				}
-			} : channel;
+			} : message.channel;
 			let guild = await client.guilds.fetch(message.guild ? message.guild.id : message.guild_id);
-			if (!user) return channel.send('Please specify a user to warn');
-			if (!user.id || !user.tag) user = user.user;
+			if (typeof user == 'undefined')
+				return channel.send('Please specify a user to warn');
+			if (!isNaN(user) && !user.id) user = await client.users.fetch(user);
+			if (!user.id && user.user) user = user.user;
 
-			if (user.id === message.author.id) return channel.send('You cannot warn yourself');
+			if (!slash && user.id == message.author.id || slash	&& user.id == message.member.user.id) return channel.send('You cannot warn yourself');
 			if (user.bot) return channel.send('Bots cannot be warned');
-			if (member.roles.highest <= message.member.roles.highest) return channel.send('You cannot warn' + user.username);
 
 			let member;
 			let memberResult = await guildMemberData.findOne({ guildId: guild.id, memberId: user.id });
@@ -49,22 +50,16 @@ module.exports = {
 			} else
 				return channel.send('Please mention a user to warn');
 
+			if (!member) return channel.send(user.username + ' is not in this server');
 			if (member && member.user.bot) return channel.send('You cannot warn bots');
-			if (!member) return message.reply(user.username + ' is not in this server');
+			if (slash && member.roles.highest.position <= message.member.roles.highest.position || !slash && member.roles.highest.position <= message.guild.members.cache.get(message.author.id).roles.highest.position) return channel.send('You cannot warn ' + user.username);
 
 			let reason = slash ? args[1].value : args.splice(2).join(' ');
 			if (!reason) return reason = 'No reason provided';
 
-			let reasons = []
-			if (typeof memberResult.warnReasons === 'object') {
-				for (var i = 0; i < (memberResult.warnReasons).length; i++) {
-					if (typeof memberResult.warnReasons[i] == 'object')
-						reasons.push(memberResult.warnReasons[i]);
-				}
-			}
-
-			reasons.push({ reason: reason, moderator: (message.author ? message.author : client.users.cache.get(message.member.user)) });
-			memberResult.warnReasons = reasons;
+			memberResult.warnReasons.length > 0 ?
+			(memberResult.warnReasons).push({ reason: reason, moderator: (message.author ? message.author : message.member.user) }) :
+			memberResult.warnReasons = [{ reason: reason, moderator: (message.author ? message.author : message.member.user) }];
 
 			let log = new Discord.MessageEmbed()
 				.setTimestamp()
@@ -79,14 +74,13 @@ module.exports = {
 				.setTimestamp()
 				.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1')
 				.setTitle('You have been warned')
-				.addField('Responsible Moderator:', message.author.tag, true)
+				.addField('Responsible Moderator:', (message.author ? message.author.tag: message.member.user.username + '#' + message.member.user.discriminator), true)
 				.addField('Reason:', reason)
 				.addField('Guild:', guild.name);
 			user.send(log2).catch(() => log.setFooter('DM could not be sent'));
-			channel.send(`<@${user.id}> has been warned by <@!${message.author ? message.author.id : message.member.user.id}>`);
+			channel.send(`<@!${user.id}> has been warned by <@!${message.author ? message.author.id : message.member.user.id}>`);
 			logging(log, (message.guild ? message : message.guild_id), client);
 
-			memberResult.warnReasons.length = memberResult.warnReasons.length ? memberResult.warnReasons.length + 1 : 1;
 			memberResult.save();
 		}
 
@@ -94,11 +88,11 @@ module.exports = {
 
 		if (client.guilds.cache.get(message.guild_id || message.guild.id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('MANAGE_MESSAGES') ||
 			client.guilds.cache.get(message.guild_id || message.guild.id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('ADMINISTRATOR')) {
-			warnCmd()
+			warnCmd(message.guild && message.author ? false : true);
 			debounce = true;
 		} else if (guildResult.preferences.modRole) {
 			if (message.member.roles.cache.find(role => role.id === guildResult.preferences.modRole)) {
-				warnCmd()
+				warnCmd(message.guild && message.author ? false : true);
 				debounce = true;
 			}
 			if (debounce === false)
