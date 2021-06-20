@@ -75,7 +75,7 @@ module.exports = {
     description: 'Put your message into a new font',
     alias: ['fonts'],
     catagory: 'generator',
-    slashInfo: { enabled: true, public: false },
+    slashInfo: { enabled: true, public: true },
     options: [{ name: 'font_name', description: 'The name of the font you\'d like to use', type: 3, required: true },
     { name: 'message', description: 'The message you\'d like to convert', type: 3, required: true }],
     /**
