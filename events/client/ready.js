@@ -33,9 +33,15 @@ module.exports = (client) => {
 								});
 							} else return;
 						});
-						client.api.applications(client.user.id).guilds('729288155064434729').commands.post({
-							data
-						});
+						if (command.slashInfo.public) {
+							client.api.applications(client.user.id).commands.post({
+								data
+							});
+						} else {
+							client.api.applications(client.user.id).guilds('729288155064434729').commands.post({
+								data
+							});
+						}
 					});
 				} else {
 					if (command.slashInfo.public) {
