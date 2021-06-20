@@ -38,8 +38,8 @@ module.exports = {
             reasons.forEach(result => {
                 if (typeof result !== 'object') return;
                 count++;
-                let u = result.reason
-                let r = result.moderator
+                let r = result.reason;
+                let u = `${result.moderator.username}#${result.moderator.discriminator}`;
                 embed.addField(`Case #${count}`, `**Reason:** ${r}\n**Moderator:** ${u}`);
             });
             message.channel.send(embed);
