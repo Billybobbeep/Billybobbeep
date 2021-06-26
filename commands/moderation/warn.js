@@ -52,7 +52,8 @@ module.exports = {
 
 			if (!member) return channel.send(user.username + ' is not in this server');
 			if (member && member.user.bot) return channel.send('You cannot warn bots');
-			if (slash && member.roles.highest.position <= message.member.roles.highest.position || !slash && member.roles.highest.position <= message.guild.members.cache.get(message.author.id).roles.highest.position) return channel.send('You cannot warn ' + user.username);
+			slash ? console.log(message.member.roles) : console.log(message.guild.members.cache.get(message.author.id).roles);
+			if (slash && member.roles.highest <= message.member.roles.highest || !slash && member.roles.highest.position <= message.guild.members.cache.get(message.author.id).roles.highest.position) return channel.send('You cannot warn ' + user.username);
 
 			let reason = slash ? args[1].value : args.splice(2).join(' ');
 			if (!reason) return reason = 'No reason provided';
