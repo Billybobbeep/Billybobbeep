@@ -7,35 +7,37 @@ module.exports = async (message, client) => {
 	guildData.findOne({ guildId: message.guild.id }).then(guildResult => {
 		guildMemberData.findOne({ guildId: message.guild.id, memberId: message.author.id }).then(memberResult => {
 			if (!memberResult) return;
-			let prefix = guildResult.prefix || '~'
-			if (message.content.startsWith(prefix)) return;
+			let prefix = guildResult.prefix || '~';
 			let levelUpChannel = guildResult.levelUpChannel || false;
 			let args = message.content.split(/ +/g);
-			if (args[0].length < 2 && !args[1]) return;
-			if (!isNaN(message.content)) return;
 			let xpForLevel = 150;
-      let level = guildResult.level
+      		let level = memberResult.level || 0;
+
+			if (message.content.startsWith(prefix) || args[0].length < 2 && !args[1] || !isNaN(message.content)) return;
+
 			if (guildResult.activeGuild) {
 				if(level<5) xpForLevel=150;else if(level>=5&&level<10) xpForLevel=200;else if(level>=10&&level<30) xpForLevel=250;else if(level>=30&&level<40) xpForLevel=300;else if(level>=40&&level<50) xpForLevel=350;else if(level>=50&&level<60) xpForLevel=400;else if(level>=70&&level<80) xpForLevel=450;else if(level>=90&&level<100) xpForLevel=500;else if(level>=100&&level<110) xpForLevel=550;else if(level>=110&&level<120) xpForLevel=600;else if(level>=120&&level<140) xpForLevel=650;else if(level>=140&&level<160) xpForLevel=700;else if(level>=160&&level<180) xpForLevel=750;else if(level>=180) xpForLevel=800;
 			} else {
 				if(level>=20&&level<30) xpForLevel=150;else if(level>=30&&level<40) xpForLevel=200;else if(level>=40&&level<50) xpForLevel=230;else if(level>=50&&level<60) xpForLevel=260;else if(level>=70&&level<80) xpForLevel=290;else if(level>=90&&level<100) xpForLevel=320;else if(level>=100&&level<110) xpForLevel=350;else if(level>=110&&level<120) xpForLevel=380;else if(level>=120&&level<140) xpForLevel=410;else if(level>=140&&level<160) xpForLevel=440;else if(level>=160&&level<180) xpForLevel=470;else if(level>=180) xpForLevel=600;
 			}
-			let currlev = memberResult.level || 0;
 
+			let currlev = memberResult.level || 0;
 			let gainedXp = Math.round(Math.random() * 5);
 			if (gainedXp < 1) gainedXp = Math.round(Math.random() * 5);
 			if (message.author.bot) return;
 			let levelsEnabled = guildResult.levelsEnabled;
-			if (levelsEnabled === undefined) levelsEnabled = true;
+			if (levelsEnabled == undefined) levelsEnabled = true;
 			if (!levelsEnabled) return;
 			if (message.content.startsWith(guildResult.prefix || '~')) return;
 			let debounce = false;
+
+			// If the message starts with a registered prefix, return
 			punc.forEach(p => {
-				if (debounce === true || !p || p === ' ' || p === '') return;
+				if (debounce == true || !p || p == ' ' || p == '') return;
 				if (message.content.startsWith(p)) debounce = true;
 				else if (args[0].includes(p)) debounce = true;
 			});
-			if (debounce === true) return;
+			if (debounce == true) return;
 			memberResult.xp = memberResult.xp ? memberResult.xp + gainedXp : gainedXp;
 			memberResult.save();
 			if (memberResult.xp >= xpForLevel) {
@@ -83,185 +85,185 @@ module.exports = async (message, client) => {
 			let level200RoleId = guildResult.level200RoleId;
 
 			try {
-				if (currlev === 1) {
+				if (currlev == 1) {
 					if (level1RoleId)
 						message.member.roles.add(level1RoleId);
 				}
-				if (currlev === 5) {
+				if (currlev == 5) {
 					if (level5RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);
 						message.member.roles.add(level5RoleId);
 					}
 				}
-				if (currlev === 10) {
+				if (currlev == 10) {
 					if (level10RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);
 						message.member.roles.add(level10RoleId);
 					}
 				}
-				if (currlev === 15) {
+				if (currlev == 15) {
 					if (level15RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);
 						message.member.roles.remove(level15RoleId);
 					}
 				}
-				if (currlev === 20) {
+				if (currlev == 20) {
 					if (level20RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);
 						message.member.roles.add(level20RoleId);
 					}
 				}
-				if (currlev === 25) {
+				if (currlev == 25) {
 					if (level25RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);
 						message.member.roles.add(level25RoleId);
 					}
 				}
-				if (currlev === 30) {
+				if (currlev == 30) {
 					if (level30RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);if(level25RoleId)message.member.roles.remove(level25RoleId);
 						message.member.roles.add(level30RoleId);
 					}
 				}
-				if (currlev === 35) {
+				if (currlev == 35) {
 					if (level35RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);if(level25RoleId)message.member.roles.remove(level25RoleId);if(level30RoleId)message.member.roles.remove(level30RoleId);
 						message.member.roles.add(level35RoleId);
 					}
 				}
-				if (currlev === 40) {
+				if (currlev == 40) {
 					if (level40RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);if(level25RoleId)message.member.roles.remove(level25RoleId);if(level30RoleId)message.member.roles.remove(level30RoleId);if(level35RoleId)message.member.roles.remove(level35RoleId);
 						message.member.roles.add(level40RoleId);
 					}
 				}
-				if (currlev === 45) {
+				if (currlev == 45) {
 					if (level45RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);if(level25RoleId)message.member.roles.remove(level25RoleId);if(level30RoleId)message.member.roles.remove(level30RoleId);if(level35RoleId)message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);
 						message.member.roles.add(level45RoleId);
 					}
 				}
-				if (currlev === 50) {
+				if (currlev == 50) {
 					if (level50RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);if(level25RoleId)message.member.roles.remove(level25RoleId);if(level30RoleId)message.member.roles.remove(level30RoleId);if(level35RoleId)message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);
 						message.member.roles.add(level50RoleId);
 					}
 				}
-				if (currlev === 55) {
+				if (currlev == 55) {
 					if (level55RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);if(level25RoleId)message.member.roles.remove(level25RoleId);if(level30RoleId)message.member.roles.remove(level30RoleId);if(level35RoleId)message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);
 						message.member.roles.add(level55RoleId);
 					}
 				}
-				if (currlev === 60) {
+				if (currlev == 60) {
 					if (level60RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);if(level25RoleId)message.member.roles.remove(level25RoleId);if(level30RoleId)message.member.roles.remove(level30RoleId);if(level35RoleId)message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);
 						message.member.roles.add(level60RoleId);
 					}
 				}
-				if (currlev === 65) {
+				if (currlev == 65) {
 					if (level65RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);if(level25RoleId)message.member.roles.remove(level25RoleId);if(level30RoleId)message.member.roles.remove(level30RoleId);if(level35RoleId)message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);
 						message.member.roles.add(level65RoleId);
 					}
 				}
-				if (currlev === 70) {
+				if (currlev == 70) {
 					if (level70RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);if(level25RoleId)message.member.roles.remove(level25RoleId);if(level30RoleId)message.member.roles.remove(level30RoleId);if(level35RoleId)message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);if(level65RoleId) message.member.roles.remove(level65RoleId);
 						message.member.roles.add(level70RoleId);
 					}
 				}
-				if (currlev === 75) {
+				if (currlev == 75) {
 					if (level75RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);if(level25RoleId)message.member.roles.remove(level25RoleId);if(level30RoleId)message.member.roles.remove(level30RoleId);if(level35RoleId)message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);if(level65RoleId) message.member.roles.remove(level65RoleId);if(level70RoleId) message.member.roles.remove(level70RoleId);
 						message.member.roles.add(level75RoleId);
 					}
 				}
-				if (currlev === 80) {
+				if (currlev == 80) {
 					if (level80RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);if(level25RoleId)message.member.roles.remove(level25RoleId);if(level30RoleId)message.member.roles.remove(level30RoleId);if(level35RoleId)message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);if(level65RoleId) message.member.roles.remove(level65RoleId);if(level70RoleId) message.member.roles.remove(level70RoleId);if(level75RoleId) message.member.roles.remove(level75RoleId);
 						message.member.roles.add(level80RoleId);
 					}
 				}
-				if (currlev === 85) {
+				if (currlev == 85) {
 					if (level85RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);if(level25RoleId)message.member.roles.remove(level25RoleId);if(level30RoleId)message.member.roles.remove(level30RoleId);if(level35RoleId)message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);if(level65RoleId) message.member.roles.remove(level65RoleId);if(level70RoleId) message.member.roles.remove(level70RoleId);if(level75RoleId) message.member.roles.remove(level75RoleId);if(level80RoleId) message.member.roles.remove(level80RoleId);
 						message.member.roles.add(level85RoleId);
 					}
 				}
-				if (currlev === 90) {
+				if (currlev == 90) {
 					if (level90RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);if(level25RoleId)message.member.roles.remove(level25RoleId);if(level30RoleId)message.member.roles.remove(level30RoleId);if(level35RoleId)message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);if(level65RoleId) message.member.roles.remove(level65RoleId);if(level70RoleId) message.member.roles.remove(level70RoleId);if(level75RoleId) message.member.roles.remove(level75RoleId);if(level80RoleId) message.member.roles.remove(level80RoleId);if(level85RoleId) message.member.roles.remove(level85RoleId);
 						message.member.roles.add(level90RoleId);
 					}
 				}
-				if (currlev === 95) {
+				if (currlev == 95) {
 					if (level95RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);if(level25RoleId)message.member.roles.remove(level25RoleId);if(level30RoleId)message.member.roles.remove(level30RoleId);if(level35RoleId)message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);if(level65RoleId) message.member.roles.remove(level65RoleId);if(level70RoleId) message.member.roles.remove(level70RoleId);if(level75RoleId) message.member.roles.remove(level75RoleId);if(level80RoleId) message.member.roles.remove(level80RoleId);if(level85RoleId) message.member.roles.remove(level85RoleId);if(level90RoleId) message.member.roles.remove(level90RoleId);
 						message.member.roles.add(level95RoleId);
 					}
 				}
-				if (currlev === 100) {
+				if (currlev == 100) {
 					if (level100RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);if(level25RoleId)message.member.roles.remove(level25RoleId);if(level30RoleId)message.member.roles.remove(level30RoleId);if(level35RoleId)message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);if(level65RoleId) message.member.roles.remove(level65RoleId);if(level70RoleId) message.member.roles.remove(level70RoleId);if(level75RoleId) message.member.roles.remove(level75RoleId);if(level80RoleId) message.member.roles.remove(level80RoleId);if(level85RoleId) message.member.roles.remove(level85RoleId);if(level90RoleId) message.member.roles.remove(level90RoleId);if(level95RoleId) message.member.roles.remove(level95RoleId);
 						message.member.roles.add(level100RoleId);
 					}
 				}
-				if (currlev === 110) {
+				if (currlev == 110) {
 					if (level110RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);if(level25RoleId)message.member.roles.remove(level25RoleId);if(level30RoleId)message.member.roles.remove(level30RoleId);if(level35RoleId)message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);if(level65RoleId) message.member.roles.remove(level65RoleId);if(level70RoleId) message.member.roles.remove(level70RoleId);if(level75RoleId) message.member.roles.remove(level75RoleId);if(level80RoleId) message.member.roles.remove(level80RoleId);if(level85RoleId) message.member.roles.remove(level85RoleId);if(level90RoleId) message.member.roles.remove(level90RoleId);if(level95RoleId) message.member.roles.remove(level95RoleId);if(level100RoleId) message.member.roles.remove(level100RoleId);
 						message.member.roles.add(level110RoleId);
 					}
 				}
-				if (currlev === 120) {
+				if (currlev == 120) {
 					if (level120RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId)message.member.roles.remove(level10RoleId);if(level15RoleId)message.member.roles.remove(level15RoleId);if(level20RoleId)message.member.roles.remove(level20RoleId);if(level25RoleId)message.member.roles.remove(level25RoleId);if(level30RoleId)message.member.roles.remove(level30RoleId);if(level35RoleId)message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);if(level65RoleId) message.member.roles.remove(level65RoleId);if(level70RoleId) message.member.roles.remove(level70RoleId);if(level75RoleId) message.member.roles.remove(level75RoleId);if(level80RoleId) message.member.roles.remove(level80RoleId);if(level85RoleId) message.member.roles.remove(level85RoleId);if(level90RoleId) message.member.roles.remove(level90RoleId);if(level95RoleId) message.member.roles.remove(level95RoleId);if(level100RoleId) message.member.roles.remove(level100RoleId);if(level110RoleId) message.member.roles.remove(level110RoleId);
 						message.member.roles.add(level120RoleId);
 					}
 				}
-				if (currlev === 130) {
+				if (currlev == 130) {
 					if (level130RoleId) {
 						if(level1RoleId)message.member.roles.remove(level1RoleId);if(level5RoleId)message.member.roles.remove(level5RoleId);if(level10RoleId) message.member.roles.remove(level10RoleId);if(level15RoleId) message.member.roles.remove(level15RoleId);if(level20RoleId) message.member.roles.remove(level20RoleId);if(level25RoleId) message.member.roles.remove(level25RoleId);if(level30RoleId) message.member.roles.remove(level30RoleId);if(level35RoleId) message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);if(level65RoleId) message.member.roles.remove(level65RoleId);if(level70RoleId) message.member.roles.remove(level70RoleId);if(level75RoleId) message.member.roles.remove(level75RoleId);if(level80RoleId) message.member.roles.remove(level80RoleId);if(level85RoleId) message.member.roles.remove(level85RoleId);if(level90RoleId) message.member.roles.remove(level90RoleId);if(level95RoleId) message.member.roles.remove(level95RoleId);if(level100RoleId) message.member.roles.remove(level100RoleId);if(level110RoleId) message.member.roles.remove(level110RoleId);if(level120RoleId) message.member.roles.remove(level120RoleId);
 						message.member.roles.add(level130RoleId);
 					}
 				}
-				if (currlev === 140) {
+				if (currlev == 140) {
 					if (level140RoleId) {
 						if(level1RoleId) message.member.roles.remove(level1RoleId);if(level5RoleId) message.member.roles.remove(level5RoleId);if(level10RoleId) message.member.roles.remove(level10RoleId);if(level15RoleId) message.member.roles.remove(level15RoleId);if(level20RoleId) message.member.roles.remove(level20RoleId);if(level25RoleId) message.member.roles.remove(level25RoleId);if(level30RoleId) message.member.roles.remove(level30RoleId);if(level35RoleId) message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);if(level65RoleId) message.member.roles.remove(level65RoleId);if(level70RoleId) message.member.roles.remove(level70RoleId);if(level75RoleId) message.member.roles.remove(level75RoleId);if(level80RoleId) message.member.roles.remove(level80RoleId);if(level85RoleId) message.member.roles.remove(level85RoleId);if(level90RoleId) message.member.roles.remove(level90RoleId);if(level95RoleId) message.member.roles.remove(level95RoleId);if(level100RoleId) message.member.roles.remove(level100RoleId);if(level110RoleId) message.member.roles.remove(level110RoleId);if(level120RoleId) message.member.roles.remove(level120RoleId);if(level130RoleId) message.member.roles.remove(level130RoleId);
 						message.member.roles.add(level140RoleId);
 					}
 				}
-				if (currlev === 150) {
+				if (currlev == 150) {
 					if (level150RoleId) {
 						if(level1RoleId) message.member.roles.remove(level1RoleId);if(level5RoleId) message.member.roles.remove(level5RoleId);if(level10RoleId) message.member.roles.remove(level10RoleId);if(level15RoleId) message.member.roles.remove(level15RoleId);if(level20RoleId) message.member.roles.remove(level20RoleId);if(level25RoleId) message.member.roles.remove(level25RoleId);if(level30RoleId) message.member.roles.remove(level30RoleId);if(level35RoleId) message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);if(level65RoleId) message.member.roles.remove(level65RoleId);if(level70RoleId) message.member.roles.remove(level70RoleId);if(level75RoleId) message.member.roles.remove(level75RoleId);if(level80RoleId) message.member.roles.remove(level80RoleId);if(level85RoleId) message.member.roles.remove(level85RoleId);if(level90RoleId) message.member.roles.remove(level90RoleId);if(level95RoleId) message.member.roles.remove(level95RoleId);if(level100RoleId) message.member.roles.remove(level100RoleId);if(level110RoleId) message.member.roles.remove(level110RoleId);if(level120RoleId) message.member.roles.remove(level120RoleId);if(level130RoleId) message.member.roles.remove(level130RoleId);if(level140RoleId) message.member.roles.remove(level140RoleId);
 						message.member.roles.add(level150RoleId);
 					}
 				}
-				if (currlev === 160) {
+				if (currlev == 160) {
 					if (level160RoleId) {
 						if(level1RoleId) message.member.roles.remove(level1RoleId);if(level5RoleId) message.member.roles.remove(level5RoleId);if(level10RoleId) message.member.roles.remove(level10RoleId);if(level15RoleId) message.member.roles.remove(level15RoleId);if(level20RoleId) message.member.roles.remove(level20RoleId);if(level25RoleId) message.member.roles.remove(level25RoleId);if(level30RoleId) message.member.roles.remove(level30RoleId);if(level35RoleId) message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);if(level65RoleId) message.member.roles.remove(level65RoleId);if(level70RoleId) message.member.roles.remove(level70RoleId);if(level75RoleId) message.member.roles.remove(level75RoleId);if(level80RoleId) message.member.roles.remove(level80RoleId);if(level85RoleId) message.member.roles.remove(level85RoleId);if(level90RoleId) message.member.roles.remove(level90RoleId);if(level95RoleId) message.member.roles.remove(level95RoleId);if(level100RoleId) message.member.roles.remove(level100RoleId);if(level110RoleId) message.member.roles.remove(level110RoleId);if(level120RoleId) message.member.roles.remove(level120RoleId);if(level130RoleId) message.member.roles.remove(level130RoleId);if(level140RoleId) message.member.roles.remove(level140RoleId);if(level150RoleId) message.member.roles.remove(level150RoleId);
 						message.member.roles.add(level160RoleId);
 					}
 				}
-				if (currlev === 170) {
+				if (currlev == 170) {
 					if (level170RoleId) {
 						if(level1RoleId) message.member.roles.remove(level1RoleId);if(level5RoleId) message.member.roles.remove(level5RoleId);if(level10RoleId) message.member.roles.remove(level10RoleId);if(level15RoleId) message.member.roles.remove(level15RoleId);if(level20RoleId) message.member.roles.remove(level20RoleId);if(level25RoleId) message.member.roles.remove(level25RoleId);if(level30RoleId) message.member.roles.remove(level30RoleId);if(level35RoleId) message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);if(level65RoleId) message.member.roles.remove(level65RoleId);if(level70RoleId) message.member.roles.remove(level70RoleId);if(level75RoleId) message.member.roles.remove(level75RoleId);if(level80RoleId) message.member.roles.remove(level80RoleId);if(level85RoleId) message.member.roles.remove(level85RoleId);if(level90RoleId) message.member.roles.remove(level90RoleId);if(level95RoleId) message.member.roles.remove(level95RoleId);if(level100RoleId) message.member.roles.remove(level100RoleId);if(level110RoleId) message.member.roles.remove(level110RoleId);if(level120RoleId) message.member.roles.remove(level120RoleId);if(level130RoleId) message.member.roles.remove(level130RoleId);if(level140RoleId) message.member.roles.remove(level140RoleId);if(level150RoleId) message.member.roles.remove(level150RoleId);if(level160RoleId) message.member.roles.remove(level160RoleId);
 						message.member.roles.add(level170RoleId);
 					}
 				}
-				if (currlev === 180) {
+				if (currlev == 180) {
 					if (level180RoleId) {
 						if(level1RoleId) message.member.roles.remove(level1RoleId);if(level5RoleId) message.member.roles.remove(level5RoleId);if(level10RoleId) message.member.roles.remove(level10RoleId);if(level15RoleId) message.member.roles.remove(level15RoleId);if(level20RoleId) message.member.roles.remove(level20RoleId);if(level25RoleId) message.member.roles.remove(level25RoleId);if(level30RoleId) message.member.roles.remove(level30RoleId);if(level35RoleId) message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);if(level65RoleId) message.member.roles.remove(level65RoleId);if(level70RoleId) message.member.roles.remove(level70RoleId);if(level75RoleId) message.member.roles.remove(level75RoleId);if(level80RoleId) message.member.roles.remove(level80RoleId);if(level85RoleId) message.member.roles.remove(level85RoleId);if(level90RoleId) message.member.roles.remove(level90RoleId);if(level95RoleId) message.member.roles.remove(level95RoleId);if(level100RoleId) message.member.roles.remove(level100RoleId);if(level110RoleId) message.member.roles.remove(level110RoleId);if(level120RoleId) message.member.roles.remove(level120RoleId);if(level130RoleId) message.member.roles.remove(level130RoleId);if(level140RoleId) message.member.roles.remove(level140RoleId);if(level150RoleId) message.member.roles.remove(level150RoleId);if(level160RoleId) message.member.roles.remove(level160RoleId);if(level170RoleId) message.member.roles.remove(level170RoleId);
 						message.member.roles.add(level180RoleId);
 					}
 				}
-				if (currlev === 190) {
+				if (currlev == 190) {
 					if (level190RoleId) {
 						if(level1RoleId) message.member.roles.remove(level1RoleId);if(level5RoleId) message.member.roles.remove(level5RoleId);if(level10RoleId) message.member.roles.remove(level10RoleId);if(level15RoleId) message.member.roles.remove(level15RoleId);if(level20RoleId) message.member.roles.remove(level20RoleId);if(level25RoleId) message.member.roles.remove(level25RoleId);if(level30RoleId) message.member.roles.remove(level30RoleId);if(level35RoleId) message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);if(level65RoleId) message.member.roles.remove(level65RoleId);if(level70RoleId) message.member.roles.remove(level70RoleId);if(level75RoleId) message.member.roles.remove(level75RoleId);if(level80RoleId) message.member.roles.remove(level80RoleId);if(level85RoleId) message.member.roles.remove(level85RoleId);if(level90RoleId) message.member.roles.remove(level90RoleId);if(level95RoleId) message.member.roles.remove(level95RoleId);if(level100RoleId) message.member.roles.remove(level100RoleId);if(level110RoleId) message.member.roles.remove(level110RoleId);if(level120RoleId) message.member.roles.remove(level120RoleId);if(level130RoleId) message.member.roles.remove(level130RoleId);if(level140RoleId) message.member.roles.remove(level140RoleId);if(level150RoleId) message.member.roles.remove(level150RoleId);if(level160RoleId) message.member.roles.remove(level160RoleId);if(level170RoleId) message.member.roles.remove(level170RoleId);if(level180RoleId) message.member.roles.remove(level180RoleId);
 						message.member.roles.add(level190RoleId);
 					}
 				}
-				if (currlev === 200) {
+				if (currlev == 200) {
 					if (level200RoleId) {
 						if(level1RoleId) message.member.roles.remove(level1RoleId);if(level5RoleId) message.member.roles.remove(level5RoleId);if(level10RoleId) message.member.roles.remove(level10RoleId);if(level15RoleId) message.member.roles.remove(level15RoleId);if(level20RoleId) message.member.roles.remove(level20RoleId);if(level25RoleId) message.member.roles.remove(level25RoleId);if(level30RoleId) message.member.roles.remove(level30RoleId);if(level35RoleId) message.member.roles.remove(level35RoleId);if(level40RoleId) message.member.roles.remove(level40RoleId);if(level45RoleId) message.member.roles.remove(level45RoleId);if(level50RoleId) message.member.roles.remove(level50RoleId);if(level55RoleId) message.member.roles.remove(level55RoleId);if(level60RoleId) message.member.roles.remove(level60RoleId);if(level65RoleId) message.member.roles.remove(level65RoleId);if(level70RoleId) message.member.roles.remove(level70RoleId);if(level75RoleId) message.member.roles.remove(level75RoleId);if(level80RoleId) message.member.roles.remove(level80RoleId);if(level85RoleId) message.member.roles.remove(level85RoleId);if(level90RoleId) message.member.roles.remove(level90RoleId);if(level95RoleId) message.member.roles.remove(level95RoleId);if(level100RoleId) message.member.roles.remove(level100RoleId);if(level110RoleId) message.member.roles.remove(level110RoleId);if(level120RoleId) message.member.roles.remove(level120RoleId);if(level130RoleId) message.member.roles.remove(level130RoleId);if(level140RoleId) message.member.roles.remove(level140RoleId);if(level150RoleId) message.member.roles.remove(level150RoleId);if(level160RoleId) message.member.roles.remove(level160RoleId);if(level170RoleId) message.member.roles.remove(level170RoleId);if(level180RoleId)message.member.roles.remove(level180RoleId);if(level190RoleId)message.member.roles.remove(level190RoleId);
 						message.member.roles.add(level200RoleId);
