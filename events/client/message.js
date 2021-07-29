@@ -116,11 +116,14 @@ function handleSlashCommands(interaction, client) {
 }
 
 module.exports = (message, client) => {
-    if (!message.data) {
+    if (!message.data && message.author) {
+        if (process.argv[2] && process.argv[2] == '--guild-only' && !message.guild) return;
+        if (process.argv[2] && process.argv[2] == '--guild-only' && message.guild.id !== require('../../utils/config.json').DevServer) return;
         if (message.author.bot) return;
         redirect(message, client);
         handle(message, client);
     } else {
+        if (process.argv[2] && process.argv[2] == '--guild-only' && message.guild_id !== require('../../utils/config.json').DevServer) return;
         if (message.member.user.bot) return;
         handleSlashCommands(message, client);
     }
