@@ -8,7 +8,7 @@ module.exports = {
 	description: 'Generate a random image',
 	catagory: 'generator',
 	guildOnly: true,
-	slashInfo: { enabled: true, public: false },
+	slashInfo: { enabled: true, public: true },
 	options: [],
 	/**
 	 * @param {object} message The message that was sent
