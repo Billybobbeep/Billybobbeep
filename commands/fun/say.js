@@ -1,6 +1,3 @@
-const Discord = require('discord.js');
-const configFile = require('../../utils/config.json');
-
 module.exports = {
     name: 'say',
     description: 'Repeat what you just said',
