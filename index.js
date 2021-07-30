@@ -4,11 +4,10 @@ const client = new Discord.Client({
 	disableMentions: 'everyone'
 });
 
-const dotenv = require('dotenv');
-dotenv.config();
-const token = process.env.token;
+require('dotenv').config();
+client.login(process.env.token);
+if (process.argv[2] && process.argv[2] == '--guild-only') console.log('[' + require('chalk').blue('INFO') + '] Starting up in dev mode');
 
-client.login(token);
 require('./events/client/database/connection')();
 require('./bot')(client);
-require('./server/main');
+require('./server/main')(client);
