@@ -571,7 +571,7 @@ module.exports = {
             if (typeof letters == 'string') return message.channel.send(letters);
 
             if (!args[2])
-                message.reply('Please specify a message');
+                message.channel.send(`<@!${message.author ? message.author.id : message.member.user.id}>, Please specify a message`);
             else {
                 try {
                     for (let i = 0; i < args.slice(2).join(' ').length; i++) {

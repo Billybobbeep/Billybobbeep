@@ -56,7 +56,7 @@ module.exports = {
 					message.channel.send(`Successfully banned **${user.tag}**`);
 				}).catch(() => {
 					succ = false
-					message.reply('I was unable to ban the member you provided');
+					message.channel.send(`<@!${message.author ? message.author.id : message.member.user.id}>, I was unable to ban the member you provided`);
 				});
 				if (succ) logging(embed, message, client);
 			});

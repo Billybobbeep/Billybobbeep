@@ -39,7 +39,7 @@ module.exports = {
         user = user.user
       }
 
-      if (!member) return message.reply('That user is not in this server');
+      if (!member) return message.channel.send(`<@!${message.author ? message.author.id : message.member.user.id}>, That user is not in this server`);
 
       let reason = args.splice(2).join(' ');
       let tw = memberResult.warnReasons.length;

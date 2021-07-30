@@ -10,7 +10,6 @@ module.exports = {
      * @param {objects} client The bots client
      */
     execute (message, _prefix, _client) {
-        const rollDice = () => Math.floor(Math.random() * 6) + 1;
-        message.reply("rolled a " + rollDice());
+        message.channel.send(`<@!${message.author ? message.author.id : message.member.user.id}>, rolled a ${Math.floor(Math.random() * 6) + 1}`);
     }
 }

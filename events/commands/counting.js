@@ -27,7 +27,7 @@ module.exports = {
                         result.counting_number = 0;
                         result.save().then(() => {
                             message.react(CE);
-                            message.reply('has ruined the chain with an incorrect number.\nThe next number is `1`');
+                            message.channel.send(`<@!${message.author ? message.author.id : message.member.user.id}>, has ruined the chain with an incorrect number.\nThe next number is \`1\``);
                         });
                     }
                 });
@@ -42,7 +42,7 @@ module.exports = {
                     result.counting_number = 0;
                     result.save().then(() => {
                         message.react(CE);
-                        message.reply('has ruined the chain with an incorrect number.\nThe next number is `1`');
+                        message.channel.send(`<@!${message.author ? message.author.id : message.member.user.id}>, has ruined the chain with an incorrect number.\nThe next number is \`1\``);
                     });
                 }
             }
