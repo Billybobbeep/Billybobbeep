@@ -35,7 +35,7 @@ module.exports = {
          */
         set: function(devMode) {
             if (typeof devMode !== 'boolean') return false;
-            cache.cache.devMode = devMode;
+            cache.devMode = devMode;
             return true;
         }
     }
