@@ -19,18 +19,18 @@
     "node": "14.x"
   },
   "dependencies": {
+    "@discordjs/opus": "^0.5.3",
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "canvas": "^2.6.1",
     "chalk": "^4.1.0",
     "cookie-parser": "^1.4.5",
-    "disco-oauth": "^5.0.1",
-    "discord-buttons": "^3.2.1",
     "discord.js": "^12.5.3",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-device": "^0.4.2",
+    "ffmpeg-static": "^4.4.0",
     "jimp": "^0.16.1",
     "moment": "^2.29.1",
     "mongoose": "^5.11.8",
@@ -39,6 +39,6 @@
     "parser": "^0.1.4",
     "socket.io": "^4.1.2",
     "urban": "^0.3.2",
-    "ytdl-core": "^4.1.4"
+    "ytdl-core": "^4.9.0"
   }
 }
