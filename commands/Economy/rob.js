@@ -12,7 +12,7 @@ module.exports = {
     async execute(message, prefix, client) {
         const userData = require('../../events/client/database/models/users.js');
         const Discord = require('discord.js');
-        const emebd = new Discord.MessageEmbed();
+        const embed = new Discord.MessageEmbed();
 
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);

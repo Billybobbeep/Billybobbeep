@@ -41,6 +41,7 @@ module.exports = {
         let lastFired = moment.utc(userResult.job_lastFired).format('DD-MM-YYYY, h:mm:ss a');
         let lastApplied = moment.utc(userResult.job_lastApplied).format('DD-MM-YYYY, h:mm:ss a');
 
+        if (guildResult.preferences && guildResult.preferences.ecoEnabled) return message.channel.send('Economy commands have been disabled in this server');
         if (cashier) job = 'Cashier';
         else if (teacher) job = 'Teacher';
         else if (waiter) job = 'Waiter';

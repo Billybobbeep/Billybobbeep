@@ -24,6 +24,7 @@ module.exports = {
             if (user.bot) return message.channel.send('Bots do not have wallets');
             if (!isNaN(args[1])) user = user.user;
             guildData.findOne({ guildId: message.guild.id }).then(guildResult => {
+                if (guildResult.preferences && guildResult.preferences.ecoEnabled) return message.channel.send('Economy commands have been disabled in this server');
                 userData.findOne({ userId: user.id }).then(userResult => {
                     embed.setFooter(`To bank some cash use: /deposit`);
                     embed.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');

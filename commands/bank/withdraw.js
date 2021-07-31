@@ -19,7 +19,7 @@ module.exports = {
         if (!message.data) {
             guildData.findOne({ guildId: message.guild.id }).then(guildResult => {
                 userData.findOne({ userId: message.author.id }).then(userResult => {
-                    if (guildResult.ecoEnabled) return message.channel.send('Economy commands have been disabled in your server');
+                    if (guildResult.preferences && guildResult.preferences.ecoEnabled) return message.channel.send('Economy commands have been disabled in this server');
 
                     let args = message.content.slice(prefix.length).trim().split(/ +/g);
 
@@ -46,7 +46,7 @@ module.exports = {
         } else {
             guildData.findOne({ guildId: message.guild_id }).then(guildResult => {
                 userData.findOne({ userId: message.member.user.id }).then(userResult => {
-                    if (guildResult.ecoEnabled) return require('../../utils/functions').slashCommands.reply(message, client, 'Economy commands have been disabled in your server');
+                    if (guildResult.preferences && guildResult.preferences.ecoEnabled) return require('../../utils/functions').slashCommands.reply(message, client, 'Economy commands have been disabled in this server');
                     let args = message.data.options;
                     if (!args[0] || !args[0].value) return message.channel.send('You need to specify an amount');
                     if (args[0].value == 'a' || args[0].value == 'all') {

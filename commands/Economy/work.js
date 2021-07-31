@@ -24,7 +24,7 @@ module.exports = {
 		embed.setAuthor(`${message.author.username}`, message.author.displayAvatarURL());
 		embed.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
 
-		if (guildResult.ecoEnabled) return message.channel.send('Economy commands have been disabled in your server')
+		if (guildResult.preferences && guildResult.preferences.ecoEnabled) return message.channel.send('Economy commands have been disabled in this server')
 
 		let workAmt = undefined;
 		let cooldown = info.global.work.cooldown;

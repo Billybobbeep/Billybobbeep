@@ -14,6 +14,7 @@ module.exports = {
         const guildData = require('../../events/client/database/models/guilds.js');
         const userData = require('../../events/client/database/models/users.js');
         guildData.findOne({ guildId: message.guild.id }).then(guildResult => {
+            if (guildResult.preferences && guildResult.preferences.ecoEnabled) return message.channel.send('Economy commands have been disabled in this server');
             userData.findOne({ userId: message.author.id }).then(async userResult => {
                 const ms = require('ms');
                 const embed = new Discord.MessageEmbed();
@@ -268,7 +269,7 @@ async function application_process(message, job, client) {
     let guildResult = await guildData.findOne({ guildId: message.guild.id });
     let userResult = await userData.findOne({ userId: message.author.id });
 
-    let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji1);
+    let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji);
     let cross = client.emojis.cache.gett(require('../../utils/config.json').CrossEmoji);
     
     embed.setDescription(`${tick} Successfully applied for the ${job} job!`);
@@ -286,7 +287,7 @@ async function application_process(message, job, client) {
     userResult.save();
 }
 async function reactions(message, msg, job, client) {
-    let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji1);
+    let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji);
     let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
     const filter = (reaction, user) => {
         return (

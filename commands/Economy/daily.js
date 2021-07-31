@@ -19,7 +19,7 @@ module.exports = {
 		embed.setFooter(message.author.username);
 		embed.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
 
-		if (guildData.ecoEnabled) return message.channel.send('Economy commands have been disabled in your server');
+		if (guildResult.preferences && guildResult.preferences.ecoEnabled) return message.channel.send('Economy commands have been disabled in this server');
 
 		let dailyAmt = 10;
 		let cooldown = 8.64e+7;

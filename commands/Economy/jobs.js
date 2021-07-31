@@ -20,7 +20,7 @@ module.exports = {
         const info = require('./jobRequirements.js');
         embed.setFooter(`${message.author.username}`);
         embed.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
-        if (guildResult.ecoEnabled) return message.channel.send('Economy commands have been disabled in your server');
+        if (guildResult.preferences && guildResult.preferences.ecoEnabled) return message.channel.send('Economy commands have been disabled in this server');
 
         let cashier = userResult.job === 'cashier' ? true : undefined;
         let teacher = userResult.job === 'teacher' ? true : undefined;
