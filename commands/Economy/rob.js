@@ -5,9 +5,10 @@ module.exports = {
     guildOnly: true,
     options: [{ name: 'user', description: 'The user you\'d like to rob', type: 6, required: true }],
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     async execute(message, prefix, client) {
         const userData = require('../../events/client/database/models/users.js');
@@ -16,7 +17,7 @@ module.exports = {
 
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
-        if (!user) return message.channel.send('Please specify a user to rob');
+        if (!user) return message.channel.send('You must provide a user to rob');
         if (!user.id || !user.tag || !user.displayAvatarURL()) user = user.user;
         if (user.id === message.author.id) return message.channel.send('You cannot rob yourself');
         let userResult = await userData.findOne({ userId: user.id });

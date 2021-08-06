@@ -10,9 +10,10 @@ module.exports = {
     guildOnly: true,
     options: [{ name: 'word', description: 'A word to search in the dictionary.', type: 3, required: true }],
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     execute (message, prefix, client) {
         if (!message.data) {

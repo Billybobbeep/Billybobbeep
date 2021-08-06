@@ -5,9 +5,10 @@ module.exports = {
     usage: 'warnings [user]',
     guildOnly: true,
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     async execute (message, prefix, _client) {
         const Discord = require('discord.js');
@@ -17,7 +18,7 @@ module.exports = {
         
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
-        if (!user) return message.channel.send('Please specify a user');
+        if (!user) return message.channel.send('You must provide a user');
         if (user.bot || user.user && user.user.bot) return message.channel.send('Bots do not have warnings');
         let memberResult = await guildMemberData.findOne({ guildId: message.guild.id, memberId: user.id });
         let guildResult = await guildData.findOne({ guildId: message.guild.id });

@@ -5,9 +5,10 @@ module.exports = {
 	catagory: 'moderation',
 	usage: 'unmute [user] [reason]',
 	/**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
 	execute(message, prefix, client) {
 		const mutedMembers = require('../../events/client/database/models/mutedMembers');
@@ -23,7 +24,7 @@ module.exports = {
 
 			guildData.findOne({ guildId: message.guild.id }).then(async result => {
 				if (!result.preferences.mutedRole) return message.channel.send('You must setup a muted role in your server to use this command');
-				if (!user) return message.channel.send('Please mention a user to mute');
+				if (!user) return message.channel.send('You must mention a user to mute');
 				let member = message.guild.members.cache.get(user.id);
 				if (!member) return message.channel.send('I could not find the member you provided');
 				if (!member.roles.cache.find(r => r.id === result.preferences.mutedRole)) return message.channel.send(`<@!${user.id}> is not muted`);

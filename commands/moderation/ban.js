@@ -5,9 +5,10 @@ module.exports = {
 	catagory: 'moderation',
 	usage: 'ban [user] [reason]',
 	/**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
 	execute (message, prefix, client) {
 		const Discord = require('discord.js');
@@ -23,7 +24,7 @@ module.exports = {
 				let reason = args.slice(2).join(' ');
 				let succ = true
 
-				if (!user) return message.channel.send('Please specify a user to ban');
+				if (!user) return message.channel.send('You must provide a user to ban');
 				if (user.id === message.author.id) return message.channel.send('You cannot ban yourself from the server');
 				if (user.id === client.user.id) return message.channel.send('You cannot ban me');
 				if (!reason) reason = 'No reason was provided';

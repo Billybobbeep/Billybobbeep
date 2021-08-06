@@ -10,7 +10,7 @@ module.exports = {
 	/**
 	 * @param {object} message The message that was sent
 	 * @param {string} prefix The servers prefix
-	 * @param {objects} client The bots client
+	 * @param {Client} client The bots client
 	 */
 	execute(message, prefix, _client) {
 		guildData.findOne({ guildId: message.guild.id }).then(async result => {
@@ -31,22 +31,17 @@ module.exports = {
 			embed.setFooter(`${message.author.tag}`);
 
 			if (message.content.toLowerCase().startsWith(prefix + 'afk')) {
-				if (message.guild === null) {
-					embed.setDescription('This command is not available for direct messaging, please enter the command in a valid server');
-					return message.channel.send(embed);
-				}
 				if (args[1]) {
-					if (args[1] === 'me') {
+					if (args[1] === 'me')
 						user = message.author;
-					} else {
+					else
 						user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
-					}
 				} else {
-					embed.setDescription('Please specify a user to mark as AFK')
+					embed.setDescription('You must provide a user to mark as AFK')
 					return message.channel.send(embed);
 				}
 				if (!user) {
-					embed.setDescription('Please specify a user to mark as AFK')
+					embed.setDescription('You must providea user to mark as AFK')
 					return message.channel.send(embed);
 				}
 				if (args[2]) {
@@ -96,19 +91,14 @@ module.exports = {
 
 			if (message.content.toLowerCase().startsWith(prefix + 'back')) {
 				if (args[1]) {
-					if (args[1] === 'me') {
+					if (args[1] === 'me')
 						user = message.author
-					} else {
+					else
 						user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
-					}
-				} else {
-					embed.setDescription('Please specify a user')
-					return message.channel.send(embed)
-				}
-				if (!user) {
-					embed.setDescription('Please specify a user')
-					return message.channel.send(embed)
-				}
+				} else
+					user = message.author
+				if (!user)
+					return message.channel.send('I could not find the user you provided');
 
 				if (userData.findOne({ userId: user.id }).then(result => result.isAfk)) {
 					let userResult = await userData.findOne({ userId: user.id });

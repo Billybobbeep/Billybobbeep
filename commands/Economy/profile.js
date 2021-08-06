@@ -5,9 +5,10 @@ module.exports = {
     catagory: 'economy',
     options: [],
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     async execute(message, prefix, client) {
         const guildData = require('../../events/client/database/models/guilds.js');

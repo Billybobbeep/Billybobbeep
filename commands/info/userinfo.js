@@ -8,15 +8,16 @@ module.exports = {
     catagory: 'info',
     guildOnly: true,
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     execute (message, prefix, _client) {
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]) || message.author;
         const moment = require('moment');
-        if (!user) return message.channel.send('Please specify a user')
+        if (!user) return message.channel.send('You must provide a user')
         if (!user.avatarURL) user = user.user
         if (user.presence.status === 'dnd') user.presence.status = 'Do Not Disturb';
         if (user.presence.status === 'idle') user.presence.status = 'Idle';
@@ -40,7 +41,7 @@ module.exports = {
         let createdate = moment.utc(user.createdAt).format('dddd, MMMM Do YYYY, HH:MM:ss'); //User Created Date.
         let joindate = moment.utc(member.joinedAt).format('dddd, MMMM Do YYYY, HH:mm:ss'); // User joined the server at.
         let status = user.presence.status;
-        let avatar = user.avatarURL({size: 2048});
+        let avatar = user.avatarURL({ size: 2048 });
 
         guildData.findOne({ guildId: message.guild.id }).then(result => {
             const embed = new Discord.MessageEmbed()

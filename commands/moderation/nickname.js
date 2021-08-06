@@ -12,7 +12,7 @@ module.exports = {
 	/**
 	 * @param {object} message The message that was sent
 	 * @param {string} prefix The servers prefix
-	 * @param {objects} client The bots client
+	 * @param {Client} client The bots client
 	 */
 	execute(message, prefix, client) {
 		async function nicknameCmd() {
@@ -22,7 +22,7 @@ module.exports = {
 
 			if (!slash) user = message.mentions.users.first() || message.guild.members.cache.get(args[1]).user;
 			else args[0] && args[0].value ? user = client.guilds.cache.get(message.guild_id).members.cache.get(args[0].value).user : user = message.member.user;
-			if (!user) return slash ? require('../../utils/functions').slashCommands.reply(message, client, 'Please provide a user') : message.channel.send('Please mention a user');
+			if (!user) return slash ? require('../../utils/functions').slashCommands.reply(message, client, 'You must provide a valid user') : message.channel.send('You must provide a valid user');
 
 			let nick;
 			if (slash && args[1] && args[1].name !== 'user') nick = args[1].value

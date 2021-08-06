@@ -9,9 +9,10 @@ module.exports = {
     catagory: 'moderation',
     usage: 'announce',
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     execute (message, _prefix, client) {
         if (!message.guild) return;
@@ -28,7 +29,7 @@ module.exports = {
 
             q1.on('collect', async (message, col) => {
                 let channel = message.mentions.channels.first();
-                if (!channel) return message.channel.send("Invalid channel, Please run the command again.")
+                if (!channel) return message.channel.send('I cannot find the channel you have provided')
                 message.channel.send('What is the message you would like to annouce?')
                 q1.stop();
                 let q2 = new Discord.MessageCollector(message.channel, filter, {

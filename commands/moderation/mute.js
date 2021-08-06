@@ -5,9 +5,10 @@ module.exports = {
     catagory: 'moderation',
     usage: 'mute [user] [time] [reason]',
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     execute(message, prefix, client) {
         const guildData = require('../../events/client/database/models/guilds.js');
@@ -31,11 +32,11 @@ module.exports = {
                 if (member.roles.cache.find(r => r.id === result.preferences.mutedRole)) return message.channel.send(`<@!${user.id}> is already muted`);
                 if (user.bot) return message.channel.send('You cannot mute bots');
                 if (!result.preferences.mutedRole) return message.channel.send('You must setup a muted role in your server to use this command');
-                if (!user) return message.channel.send('Please specify a user to mute');
+                if (!user) return message.channel.send('You must provide a user to mute');
                 if (!user.tag) user = user.user;
                 if (user.id === message.author.id) return message.channel.send('You cannot mute yourself');
                 if (!member) return message.channel.send('I could not find the member you provided');
-                if (!time) return message.channel.send('Please specify a time or reason');
+                if (!time) return message.channel.send('You must provide a time or reason');
                 if (user.id === message.guild.owner.id) return message.channel.send('You cannot mute the guild owner');
                 try {
                     if (time.endsWith('h') || time.endsWith('m') || time.endsWith('s')) time = ms(time); else time = false;
@@ -46,7 +47,7 @@ module.exports = {
                 if (!reason) reason = 'No reason was provided';
                 if (!message.guild.roles.fetch(r => r.id === result.preferences.mutedRole)) return message.channel.send('You must setup a muted role in your server to use this command');
                 member.roles.add(message.guild.roles.cache.find(role => role.id === result.preferences.mutedRole)).then(() => message.channel.send('Successfully muted <@!' + user.id + '>')).catch(error => {
-                    if (error.toString().includes('permissions')) return message.channel.send('I cannot mute <@!' + user.id + '>. Please make sure my highest role is above <@!' + user.id + '>\'s highest role.');
+                    if (error.toString().includes('permissions')) return message.channel.send('I cannot mute <@!' + user.id + '>. Make sure my highest role is above <@!' + user.id + '>\'s highest role.');
                     else { return message.channel.send('An unknown error occurred') }
                 });
                 embed1.setTimestamp();

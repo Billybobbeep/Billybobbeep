@@ -5,9 +5,10 @@ module.exports = {
     usage: 'apply [job name]',
     guildOnly: true,
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     execute (message, prefix, client) {
         const Discord = require('discord.js');
@@ -29,7 +30,7 @@ module.exports = {
                 let level = userResult.job_level || 0;
 
                 if (!args[1]) {
-                    embed.setDescription(`Please specify a job`);
+                    embed.setDescription('You must provide a job to apply for');
                     embed.setFooter(`To view the full job list use the command ${prefix}jobs`);
                     return message.channel.send(embed);
                 }
@@ -252,7 +253,7 @@ module.exports = {
                             reactions(message, msg, job, client);
                         }
                     } else {
-                        message.channel.send(`**${args1[0].toUpperCase() + args1.toLowerCase().substring(1)}** is not a valid job, please make sure you have spelt it correctly and try again`);
+                        message.channel.send(`**${args1[0].toUpperCase() + args1.toLowerCase().substring(1)}** is not a valid job, make sure you have spelt it correctly and try again`);
                     }
                 }
             });

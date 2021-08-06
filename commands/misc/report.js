@@ -3,9 +3,10 @@ module.exports = {
     description: 'Report errors & bugs',
     catagory: 'other',
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     execute(message, _prefix, client) {
         const Discord = require('discord.js');
@@ -13,7 +14,7 @@ module.exports = {
         const guildData = require('../../events/client/database/models/guilds.js');
 
         guildData.findOne({ guildId: message.guild.id }).then(async result => {
-            embed.setDescription(`Welcome to the ${client.user.username} bug report service.\nHere I will be asking you a series of questions.\nYou can cancel this prompt anytime by entering \`cancel\`.\n\n**Please begin all messages with a** \`~\`**.**`);
+            embed.setDescription(`Welcome to the ${client.user.username} bug report service.\nHere I will be asking you a series of questions.\nYou can cancel this prompt anytime by entering \`cancel\`.`);
             embed.setFooter(`To continue react to this message`);
             embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 
@@ -24,7 +25,7 @@ module.exports = {
 
             const embed3 = new Discord.MessageEmbed();
             embed3.setTitle('Question: 2/3');
-            embed3.setDescription('What is your bug?\n*Please provide as much detail as you can*');
+            embed3.setDescription('What is your bug?\n*Provide as much detail as you can*');
             embed3.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 
             const embed4 = new Discord.MessageEmbed();
@@ -54,7 +55,7 @@ module.exports = {
                         max: 1,
                         time: 50000,
                     }).catch(() => {
-                        message.author.send('Time expired, please run this command again');
+                        message.author.send('Time expired, to continue, run this command again');
                     });
 
                     if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt');
@@ -66,7 +67,7 @@ module.exports = {
                         max: 1,
                         time: 50000,
                     }).catch(() => {
-                        message.author.send('Time expired, please run this command again');
+                        message.author.send('Time expired, to continue run this command again');
                     });
                     if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt');
                     if (collected.first().content.toLowerCase() === 'skip' || collected.first().content.toLowerCase() === '~skip') message.author.send('This is a required question');
@@ -77,7 +78,7 @@ module.exports = {
                         max: 1,
                         time: 50000
                     }).catch(() => {
-                        message.author.send('Time expired, please run this command again');
+                        message.author.send('Time expired, to continue run this command again');
                     });
                     if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt');
 
@@ -87,7 +88,7 @@ module.exports = {
 
                     const embed5 = new Discord.MessageEmbed();
                     embed5.setTitle('Results');
-                    embed5.setDescription('Please react to the message below if you are happy with the information below');
+                    embed5.setDescription('React to the message below if you are happy with the information below');
                     embed5.addField(`Subject`, subject.toString().replace('~', ''));
                     embed5.addField(`Message`, body.toString().replace('~', ''));
                     embed5.addField(`Additional Information`, extra.toString().replace('~', ''));
@@ -104,7 +105,7 @@ module.exports = {
 
 
                     msg = await message.channel.send(embed5);
-                    let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji1);
+                    let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji);
                     let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
                     await msg.react(tick);
                     await msg.react(cross);
@@ -143,7 +144,7 @@ module.exports = {
                         max: 1,
                         time: 50000,
                     }).catch(() => {
-                        message.author.send('Time expired, please run this command again');
+                        message.author.send('Time expired, to continue run this command again');
                     });
 
                     if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt');
@@ -155,7 +156,7 @@ module.exports = {
                         max: 1,
                         time: 50000,
                     }).catch(() => {
-                        message.author.send('Time expired, please run this command again');
+                        message.author.send('Time expired, to continue run this command again');
                     });
                     if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt');
                     if (collected.first().content.toLowerCase() === 'skip' || collected.first().content.toLowerCase() === '~skip') message.author.send('This is a required question');
@@ -166,7 +167,7 @@ module.exports = {
                         max: 1,
                         time: 50000
                     }).catch(() => {
-                        message.author.send('Time expired, please run this command again');
+                        message.author.send('Time expired, to continue run this command again');
                     });
                     if (collected.first().content.toLowerCase() === 'cancel' || collected.first().content.toLowerCase() === '~cancel') return message.author.send('Canceled prompt');
 
@@ -176,7 +177,7 @@ module.exports = {
 
                     const embed5 = new Discord.MessageEmbed();
                     embed5.setTitle('Results');
-                    embed5.setDescription('Please react to the message below if you are happy with the information below');
+                    embed5.setDescription('React to the message below if you are happy with the information below');
                     embed5.addField(`Subject`, subject.toString().replace('~', ''));
                     embed5.addField(`Message`, body.toString().replace('~', ''));
                     embed5.addField(`Additional Information`, extra.toString().replace('~', ''));
@@ -193,7 +194,7 @@ module.exports = {
 
 
                     msg = await message.author.send(embed5);
-                    let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji1);
+                    let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji);
                     let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
                     await msg.react(tick);
                     await msg.react(cross);

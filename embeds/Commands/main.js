@@ -3,9 +3,10 @@ module.exports = {
     commands: ['cmds', 'c', 'commands'],
     description: 'View billybobbeep\'s commands',
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     execute(message, prefix, client) {
         let msg = message.content.toLowerCase();

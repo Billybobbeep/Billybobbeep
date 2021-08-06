@@ -2,9 +2,10 @@ module.exports = {
     name: 'Anti Spam',
     description: 'A backend module to monitor all messages sent',
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     execute(message) {
         const Discord = require('discord.js');
@@ -104,7 +105,7 @@ module.exports = {
                     result.antiSpam_enabled = false;
                     result.save();
                     embed.setTitle('Spam detection has been turned off');
-                    embed.setDescription('Spam detection has been turned off due to an invalid logging channel.\nTo set this back up please view the setup manuals');
+                    embed.setDescription('Spam detection has been turned off due to an invalid logging channel.\nSee the logs on the dashboard for more information');
                     embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
                     return message.channel.send(embed);
                 }

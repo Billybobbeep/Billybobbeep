@@ -11,24 +11,24 @@ module.exports = {
 	/**
 	   * @param {object} message The message that was sent
 	   * @param {string} prefix The servers prefix
-	   * @param {objects} client The bots client
+	   * @param {Client} client The bots client
 	   */
 	execute(message, prefix, _client) {
 		if (!message.member.hasPermission('MANAGE_SERVER')) return message.channel.send('You must have `Manage Server` permissions to use this command');
 		guildData.findOne({ guildId: message.guild.id }).then(async result => {
 			let args = message.content.slice(prefix.length).trim().split(/ +/g);
-			if (!args[1]) return message.channel.send('Please specify a time');
+			if (!args[1]) return message.channel.send('You must provide what time the giveaway ends');
 			if (
 				!args[1].endsWith('d') &&
 				!args[1].endsWith('h') &&
 				!args[1].endsWith('m')
-			) return message.channel.send('You did not use the correct formatting for the time');
-			if (isNaN(args[1][0])) return message.channel.send('You did not specify a valid time');
+			) return message.channel.send('You must use the correct formatting for the time');
+			if (isNaN(args[1][0])) return message.channel.send('You must provide a valid time');
 			let channel = message.mentions.channels.first();
 			if (!channel)
 				return message.channel.send('I could not find that channel in the server');
 			let prize = args.slice(2).join(' ');
-			if (!prize) return message.channel.send('Please specify a prize');
+			if (!prize) return message.channel.send('You must provide a prize for the winner');
 			message.channel.send(`*Giveaway created in ${channel}.*`);
 			let Embed = new MessageEmbed()
 				.setTitle(`${prize}`)

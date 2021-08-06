@@ -5,9 +5,10 @@ module.exports = {
     catagory: 'moderation',
     usage: 'promote [user] [reason]',
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     execute(message, prefix, client) {
         const Discord = require('discord.js');
@@ -19,7 +20,7 @@ module.exports = {
             guildData.findOne({ guildId: message.guild.id }).then(async result => {
                 let args = message.content.slice(prefix.length).trim().split(/ +/g);
                 let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
-                if (!user) return message.channel.send('Please mention a user to promote');
+                if (!user) return message.channel.send('You must provide a user to promote');
                 if (!user.tag) user = user.user;
                 if (!result.preferences.modRole)
                     return message.channel.send('You need to set up a mod role in your server to use this command');

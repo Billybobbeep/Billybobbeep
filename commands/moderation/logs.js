@@ -44,7 +44,7 @@ function help_embed(message, prefix) {
 }
 function filter_flags(client, message, prefix) {
     let args = message.content.toLowerCase().split(/ +/g)
-    if (!message.content.toLowerCase().includes('--filter-logs')) return message.channel.send(`Logs flag was not found, please make sure you have included all of the required flags`);
+    if (!message.content.toLowerCase().includes('--filter-logs')) return message.channel.send('Logs flag was not found, make sure you have included all of the required flags');
     if (message.content.toLowerCase().includes('--filter-logs-bot')) {
 
     } else if (message.content.toLowerCase().includes('--filter-logs-audit')) {
@@ -247,9 +247,10 @@ module.exports = {
     catagory: 'moderation',
     usage: 'logs help',
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     execute (message, _prefix, client) {
         if (message.member.roles.cache.has(['VIEW_AUDIT_LOG', 'ADMINISTRATOR']) && !message.member.roles.cache.find(role => role.id === guildData.findOne({ guildId: message.guild.id }).then(result => result.preferences.modRole)))

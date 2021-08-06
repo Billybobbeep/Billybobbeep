@@ -9,7 +9,7 @@ module.exports = {
 	/**
 	 * @param {object} message The message that was sent
 	 * @param {string} prefix The servers prefix
-	 * @param {objects} client The bots client
+	 * @param {Client} client The bots client
 	 */
 	async execute(message, _prefix, client) {
 		embed.setTitle('Total Guild List:');

@@ -9,7 +9,7 @@ module.exports = {
 	/**
 	 * @param {object} message The message that was sent
 	 * @param {string} prefix The servers prefix
-	 * @param {objects} client The bots client
+	 * @param {Client} client The bots client
 	 */
 	async execute(message, prefix, client) {
 		const Discord = require('discord.js');
@@ -31,7 +31,7 @@ module.exports = {
 			} : message.channel;
 			let guild = await client.guilds.fetch(message.guild ? message.guild.id : message.guild_id);
 			if (typeof user == 'undefined')
-				return channel.send('Please specify a user to warn');
+				return channel.send('You must mention a user to warn');
 			if (!isNaN(user) && !user.id) user = await client.users.fetch(user);
 			if (!user.id && user.user) user = user.user;
 
@@ -48,7 +48,7 @@ module.exports = {
 				if (!user.id || user.user) user = user.user;
 				member = await guild.members.fetch(user.id);
 			} else
-				return channel.send('Please mention a user to warn');
+				return channel.send('You must mention a user to warn');
 
 			if (!member) return channel.send(user.username + ' is not in this server');
 			if (member && member.user.bot) return channel.send('You cannot warn bots');
@@ -91,7 +91,7 @@ module.exports = {
 			client.guilds.cache.get(message.guild_id || message.guild.id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('ADMINISTRATOR')) {
 			warnCmd(message.guild && message.author ? false : true);
 			debounce = true;
-		} else if (guildResult.preferences.modRole) {
+		} else if (guildResult.preferences && guildResult.preferences.modRole) {
 			if (message.member.roles.cache.find(role => role.id === guildResult.preferences.modRole)) {
 				warnCmd(message.guild && message.author ? false : true);
 				debounce = true;

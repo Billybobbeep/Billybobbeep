@@ -13,7 +13,7 @@ module.exports = {
 	/**
 	 * @param {object} message The message that was sent
 	 * @param {string} prefix The servers prefix
-	 * @param {objects} client The bots client
+	 * @param {Client} client The bots client
 	 */
 	execute(message, _prefix, client) {
 		let randomImage = [
@@ -137,12 +137,12 @@ module.exports = {
 			`https://cdn.discordapp.com/attachments/729336942998585346/754020109042974840/image0.jpg`]
 
 		guildData.findOne({ guildId: (message.guild ? message.guild.id : message.guild_id ) }).then(result => {
-			if (result.cleanFilter)
+			if (result.preferences.cleanFilter)
 				return !message.data ? message.channel.send('This server has been set to clean content only') : require('../../utils/functions').slashCommands.reply(message, client, 'This server has been set to clean content only');
 
 			embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 			embed.setTitle('Billybobbeep | Image Generator');
-			embed.setDescription('Please note: These images may include content some viewers may find disturbing');
+			embed.setDescription('Note: These images may include content some viewers may find disturbing');
 
 			function Generator(lastImage) {
 				let unfunnyMemeSend = randomImage[Math.floor(Math.random() * randomImage.length)]

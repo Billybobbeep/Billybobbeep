@@ -9,9 +9,10 @@ module.exports = {
     usage: 'avatar [user]',
     guildOnly: true,
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     execute (message, prefix, _client) {
         let args = message.content.slice(prefix.length).trim().split(/ +/g);

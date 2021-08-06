@@ -8,9 +8,10 @@ module.exports = {
     options: [{ name: 'user', description: 'The user you\'d like to donate to', type: 6, required: true },
         { name: 'amount', description: 'The amount you\d like to donate', type: 3, required: true }],
         /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     async execute(message, prefix, client) {
         const guildData = require('../../events/client/database/models/guilds.js');
@@ -30,9 +31,9 @@ module.exports = {
         if (user.bot) return message.channel.send(`You cannot donate to a bot`);
         if (user.id === message.author.id) return message.channel.send(`You cannot donate to yourself`);
 
-        if (!args[2]) return message.channel.send(`Please specify an amount`);
+        if (!args[2]) return message.channel.send('You must provide a valid amount to deposit');
         let amt = parseInt(args[2]);
-        if (isNaN(amt)) return message.channel.send(`Please enter a valid number to donate`);
+        if (isNaN(amt)) return message.channel.send('You must provide a valid number to donate');
         if (amt > userResult.economy_balance) return message.channel.send(`You do not have **${amt}** in your wallet`);
         if (amt < 5) return message.channel.send(`You cannot donate **$${amt}**, you must donate **$5** or above`)
 

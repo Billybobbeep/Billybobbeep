@@ -6,9 +6,10 @@ module.exports = {
     guildOnly: true,
     options: [],
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     async execute (message, prefix, client) {
         const guildData = require('../../events/client/database/models/guilds.js');
@@ -44,7 +45,7 @@ module.exports = {
         if (!args[1] || args[1] && args[1] === 'info') {
             embed.setTitle(`Economy | Jobs`)
             embed.setDescription('The job command is used to view all of the jobs available & apply for new jobs.\n\n' +
-            'To see all of the jobs available, please see the next few pages.\n\n' + 'To see more information on any job use the command: ' +
+            'To see all of the jobs available, see the next few pages.\n\n' + 'To see more information on any job use the command: ' +
             `\`${prefix}jobs [job] info\``);
             let msg = await message.channel.send(embed)
             await msg.react('◀');
@@ -92,7 +93,7 @@ module.exports = {
         function MainPage(msg) {
             embed.setTitle(`Economy | Jobs`)
             embed.setDescription('The billybobbeep job command is used to view all of the jobs available & apply for new jobs.\n\n' +
-            'To see all of the jobs available, please see the next few pages.\n\n' + 'To see more information on any job use the command: ' +
+            'To see all of the jobs available, see the next few pages.\n\n' + 'To see more information on any job use the command: ' +
             `\`${prefix}jobs [job] info\``);
             msg.edit(embed)
         }
@@ -197,7 +198,7 @@ module.exports = {
                 embed.addField('Job Description', info.doctor.description)
                 message.channel.send(embed)
             } else {
-                message.channel.send(`**${args1}** is not a valid job, please make sure you have spelt it correctly and try again`);
+                message.channel.send(`**${args1}** is not a valid job, make sure you have spelt it correctly and try again`);
             }
         }
     }

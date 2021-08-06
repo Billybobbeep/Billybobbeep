@@ -104,11 +104,11 @@ module.exports = {
 	/**
 	   * @param {object} message The message that was sent
 	   * @param {string} prefix The servers prefix
-	   * @param {objects} client The bots client
+	   * @param {Client} client The bots client
 	   */
 	execute(message, prefix, _client) {
 		let args = message.content.slice(prefix.length).trim().split(/ +/g);
-		if (!args) return message.channel.send('You must specify a message to send');
+		if (!args) return message.channel.send('You must provide a message to send');
 
 		for (let i = 0; i < args.slice(1).join(' ').length; i++) {
 			let letter = args.slice(1).join(' ')[i];

@@ -3,9 +3,10 @@ module.exports = {
     description: 'Update the member stats',
     catagory: 'other',
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     execute (message, _prefix, client) {
         const guildData = require('../../events/client/database/models/guilds.js');

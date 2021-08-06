@@ -7,18 +7,18 @@ module.exports = {
 	catagory: 'moderation',
 	usage: 'prefix [new-prefix]',
 	/**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
 	execute (message, prefix, client) {
 		function prefixCmd() {
 			guildData.findOne({ guildId: message.guild.id }).then(result => {
 				let args = message.content.slice(prefix.length).trim().split(/ +/g);
-				if (!args[1]) { return message.channel.send('Please specify a new prefix\n\nThis servers current prefix is ' + result.prefix ? result.prefix : '~') };
+				if (!args[1]) return message.channel.send('You must provide a new prefix for this server\n\nThis servers current prefix is ' + result.prefix ? result.prefix : '~');
 				let newPrefix = args[1].toLowerCase();
-				if (!newPrefix && result.prefix === '~') return message.channel.send('Please specify a prefix');
-				if (!newPrefix && !result.prefix) return message.channel.send('Please specify a prefix');
+				if (!newPrefix && result.prefix == '~') return message.channel.send('You must provide a new prefix');
 				if (!newPrefix) {
 					result.prefix = '~';
 					result.save().then(() => {

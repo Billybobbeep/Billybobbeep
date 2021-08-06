@@ -3,9 +3,10 @@ module.exports = {
     description: 'View billybobbeep\'s info',
     guildOnly: true,
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     execute(message, _prefix, client) {
       const { MessageEmbed, version: djsversion } = require('discord.js');

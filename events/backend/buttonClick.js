@@ -1,6 +1,6 @@
 /**
  * @param {object} button The button that was clicked
- * @param {object} client Thwe bots client
+ * @param {Client} client Thwe bots client
  */
 module.exports = function(button, client) {
     console.log('button click')    

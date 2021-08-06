@@ -9,7 +9,7 @@ module.exports = {
 	/**
 	 * @param {object} message The message that was sent
 	 * @param {string} prefix The servers prefix
-	 * @param {objects} client The bots client
+	 * @param {Client} client The bots client
 	 */
 	execute(message, prefix, client) {
 		const Discord = require('discord.js');
@@ -42,7 +42,7 @@ module.exports = {
 					if (!user.id || user.user) user = user.user;
 					member = await guild.members.fetch(user.id);
 				} else
-					return channel.send('Please mention a user to kick');
+					return channel.send('You must mention a user to kick');
 
 				if (user.id == (message.author ? message.author.id : message.member.user.id))
 					return channel.send('You cannot kick yourself from the server');

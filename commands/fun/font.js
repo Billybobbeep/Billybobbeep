@@ -528,9 +528,10 @@ module.exports = {
         });
     },
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     execute(message, prefix, client) {
         if (message.data) {
@@ -539,12 +540,12 @@ module.exports = {
             let starter = '➳';
             let letters;
 
-            if (!args[0]) return require('../../utils/functions').slashCommands.reply(message, client, 'Please specify a font');
+            if (!args[0]) return require('../../utils/functions').slashCommands.reply(message, client, 'You must provide a font');
             letters = this.fonts(args[0].value);
             if (typeof letters == 'string') return require('../../utils/functions').slashCommands.reply(message, client, letters);
 
             if (!args[1])
-                require('../../utils/functions').slashCommands.reply(message, client, 'Please specify a message');
+                require('../../utils/functions').slashCommands.reply(message, client, 'You must provide a message to convert');
             else {
                 try {
                     for (let i = 0; i < (args[1].value).length; i++) {
@@ -556,7 +557,7 @@ module.exports = {
                     console.log(lines)
                     require('../../utils/functions').slashCommands.reply(message, client, (starter + lines.join('\n')));
                 } catch {
-                    require('../../utils/functions').slashCommands.reply(message, client, 'Internal error, please try again');
+                    require('../../utils/functions').slashCommands.reply(message, client, 'Internal error, try again later');
                 }
             }
         } else {
@@ -566,12 +567,12 @@ module.exports = {
             let letters;
 
             if (message.content.toLowerCase() === prefix + 'font' || message.content.toLowerCase() === prefix + 'fonts') return message.channel/send(this.help(message));
-            if (!args[1]) return message.channel.send('Please specify a font');
+            if (!args[1]) return message.channel.send('You must provide a font');
             letters = this.fonts(args[1]);
             if (typeof letters == 'string') return message.channel.send(letters);
 
             if (!args[2])
-                message.channel.send(`<@!${message.author ? message.author.id : message.member.user.id}>, Please specify a message`);
+                message.channel.send(`<@!${message.author ? message.author.id : message.member.user.id}>, You must provide a message`);
             else {
                 try {
                     for (let i = 0; i < args.slice(2).join(' ').length; i++) {
@@ -582,7 +583,7 @@ module.exports = {
                     }
                     message.channel.send(starter + lines.join('\n'));
                 } catch {
-                    return message.channel.send('Internal error, please try again');
+                    return message.channel.send('Internal error, try again later');
                 }
             }
         }

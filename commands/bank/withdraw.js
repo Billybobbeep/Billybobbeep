@@ -8,9 +8,10 @@ module.exports = {
     slashInfo: { enabled: true, public: false },
     options: [{ name: 'amount', description: 'The amount you\'d like to withdraw', type: 3, required: true }],
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     execute(message, prefix, client) {
         const userData = require('../../events/client/database/models/users');
@@ -23,7 +24,7 @@ module.exports = {
 
                     let args = message.content.slice(prefix.length).trim().split(/ +/g);
 
-                    if (!args[1]) return message.channel.send('You need to specify an amount');
+                    if (!args[1]) return message.channel.send('You need to provide a valid amount to withdraw');
                     if (args[1] === 'a' || args[1] === 'all') {
                         if ((userResult.economy_balance ? userResult.economy_balance : 0) < 1) return message.channel.send('You do not have any cash to withdraw');
                         let amt = userResult.economy_balance ? userResult.economy_balance : 0;
@@ -48,7 +49,7 @@ module.exports = {
                 userData.findOne({ userId: message.member.user.id }).then(userResult => {
                     if (guildResult.preferences && guildResult.preferences.ecoEnabled) return require('../../utils/functions').slashCommands.reply(message, client, 'Economy commands have been disabled in this server');
                     let args = message.data.options;
-                    if (!args[0] || !args[0].value) return message.channel.send('You need to specify an amount');
+                    if (!args[0] || !args[0].value) return message.channel.send('You need to provide a valid amount to withdraw');
                     if (args[0].value == 'a' || args[0].value == 'all') {
                         if ((userResult.economy_balance ? userResult.economy_balance : 0) < 1) return require('../../utils/functions').slashCommands.reply(message, client, 'You do not have any cash to withdraw');
                         let amt = userResult.economy_balance ? userResult.economy_balance : 0;
