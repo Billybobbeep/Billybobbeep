@@ -4,13 +4,13 @@ const Discord = require('discord.js');
 
 module.exports = {
     /**
-     * 
-     * @param {object} msg The embed to send
-     * @param {*} message The message to retreve the guild from
-     * @param {object} client The bots client
-     * @param {object} options The opptions
+     * Send a message into the servers logging channel
+     * @param {object} msg The message to send
+     * @param {object} message The message to retreve the guild from
+     * @param {Client} client The bots client
+     * @param {object} options Any additional options
      */
-    logging: function (msg, message, client, _options) {
+    logging: function(msg, message, client, _options) {
         if (typeof message == 'string') {
             guildData.findOne({ guildId: message.toString() }).then(result => {
                 if (!result) return;
@@ -52,11 +52,11 @@ module.exports = {
     slashCommands: {
         /**
          * @param {object} interaction The slash command interaction
-         * @param {object} client The bots client
+         * @param {Client} client The bots client
          * @param {*} response The response to the interaction
-         * @returns {object} Returns the interaction token and ID
+         * @returns {object} Returns the sent message
          */
-        reply: async function (interaction, client, response) {
+        reply: async function(interaction, client, response) {
             if (!interaction || !response) return false;
             const createAPIMessage = async (interaction, content) => {
                 const { data, files } = await Discord.APIMessage.create(
@@ -77,15 +77,16 @@ module.exports = {
             client.api.interactions(interaction.id, interaction.token).callback.post({
                 data: {
                     type: 4,
-                    data,
-                },
-            }).then(() => { return { message: { id: interaction.id, token: interaction.token } } }).catch(() => this.permissionCallback(interaction, client, 'SEND_MESSAGES'));
+                    data
+                }
+            }).then((data) => { return { custom: { id: interaction.id, token: interaction.token }, message: data } }).catch(() => this.permissionCallback(interaction, client, 'SEND_MESSAGES'));
         },
         /**
-         * @param {object} interaction
-         * @param {*} type The permission type
+         * Check if the client has the correct permissions
+         * @param {object} interaction The slash command interaction
+         * @param {string} type The permission type
          */
-        clientHasPermissions: async function (interaction, type) {
+        clientHasPermissions: async function(interaction, type) {
             if (!type) {
                 interaction.guild = await client.guilds.fetch(interaction.guild_id);
                 if (interaction.guild.me.permissions.has('ADMINISTRATOR')) return true;
@@ -122,11 +123,12 @@ module.exports = {
             }
         },
         /**
-         * @param {object} interaction
-         * @param {Client} client
+         * Send an embed explaining that the client does not have the correct permissions
+         * @param {object} interaction The slash command interaction
+         * @param {Client} client The bots client
          * @param {string} permission The missing permission
          */
-        permissionCallback: function (interaction, client, permission) {
+        permissionCallback: function(interaction, client, permission) {
             const { MessageEmbed } = require('discord.js');
             const embed = new MessageEmbed();
             embed.setTitle(`${client.user.username} requires more guild permissions`);
@@ -140,22 +142,25 @@ module.exports = {
     },
 
     /**
-     * @param {object} client the bots client
+     * Clean the databoase of any unused documents
+     * @param {Client} client The bots client
      */
-    cleanDatabase: function (client) {
+    cleanDatabase: function(client) {
         const guildData = require('../events/client/database/models/guilds');
         const userData = require('../events/client/database/models/users');
-        guildData.find(function (err, result) {
+        guildData.find(function(err, results) {
             if (err) return;
-            if (!result) return;
-            result.forEach(res => {
-                if (!client.guilds.cache.get(res.guildId))
+            if (!results) return;
+            // Check for guilds that don't have billybobbeep added
+            results.forEach(async res => {
+                if (typeof (await client.guilds.fetch(res.guildId)) !== 'object')
                     res.delete();
-                if (!res.embedColor)
+                if (typeof res.preferences == 'undefined')
                     res.delete();
             });
+            // Remove duplicate values
             client.guilds.cache.array().forEach(guild => {
-                let table = result.filter(a => a.guildId == guild.id);
+                let table = results.filter(a => a.guildId == guild.id);
                 let i = 0;
                 table.forEach(() => {
                     i++;
@@ -164,15 +169,17 @@ module.exports = {
                 });
             });
         });
-        userData.find(function (err, result) {
+        userData.find(function(err, results) {
             if (err) return;
-            if (!result) return;
-            result.forEach(res => {
-                if (!client.users.cache.get(res.userId))
-                    res.delete();
+            if (!results) return;
+            // Check for users that don't share a guild with billybobeep
+            results.forEach(async res => {
+                if (typeof (await client.users.fetch(res.userId)) !== 'object')
+                    consiole.log("user not found") && res.delete();
             });
+            // Remove duplicate values
             client.users.cache.array().forEach(user => {
-                let table = result.filter(a => a.userId == user.id);
+                let table = results.filter(a => a.userId == user.id);
                 let i = 0;
                 table.forEach(() => {
                     i++;
@@ -185,12 +192,13 @@ module.exports = {
 
     guildPerms: {
         /**
+         * Check if the client has the correct permissions
          * @param {object} message
-         * @param {*} type The permission type
+         * @param {string} type The permission type
          * @param {object} options Additional options
          * @returns {boolean} If the client has the correct permissions
          */
-        clientHasPermissions: function (message, type, options) {
+        clientHasPermissions: function(message, type, options) {
             if (!options || !options.guild) {
                 if (!message.guild.me.permissions.has('SEND_MESSAGES')) return false;
                 if (!type) {
@@ -265,11 +273,12 @@ module.exports = {
             }
         },
         /**
+         * Send an embed to the server explaining that the client does not have the correct permissions
          * @param {object} message
          * @param {Client} client
          * @param {string} permission The missing permission
          */
-        permissionCallback: function (message, client, permission) {
+        permissionCallback: function(message, client, permission) {
             const { MessageEmbed } = require('discord.js');
             const embed = new MessageEmbed();
             embed.setTitle(`${client.user.username} requires more guild permissions`);
@@ -283,6 +292,7 @@ module.exports = {
     },
 
     /**
+     * Draw a users rank card
      * @param {object} message The users message
      * @param {object} avatar The users avatar
      * @param {string} username The users username
@@ -291,11 +301,11 @@ module.exports = {
      * @param {number} requiredXP The required XP to level up
      * @param {number} level The users current level
      */
-    rank: function (message, avatar, username, discriminator, currentXP, requiredXP, level) {
+    rank: function(message, avatar, username, discriminator, currentXP, requiredXP, level) {
         let canvas = require('canvas');
         const { registerFont } = require('canvas');
         const Discord = require('discord.js');
-        registerFont('./structure/fonts/OpenSans.ttf', { family: 'Sans' });
+        registerFont('./fonts/OpenSans.ttf', { family: 'Sans' });
 
         this.data = {
             background: {
