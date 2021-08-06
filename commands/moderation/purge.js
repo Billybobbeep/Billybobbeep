@@ -20,7 +20,7 @@ module.exports = {
 		 * @param {*} msg The message to return
 		 * @returns {object} The sent message
 		 */
-		function send(msg) {
+		async function send(msg) {
 			return await message.data ?
 				require('../../utils/functions').slashCommands.reply(message, client, msg).message :
 				message.channel.send(msg);
