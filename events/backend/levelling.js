@@ -77,10 +77,12 @@ module.exports = async (message, _client) => {
 				});
 				if (roleExists) {
 					(guildResult.preferences.lvlRoles).forEach(data => {
-						if (message.member.roles.cache.get(data.role) && data.level !== currlev)
+						if (message.member.roles.cache.get(data.role) && data.level < currlev)
 							message.member.roles.remove(data.role, `${message.author.tag} has levelled up`);
+						else if (message.member.roles.cache.get(data.role) && data.level > currlev)
+							message.member.roles.remove(data.role, `${message.author.tag} has not reached the minimum level for this role`);
 						if (data.level == currlev && !message.member.roles.cache.get(data.role))
-							message.member.roles.add(data.role, `${message.author.tag} has levelled up`);
+							message.member.roles.add(data.role, `${message.author.tag} has reached level ${currlev}`);
 					});
 				}
 			}
