@@ -6,7 +6,7 @@ const client = new Discord.Client({
 
 /**
  * Get the flags used when executing the command
- * @returns {Object} List of flags
+ * @returns {object} List of flags
  */
 function getFlags() {
 	let args = [];
@@ -26,4 +26,3 @@ if (getFlags().includes('guild-only') || getFlags().includes('dev-mode')) {
 
 require('./events/client/database/connection')();
 require('./bot')(client);
-require('./server/main')(client);
