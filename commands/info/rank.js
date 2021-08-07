@@ -31,15 +31,10 @@ module.exports = {
                 xpForLevel = level * 2 + 200;
                 if (xpForLevel < 100)
                     xpForLevel = 100;
-                if (xpForLevel[xpForLevel.length - 1] !== 0)
-                    xpForLevel[xpForLevel.length - 1] = 0;
             } else {
                 xpForLevel = Math.floor(level * 2 + 150);
                 if (xpForLevel < 100)
                     xpForLevel = 100;
-                if (xpForLevel[xpForLevel.length - 1] !== 0)
-                    xpForLevel[xpForLevel.length - 1] = 0;
-                console.log(xpForLevel)
             }
             const canvas = require('canvas');
             let avatar = await canvas.loadImage(user.displayAvatarURL({ dynamic: false, format: 'png' }))
