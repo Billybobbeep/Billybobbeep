@@ -175,7 +175,7 @@ module.exports = {
             // Check for users that don't share a guild with billybobeep
             results.forEach(async res => {
                 if (typeof (await client.users.fetch(res.userId)) !== 'object')
-                    consiole.log("user not found") && res.delete();
+                    console.log('user not found') && res.delete();
             });
             // Remove duplicate values
             client.users.cache.array().forEach(user => {
@@ -305,17 +305,17 @@ module.exports = {
         let canvas = require('canvas');
         const { registerFont } = require('canvas');
         const Discord = require('discord.js');
-        registerFont('./fonts/OpenSans.ttf', { family: 'Sans' });
+        registerFont('./utils/fonts/OpenSans.ttf', { family: 'Sans' });
 
         this.data = {
             background: {
-                type: "color",
-                image: "#23272A"
+                type: 'color',
+                image: '#23272A'
             },
             overlay: {
                 display: true,
                 level: 0.5,
-                color: "#333640"
+                color: '#333640'
             },
             progressBar: {
                 rounded: true,
@@ -324,11 +324,11 @@ module.exports = {
                 height: 37.5,
                 width: 596.5,
                 track: {
-                    color: "#484b4E"
+                    color: '#484b4E'
                 },
                 bar: {
-                    type: "color",
-                    color: "#FFFFFF"
+                    type: 'color',
+                    color: '#FFFFFF'
                 }
             },
             avatar: {
@@ -341,33 +341,33 @@ module.exports = {
             level: {
                 display: true,
                 data: 1,
-                textColor: "#FFFFFF",
-                color: "#F3F3F3",
-                displayText: "LEVEL"
+                textColor: '#FFFFFF',
+                color: '#F3F3F3',
+                displayText: 'LEVEL'
             },
             currentXP: {
                 data: 0,
-                color: "#FFFFFF"
+                color: '#FFFFFF'
             },
             requiredXP: {
                 data: 0,
-                color: "#FFFFFF"
+                color: '#FFFFFF'
             },
             discriminator: {
                 discrim: null,
-                color: "rgba(255, 255, 255, 0.4)"
+                color: 'rgba(255, 255, 255, 0.4)'
             },
             username: {
                 name: null,
-                color: "#FFFFFF"
+                color: '#FFFFFF'
             },
         };
 
         function abbrev(num) {
-            if (!num || isNaN(num)) return "0";
-            if (typeof num === "string") num = parseInt(num);
+            if (!num || isNaN(num)) return '0';
+            if (typeof num === 'string') num = parseInt(num);
             let decPlaces = Math.pow(10, 1);
-            let abbrev = ["K", "M", "B", "T"];
+            let abbrev = ['K', 'M', 'B', 'T'];
             for (let i = abbrev.length - 1; i >= 0; i--) {
                 let size = Math.pow(10, (i + 1) * 3);
                 if (size <= num) {
@@ -408,10 +408,10 @@ module.exports = {
 
         if (!avatar) throw new Error('Avatar is required');
         if (!username) throw new Error('Username is required');
-        if (typeof discriminator !== 'number') throw new Error(`Discriminator must be a number, recieved "${typeof discriminator}"`);
-        if (typeof currentXP !== 'number') throw new Error(`Current XP must be a number, recieved "${typeof currentXP}"`);
-        if (typeof requiredXP !== 'number') throw new Error(`Required XP must be a number, recieved "${typeof requiredXP}"`);
-        if (typeof level !== 'number') throw new Error(`Level must be a number, recieved "${typeof level}"`);
+        if (typeof discriminator !== 'number') throw new Error(`Discriminator must be a number, recieved '${typeof discriminator}'`);
+        if (typeof currentXP !== 'number') throw new Error(`Current XP must be a number, recieved '${typeof currentXP}'`);
+        if (typeof requiredXP !== 'number') throw new Error(`Required XP must be a number, recieved '${typeof requiredXP}'`);
+        if (typeof level !== 'number') throw new Error(`Level must be a number, recieved '${typeof level}'`);
 
         canvas = canvas.createCanvas(932, 282);
         let ctx = canvas.getContext('2d');
@@ -459,8 +459,8 @@ module.exports = {
         // show progress
         ctx.font = `bold 30px Sans`;
         ctx.fillStyle = this.data.requiredXP.color;
-        ctx.textAlign = "start";
-        ctx.fillText("/ " + toAbbrev(requiredXP), 670 + ctx.measureText(toAbbrev(currentXP)).width + 15, 164);
+        ctx.textAlign = 'start';
+        ctx.fillText('/ ' + toAbbrev(requiredXP), 670 + ctx.measureText(toAbbrev(currentXP)).width + 15, 164);
 
         ctx.fillStyle = this.data.currentXP.color;
         ctx.fillText(toAbbrev(currentXP), 670, 164);
@@ -476,15 +476,14 @@ module.exports = {
 
             ctx.beginPath();
             // apply color
-            if (this.data.progressBar.bar.type === "gradient") {
+            if (this.data.progressBar.bar.type === 'gradient') {
                 let gradientContext = ctx.createRadialGradient(calculateProgress(), 0, 500, 0);
                 this.data.progressBar.bar.color.forEach((color, index) => {
                     gradientContext.addColorStop(index, color);
                 });
                 ctx.fillStyle = gradientContext;
-            } else {
+            } else
                 ctx.fillStyle = this.data.progressBar.bar.color;
-            }
 
             // progress bar
             ctx.fill();
