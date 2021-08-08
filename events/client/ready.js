@@ -1,19 +1,17 @@
-module.exports = (client) => {
-	let activities = [`~help`, `v${(require('../../package.json').version)[0]}${(require('../../package.json').version)[1]}${(require('../../package.json').version)[2]}`];
-	let i = 0;
-	setInterval(() => {
-		client.user.setActivity(`${activities[i++ % activities.length]}`, { type: 'LISTENING' });
-	}, 10000);
-	console.log(`Total Guilds: ${client.guilds.cache.size}\nTotal Members: ${client.users.cache.size}`);
-	require('../backend/timeOut.js')(client);
-
+/**
+ * Post slash commands 
+ * @param {string} directory The directory name
+ * @param {Client} client The bots client
+ */
+function setupSlashCommands(directory, client) {
 	const fs = require('fs');
 	const guildData = require('../client/database/models/guilds');
-	const commandFolders = fs.readdirSync('./commands').filter(file => !file.endsWith('.js') && !file.endsWith('.json'));
+
+	const commandFolders = fs.readdirSync(`./${directory}`).filter(file => !file.endsWith('.js') && !file.endsWith('.json'));
 	for (const folder of commandFolders) {
-		const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
+		const commandFiles = fs.readdirSync(`./${directory}/${folder}`).filter(file => file.endsWith('.js'));
 		for (const file of commandFiles) {
-			const command = require(`../../commands/${folder}/${file}`);
+			const command = require(`../../${directory}/${folder}/${file}`);
 			if (command.options && (command.slashInfo && command.slashInfo.enabled)) {
 				let data = {
 					name: command.name,
@@ -31,7 +29,7 @@ module.exports = (client) => {
 									type: 1,
 									permission: true
 								});
-							} else return;
+							}
 						});
 						if (command.slashInfo.public) {
 							client.api.applications(client.user.id).commands.post({
@@ -57,6 +55,67 @@ module.exports = (client) => {
 			}
 		}
 	}
+
+	const commandFiles = fs.readdirSync(`./${directory}`).filter(file => file.endsWith('.js'));
+	if (commandFiles.length < 1) return;
+	for (const file of commandFiles) {
+		const command = require(`../../${directory}/${file}`);
+		if (command.options && (command.slashInfo && command.slashInfo.enabled)) {
+			let data = {
+				name: command.name,
+				description: command.description,
+				options: command.options
+			}
+			if ((typeof command.slashInfo.options == 'object' && command.slashInfo.options.mod)) {
+				data.permissions = [];
+				guildData.find(function(err, data1) {
+					if (err || !data) return;
+					data1.forEach(guild => {
+						if (guild.modRole) {
+							data.permissions.push({
+								id: guild.modRole,
+								type: 1,
+								permission: true
+							});
+						}
+					});
+					if (command.slashInfo.public) {
+						client.api.applications(client.user.id).commands.post({
+							data
+						});
+					} else {
+						client.api.applications(client.user.id).guilds('729288155064434729').commands.post({
+							data
+						});
+					}
+				});
+			} else {
+				if (command.slashInfo.public) {
+					client.api.applications(client.user.id).commands.post({
+						data
+					});
+				} else {
+					client.api.applications(client.user.id).guilds('729288155064434729').commands.post({
+						data
+					});
+				}
+			}
+		}
+	}
+}
+
+module.exports = (client) => {
+	let activities = [`~help`, `v${(require('../../package.json').version)[0]}${(require('../../package.json').version)[1]}${(require('../../package.json').version)[2]}`];
+	let i = 0;
+	setInterval(() => {
+		client.user.setActivity(`${activities[i++ % activities.length]}`, { type: 'LISTENING' });
+	}, 10000);
+	console.log(`Total Guilds: ${client.guilds.cache.size}\nTotal Members: ${client.users.cache.size}`);
+	require('../backend/timeOut.js')(client);
+
+	setupSlashCommands('commands', client);
+	setupSlashCommands('embeds', client);
+
 	// client.api.applications(client.user.id).guilds('729288155064434729').commands.get().then(commands => {
 	// 	commands.forEach(command => {
 	// 		console.log('Deleting the slash command: ' + command.name);
