@@ -1,5 +1,5 @@
 const guildData = require('../events/client/database/models/guilds');
-const guildID = require('../utils/config.json').ServerId;
+const guildID = '733442092667502613';
 const Discord = require('discord.js');
 
 module.exports = {
@@ -15,33 +15,51 @@ module.exports = {
             guildData.findOne({ guildId: message.toString() }).then(result => {
                 if (!result) return;
                 let loggingChannel = client.channels.cache.get(result && result.preferences.loggingChannel);
-                if (loggingChannel && typeof loggingChannel == 'object')
-                    loggingChannel.send(msg).catch((error) => { console.log(error) });
-            })
-
+                if (typeof msg == 'string') {
+                    if (loggingChannel && typeof loggingChannel == 'object')
+                        loggingChannel.send({ content: msg }).catch((error) => { console.log(error) });
+                } else {
+                    if (loggingChannel && typeof loggingChannel == 'object')
+                        loggingChannel.send({ embeds: [msg] }).catch((error) => { console.log(error) });
+                }
+            });
         } else if (typeof message === 'object') {
-            let loggingChannel;
             if (message.guild) {
                 guildData.findOne({ guildId: message.guild.id }).then(result => {
                     if (!result) return;
-                    loggingChannel = client.channels.cache.get(result && result.preferences.loggingChannel);
-                    if (loggingChannel && typeof loggingChannel == 'object')
-                        loggingChannel.send(msg).catch((error) => { console.log(error) });
+                    let loggingChannel = client.channels.cache.get(result && result.preferences.loggingChannel);
+                    if (typeof msg == 'string') {
+                        if (loggingChannel && typeof loggingChannel == 'object')
+                            loggingChannel.send({ content: msg }).catch((error) => { console.log(error) });
+                    } else {
+                        if (loggingChannel && typeof loggingChannel == 'object')
+                            loggingChannel.send({ embeds: [msg] }).catch((error) => { console.log(error) });
+                    }
                 });
             } else {
                 guildData.findOne({ guildId: guildID }).then(result => {
                     if (!result) return;
-                    loggingChannel = client.channels.cache.get(result && result.preferences.loggingChannel);
-                    if (loggingChannel && typeof loggingChannel == 'object')
-                        loggingChannel.send(msg).catch((error) => { console.log(error) });
+                    let loggingChannel = client.channels.cache.get(result && result.preferences.loggingChannel);
+                    if (typeof msg == 'string') {
+                        if (loggingChannel && typeof loggingChannel == 'object')
+                            loggingChannel.send({ content: msg }).catch((error) => { console.log(error) });
+                    } else {
+                        if (loggingChannel && typeof loggingChannel == 'object')
+                            loggingChannel.send({ embeds: [msg] }).catch((error) => { console.log(error) });
+                    }
                 });
             }
         } else {
             guildData.findOne({ guildId: guildID }).then(result => {
                 if (!result) return;
                 let loggingChannel = client.channels.cache.get(result && result.preferences.loggingChannel);
-                if (loggingChannel && typeof loggingChannel == 'object')
-                    loggingChannel.send(msg).catch((error) => { console.log(error) });
+                if (typeof msg == 'string') {
+                    if (loggingChannel && typeof loggingChannel == 'object')
+                        loggingChannel.send({ content: msg }).catch((error) => { console.log(error) });
+                } else {
+                    if (loggingChannel && typeof loggingChannel == 'object')
+                        loggingChannel.send({ embeds: [msg] }).catch((error) => { console.log(error) });
+                }
             });
         }
     },
@@ -58,37 +76,30 @@ module.exports = {
          */
         reply: async function(interaction, client, response) {
             if (!interaction || !response) return false;
-            const createAPIMessage = async (interaction, content) => {
-                const { data, files } = await Discord.APIMessage.create(
-                    client.channels.resolve(interaction.channel_id),
-                    content
-                )
-                    .resolveData()
-                    .resolveFiles()
-
-                return { ...data, files }
-            }
+            if (typeof response !== 'object' && typeof response !== 'string' || ['', ' '].includes(response)) return false;
 
             let data = {
-                content: response,
+                content: response
             }
             if (typeof response === 'object')
-                data = await createAPIMessage(interaction, response)
+                data = {
+                    embeds: [response]
+                }
             client.api.interactions(interaction.id, interaction.token).callback.post({
                 data: {
                     type: 4,
                     data
                 }
-            }).then((data) => { return { custom: { id: interaction.id, token: interaction.token }, message: data } }).catch(() => this.permissionCallback(interaction, client, 'SEND_MESSAGES'));
+            }).then((data) => { return { custom: { id: interaction.id, token: interaction.token }, message: data } }).catch((e) => console.log(e) && this.permissionCallback(interaction, client, 'SEND_MESSAGES'));
         },
         /**
          * Check if the client has the correct permissions
          * @param {object} interaction The slash command interaction
          * @param {string} type The permission type
          */
-        clientHasPermissions: async function(interaction, type) {
+        clientpermissions: async function(interaction, type) {
             if (!type) {
-                interaction.guild = await client.guilds.fetch(interaction.guild_id);
+                interaction.guild = await client.guilds.fetch(interaction.guild_id)
                 if (interaction.guild.me.permissions.has('ADMINISTRATOR')) return true;
                 if (interaction.guild.me.permissions.has('MANAGE_GUILD') &&
                     interaction.guild.me.permissions.has('MANAGE_ROLES') &&
@@ -132,12 +143,47 @@ module.exports = {
             const { MessageEmbed } = require('discord.js');
             const embed = new MessageEmbed();
             embed.setTitle(`${client.user.username} requires more guild permissions`);
-            embed.setDescription(`Unfortunately, this command requires \`${permission}\` permission to work correctly`);
-            embed.addField('Don\'t know how?', `Go to **Server Settings**, **Roles** then find the role **${client.user.username}** and make sure **${permission}** is enabled`, false)
-            embed.setFooter(`${client.guilds.fetch(interaction.guild_id).name}`);
+            if (typeof permission == 'string') {
+                embed.setDescription(`Unfortunately, this command requires the \`${permission}\` permission to work correctly`);
+                embed.addField('Don\'t know how?', `Go to **Server Settings**, **Roles** then find the role **${client.user.username}** and make sure **${permission}** is enabled`, false)
+            } else if (typeof permission == 'object') {
+                embed.setDescription(`Unfortunately, this command requires the following permissions: \`${permission.join('`, ')} to work correctly`);
+                embed.addField('Don\'t know how?', `Go to **Server Settings**, **Roles** then find the role **${client.user.username}** and make sure all of the following permissions are enabled **${permission.join('**,')}`, false)
+            } else return;
             embed.setTimestamp();
             embed.setColor('#447ba1');
             this.reply(interaction, client, embed);
+        }
+    },
+
+    /**
+     * Button interactions
+     */
+    buttons: {
+        /**
+         * @param {object} interaction The slash command interaction
+         * @param {Client} client The bots client
+         * @param {*} response The response to the interaction
+         * @param {object} options The message options
+         * @returns {boolean} If the response was successful
+         */
+        respond: async function(interaction, client, response, options = { userOnly: false }) {
+            if (!interaction || !response) return false;
+            let data = {
+                content: response
+            }
+            if (typeof response === 'object')
+                data = {
+                    embeds: [response]
+                }
+            if (options.userOnly)
+                data.flags = 64;
+            client.api.interactions(interaction.id, interaction.token).callback.post({
+                data: {
+                    type: 4,
+                    data
+                }
+            }).then((data) => { return { custom: { id: interaction.id, token: interaction.token }, message: data } }).catch(() => this.permissionCallback(interaction, client, 'SEND_MESSAGES'));
         }
     },
 
@@ -198,7 +244,7 @@ module.exports = {
          * @param {object} options Additional options
          * @returns {boolean} If the client has the correct permissions
          */
-        clientHasPermissions: function(message, type, options) {
+        clientpermissions: function(message, type, options) {
             if (!options || !options.guild) {
                 if (!message.guild.me.permissions.has('SEND_MESSAGES')) return false;
                 if (!type) {
@@ -282,12 +328,17 @@ module.exports = {
             const { MessageEmbed } = require('discord.js');
             const embed = new MessageEmbed();
             embed.setTitle(`${client.user.username} requires more guild permissions`);
-            embed.setDescription(`Unfortunately, this command requires \`${permission}\` permission to work correctly`);
-            embed.addField('Don\'t know how?', `Go to **Server Settings**, **Roles** then find the role **${client.user.username}** and make sure **${permission}** is enabled`, false)
+            if (typeof permission == 'string') {
+                embed.setDescription(`Unfortunately, this command requires the \`${permission}\` permission to work correctly`);
+                embed.addField('Don\'t know how?', `Go to **Server Settings**, **Roles** then find the role **${client.user.username}** and make sure **${permission}** is enabled`, false)
+            } else if (typeof permission == 'object') {
+                embed.setDescription(`Unfortunately, this command requires the following permissions: \`${permission.join('`, ')} to work correctly`);
+                embed.addField('Don\'t know how?', `Go to **Server Settings**, **Roles** then find the role **${client.user.username}** and make sure all of the following permissions are enabled **${permission.join('**,')}`, false)
+            } else return;
             embed.setFooter(`${message.guild.name}`);
             embed.setTimestamp();
             embed.setColor(result && result.preferences ? result.preferences.embedColor : '#447ba1');
-            message.channel.send(embed);
+            message.channel.send({ embeds: [embed] });
         }
     },
 
@@ -300,8 +351,9 @@ module.exports = {
      * @param {number} currentXP The users current XP
      * @param {number} requiredXP The required XP to level up
      * @param {number} level The users current level
+     * @returns The rank card as a MessageAtachment
      */
-    rank: function(message, avatar, username, discriminator, currentXP, requiredXP, level) {
+    rank: function(avatar, username, discriminator, currentXP, requiredXP, level) {
         let canvas = require('canvas');
         const { registerFont } = require('canvas');
         const Discord = require('discord.js');
@@ -361,7 +413,7 @@ module.exports = {
                 name: null,
                 color: '#FFFFFF'
             },
-        };
+        }
 
         function abbrev(num) {
             if (!num || isNaN(num)) return '0';
@@ -516,6 +568,6 @@ module.exports = {
 
 
         const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'rank.png');
-        message.channel.send(attachment);
+        return attachment;
     }
 }
