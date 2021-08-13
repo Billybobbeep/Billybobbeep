@@ -14,9 +14,8 @@ module.exports = (newMessage, oldMessage, client) => {
 	if (!oldMessage.guild) return;
   
 	if (
-	  newMessage.content === null ||
-	  newMessage.content === ' ' ||
-	  newMessage.content === undefined
+	  !newMessage.content ||
+	  !newMesssge.content.match(/^\s*$/)
 	) {
 	  guildData.findOne({ guildId: newMessage.guild.id }).then(result => {
 		const embed = new Discord.MessageEmbed()
@@ -31,7 +30,7 @@ module.exports = (newMessage, oldMessage, client) => {
 			`**Author ID:** ${oldMessage.author.id}`
 		  )
 		  .setTimestamp()
-		  .setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
+		  .setColor(result && result.preferences ? result.preferences.embedColor : '#447ba1');
 		return logging(embed, message, client);
 	  });
 	}
@@ -63,7 +62,7 @@ module.exports = (newMessage, oldMessage, client) => {
 		  `**Author ID:** ${oldMessage.author.id}`
 		)
 		.setTimestamp()
-		.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
+		.setColor(result && result.preferences ? result.preferences.embedColor : '#447ba1');
 	  logging(embed, oldMessage, client);
 	});
 }

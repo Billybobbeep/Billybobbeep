@@ -24,9 +24,9 @@ module.exports.add = (guild, user, client) => {
                 `**Moderator ID:** ${ban ? ban.executor.id : 'Unknown'}`
             )
             embed.setTimestamp(ban.createdTimestamp);
-            embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
+            embed.setColor(result && result.preferences ? result.preferences.embedColor : '#447ba1');
 
-            let loggingChannel = client.channels.cache.get(result.preferences.loggingChannel);
+            let loggingChannel = client.channels.cache.get(result && result.preferences ? result.preferences.loggingChannel : '');
             if (loggingChannel)
                 loggingChannel.send({ embeds: [embed] }).catch(() => {return});
         });
@@ -59,8 +59,8 @@ module.exports.remove = (guild, user, client) => {
                 `**Moderator ID:** ${ban ? ban.executor.id : 'Unknown'}`
                 )
                 embed.setTimestamp(ban.createdTimestamp);
-                embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
-                let loggingChannel = client.channels.cache.get(result.preferences.loggingChannel);
+                embed.setColor(result && result.preferences ? result.preferences.embedColor : '#447ba1');
+                let loggingChannel = client.channels.cache.get(result && result.preferences ? result.preferences.loggingChannel : '');
                 if (loggingChannel)
                     loggingChannel.send({ embeds: [embed] }).catch(() => {return});
             });
