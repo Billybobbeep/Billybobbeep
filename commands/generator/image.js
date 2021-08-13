@@ -161,7 +161,7 @@ module.exports = {
 			}
 
 			Generator(lastImage);
-			!message.data ? message.channel.send(embed) : require('../../utils/functions').slashCommands.reply(message, client, embed);
+			!message.data ? message.channel.send({ embeds: [embed] }) : require('../../utils/functions').slashCommands.reply(message, client, embed);
 		});
 	}
 }

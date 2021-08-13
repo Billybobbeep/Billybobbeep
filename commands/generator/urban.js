@@ -29,7 +29,7 @@ module.exports = {
                         .setFooter('Billybobbeep is not responsible for what you search | Written by: ' + (json.author || 'Unknown'))
                         .addField('Upvotes', json.thumbs_up || 0, true)
                         .addField('Downvotes', json.thumb_down || 0, true)
-                    let msgEmbed = await message.channel.send(embed);
+                    let msgEmbed = await message.channel.send({ embeds: [embed] });
                     await msgEmbed.react('👍');
                     await msgEmbed.react('👎');
                 });

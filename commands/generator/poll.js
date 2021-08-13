@@ -44,7 +44,7 @@ module.exports = {
                     .setColor(result.preferences ? result.preferences.embedColor : '#447ba1')
                     .setFooter(`Poll created by: ${message.member.user.username}#${message.member.user.discriminator}`)
                 require('../../utils/functions').slashCommands.reply(message, client, 'I have posted your poll');
-                let msg = await channel.send(embed);
+                let msg = await channel.send({ embeds: [embed] });
                 await msg.react('👍');
                 await msg.react('👎');
             });
