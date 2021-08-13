@@ -5,10 +5,10 @@
 - Billy is build for/around **Squiddies.** [(discord.gg/qNJEj3s)](https://www.discord.gg/qNJEj3s)
 - Billy was scripted by: **Spoink#2793**
 
-# Version
-- **Discord.js** : v12.3.5
+# Versions
+- **Discord.js** : v13.0.1
 - **Bot Version** : v3.1
-- **Node JS** : v12.18.3
+- **Node JS** : v16.6.1
 
 # Contributors
 - Scripting:
