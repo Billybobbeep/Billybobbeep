@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 const client = new Discord.Client({
 	partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
-	disableMentions: 'everyone'
+	disableMentions: 'everyone',
+	intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_PRESENCES]
 });
 
 /**
