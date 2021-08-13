@@ -15,7 +15,7 @@ module.exports = (newMessage, oldMessage, client) => {
   
 	if (
 	  !newMessage.content ||
-	  !newMesssge.content.match(/^\s*$/)
+	  !newMessage.content.match(/^\s*$/)
 	) {
 	  guildData.findOne({ guildId: newMessage.guild.id }).then(result => {
 		const embed = new Discord.MessageEmbed()
