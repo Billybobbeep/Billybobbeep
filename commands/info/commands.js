@@ -28,7 +28,7 @@ module.exports = {
             function addPage(title, catagories, inline) {
                 let page = new Discord.MessageEmbed()
                     .setTitle('Billybobbeep | ' + title)
-                    .setDescription(/ ^\s*$/)
+                    .setDescription(`Below are ${client.user.username}'s ${title.toLowerCase()}`);
                 result.preferences && result.preferences.embedColor ?
                     page.setColor(result.preferences.embedColor) :
                     page.setColor('#447ba1');
@@ -105,7 +105,7 @@ module.exports = {
                     components.push(row);
                 });
             });
-            return components;
+            return [components[1]];
         }
         let guild = client.guilds.cache.get(interaction.guild_id);
         if (typeof guild !== 'object')
