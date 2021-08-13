@@ -33,6 +33,7 @@ module.exports = function(message, client) {
 	let completed = false;
 	if (!message.guild) return;
 	guildData.findOne({ guildId: message.guild.id }).then(async result => {
+		if (!result) return;
 		if (message.author.bot) return;
 		let inviteLinks = result.preferences ? result.preferences.inviteLinks : false;
 		if (!inviteLinks) return;
