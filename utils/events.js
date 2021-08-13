@@ -3,11 +3,11 @@ const events = (event) => require(`../events/backend/${event}`);
 
 /**
  * Setup the clients event listeners
- * @param {*} client The bots client
+ * @param {Client} client The bots client
  */
 module.exports = (client) => {
     client.once('ready', () => event('ready')(client));
-    client.on('message', (message) => event('message')(message, client));
+    client.on('messageCreate', (message) => event('message')(message, client));
     client.on('guildMemberAdd', (member) => require('./cache').dev.get() || event('member').add(member, client));
     client.on('guildMemberRemove', (member) => require('./cache').dev.get() || event('member').remove(member, client));
     client.on('guildMemberUpdate', (oldMember, newMember) => require('./cache').dev.get() || events('roles')(oldMember, newMember, client));
