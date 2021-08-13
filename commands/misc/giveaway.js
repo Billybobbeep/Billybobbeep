@@ -14,7 +14,7 @@ module.exports = {
 	   * @param {Client} client The bots client
 	   */
 	execute(message, prefix, _client) {
-		if (!message.member.hasPermission('MANAGE_SERVER')) return message.channel.send('You must have `Manage Server` permissions to use this command');
+		if (!message.member.permissions.has('MANAGE_SERVER')) return message.channel.send('You must have `Manage Server` permissions to use this command');
 		guildData.findOne({ guildId: message.guild.id }).then(async result => {
 			let args = message.content.slice(prefix.length).trim().split(/ +/g);
 			if (!args[1]) return message.channel.send('You must provide what time the giveaway ends');
@@ -38,7 +38,7 @@ module.exports = {
 				.setTimestamp(Date.now() + ms(args[1]))
 				.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
 
-			let m = await channel.send(Embed);
+			let m = await channel.send({ embeds: [embed] });
 			m.react('🎉');
 			setTimeout(() => {
 				if (m.reactions.cache.get('🎉').count <= 1) {

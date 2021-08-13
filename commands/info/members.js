@@ -27,7 +27,7 @@ module.exports = {
             .setFooter(`Requested by: ${message.author.tag}`)
             .setTimestamp()
             result.preferences.embedColor ? embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1') : embed.setColor('#447ba1');
-            message.channel.send(embed);
+            message.channel.send({ embeds: [embed] });
         });
     }
 }

@@ -22,7 +22,7 @@ module.exports = {
 			embed.addField(`Join the official ${client.user.username} server`, '[Billybobbeep Help Center](https://discord.com/invite/AUGX9sywnP)');
 			message.data ?
 				require('../../utils/functions').slashCommands.reply(message, client, embed) :
-				message.channel.send(embed);
+				message.channel.send({ embeds: [embed] });
 		});
 	}
 }

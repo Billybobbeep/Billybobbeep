@@ -77,7 +77,7 @@ module.exports = {
 					'\u200b'
 				])
 				.setTimestamp();
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		});
 	}
 }

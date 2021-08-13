@@ -46,7 +46,7 @@ module.exports = {
                     let networth = parseInt(walletBal) + parseInt(bankBal);
                     if (networth.toString().startsWith('-')) sym = '-$';
                     embed.addField(`Total Networth:`, sym + networth.toFixed().toString().replace('-', ''));
-                    message.channel.send(embed);
+                    message.channel.send({ embeds: [embed] });
                 });
             });
         } else {

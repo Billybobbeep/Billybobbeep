@@ -39,7 +39,7 @@ function help_embed(message, prefix) {
             'mute_remove - ' + 'Member unmuted.\n\n' +
             'NOTE: You can filter up to 3 actions.\nIf you did want to filter more than one action use:\n `' + prefix + 'logs --filter-logs[audit] --filter-action-[action1]-[action2]-[action3]`'
         );
-        message.channel.send(embed);
+        message.channel.send({ embeds: [embed] });
     });
 }
 function filter_flags(client, message, prefix) {

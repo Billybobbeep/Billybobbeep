@@ -11,14 +11,14 @@ module.exports = {
     execute (message, _prefix, client) {
         const guildData = require('../../events/client/database/models/guilds.js');
         guildData.findOne({ guildId: message.guild.id }).then(result => {
-            if (!result) return message.channel.send('This server has not been set up to use this command');
+            if (!result) return message.channel.send({ content: 'This server has not been set up to use this command' });
             let data = {
                 total: result.preferences.serverStats_totalNo,
                 member: result.preferences.serverStats_memberNo,
                 bots: result.preferences.serverStats_botNo,
                 serverID: message.guild.id
             }
-            if (!data.total || !data.member || !data.bots) return message.channel.send('This server has not been set up to use this command');
+            if (!data.total || !data.member || !data.bots) return message.channel.send({ content: 'This server has not been set up to use this command' });
             let tu = result.preferences.serverStats_totalNoText || 'Total Users:'
             let tm = result.preferences.serverStats_memberNoText || 'Members:';
             let tb = result.preferences.serverStats_botNoText || 'Bots:';
@@ -26,9 +26,9 @@ module.exports = {
                 client.channels.cache.get(data.total).setName(`${tu} ${message.guild.memberCount}`);
                 client.channels.cache.get(data.member).setName(`${tm} ${message.guild.members.cache.filter(m => !m.user.bot).size}`);
                 client.channels.cache.get(data.bots).setName(`${tb} ${message.guild.members.cache.filter(m => m.user.bot).size}`);
-                message.channel.send('Successfully updated the server stats');
+                message.channel.send({ content: 'Successfully updated the server stats' });
             } catch {
-                message.channel.send('There was an error whilst updating the server stats');
+                message.channel.send({ content: 'There was an error whilst updating the server stats' });
             }
         });
     }

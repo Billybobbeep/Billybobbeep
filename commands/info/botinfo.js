@@ -38,7 +38,7 @@ module.exports = {
             `**✰ Uptime:** ${ms(os.uptime() * 1000, { long: true })}`,
           ])
           .setTimestamp();
-        message.channel.send(embed);
+        message.channel.send({ embeds: [embed] });
       });
     }
   }

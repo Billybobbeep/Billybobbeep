@@ -4,7 +4,7 @@ module.exports = {
 	guildOnly: true,
 	catagory: 'moderation',
 	usage: 'warn [user] [reason]',
-	slashInfo: { enabled: true, public: false, options: { mod: true } },
+	slashInfo: { enabled: true, public: true, options: { mod: true } },
 	options: [{ name: 'user', description: 'The user you\'d like to warn', type: 6, required: true }, { name: 'reason', description: 'Warning reason', type: 3, required: false }],
 	/**
 	 * @param {object} message The message that was sent
@@ -22,10 +22,10 @@ module.exports = {
 			let args = slash ? message.data.options : message.content.slice(prefix.length).trim().split(/ +/g);
 			let user = slash ? args[0].value : (message.mentions.users.first() || message.guild.members.cache.get(args[1]));
 			let channel = slash ? {
-				send(...msg) {
+				send(msg) {
 					require('../../utils/functions').slashCommands.reply(message, client, msg)
 				},
-				reply(user, ...msg) {
+				reply(user, msg) {
 					require('../../utils/functions').slashCommands.reply(message, client, `<@!${user.id}>, ${msg}`)
 				}
 			} : message.channel;
@@ -40,6 +40,8 @@ module.exports = {
 
 			let member;
 			let memberResult = await guildMemberData.findOne({ guildId: guild.id, memberId: user.id });
+			if (!memberResult)
+				memberResult = new guildMemberData({ memberId: user.id, guildId: guild.id });
 
 			if (typeof user == 'string') {
 				member = await guild.members.fetch(user);
@@ -52,15 +54,19 @@ module.exports = {
 
 			if (!member) return channel.send(user.username + ' is not in this server');
 			if (member && member.user.bot) return channel.send('You cannot warn bots');
-			slash ? console.log(message.member.roles) : console.log(message.guild.members.cache.get(message.author.id).roles);
-			if (slash && member.roles.highest <= message.member.roles.highest || !slash && member.roles.highest.position <= message.guild.members.cache.get(message.author.id).roles.highest.position) return channel.send('You cannot warn ' + user.username);
+			if (typeof member.roles == 'object' && (member.roles).length > 0) {
+				if (
+					slash && member.roles.highest.rawPosition <= client.guilds.cache.get(message.guild_id).members.cache.get(message.member.user.id).roles.highest.rawPosition ||
+					!slash && member.roles.highest.rawPosition <= message.guild.members.cache.get(message.author.id).roles.highest.rawPosition
+				) return channel.send('You cannot warn ' + user.username);
+			}
 
-			let reason = slash ? args[1].value : args.splice(2).join(' ');
-			if (!reason) return reason = 'No reason provided';
+			let reason = slash ? (args[1] ? args[1].value : 'No reason was provided'): args.splice(2).join(' ');
+			if (!reason || ['', ' '].includes(reason)) reason = 'No reason provided';
 
 			memberResult.warnReasons.length > 0 ?
-			(memberResult.warnReasons).push({ reason: reason, moderator: (message.author ? message.author : message.member.user) }) :
-			memberResult.warnReasons = [{ reason: reason, moderator: (message.author ? message.author : message.member.user) }];
+				(memberResult.warnReasons).push({ reason: reason, moderator: (message.author ? message.author : message.member.user) }) :
+				memberResult.warnReasons = [{ reason: reason, moderator: (message.author ? message.author : message.member.user) }];
 
 			let log = new Discord.MessageEmbed()
 				.setTimestamp()

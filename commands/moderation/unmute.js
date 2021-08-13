@@ -57,7 +57,7 @@ module.exports = {
 		let debounce = false;
 
 		guildData.findOne({ guildId: message.guild.id }).then(result => {
-			if (message.member.hasPermission('MANAGE_MESSAGES') || message.member.hasPermission('ADMINISTRATOR')) {
+			if (message.member.permissions.has('MANAGE_MESSAGES') || message.member.permissions.has('ADMINISTRATOR')) {
 				unmuteCmd()
 				debounce = true;
 			} else if (result.preferences.modRole) {

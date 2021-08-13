@@ -43,7 +43,7 @@ module.exports = {
                 let u = `${result.moderator.username}#${result.moderator.discriminator}`;
                 embed.addField(`Case #${count}`, `**Reason:** ${r}\n**Moderator:** ${u}`);
             });
-            message.channel.send(embed);
+            message.channel.send({ embeds: [embed] });
         } else
             noWarnings();
 
@@ -53,7 +53,7 @@ module.exports = {
                 .setTimestamp()
                 .setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1')
                 .setAuthor(`${user.tag}`)
-            message.channel.send(embed);
+            message.channel.send({ embeds: [embed] });
         }
     }
 }

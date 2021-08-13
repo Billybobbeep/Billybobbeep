@@ -4,7 +4,7 @@ module.exports = {
     description: 'Unlock a certain channel',
     guildOnly: true,
     usage: 'unlock [channel] [reason]',
-    alias: ['lockdown'],
+    alias: [],
     /**
      * Execute the selected command
      * @param {object} message The message that was sent
@@ -54,7 +54,7 @@ module.exports = {
                 if (channel !== 'all') {
                     if (channel.type === 'text') {
                         if (!channel.permissionsFor(message.guild.roles.everyone).has('SEND_MESSAGES')) {
-                            channel.send(embed);
+                            channel.send({ embeds: [embed] });
                             log(logEmbed, message, client);
                             channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, allow: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
                         } else
@@ -76,7 +76,7 @@ module.exports = {
                             if (!logged) { log(logEmbed, message, client); logged = true; }
                             channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, allow: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
                             reason ? embed.setDescription('This channel has been unlocked' + '.\nReason: ' + reason) : embed.setDescription('This channel has been unlocked');
-                            channel.send(embed);
+                            channel.send({ embeds: [embed] });
                         } else if (channel.type === 'voice')
                             channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, allow: ['CONNECT'] }], reason ? reason : 'No reason was provided');
                     });
@@ -86,7 +86,7 @@ module.exports = {
 
         let debounce = false;
         guildData.findOne({ guildId: message.guild.id }).then(result => {
-            if (message.member.hasPermission('MANAGE_SERVER') || message.member.hasPermission('ADMINISTRATOR')) {
+            if (message.member.permissions.has('MANAGE_SERVER') || message.member.permissions.has('ADMINISTRATOR')) {
               unlock();
               debounce = true;
             } else if (result.preferences.modRole) {

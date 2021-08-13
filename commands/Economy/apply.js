@@ -32,7 +32,7 @@ module.exports = {
                 if (!args[1]) {
                     embed.setDescription('You must provide a job to apply for');
                     embed.setFooter(`To view the full job list use the command ${prefix}jobs`);
-                    return message.channel.send(embed);
+                    return message.channel.send({ embeds: [embed] });
                 }
                 if (userResult.job_awaiting) {
                     let cooldown = 300000;
@@ -41,7 +41,7 @@ module.exports = {
                         let timeObj = ms(cooldown - (Date.now() - lastApp));
                         timeObj = timeObj.replace('s', ' seconds').replace('m', ' minutes').replace('h', ' hours');
                         embed.setDescription(`You have already applied in the last 5 minutes.\nTime Left: **${timeObj}**`);
-                        message.channel.send(embed);
+                        message.channel.send({ embeds: [embed] });
                     }
                 } else {
                     let job = '';
@@ -51,7 +51,7 @@ module.exports = {
                         if (level > (info.cashier.level + info.teacher.level)) {
                             embed.setDescription(`You cannot apply for this job as your job level is too high`);
                             embed.setFooter(`If you would like to start over you can apply for a prestige`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else {
                             let msg = await message.channel.send('Are you sure you want to apply for the ' + job + ' job?');
                             reactions(message, msg, job, client);
@@ -61,11 +61,11 @@ module.exports = {
                         if (level < info.teacher.level) {
                             embed.setDescription(`You cannot apply for this job as your job level is too low`);
                             embed.setFooter(`Try working at your current job before applying again`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else if (level > (info.teacher.level + info.waiter.level)) {
                             embed.setDescription(`You cannot apply for this job as your job level is too high`);
                             embed.setFooter(`If you would like to start over you can apply for a prestige`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else {
                             let msg = await message.channel.send('Are you sure you want to apply for the ' + job + ' job?');
                             reactions(message, msg, job, client);
@@ -75,11 +75,11 @@ module.exports = {
                         if (level < info.waiter.level) {
                             embed.setDescription(`You cannot apply for this job as your job level is too low`);
                             embed.setFooter(`Try working at your current job before applying again`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else if (level > (info.waiter.level + info.receptionist.level)) {
                             embed.setDescription(`You cannot apply for this job as your job level is too high`);
                             embed.setFooter(`If you would like to start over you can apply for a prestige`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else {
                             let msg = await message.channel.send('Are you sure you want to apply for the ' + job + ' job?');
                             reactions(message, msg, job, client);
@@ -89,11 +89,11 @@ module.exports = {
                         if (level < info.receptionist.level) {
                             embed.setDescription(`You cannot apply for this job as your job level is too low`);
                             embed.setFooter(`Try working at your current job before applying again`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else if (level > (info.receptionist.level + info.architect.level)) {
                             embed.setDescription(`You cannot apply for this job as your job level is too high`);
                             embed.setFooter(`If you would like to start over you can apply for a prestige`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else {
                             let msg = await message.channel.send('Are you sure you want to apply for the ' + job + ' job?');
                             reactions(message, msg, job, client);
@@ -103,11 +103,11 @@ module.exports = {
                         if (level < info.architect.level) {
                             embed.setDescription(`You cannot apply for this job as your job level is too low`);
                             embed.setFooter(`Try working at your current job before applying again`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else if (level > (info.architect.level + info.lifeguard.level)) {
                             embed.setDescription(`You cannot apply for this job as your job level is too high`);
                             embed.setFooter(`If you would like to start over you can apply for a prestige`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else {
                             let msg = await message.channel.send('Are you sure you want to apply for the ' + job + ' job?');
                             reactions(message, msg, job, client);
@@ -117,11 +117,11 @@ module.exports = {
                         if (level < info.lifeguard.level) {
                             embed.setDescription(`You cannot apply for this job as your job level is too low`);
                             embed.setFooter(`Try working at your current job before applying again`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else if (level > (info.lifeguard.level + info.nurse.level)) {
                             embed.setDescription(`You cannot apply for this job as your job level is too high`);
                             embed.setFooter(`If you would like to start over you can apply for a prestige`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else {
                             let msg = await message.channel.send('Are you sure you want to apply for the ' + job + ' job?');
                             reactions(message, msg, job, client);
@@ -131,11 +131,11 @@ module.exports = {
                         if (level < info.nurse.level) {
                             embed.setDescription(`You cannot apply for this job as your job level is too low`);
                             embed.setFooter(`Try working at your current job before applying again`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else if (level > (info.nurse.level + info.police.level)) {
                             embed.setDescription(`You cannot apply for this job as your job level is too high`);
                             embed.setFooter(`If you would like to start over you can apply for a prestige`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else {
                             let msg = await message.channel.send('Are you sure you want to apply for the ' + job + ' job?');
                             reactions(message, msg, job, client);
@@ -145,11 +145,11 @@ module.exports = {
                         if (level < info.police.level) {
                             embed.setDescription(`You cannot apply for this job as your job level is too low`);
                             embed.setFooter(`Try working at your current job before applying again`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else if (level > (info.police.level + info.engineer.level)) {
                             embed.setDescription(`You cannot apply for this job as your job level is too high`);
                             embed.setFooter(`If you would like to start over you can apply for a prestige`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else {
                             let msg = await message.channel.send('Are you sure you want to apply for the ' + job + ' job?');
                             reactions(message, msg, job, client);
@@ -159,11 +159,11 @@ module.exports = {
                         if (level < info.engineer.level) {
                             embed.setDescription(`You cannot apply for this job as your job level is too low`);
                             embed.setFooter(`Try working at your current job before applying again`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else if (level > (info.engineer.level + info.chef.level)) {
                             embed.setDescription(`You cannot apply for this job as your job level is too high`);
                             embed.setFooter(`If you would like to start over you can apply for a prestige`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else {
                             let msg = await message.channel.send('Are you sure you want to apply for the ' + job + ' job?');
                             reactions(message, msg, job, client);
@@ -173,11 +173,11 @@ module.exports = {
                         if (level < info.chef.level) {
                             embed.setDescription(`You cannot apply for this job as your job level is too low`);
                             embed.setFooter(`Try working at your current job before applying again`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else if (level > (info.chef.level + info.clinicalScientist.level)) {
                             embed.setDescription(`You cannot apply for this job as your job level is too high`);
                             embed.setFooter(`If you would like to start over you can apply for a prestige`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else {
                             let msg = await message.channel.send('Are you sure you want to apply for the ' + job + ' job?');
                             reactions(message, msg, job, client);
@@ -187,11 +187,11 @@ module.exports = {
                         if (level < info.clinicalScientist.level) {
                             embed.setDescription(`You cannot apply for this job as your job level is too low`);
                             embed.setFooter(`Try working at your current job before applying again`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else if (level > (info.clinicalScientist.level + info.headScientist.level)) {
                             embed.setDescription(`You cannot apply for this job as your job level is too high`);
                             embed.setFooter(`If you would like to start over you can apply for a prestige`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else {
                             let msg = await message.channel.send('Are you sure you want to apply for the ' + job + ' job?');
                             reactions(message, msg, job, client);
@@ -201,11 +201,11 @@ module.exports = {
                         if (level < info.headScientist.level) {
                             embed.setDescription(`You cannot apply for this job as your job level is too low`);
                             embed.setFooter(`Try working at your current job before applying again`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else if (level > (info.headScientist.level + info.lawyer.level)) {
                             embed.setDescription(`You cannot apply for this job as your job level is too high`);
                             embed.setFooter(`If you would like to start over you can apply for a prestige`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else {
                             let msg = await message.channel.send('Are you sure you want to apply for the ' + job + ' job?');
                             reactions(message, msg, job, client);
@@ -215,11 +215,11 @@ module.exports = {
                         if (level < info.lawyer.level) {
                             embed.setDescription(`You cannot apply for this job as your job level is too low`);
                             embed.setFooter(`Try working at your current job before applying again`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else if (level > (info.lawyer.level + info.socialWorker.level)) {
                             embed.setDescription(`You cannot apply for this job as your job level is too high`);
                             embed.setFooter(`If you would like to start over you can apply for a prestige`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else {
                             let msg = await message.channel.send('Are you sure you want to apply for the ' + job + ' job?');
                             reactions(message, msg, job, client);
@@ -229,11 +229,11 @@ module.exports = {
                         if (level < info.socialWorker.level) {
                             embed.setDescription(`You cannot apply for this job as your job level is too low`);
                             embed.setFooter(`Try working at your current job before applying again`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else if (level > (info.socialWorker.level + info.doctor.level)) {
                             embed.setDescription(`You cannot apply for this job as your job level is too high`);
                             embed.setFooter(`If you would like to start over you can apply for a prestige`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else {
                             let msg = await message.channel.send('Are you sure you want to apply for the ' + job + ' job?');
                             reactions(message, msg, job, client);
@@ -243,17 +243,17 @@ module.exports = {
                         if (level < info.doctor.level) {
                             embed.setDescription(`You cannot apply for this job as your job level is too low`);
                             embed.setFooter(`Try working at your current job before applying again`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else if (level > (info.doctor.level + info.doctor.promotions + 5)) {
                             embed.setDescription(`You cannot apply for this job as your job level is too high`);
                             embed.setFooter(`If you would like to start over you can apply for a prestige`);
-                            message.channel.send(embed);
+                            message.channel.send({ embeds: [embed] });
                         } else {
                             let msg = await message.channel.send('Are you sure you want to apply for the ' + job + ' job?');
                             reactions(message, msg, job, client);
                         }
                     } else {
-                        message.channel.send(`**${args1[0].toUpperCase() + args1.toLowerCase().substring(1)}** is not a valid job, make sure you have spelt it correctly and try again`);
+                        message.channel.send({ content: `**${args1[0].toUpperCase() + args1.toLowerCase().substring(1)}** is not a valid job, make sure you have spelt it correctly and try again` });
                     }
                 }
             });
@@ -276,7 +276,7 @@ async function application_process(message, job, client) {
     embed.setDescription(`${tick} Successfully applied for the ${job} job!`);
     embed.setAuthor('You will be DMed your application results soon', message.author.displayAvatarURL());
     embed.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
-    message.channel.send(embed);
+    message.channel.send({ embeds: [embed] });
 
     const newData = new awaitingData({
         memberId: message.author.id,
@@ -306,7 +306,7 @@ async function reactions(message, msg, job, client) {
             application_process(message, job, client);
         } else {
             msg.reactions.removeAll();
-            message.channel.send(`${cross} Cancelled prompt`);
+            message.channel.send({ content: `${cross} Cancelled prompt` });
         }
     }).catch(() => {
         msg.reactions.removeAll();

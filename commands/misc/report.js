@@ -39,7 +39,7 @@ module.exports = {
             let extra = '';
 
             if (message.channel.type === 'dm') {
-                let msg = await message.channel.send(embed);
+                let msg = await message.channel.send({ embeds: [embed] });
                 if (msg && msg.id) {
                     await msg.react('🐞');
 
@@ -127,7 +127,7 @@ module.exports = {
                     });
                 }
             } else {
-                let msg = await message.author.send(embed).catch(() => { return message.channel.send('You must have your DMs turned on to use this command') });
+                let msg = await message.author.send({ embeds: [embed] }).catch(() => { return message.channel.send('You must have your DMs turned on to use this command') });
                 message.channel.send(`<@!${message.author.id}> Check your DMs!`);
                 if (msg && msg.id) {
                     await msg.react('🐞');

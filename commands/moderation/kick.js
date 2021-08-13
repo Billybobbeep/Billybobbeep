@@ -21,10 +21,10 @@ module.exports = {
 			let args = !slash ? message.content.slice(prefix.length).trim().split(/ +/g) : message.data.options;
 			let channel = slash ?
 				{
-					send(...msg) {
+					send(msg) {
 						require('../../utils/functions').slashCommands.reply(message, client, msg)
 					},
-					reply(user, ...msg) {
+					reply(user, msg) {
 						require('../../utils/functions').slashCommands.reply(message, client, `<@!${user.id}>, ${msg}`)
 					}
 				} : message.channel;

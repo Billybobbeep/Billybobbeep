@@ -60,7 +60,7 @@ module.exports = {
             });
         }
 
-        if (message.member.hasPermission('ADMINISTRATOR'))
+        if (message.member.permissions.has('ADMINISTRATOR'))
             demoteCmd();
         else 
             message.channel.send('You do not have the permissions to use this command');

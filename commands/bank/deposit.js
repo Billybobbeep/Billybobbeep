@@ -19,27 +19,27 @@ module.exports = {
 
         if (!message.data) {
             guildData.findOne({ guildId: message.guild.id }).then(guildResult => {
-                if (guildResult.preferences && guildResult.preferences.ecoEnabled) return message.channel.send('Economy commands have been disabled in this server');
+                if (guildResult.preferences && guildResult.preferences.ecoEnabled) return message.channel.send({ content: 'Economy commands have been disabled in this server' });
                 userData.findOne({ userId: message.author.id }).then(userResult => {
                     let args = message.content.slice(prefix.length).trim().split(/ +/g);
 
-                    if (!args[1]) return message.channel.send('You need to provide a valid amount to deposit');
+                    if (!args[1]) return message.channel.send({ content: 'You need to provide a valid amount to deposit' });
                     if (args[1] === 'a' || args[1] === 'all') {
-                        if ((userResult.economy_balance ? userResult.economy_balance : 0) < 1) return message.channel.send('You do not have any cash to deposit');
+                        if ((userResult.economy_balance ? userResult.economy_balance : 0) < 1) return message.channel.send({ content: 'You do not have any cash to deposit' });
                         let amt = userResult.economy_balance;
                         userResult.bank_balance = userResult.bank_balance + amt;
                         userResult.economy_balance = userResult.economy_balance - amt;
-                        userResult.save();
-                        message.channel.send(`Successfully transfered **$${amt}** to your bank account`);
+                        userResult.save().catch(() => null);
+                        message.channel.send({ content: `Successfully transfered **$${amt}** to your bank account` });
                     } else {
                         let amt = args[1].replace('$', '');
-                        if (isNaN(amt)) return message.channel.send(`**${amt}** is not a valid amount`);
-                        if ((userResult.economy_balance ? userResult.economy_balance : 0) < amt) return message.channel.send(`You do not have **$${amt}** in your wallet`);
+                        if (isNaN(amt)) return message.channel.send({ content: `**${amt}** is not a valid amount` });
+                        if ((userResult.economy_balance ? userResult.economy_balance : 0) < amt) return message.channel.send({ content: `You do not have **$${amt}** in your wallet` });
 
                         userResult.bank_balance = parseInt(userResult.bank_balance) + parseInt(amt);
                         userResult.economy_balance = parseInt(userResult.economy_balance) - parseInt(amt);
-                        userResult.save();
-                        message.channel.send(`Successfully transfered **$${amt}** to your bank account`);
+                        userResult.save().catch(() => null);
+                        message.channel.send({ content: `Successfully transfered **$${amt}** to your bank account` });
                     }
                 });
             });
@@ -54,7 +54,7 @@ module.exports = {
                         let amt = userResult.economy_balance;
                         userResult.bank_balance = userResult.bank_balance + amt;
                         userResult.economy_balance = userResult.economy_balance - amt;
-                        userResult.save();
+                        userResult.save().catch(() => null);
                         require('../../utils/functions').slashCommands.reply(message, client, `Successfully transfered **$${amt}** to your bank account`);
                     } else {
                         let amt = args[0].value.replace('$', '');
@@ -63,7 +63,7 @@ module.exports = {
 
                         userResult.bank_balance = parseInt(userResult.bank_balance) + parseInt(amt);
                         userResult.economy_balance = parseInt(userResult.economy_balance) - parseInt(amt);
-                        userResult.save();
+                        userResult.save().catch(() => null);
                         require('../../utils/functions').slashCommands.reply(message, client, `Successfully transfered **$${amt}** to your bank account`);
                     }
                 });

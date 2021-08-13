@@ -56,7 +56,7 @@ module.exports = {
             .addField('Status', status, true)
             .addField('Activity', game(), true)
             .setFooter(`Requested by: ${message.author.tag}`)
-            message.channel.send(embed);
+            message.channel.send({ embeds: [embed] });
         });
     }
 }

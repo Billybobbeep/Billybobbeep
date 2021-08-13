@@ -60,7 +60,7 @@ module.exports = {
                         embed.addField(`#${i}`, `${user} - **${data.split('_')[0]}** - ${client.guilds.cache.get(data.split('_')[2]).name}`, false);
                     });
 
-                    message.channel.send(embed);
+                    message.channel.send({ embeds: [embed] });
                 } else {
                     let allData = [];
                     let levels = [];
@@ -94,7 +94,7 @@ module.exports = {
                         embed.addField(`#${i}`, `<@!${data.split('_')[1]}> - **${data.split('_')[0]}**`);
                     });
 
-                    message.channel.send(embed).then(msg => {
+                    message.channel.send({ embeds: [embed] }).then(msg => {
                         if (msg.embeds[0].fields.length < 1) {
                             msg.embeds[0].description = 'No data available';
                             msg.embeds[0].fields = [];

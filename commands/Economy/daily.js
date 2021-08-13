@@ -72,7 +72,7 @@ module.exports = {
 
 		if (lastRun !== null && cooldown - (Date.now() - lastRun) > 0) {
 			embed.setDescription(`You have already collected your daily allowance today.\nTime Left: **${timeObj}**`);
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		} else {
 			if (lastRun !== null && cooldown - (Date.now() - lastRun) >= 126000000) {
 				userResult.economy_streak = 0;
@@ -91,18 +91,18 @@ module.exports = {
 				userResult.economy_streak = 0;
 				userResult.economy_tStreak = userResult.economy_tStreak + 1;
 				userResult.economy_balance = userResult.economy_balance + dailyAmt;
-				userResult.save();
-				return message.channel.send(embed);
+				userResult.save().catch(() => null);
+				return message.channel.send({ embeds: [embed] });
 			}
 			userResult.economy_tStreak = userResult.economy_tStreak + 1;
 			userResult.economy_streak = userResult.economy_streak + 1;
 			userResult.economy_daily = Date.now();
 			userResult.economy_balance = userResult.economy_balance + dailyAmt;
-			userResult.save();
+			userResult.save().catch(() => null);
 
 			embed.setDescription(`I have added **$${dailyAmt}** onto your account balance.\n\n**__Daily streak progress__**\n${semoji}\n\n`);
 			embed.setFooter(`Total Streak: ${tStreak}\nWallet: $${balance + dailyAmt}`)
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		}
 	}
 }

@@ -47,7 +47,7 @@ module.exports = {
             embed.setDescription('The job command is used to view all of the jobs available & apply for new jobs.\n\n' +
             'To see all of the jobs available, see the next few pages.\n\n' + 'To see more information on any job use the command: ' +
             `\`${prefix}jobs [job] info\``);
-            let msg = await message.channel.send(embed)
+            let msg = await message.channel.send({ embeds: [embed] })
             await msg.react('◀');
             await msg.react('▶');
 
@@ -88,14 +88,14 @@ module.exports = {
         function PageOne(msg) {
             embed.setTitle('Jobs | Page One');
             embed.setDescription('Cashier - 10/hr\nTeacher - 11/hr\nWaiter - 12/hr\nReceptionist - 12/hr\nArchitect - 15/hr\nLifeguard - 16/hr\nNurse - 21/hr\nPolice - 22/hr\nEngineer - 24/hr\nchef - 25/hr\nClinical Scientist - 25/hr\nHead Scientist - 26/hr\nLawyer - 29/hr\nSocial Worker - 21/hr\nDoctor - 55/hr');
-            msg.edit(embed)
+            msg.edit({ embeds: [embed] })
         }
         function MainPage(msg) {
             embed.setTitle(`Economy | Jobs`)
             embed.setDescription('The billybobbeep job command is used to view all of the jobs available & apply for new jobs.\n\n' +
             'To see all of the jobs available, see the next few pages.\n\n' + 'To see more information on any job use the command: ' +
             `\`${prefix}jobs [job] info\``);
-            msg.edit(embed)
+            msg.edit({ embeds: [embed] })
         }
 
         if (args[1]) {
@@ -112,91 +112,91 @@ module.exports = {
                 embed.addField('Hourly Pay', info.cashier.pay, true)
                 embed.addField('Maximum Promotions', info.cashier.promotions, true)
                 embed.addField('Job Description', info.cashier.description)
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
             } else if (args[1].toLowerCase() === 'teacher') {
                 embed.addField('Level Required', info.teacher.level, true)
                 embed.addField('Hourly Pay', info.teacher.pay, true)
                 embed.addField('Maximum Promotions', info.teacher.promotions, true)
                 embed.addField('Job Description', info.teacher.description)
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
             } else if (args[1].toLowerCase() === 'waiter') {
                 embed.addField('Level Required', info.waiter.level, true)
                 embed.addField('Hourly Pay', info.waiter.pay, true)
                 embed.addField('Maximum Promotions', info.waiter.promotions, true)
                 embed.addField('Job Description', info.waiter.description)
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
             } else if (args[1].toLowerCase() === 'receptionist') {
                 embed.addField('Level Required', info.receptionist.level, true)
                 embed.addField('Hourly Pay', info.receptionist.pay, true)
                 embed.addField('Maximum Promotions', info.receptionist.promotions, true)
                 embed.addField('Job Description', info.receptionist.description)
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
             } else if (args[1].toLowerCase() === 'architect') {
                 embed.addField('Level Required', info.architect.level, true)
                 embed.addField('Hourly Pay', info.architect.pay, true)
                 embed.addField('Maximum Promotions', info.architect.promotions, true)
                 embed.addField('Job Description', info.architect.description)
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
             } else if (args[1].toLowerCase() === 'lifeguard') {
                 embed.addField('Level Required', info.lifeguard.level, true)
                 embed.addField('Hourly Pay', info.lifeguard.pay, true)
                 embed.addField('Maximum Promotions', info.lifeguard.promotions, true)
                 embed.addField('Job Description', info.lifeguard.description)
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
             } else if (args[1].toLowerCase() === 'nurse') {
                 embed.addField('Level Required', info.nurse.level, true)
                 embed.addField('Hourly Pay', info.nurse.pay, true)
                 embed.addField('Maximum Promotions', info.nurse.promotions, true)
                 embed.addField('Job Description', info.nurse.description)
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
             } else if (args[1].toLowerCase() === 'police') {
                 embed.addField('Level Required', info.police.level, true)
                 embed.addField('Hourly Pay', `$` + info.police.pay, true)
                 embed.addField('Maximum Promotions', info.police.promotions, true)
                 embed.addField('Job Description', info.police.description)
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
             } else if (args[1].toLowerCase() === 'engineer') {
                 embed.addField('Level Required', info.engineer.level, true)
                 embed.addField('Hourly Pay', `$` + info.engineer.pay, true)
                 embed.addField('Maximum Promotions', info.engineer.promotions, true)
                 embed.addField('Job Description', info.engineer.description)
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
             } else if (args[1].toLowerCase() === 'chef') {
                 embed.addField('Level Required', info.chef.level, true)
                 embed.addField('Hourly Pay', `$` + info.chef.pay, true)
                 embed.addField('Maximum Promotions', info.chef.promotions, true)
                 embed.addField('Job Description', info.chef.description)
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
             } else if (args1.toLowerCase() === 'clinical scientist') {
                 embed.addField('Level Required', info.clinicalScientist.level, true)
                 embed.addField('Hourly Pay', `$` + info.clinicalScientist.pay, true)
                 embed.addField('Maximum Promotions', info.clinicalScientist.promotions, true)
                 embed.addField('Job Description', info.clinicalScientist.description)
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
             } else if (args1.toLowerCase() === 'head scientist') {
                 embed.addField('Level Required', info.headScientist.level, true)
                 embed.addField('Hourly Pay', `$` + info.headScientist.pay, true)
                 embed.addField('Maximum Promotions', info.headScientist.promotions, true)
                 embed.addField('Job Description', info.headScientist.description)
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
             } else if (args[1].toLowerCase() === 'lawyer') {
                 embed.addField('Level Required', info.lawyer.level, true)
                 embed.addField('Hourly Pay', `$` + info.lawyer.pay, true)
                 embed.addField('Maximum Promotions', info.lawyer.promotions, true)
                 embed.addField('Job Description', info.lawyer.description)
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
             } else if (args1.toLowerCase() === 'social worker') {
                 embed.addField('Level Required', info.socialWorker.level, true)
                 embed.addField('Hourly Pay', `$` + info.socialWorker.pay, true)
                 embed.addField('Maximum Promotions', info.socialWorker.promotions, true)
                 embed.addField('Job Description', info.socialWorker.description)
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
             } else if (args[1].toLowerCase() === 'doctor') {
                 embed.addField('Level Required', info.doctor.level, true)
                 embed.addField('Hourly Pay', `$` + info.doctor.pay, true)
                 embed.addField('Maximum Promotions', info.doctor.promotions, true)
                 embed.addField('Job Description', info.doctor.description)
-                message.channel.send(embed)
+                message.channel.send({ embeds: [embed] })
             } else {
                 message.channel.send(`**${args1}** is not a valid job, make sure you have spelt it correctly and try again`);
             }

@@ -37,7 +37,7 @@ module.exports = {
 		}
 
 		guildData.findOne({ guildId: message.guild.id }).then(result => {
-			if (message.member.hasPermission('MANAGE_GUILD') || message.member.hasPermission('ADMINISTRATOR')) {
+			if (message.member.permissions.has('MANAGE_GUILD') || message.member.permissions.has('ADMINISTRATOR')) {
 				prefixCmd()
 				debounce = true;
 			} else if (result.preferences.modRole) {

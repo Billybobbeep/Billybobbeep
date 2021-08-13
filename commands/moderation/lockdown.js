@@ -62,7 +62,7 @@ module.exports = {
                         if (channel.permissionsFor(message.guild.roles.everyone).has('SEND_MESSAGES')) {
                             channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
                             log(logEmbed, message, client);
-                            channel.send(embed);
+                            channel.send({ embeds: [embed] });
                         } else
                             message.channel.send(`${channel} is already locked`);
                     } else if (channel.type === 'voice') {
@@ -82,7 +82,7 @@ module.exports = {
                             if (!logged) { log(logEmbed, message, client); logged = true; }
                             channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
                             duration ? embed.setDescription('This channel has been locked for ' + duration + '.\nReason: ' + reason) : embed.setDescription('This channel has been locked till further notice');
-                            channel.send(embed);
+                            channel.send({ embeds: [embed] });
                         } else if (channel.type === 'voice')
                             channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['CONNECT'] }], reason ? reason : 'No reason was provided');
                     });
@@ -92,7 +92,7 @@ module.exports = {
 
         let debounce = false;
         guildData.findOne({ guildId: message.guild.id }).then(result => {
-            if (message.member.hasPermission('MANAGE_SERVER') || message.member.hasPermission('ADMINISTRATOR')) {
+            if (message.member.permissions.has('MANAGE_SERVER') || message.member.permissions.has('ADMINISTRATOR')) {
               lockdown();
               debounce = true;
             } else if (result.preferences.modRole) {

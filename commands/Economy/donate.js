@@ -23,13 +23,13 @@ module.exports = {
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         if (guildResult.preferences && guildResult.preferences.ecoEnabled) return message.channel.send('Economy have been disabled for this server');
         let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
-        if (!user) return message.channel.send(`You have not mentioned a user`);
+        if (!user) return message.channel.send('You have not mentioned a user');
         if (!user.id) user = user.user;
 
         let emoji = client.emojis.cache.get(require('../../utils/config.json').blobSmile);
         if (user.id === client.user.id) return message.channel.send(`I do not need money, thanks though. ${emoji}`)
-        if (user.bot) return message.channel.send(`You cannot donate to a bot`);
-        if (user.id === message.author.id) return message.channel.send(`You cannot donate to yourself`);
+        if (user.bot) return message.channel.send('You cannot donate to a bot');
+        if (user.id === message.author.id) return message.channel.send('You cannot donate to yourself');
 
         if (!args[2]) return message.channel.send('You must provide a valid amount to deposit');
         let amt = parseInt(args[2]);
@@ -53,10 +53,10 @@ module.exports = {
         message.channel.send(`<@!${message.author.id}> successfully donated **$${amt}** to <@!${user.id}>`);
         userResult.economy_lastDonated = Date.now();
         userResult.economy_balance = userResult.economy_balance - amt;
-        userResult.save();
+        userResult.save().catch(() => null);
         userData.findOne({ userId: user.id }).then(result => {
             result.economy_balance = result.economy_balance + amt;
-            result.save();
+            result.save().catch(() => null);
         });
     }
 }

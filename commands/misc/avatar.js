@@ -17,6 +17,6 @@ module.exports = {
     execute (message, prefix, _client) {
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]) || message.author;
-        message.channel.send(user.displayAvatarURL());
+        message.channel.send({ content: user.displayAvatarURL() });
     }
 }

@@ -17,7 +17,7 @@ module.exports = {
             embed.setTitle('Vote for Billybobbeep');
             embed.setDescription(`[See here](https://top.gg/bot/${client.user.id}/vote) to vote for Billybobbeep on [top.gg](https://top.gg)`);
             embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
-            message.channel.send(embed);
+            message.channel.send({ embeds: [embed] });
         });
     }
 }

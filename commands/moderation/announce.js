@@ -25,7 +25,7 @@ module.exports = {
             let q1 = new Discord.MessageCollector(message.channel, filter, {
                 max: 1
             })
-            message.channel.send('What channel would you like to share your announcement in?');
+            message.channel.send({ content: 'What channel would you like to share your announcement in?' });
 
             q1.on('collect', async (message, col) => {
                 let channel = message.mentions.channels.first();
@@ -36,7 +36,7 @@ module.exports = {
                     max: 1
                 });
                 q2.on('collect', async (message, col) => {
-                    channel.send(message.content);
+                    channel.send({ content: message.content });
                     await message.react('✔');
                     embed.setDescription(
                         `**Message:** ${message.content}\n` +

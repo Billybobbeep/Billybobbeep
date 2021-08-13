@@ -1,108 +1,92 @@
-const { MessageEmbed } = require('discord.js');
+let waiting = [];
 
 module.exports = {
 	name: 'quit',
 	description: 'Quit your current job',
 	catagory: 'economy',
 	guildOnly: true,
-	options: [],
 	/**
-     * @param {object} message The message that was sent
-     * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
-     */
-	async execute(message, _prefix, client) {
-		const userData = require('../../events/client/database/models/users.js');
-		const userResult = await userData.findOne({ userId: message.author.id });
-		const { MessageButton, MessageActionRow } = require('discord-buttons')(client);
+	 * @param {object} message The message that was sent
+	 * @param {string} prefix The servers prefix
+	 * @param {Client} client The bots client
+	 */
+	async execute(message, _prefix, _client) {
+		const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
+		const users = require('../../events/client/database/models/users');
+		const guilds = require('../../events/client/database/models/guilds');
+		const userResult = await users.findOne({ userId: message.author.id });
 
-		let cashier = userResult.job_name === 'cashier' ? true : undefined;
-		let teacher = userResult.job_name === 'teacher' ? true : undefined;
-		let waiter = userResult.job_name === 'waiter' ? true : undefined;
-		let receptionist = userResult.job_name === 'receptionist' ? true : undefined;
-		let architect = userResult.job_name === 'architect' ? true : undefined;
-		let lifeGuard = userResult.job_name === 'life guard' ? true : undefined;
-		let nurse = userResult.job_name === 'nurse' ? true : undefined;
-		let police = userResult.job_name === 'police' ? true : undefined;
-		let engineer = userResult.job_name === 'engineer' ? true : undefined;
-		let chef = userResult.job_name === 'chef' ? true : undefined;
-		let clinicalScientist = userResult.job_name === 'clinical scientist' ? true : undefined;
-		let headScientist = userResult.job_name === 'head scientist' ? true : undefined;
-		let lawyer = userResult.job_name === 'lawyer' ? true : undefined;
-		let socialWorker = userResult.job_name === 'social worker' ? true : undefined;
-		let doctor = userResult.job_name === 'doctor' ? true : undefined;
+		if (typeof userResult.job_name !== 'string' || userResult.job_name == '' || userResult.job_name == 'false')
+			return message.channel.send('You do not have a job');
 
-		if (cashier === undefined &&
-			teacher === undefined &&
-			waiter === undefined &&
-			receptionist === undefined &&
-			architect === undefined &&
-			lifeGuard === undefined &&
-			nurse === undefined &&
-			police === undefined &&
-			engineer === undefined &&
-			chef === undefined &&
-			clinicalScientist === undefined &&
-			headScientist === undefined &&
-			lawyer === undefined &&
-			socialWorker === undefined &&
-			doctor === undefined) return message.channel.send(`You do not have a job`);
-
-			let button = new MessageButton()
-				.setStyle('green').setLabel('Yes').setID('quit-job-yes')
-				
+		guilds.findOne({ guildId: message.guild.id }).then(guildResult => {
+			let button1 = new MessageButton();
+			button1.setLabel('Yes');
+			button1.setStyle('PRIMARY');
+			button1.setCustomId('quit-yes');
 			let button2 = new MessageButton()
-				.setStyle('red').setLabel('No').setID('quit-job-no')
-
-			let buttonRow = new MessageActionRow()
-				.addComponent(button)
-				.addComponent(button2)
-
-			message.channel.send("Hi", { component: buttonRow })
-
-		message.channel.send(new MessageEmbed().setTitle('Are you sure you want to quit your job?').setDescription('You will have to re-apply for another job before you can start working again'), { component: buttonRow });
+			button2.setLabel('No');
+			button2.setStyle('PRIMARY');
+			button2.setCustomId('quit-no');
+			let embed = new MessageEmbed()
+				.setTitle('Are you sure you want to quit your job?')
+				.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1')
+				.setDescription('You will have to re-apply for another job before you can start working again');
+			let buttons = new MessageActionRow().addComponents(button1, button2);
+			message.channel.send({ embeds: [embed], components: [buttons] });
+			waiting.push(message.author ? message.author.id : message.member.user.id);
+		});
 	},
-	buttonCallback(button, client) {
-		if ((button.id).toLowerCase() == 'quit-job-yes') {
-			let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji1);
-			userData.findOne({ userId: message.author.id }).then(result => {
-				button.channel.send(`${tick} ${button.clicker} has successfully quit their job. (${job})`);
+	async buttonCallback(interaction, client) {
+		const users = require('../../events/client/database/models/users');
+
+		let guild = client.guilds.cache.get(interaction.guild_id);
+		if (typeof guild !== 'object')
+			guild = await client.guilds.fetch(interaction.guild_id);
+		let channel = guild.channels.cache.get(interaction.channel_id);
+		if (typeof channel !== 'object')
+			channel = await client.channels.fetch(interaction.channel_id);
+		if (!waiting.includes(interaction.member.user.id))
+			return require('../../utils/functions').buttons.respond(
+				interaction,
+				client,
+				`Only the person that executes the ${this.name} command can interact with the embed`,
+				{ userOnly: true }
+			);
+		if ((interaction.data.custom_id).toLowerCase() == 'quit-yes') {
+			let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji);
+			users.findOne({ userId: interaction.member.user.id }).then(result => {
+				if (!result || !result.job_name) return;
+				require('../../utils/functions').buttons.respond(
+					interaction,
+					client,
+					`${tick} <@!${interaction.member.user.id}> has successfully quit their job (${result.job_name})`
+				);
 				result.job_name = false;
 				result.save();
 			});
 		} else {
-			console.log(button);
+			require('../../utils/functions').buttons.respond(
+				interaction,
+				client,
+				'Interaction cancelled'
+			);
 		}
+		let originalMessage = await channel.messages.fetch(interaction.message.id);
+		let embeds = [];
+		let components = [];
+		(originalMessage.components).forEach(row => {
+			row.components.forEach(component => {
+				component.disabled = true;
+			});
+			components.push(row);
+		});
+		(originalMessage.embeds).forEach(embed => {
+			embeds.push(embed);
+		});
+		originalMessage.edit({ embeds, components });
+		waiting.filter(x => x == interaction.member.user.id).forEach((_user, index) => {
+			waiting.splice(index, 1);
+		});
 	}
 }
-
-// async function reactions(message, msg, guildData, client) {
-// 	let job = userResult.job_name;
-
-// 	let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji1);
-// 	let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
-// 	const filter = (reaction, user) => {
-// 		return (
-// 			[tick.id, cross.id].includes(reaction.emoji.id) && user.id === message.author.id
-// 		);
-// 	}
-// 	await msg.react(tick);
-// 	await msg.react(cross);
-// 	msg.awaitReactions(filter, { max: 1, time: 30000, errors: ['time'] })
-// 		.then((collected) => {
-// 			const reaction = collected.first();
-
-// 			if (reaction.emoji.id === tick.id) {
-// 				msg.reactions.removeAll();
-// 				message.channel.send(`${tick} Successfully quit your job. (${job})`);
-// 				userData.findOne({ userId: message.author.id }).then(result => {
-// 					result.job_name_name = false;
-// 				});
-// 			} else {
-// 				msg.reactions.removeAll();
-// 				message.channel.send(`${cross} Cancelled prompt`);
-// 			}
-// 		}).catch(() => {
-// 			msg.reactions.removeAll();
-// 		});
-// }

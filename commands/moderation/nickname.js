@@ -49,7 +49,7 @@ module.exports = {
 		let debounce = false;
 		if (!message.data) {
 			guildData.findOne({ guildId: message.guild.id }).then(result => {
-				if (message.member.hasPermission('MANAGE_GUILD') || message.member.hasPermission('ADMINISTRATOR')) {
+				if (message.member.permissions.has('MANAGE_GUILD') || message.member.permissions.has('ADMINISTRATOR')) {
 					nicknameCmd()
 					debounce = true;
 				} else if (result.preferences.modRole) {
@@ -67,7 +67,7 @@ module.exports = {
 			});
 		} else {
 			guildData.findOne({ guildId: message.guild_id }).then(result => {
-				if ((client.guilds.cache.get(message.guild_id).members.cache.get(message.member.user.id)).hasPermission('MANAGE_GUILD') || (client.guilds.cache.get(message.guild_id).members.cache.get(message.member.user.id)).hasPermission('ADMINISTRATOR')) {
+				if ((client.guilds.cache.get(message.guild_id).members.cache.get(message.member.user.id)).permissions.has('MANAGE_GUILD') || (client.guilds.cache.get(message.guild_id).members.cache.get(message.member.user.id)).permissions.has('ADMINISTRATOR')) {
 					nicknameCmd();
 					debounce = true;
 				} else if (result.preferences.modRole) {

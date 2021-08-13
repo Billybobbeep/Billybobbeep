@@ -72,13 +72,13 @@ module.exports = {
 			userResult.job_xp = 0;
 			userResult.job_level = userResult.job_level ? userResult.job_level + 1 : 1;
 			embed.setDescription(`You have levelled up! You are now level **${userResult.job_level}**!`);
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 			userResult.save();
 		}
 
 		if (!userResult.job_name) {
 			embed.setDescription(`Before you can start working, you need to get a job.\n\nTo Apply for a job use '${prefix}jobs'`);
-			message.channel.send(embed)
+			message.channel.send({ embeds: [embed] })
 		} else if (Date.now() < lastRun) {
 			let seco = 'seconds'
 			let time2work = ms(Date.now() - lastRun);
@@ -88,11 +88,11 @@ module.exports = {
 			time2work = time2work.replace('s', '')
 
 			embed.setDescription(`${crossEmoji} Break Time. You can work again in **${time2work}** ${seco}`);
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 		} else {
 			if (teacher !== undefined) {
 				embed.setDescription(`What subject would you like to teach?\n\n📕English\n📗Math\n📙Science`);
-				let msg = await message.channel.send(embed);
+				let msg = await message.channel.send({ embeds: [embed] });
 				const congratsEmbed = new Discord.MessageEmbed()
 					.setDescription(`You earned **$${workAmt}.${decimal}** while working!`)
 					.setAuthor(message.author.username)
@@ -114,7 +114,7 @@ module.exports = {
 				if (usedNo.includes(numbers[no3])) no3 = Math.floor(Math.random() * emojis.length);
 				usedNo.push(numbers[no3]);
 				embed.setDescription(`Select a table number:\n\n${emojis[no1]}-${numbers[no1]}\n${emojis[no2]}-${numbers[no2]}\n${emojis[no3]}-${numbers[no3]}`);
-				let msg = await message.channel.send(embed);
+				let msg = await message.channel.send({ embeds: [embed] });
 				const congratsEmbed = new Discord.MessageEmbed()
 					.setDescription(`You earned **$${workAmt}.${decimal}** while working!`)
 					.setAuthor(message.author.username)
@@ -124,7 +124,7 @@ module.exports = {
 			}
 			else if (receptionist !== undefined) {
 				embed.setDescription(`What would you like to do?\n\n📞Answer the phone\n💻Book an appointment\n💰Count the daily earnings`);
-				let msg = await message.channel.send(embed);
+				let msg = await message.channel.send({ embeds: [embed] });
 				let count = Math.round(Math.random() * 15);
 				const congratsEmbed1 = new Discord.MessageEmbed()
 					.setDescription(`You answered the phone ${count} times and earned **$${workAmt}.${decimal}**!`)
@@ -153,7 +153,7 @@ module.exports = {
 			}
 			else if (engineer !== undefined) {
 				embed.setDescription(`What car would you like to fix?\n\n🚗Regular Car\n🚓Police Car\n🏎Race Car`);
-				let msg = await message.channel.send(embed);
+				let msg = await message.channel.send({ embeds: [embed] });
 				const congratsEmbed1 = new Discord.MessageEmbed()
 					.setDescription(`You earnt **$${workAmt}.${decimal}** whilst fixing the 🚗Regular Car!`)
 					.setAuthor(message.author.username)
@@ -172,7 +172,7 @@ module.exports = {
 				reactionCollection(msg, '🚗', '🚓', '🏎', workAmt, congratsEmbed1, congratsEmbed2, congratsEmbed3);
 			} else if (chef !== undefined) {
 				embed.setDescription(`To begin working click the green circle below`);
-				let msg = await message.channel.send(embed);
+				let msg = await message.channel.send({ embeds: [embed] });
 				chefReact(workAmt, msg, '🟢');
 			} else {
 				userResult.job_xp = userResult.job_xp ? userResult.job_xp + gainedXp : gainedXp;
@@ -213,7 +213,7 @@ module.exports = {
 				}
 
 				embed.setDescription(`You earned **$${workAmt}.${decimal}** while working!`);
-				message.channel.send(embed);
+				message.channel.send({ embeds: [embed] });
 				userResult.save();
 			}
 		}
@@ -301,7 +301,7 @@ module.exports = {
 					}
 					userResult.economy_balance = userResult.economy_balance ? parseInt(userResult.economy_balance) + Math.round(parseInt(workAmt + '.' + decimal)) : parseInt(workAmt + '.' + decimal);
 					if (!levelledUp)
-						userResult.save();
+						userResult.save().catch(() => null);
 				}).catch(() => {
 					msg.reactions.removeAll()
 					amt = amt / 2
@@ -327,13 +327,13 @@ module.exports = {
 						} else {
 							embed.setDescription(`${crossEmoji} You have failed your work. -$${amt.toFixed()}`);
 							userResult.economy_balance = userResult.economy_balance - amt;
-							msg.edit(embed);
+							msg.edit({ embeds: [embed] });
 						}
 					}
 					embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt.toFixed()}**`);
 					userResult.economy_balance = userResult.economy_balance - amt;
-					msg.edit(embed);
-					userResult.save();
+					msg.edit({ embeds: [embed] });
+					userResult.save().catch(() => null);
 				});
 		}
 
@@ -390,13 +390,13 @@ module.exports = {
 						} else {
 							userResult.economy_balance = userResult.economy_balance - amt.toFixed();
 							embed.setDescription(`${crossEmoji} You have failed your work. -$${amt.toFixed()}`);
-							msg.edit(embed);
+							msg.edit({ embeds: [embed] });
 						}
 					}
 					embed.setDescription(`${crossEmoji} You have failed your work. **-$${amt.toFixed()}**`);
 					userResult.economy_balance = userResult.economy_balance - amt.toFixed();
-					msg.edit(embed);
-					userResult.save();
+					msg.edit({ embeds: [embed] });
+					userResult.save.catch(() => null);
 				});
 		}
 
@@ -411,7 +411,7 @@ module.exports = {
 				if (no2 === no3) no3 = Math.floor(Math.random() * emojis.length);
 				if (no3 === no1) no1 = Math.floor(Math.random() * emojis.length);
 				embed.setDescription(`What would you like to prepare first?\n${emojis[no1]} - ${names[no1]}\n${emojis[no2]} - ${names[no2]}\n${emojis[no3]} - ${names[no3]}`);
-				msg.edit(embed);
+				msg.edit({ embeds: [embed] });
 				chefReact(amt, msg, emojis[no1], emojis[no2], emojis[no3]);
 			} else if (reaction === '1' || reaction === '2' || reaction === '3') {
 				let name;
@@ -421,14 +421,14 @@ module.exports = {
 				} else {
 					embed.setDescription(`Preparing a ${name}..`);
 				}
-				msg.edit(embed);
+				msg.edit({ embeds: [embed] });
 				setTimeout(() => {
 					let string = '';
 					if (name.toString().endsWith('s')) string = 'some'; else string = 'a';
 					embed.setDescription(`You have successfully prepared ${string} ${name} and earned **$${workAmt.toFixed()}**!`);
-					msg.edit(embed);
+					msg.edit({ embeds: [embed] });
 					userResult.economy_balance = (userResult.economy_balance + workAmt).toFixed();
-					userResult.save();
+					userResult.save().catch(() => null);
 				}, 1000);
 			}
 		}

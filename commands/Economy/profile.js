@@ -69,6 +69,6 @@ module.exports = {
         embed.addField('Times Fired', timesFired.toString(), true);
         timesFired > 0 ? embed.addField('Last Fired', lastFired.toString(), true) : null;
 
-        message.channel.send(embed);
+        message.channel.send({ embeds: [embed] });
     }
 }
