@@ -23,8 +23,7 @@ module.exports = {
             }
         } : message.channel;
 
-        guildData.findOne({ guildId: message.guild ? message.guild.id : message.guild_id }).then(async result => {
-
+        guildData.findOne({ guildId: message.guild ? message.guild.id : message.guild_id }).then(result => {
             function addPage(title, catagories, inline) {
                 let page = new Discord.MessageEmbed()
                     .setTitle('Billybobbeep | ' + title)
