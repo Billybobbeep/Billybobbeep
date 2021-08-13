@@ -1,4 +1,4 @@
-module.exports = async client => {
+module.exports = async function(client) {
 	const Discord = require('discord.js');
 	const fs = require('fs');
 
@@ -23,22 +23,6 @@ module.exports = async client => {
 		}
 	}
 
-	const commandFiles1 = fs
-		.readdirSync('./embeds')
-		.filter(file => file.endsWith('.js'));
-	for (const file of commandFiles1) {
-		var command = require(`./embeds/${file}`);
-		client.commands.set(command.name, command);
-		if (command.alias) {
-			command.alias.forEach(e => {
-				client.commands.set(e, command);
-			});
-		}
-	}
-
 	client.commands.set('afk', require('./events/commands/afkHandle.js'));
 	client.commands.set('back', require('./events/commands/afkHandle.js'));
-	client.commands.set('cmds', require('./embeds/Commands/main.js'));
-	client.commands.set('c', require('./embeds/Commands/main.js'));
-	client.commands.set('commands', require('./embeds/Commands/main.js'));
 }
