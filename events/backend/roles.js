@@ -8,8 +8,9 @@ module.exports = async (oldMember, newMember, client) => {
         embed.setAuthor(newMember.user.tag, newMember.user.avatarURL());
 
         oldMember.roles.cache.forEach(role => {
+            if (!role) return;
             if (!newMember.roles.cache.has(role.id))
-                embed.addField('Role Removed', role);
+                embed.addField('Role Removed', `<@&${role.id}>`);
         });
         logging(embed, newMember, client);
     } else if (oldMember.roles.cache.size < newMember.roles.cache.size) {
@@ -18,8 +19,9 @@ module.exports = async (oldMember, newMember, client) => {
         embed.setAuthor(newMember.user.tag, newMember.user.avatarURL());
         
         newMember.roles.cache.forEach(role => {
+            if (!role) return;
             if (!oldMember.roles.cache.has(role.id))
-                embed.addField('Role Added', role);
+                embed.addField('Role Added', `<@&${role.id}>`);
         });
         logging(embed, newMember, client);
     }

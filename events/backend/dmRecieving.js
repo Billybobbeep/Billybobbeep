@@ -27,7 +27,7 @@ module.exports = async (message, client) => {
 			embed.setDescription('Note: All messages sent to billybobbeep are recorded');
 			embed.setAuthor(message.author.username, message.author.displayAvatarURL());
 			embed.setColor('#447ba1');
-			message.channel.send(embed);
+			message.channel.send({ embeds: [embed] });
 			result.dmed = true;
 			result.save();
 		}

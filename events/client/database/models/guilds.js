@@ -30,7 +30,14 @@ const guildSchema = new mongoose.Schema({
         levelsEnabled: { type: Boolean }, // Enables and disables levelling in the server
         inviteLinks: { type: Boolean }, // Automatically remove all third-party server invites
         cleanFilter: { type: Boolean } // Prevent commands that may include explicit content from being executed
-    }
+    },
+    logs: [{
+        user: {
+            id: { type: String }
+        },
+        event: { type: String },
+        date: { type: String }
+    }]
 });
 
 module.exports = mongoose.model('guilds', guildSchema);

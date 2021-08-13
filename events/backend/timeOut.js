@@ -27,7 +27,7 @@ function database(db, client) {
                 else return;
                 newAmt.push(amt[1][0] + amt[1][1]);
                 result.economy_balance = parseInt(newAmt[0]);
-                result.save();
+                result.save().catch(() => null);
             }
             amt = result.bank_balance;
             newAmt = [];
@@ -37,7 +37,7 @@ function database(db, client) {
                 else return;
                 newAmt.push(amt[1][0] + amt[1][1]);
                 result.bank_balance = parseInt(newAmt[0]);
-                result.save();
+                result.save().catch(() => null);
             }
         });
     });
@@ -59,7 +59,7 @@ function application(db, client) {
             embed.setColor('#447ba1');
             embed.setAuthor(user.username, user.displayAvatarURL());
             let failed = false;
-            let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji1);
+            let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji);
             let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
             let results = [tick, cross, tick];
             let result1 = Math.floor(Math.random() * results.length);
@@ -84,7 +84,7 @@ function application(db, client) {
                 userResult.job_name = job.toLowerCase();
                 userResult.save();
             }
-            try { user.send(embed) } catch { result.delete() };
+            try { user.send({ embeds: [embed] }) } catch { result.delete() };
             result.delete();
         });
     });

@@ -38,11 +38,11 @@ module.exports = {
 						user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
 				} else {
 					embed.setDescription('You must provide a user to mark as AFK')
-					return message.channel.send(embed);
+					return message.channel.send({ embeds: [embed] });
 				}
 				if (!user) {
 					embed.setDescription('You must providea user to mark as AFK')
-					return message.channel.send(embed);
+					return message.channel.send({ embeds: [embed] });
 				}
 				if (args[2]) {
 					reason = args.slice(2).join(' ');
@@ -54,22 +54,22 @@ module.exports = {
 				if (userResult.isAfk) {
 					embed.setDescription(`<@!${user.id}> is already marked as AFK`);
 					use = false
-					message.channel.send(embed);
+					message.channel.send({ embeds: [embed] });
 				} else if (user.bot) {
 					embed.setDescription('You cannot mark bots as AFK');
-					return message.channel.send(embed);
+					return message.channel.send({ embeds: [embed] });
 				} else {
 					if (use === false) return;
 					embed.setDescription(`**${user.tag}** has now been marked as AFK.\n**Reason:** ${reason}`);
 					userResult.isAfk = true;
 					userResult.afkReason = reason;
 					userResult.save();
-					message.channel.send(embed);
+					message.channel.send({ embeds: [embed] });
 					if (message.author.id === user.id) {
 						embed.setDescription(`You have marked yourself as AFK in ${message.guild}\nReason: ${reason}`)
 						embed.setFooter(`When you are back please run the command '${result.prefix || '~'}back me' in ${message.guild}`)
 						try {
-							return user.send(embed)
+							return user.send({ embeds: [embed] })
 						} catch {
 							message.channel.send('You must have your DM\'s turned on to use this command')
 						}
@@ -77,7 +77,7 @@ module.exports = {
 						embed.setDescription(`${message.author.tag} has marked you as AFK in ${message.guild}\nReason: ${reason}`)
 						embed.setFooter(`When you are back please run the command '${result.prefix || '~'}back me' in ${message.guild}`)
 						try {
-							return user.send(embed)
+							return user.send({ embeds: [embed] })
 						} catch {
 							message.channel.send('You must have your DM\'s turned on to use this command')
 						}
@@ -106,10 +106,10 @@ module.exports = {
 					userResult.isAfk = false;
 					userResult.afkReason = 'none';
 					userResult.save();
-					message.channel.send(embed)
+					message.channel.send({ embeds: [embed] })
 				} else {
 					embed.setDescription('**' + user.tag + '** ' + 'was not marked as AFK');
-					message.channel.send(embed)
+					message.channel.send({ embeds: [embed] })
 				}
 			}
 		});
@@ -140,7 +140,7 @@ module.exports = {
 					let reason = r.slice(1).join(' ');
 					embed.addField(`${user.username}#${user.discriminator}`, reason);
 				});
-				message.channel.send(embed);
+				message.channel.send({ embeds: [embed] });
 			}
 		}
 	}

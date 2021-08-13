@@ -1,9 +1,10 @@
 module.exports = {
     guildOnly: true,
     /**
+     * Execute the selected command
      * @param {object} message The message that was sent
      * @param {string} prefix The servers prefix
-     * @param {objects} client The bots client
+     * @param {Client} client The bots client
      */
     execute (message, client) {
         const guildData = require('../client/database/models/guilds');

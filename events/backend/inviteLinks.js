@@ -14,7 +14,7 @@ async function getInvite(guildResult, inviteResponse, message, client) {
 		`**Connected Server:** ${inviteResponse.guild.name}\n` +
 		`**Detected Invite Link:** https://discord.gg/${inviteResponse.code}`
 	);
-	(await message.author.send(embed)).catch(() => embed.setFooter('DM was not sent'));
+	(await message.author.send({ embeds: [embed] })).catch(() => embed.setFooter('DM was not sent'));
 
 	embed.setTitle('Invite Link Detected');
 	embed.setDescription(
@@ -28,16 +28,18 @@ async function getInvite(guildResult, inviteResponse, message, client) {
 	)
 	logging(embed, message, client);
 }
-module.exports = (message, client) => {
+module.exports = function(message, client) {
 	let found = false;
 	let completed = false;
 	if (!message.guild) return;
-	guildData.findOne({ guildId: message.guild.id }).then(result => {
+	guildData.findOne({ guildId: message.guild.id }).then(async result => {
 		if (message.author.bot) return;
 		let inviteLinks = result.preferences ? result.preferences.inviteLinks : false;
 		if (!inviteLinks) return;
 
-		if (message.guild.owner.id == message.author.id) return;
+		if (!message.guild.owner)
+			message.guild = await client.guilds.fetch(message.guild.id);
+		if (message.guild.owner && message.guild.owner.id == message.author.id) return;
 		il.forEach(link => {
 			if ((message.content).toLowerCase().includes(link)) found = true;
 		});

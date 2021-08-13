@@ -5,7 +5,7 @@ const logging = require('../../utils/functions').logging;
 
 module.exports.add = (guild, user, client) => {
     guildData.findOne({ guildId: guild.id }).then(result => {
-        if (!guild.me.hasPermission('ADMINISTRATOR')) return;
+        if (!guild.me.permissions.has('ADMINISTRATOR')) return;
         guild.fetchAuditLogs()
         .then(logs => {
             let ban = logs.entries
@@ -28,14 +28,14 @@ module.exports.add = (guild, user, client) => {
 
             let loggingChannel = client.channels.cache.get(result.preferences.loggingChannel);
             if (loggingChannel)
-                loggingChannel.send(embed).catch(() => {return});
+                loggingChannel.send({ embeds: [embed] }).catch(() => {return});
         });
     });
 }
 
 module.exports.remove = (guild, user, client) => {
     guildData.findOne({ guildId: guild.id }).then(result => {
-        if (!guild.me.hasPermission('ADMINISTRATOR')) return;
+        if (!guild.me.permissions.has('ADMINISTRATOR')) return;
         setTimeout(() => {
             guild.fetchAuditLogs()
             .then(logs => {
@@ -62,7 +62,7 @@ module.exports.remove = (guild, user, client) => {
                 embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
                 let loggingChannel = client.channels.cache.get(result.preferences.loggingChannel);
                 if (loggingChannel)
-                    loggingChannel.send(embed).catch(() => {return});
+                    loggingChannel.send({ embeds: [embed] }).catch(() => {return});
             });
         }, 100);
     });
