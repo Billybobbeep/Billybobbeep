@@ -28,7 +28,7 @@ module.exports = {
 						require('../../utils/functions').slashCommands.reply(message, client, `<@!${user.id}>, ${msg}`)
 					}
 				} : message.channel;
-			let guild = await client.guilds.fetch(message.guild ? message.guild.id : message.guild_id);
+			let guild = await client.guilds.fetch(message.guild?.id || message.guild_id);
 			guildData.findOne({ guildId: guild.id }).then(async result => {
 				let user = slash ? message.data.options[0].value : message.mentions.users.first() || message.guild.members.cache.get(args[1]);
 				let reason = typeof args == 'object' ? (args[1] ? args[1].value : false) : (args ? args.slice(2).join(' ') : false);
@@ -83,16 +83,16 @@ module.exports = {
 					});
 				if (succ) {
 					await user.send(log).catch(() => embed.setFooter('DM could not be sent'));
-					logging(embed, (message.guild ? message.guild.id : message.guild_id), client);
+					logging(embed, (message.guild?.id || message.guild_id), client);
 				}
 			});
 		}
 		let debounce = false;
 
-		guildData.findOne({ guildId: (message.guild_id || message.guild.id) }).then(async result => {
-			if (!result || result) await client.guilds.cache.get(message.guild_id || message.guild.id);
-			if (client.guilds.cache.get(message.guild_id || message.guild.id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('KICK_MEMBERS') ||
-				client.guilds.cache.get(message.guild_id || message.guild.id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('ADMINISTRATOR')) {
+		guildData.findOne({ guildId: message.guild?.id || message.guild_id }).then(async result => {
+			if (!result || result) await client.guilds.cache.get(message.guild?.id || message.guild_id);
+			if (client.guilds.cache.get(message.guild?.id || message.guild_id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('KICK_MEMBERS') ||
+				client.guilds.cache.get(message.guild?.id || message.guild_id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('ADMINISTRATOR')) {
 				kickCmd();
 				debounce = true;
 			} else if (result.preferences.modRole) {

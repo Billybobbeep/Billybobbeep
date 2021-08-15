@@ -518,7 +518,7 @@ module.exports = {
         const { MessageEmbed } = require('discord.js');
         const guildData = require('../../events/client/database/models/guilds');
         const embed = new MessageEmbed();
-        guildData.findOne({ guildId: (message.guild ? message.guild.id : message.guild_id) }).then(result => {
+        guildData.findOne({ guildId: message.guild?.id || message.guild_id }).then(result => {
             embed.setTitle('Billybobbeep | Fonts');
             embed.setDescription('Supported Fonts:\nDouble\nFancy\nHand\nCursed\nSmooth\nSmol');
             embed.setFooter(`Requested by: ${(message.author ? message.author.tag : message.member.user.username + message.member.user.discriminator)}`);

@@ -15,7 +15,7 @@ module.exports = {
 		const Discord = require('discord.js');
 		const embed = new Discord.MessageEmbed();
 
-		guildData.findOne({ guildId: message.guild ? message.guild.id : message.guild_id }).then(result => {
+		guildData.findOne({ guildId: message.guild?.id || message.guild_id }).then(result => {
 			if (result) embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1'); else embed.setColor('#447ba1');
 			embed.addField('Invite the bot to your server', `[https://discord.com/oauth2/authorize/...](https://discord.com/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot)`);
 			embed.addField('View more information', `[View ${client.user.username} on top.gg](https://top.gg/bot/${client.user.id})`);

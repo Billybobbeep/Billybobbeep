@@ -136,7 +136,7 @@ module.exports = {
 			`https://cdn.discordapp.com/attachments/729336942998585346/754020113275158558/image0.jpg`,
 			`https://cdn.discordapp.com/attachments/729336942998585346/754020109042974840/image0.jpg`]
 
-		guildData.findOne({ guildId: (message.guild ? message.guild.id : message.guild_id ) }).then(result => {
+		guildData.findOne({ guildId: message.guild?.id || message.guild_id }).then(result => {
 			if (result.preferences.cleanFilter)
 				return !message.data ? message.channel.send('This server has been set to clean content only') : require('../../utils/functions').slashCommands.reply(message, client, 'This server has been set to clean content only');
 

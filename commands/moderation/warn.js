@@ -16,7 +16,7 @@ module.exports = {
 		const guildData = require('../../events/client/database/models/guilds.js');
 		const guildMemberData = require('../../events/client/database/models/guildMembers.js');
 		const logging = require('../../utils/functions').logging;
-		let guildResult = await guildData.findOne({ guildId: (message.guild_id || message.guild.id) });
+		let guildResult = await guildData.findOne({ guildId: message.guild?.id || message.guild_id });
 
 		async function warnCmd(slash) {
 			let args = slash ? message.data.options : message.content.slice(prefix.length).trim().split(/ +/g);
@@ -29,7 +29,7 @@ module.exports = {
 					require('../../utils/functions').slashCommands.reply(message, client, `<@!${user.id}>, ${msg}`)
 				}
 			} : message.channel;
-			let guild = await client.guilds.fetch(message.guild ? message.guild.id : message.guild_id);
+			let guild = await client.guilds.fetch(message.guild?.id || message.guild_id);
 			if (typeof user == 'undefined')
 				return channel.send('You must mention a user to warn');
 			if (!isNaN(user) && !user.id) user = await client.users.fetch(user);
@@ -93,8 +93,8 @@ module.exports = {
 
 		let debounce = false;
 
-		if (client.guilds.cache.get(message.guild_id || message.guild.id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('MANAGE_MESSAGES') ||
-			client.guilds.cache.get(message.guild_id || message.guild.id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('ADMINISTRATOR')) {
+		if (client.guilds.cache.get(message.guild?.id || message.guild_id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('MANAGE_MESSAGES') ||
+			client.guilds.cache.get(message.guild?.id || message.guild_id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('ADMINISTRATOR')) {
 			warnCmd(message.guild && message.author ? false : true);
 			debounce = true;
 		} else if (guildResult.preferences && guildResult.preferences.modRole) {

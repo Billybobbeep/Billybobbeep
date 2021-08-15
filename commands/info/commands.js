@@ -19,11 +19,12 @@ module.exports = {
 
         let channel = message.data && !message.author ? {
             send(msg) {
+                console.log(msg)
                 require('../../utils/functions').slashCommands.reply(message, client, msg);
             }
         } : message.channel;
 
-        guildData.findOne({ guildId: message.guild ? message.guild.id : message.guild_id }).then(result => {
+        guildData.findOne({ guildId: message.guild?.id || message.guild_id }).then(result => {
             function addPage(title, catagories, inline) {
                 let page = new Discord.MessageEmbed()
                     .setTitle('Billybobbeep | ' + title)
@@ -54,7 +55,8 @@ module.exports = {
                         });
                     }
                 }
-                pages.push(page);
+                if ((page.fields).length > 0)
+                    pages.push(page);
             }
             const commandFolders = fs.readdirSync('./commands').filter(file => !file.endsWith('.js'));
 
@@ -124,9 +126,10 @@ module.exports = {
             return require('../../utils/functions').buttons.respond(
                 interaction,
                 client,
-                'Something, went wrong, execute the command again to fix the issue',
+                'Something went wrong, execute the command again to fix the issue',
                 { userOnly: true }
             );
+
         let currentPage = pages.filter(page => page.title == originalMessage.embeds[0].title);
 
         if ((interaction.data.custom_id).toLowerCase() == 'commands-next') {
