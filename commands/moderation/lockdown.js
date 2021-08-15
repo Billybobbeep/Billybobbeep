@@ -3,7 +3,7 @@ module.exports = {
     catagory: 'moderation',
     description: 'Lockdown a certain channel',
     guildOnly: true,
-    usage: 'lockdown [channel] [duration] [reason]',
+    usage: 'lock [channel] [duration] [reason]',
     alias: ['lockdown'],
     /**
      * Execute the selected command
@@ -12,7 +12,7 @@ module.exports = {
      * @param {Client} client The bots client
      */
     execute(message, prefix, client) {
-        const { MessageEmbed } = require('discord.js');
+        const { MessageEmbed, Permissions } = require('discord.js');
         const ms = require('ms');
         const log = require('../../utils/functions').logging;
         const guildData = require('../../events/client/database/models/guilds');
@@ -59,32 +59,32 @@ module.exports = {
 
                 if (channel !== 'all') {
                     if (channel.type === 'text') {
-                        if (channel.permissionsFor(message.guild.roles.everyone).has('SEND_MESSAGES')) {
-                            channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
+                        if (channel.permissionsFor(message.guild.roles.everyone).has(Permissions.FLAGS.SEND_MESSAGES)) {
+                            channel.permissionOverwrites.set([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: [Permissions.FLAGS.SEND_MESSAGES] }], reason ? reason + ` - ${message.author.tag} via ${prefix}${this.name}` : `No reason was provided - ${message.author.tag} via ${prefix}${this.name}`);
                             log(logEmbed, message, client);
                             channel.send({ embeds: [embed] });
                         } else
                             message.channel.send(`${channel} is already locked`);
                     } else if (channel.type === 'voice') {
-                        if (channel.permissionsFor(message.guild.roles.everyone).has('SEND_MESSAGES'))
-                            channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['CONNECT'] }], reason ? reason : 'No reason was provided');
+                        if (channel.permissionsFor(message.guild.roles.everyone).has(Permissions.FLAGS.SEND_MESSAGES))
+                            channel.permissionOverwrites.set([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: [Permissions.FLAGS.CONNECT] }], reason ? reason + ` - ${message.author.tag} via ${prefix}${this.name}` : `No reason was provided - ${message.author.tag} via ${prefix}${this.name}`);
                         else
                             message.channel.send(`${channel} is already locked`);
                     } else
-                        channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
+                        channel.permissionOverwrites.set([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: [Permissions.FLAGS.SEND_MESSAGES] }], reason ? reason + ` - ${message.author.tag} via ${prefix}${this.name}` : `No reason was provided - ${message.author.tag} via ${prefix}${this.name}`);
                 } else {
                     let logged = false;
                     message.guild.channels.cache.array().forEach(channel => {
                         if (channel.id === result.preferences.loggingChannel) return;
-                        if (!channel.permissionsFor(message.guild.roles.everyone).has('SEND_MESSAGES')) return;
+                        if (!channel.permissionsFor(message.guild.roles.everyone).has(Permissions.FLAGS.SEND_MESSAGES)) return;
                         if (channel.name.toLowerCase().includes('log') || channel.name.toLowerCase().includes('mod')) return;
                         if (channel.type === 'text') {
                             if (!logged) { log(logEmbed, message, client); logged = true; }
-                            channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['SEND_MESSAGES'] }], reason ? reason : 'No reason was provided');
+                            channel.permissionOverwrites.set([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: [Permissions.FLAGS.SEND_MESSAGES] }], reason ? reason + ` - ${message.author.tag} via ${prefix}${this.name}` : `No reason was provided - ${message.author.tag} via ${prefix}${this.name}`);
                             duration ? embed.setDescription('This channel has been locked for ' + duration + '.\nReason: ' + reason) : embed.setDescription('This channel has been locked till further notice');
                             channel.send({ embeds: [embed] });
                         } else if (channel.type === 'voice')
-                            channel.overwritePermissions([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: ['CONNECT'] }], reason ? reason : 'No reason was provided');
+                            channel.permissionOverwrites.set([{ id: message.guild.roles.cache.find(r => r.name === '@everyone').id, deny: [Permissions.FLAGS.CONNECT] }], reason ? reason + ` - ${message.author.tag} via ${prefix}${this.name}` : `No reason was provided - ${message.author.tag} via ${prefix}${this.name}`);
                     });
                 }
             });
