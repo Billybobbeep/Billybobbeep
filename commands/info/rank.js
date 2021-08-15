@@ -49,7 +49,7 @@ module.exports = {
         let displayName = `${user.username[0].toUpperCase()}${(user.username).substring(1).toLowerCase()}`;
         channel.sendTyping();
 
-        guildMemberData.findOne({ guildId: message.guild ? message.guild.id : message.guild_id, memberId: user.id}).then(async result => {
+        guildMemberData.findOne({ guildId: message.guild?.id || message.guild_id, memberId: user.id}).then(async result => {
             if (!result) return channel.send('No data found');
             let level = result.level || 0;
             let xp = result.xp || 1;
@@ -65,7 +65,7 @@ module.exports = {
             }
             const canvas = require('canvas');
             let avatar = await canvas.loadImage(user.displayAvatarURL({ dynamic: false, format: 'png' }));
-            channel.send(require('../../utils/functions').rank(avatar, displayName, parseInt(user.discriminator), xp, xpForLevel, level));
+            channel.send({ files: [require('../../utils/functions').rank(avatar, displayName, parseInt(user.discriminator), xp, xpForLevel, level)] });
         });
     }
 }
