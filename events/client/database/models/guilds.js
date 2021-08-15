@@ -11,7 +11,7 @@ const guildSchema = new mongoose.Schema({
         lvlRoles: { type: Array }, // Allows users to claim a certain role after achieving a certain level
         embedColor: { type: String, default: '#447ba1' }, // The servers embed color
 
-        // Server Stats, voice channel ID's
+        // Server Stats, voice channel ID's  & fonts
         serverStats_totalNo: { type: String },
         serverStats_memberNo: { type: String },
         serverStats_botNo: { type: String },

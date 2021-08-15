@@ -37,6 +37,11 @@ module.exports = {
 			waiting.push(message.author ? message.author.id : message.member.user.id);
 		});
 	},
+	/**
+     * A function to be emitted whenever someone interacts with a button
+     * @param {*} interaction The interaction
+     * @param {Client} client The bots client
+     */
 	async buttonCallback(interaction, client) {
 		const users = require('../../events/client/database/models/users');
 
