@@ -63,7 +63,7 @@ function redirect(message, client) {
  */
 function handleMessage(message, client) {
     // Define variables
-    let args = message.content.slice(1).trim().split(/ +/g);
+    let args = (message.content).slice(1).trim().split(/ +/g);
     let command = args[0].toLowerCase();
 
     // If the command was executed in a DM channel
@@ -74,21 +74,15 @@ function handleMessage(message, client) {
     // Search for the guild in the database
     guildData.findOne({ guildId: message.guild.id }).then(result => {
         // If the guild doesn't exist in the database, add it
-        if (!result) {
-            let newData = new guildData({
-                guildId: message.guild.id,
-            });
-            newData.save();
-        }
         let prefix;
         // Find the servers preferred prefix
         if (message.guild)
-            prefix = result.prefix || '~';
+            prefix = result?.prefix || '~';
         else
             prefix = '~';
 
         // If the message wasn't a command for the bot
-        if (!message.content.toLowerCase().startsWith(prefix)) return;
+        if (!(message.content).toLowerCase().startsWith(prefix)) return;
         // If the command actually exists
         if (client.commands.get(command)) {
             // If the command is marked as guild-only and the message was not executed in a guild, return
@@ -121,37 +115,26 @@ function handleSlashCommand(interaction, client) {
 
     // Fallback if the slash command was executed in a DM channel or the comma dis not registered in client.commands
     if (!interaction.guild_id || !client.commands.get(command)) return require('../../utils/functions').slashCommands.reply(interaction, client, `${client.user.username} does not support DM commands, consider using commands via a mutual server`);
-    // Find the guild in the database
-    guildData.findOne({ guildId: interaction.guild_id }).then(result => {
-        // If the guild doesn't exist in the database, add it
-        if (!result) {
-            let newData = new guildData({
-                guildId: interaction.guild_id,
-                embedColor: '#447ba1'
-            });
-            newData.save();
-        }
 
-        // If the command exists in client.commands
-        if (client.commands.get(command)) {
-            // If the command is registered as a guild-only command and the command was executed in a DM, return a friendly message
-            if (client.commands.get(command).guildOnly && !interaction.guild_id)
-                return require('../../utils/functions').slashCommands.reply(interaction, client, `${client.user.username} does not support DM commands, consider using commands via a mutual server`);
-            // If the command catagory is for moderators only, check the client has the correct permissions to actually execute the command
-            if (typeof client.commands.get(command).catagory == 'string' && client.commands.get(command).catagory == 'moderation') {
-                if (!require('../../utils/functions').slashCommands.clientpermissions(interaction, client.commands.get(command)))
-                    require('../../utils/functions').slashCommands.permissionCallback(interaction, client, (client.commands.get(command).permissions || 'UNKNOWN'))
-            }
-            try {
-                // Execute the command
-                client.commands.get(command).execute(interaction, '/', client);
-            } catch (err) {
-                // Fallback if the command failed to execute
-                if (err.toString().includes('client.commands.get(...).execute is not a function')) return;
-                else console.log(err);
-            }
+    // If the command exists in client.commands
+    if (client.commands.get(command)) {
+        // If the command is registered as a guild-only command and the command was executed in a DM, return a friendly message
+        if (client.commands.get(command).guildOnly && !interaction.guild_id)
+            return require('../../utils/functions').slashCommands.reply(interaction, client, `${client.user.username} does not support DM commands, consider using commands via a mutual server`);
+        // If the command catagory is for moderators only, check the client has the correct permissions to actually execute the command
+        if (typeof client.commands.get(command).catagory == 'string' && client.commands.get(command).catagory == 'moderation') {
+            if (!require('../../utils/functions').slashCommands.clientpermissions(interaction, client.commands.get(command)))
+                require('../../utils/functions').slashCommands.permissionCallback(interaction, client, (client.commands.get(command).permissions || 'UNKNOWN'))
         }
-    });
+        try {
+            // Execute the command
+            client.commands.get(command).execute(interaction, '/', client);
+        } catch (err) {
+            // Fallback if the command failed to execute
+            if (err.toString().includes('client.commands.get(...).execute is not a function')) return;
+            else console.log(err);
+        }
+    }
 }
 
 /**
