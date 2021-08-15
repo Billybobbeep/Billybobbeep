@@ -536,7 +536,7 @@ module.exports = {
     execute(message, prefix, client) {
         if (message.data) {
             let args = message.data.options
-            let lines = ['', ''];
+            let lines = [];
             let starter = '➳';
             let letters;
 
@@ -554,7 +554,6 @@ module.exports = {
                             lines[j] += letters[letter] + '';
                         }
                     }
-                    console.log(lines)
                     require('../../utils/functions').slashCommands.reply(message, client, (starter + lines.join('\n')));
                 } catch {
                     require('../../utils/functions').slashCommands.reply(message, client, 'Internal error, try again later');
