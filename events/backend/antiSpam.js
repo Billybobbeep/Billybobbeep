@@ -162,8 +162,9 @@ module.exports = {
                 if (!result) return;
                 cache.muted.push(message.author.id);
                 const member = message.member || await message.guild.members.cache.get(message.author);
+                const me = message.guild.members.cache.get(client.user.id);
                 const role = message.guild.roles.cache.find(role => role.id === result.preferences.mutedRole);
-                const userCanBeMuted = role && message.guild.me.permissions.has('MANAGE_ROLES') && (message.guild.me.roles.highest.position > message.member.roles.highest.position);
+                const userCanBeMuted = role && me.permissions.has(Discord.Permissions.FLAGS.MANAGE_ROLES) && (me.roles.highest.position > message.member.roles.highest.position);
                 if (!userCanBeMuted) {
                     log(message, 'err-mute');
                     return false;

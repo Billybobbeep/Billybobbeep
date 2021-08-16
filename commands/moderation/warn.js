@@ -93,8 +93,8 @@ module.exports = {
 
 		let debounce = false;
 
-		if (client.guilds.cache.get(message.guild?.id || message.guild_id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('MANAGE_MESSAGES') ||
-			client.guilds.cache.get(message.guild?.id || message.guild_id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('ADMINISTRATOR')) {
+		if (client.guilds.cache.get(message.guild?.id || message.guild_id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has(Discord.Permissions.FLAGS.MANAGE_MESSAGES) ||
+			client.guilds.cache.get(message.guild?.id || message.guild_id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
 			warnCmd(message.guild && message.author ? false : true);
 			debounce = true;
 		} else if (guildResult.preferences && guildResult.preferences.modRole) {

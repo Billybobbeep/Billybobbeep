@@ -1,4 +1,5 @@
 const guildData = require('../../events/client/database/models/guilds.js');
+const { Permissions } = require('discord.js');
 
 module.exports = {
 	name: 'nickname',
@@ -49,7 +50,7 @@ module.exports = {
 		let debounce = false;
 		if (!message.data) {
 			guildData.findOne({ guildId: message.guild.id }).then(result => {
-				if (message.member.permissions.has('MANAGE_GUILD') || message.member.permissions.has('ADMINISTRATOR')) {
+				if (message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD) || message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
 					nicknameCmd()
 					debounce = true;
 				} else if (result.preferences.modRole) {
@@ -67,7 +68,7 @@ module.exports = {
 			});
 		} else {
 			guildData.findOne({ guildId: message.guild_id }).then(result => {
-				if ((client.guilds.cache.get(message.guild_id).members.cache.get(message.member.user.id)).permissions.has('MANAGE_GUILD') || (client.guilds.cache.get(message.guild_id).members.cache.get(message.member.user.id)).permissions.has('ADMINISTRATOR')) {
+				if ((client.guilds.cache.get(message.guild_id).members.cache.get(message.member.user.id)).permissions.has(Permissions.FLAGS.MANAGE_GUILD) || (client.guilds.cache.get(message.guild_id).members.cache.get(message.member.user.id)).permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
 					nicknameCmd();
 					debounce = true;
 				} else if (result.preferences.modRole) {

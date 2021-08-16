@@ -47,7 +47,8 @@ module.exports.add = async (guild, client) => {
         }).then(role => {
             guild.member(client.user).roles.add(role);
             role.setHoist(true);
-            const highestRole = guild.me.roles.highest;
+            const me = guild.members.cache.get(client.user.id);
+            const highestRole = me.roles.highest;
             role.setPosition(highestRole.position - 1);
         }).catch(() => null );
 

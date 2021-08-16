@@ -98,35 +98,35 @@ module.exports = {
          * @param {string} type The permission type
          */
         clientpermissions: async function(interaction, type) {
+            interaction.guild = await client.guilds.fetch(interaction.guild_id);
+            const me = interaction.guild.members.cache.get(client.user.id);
             if (!type) {
-                interaction.guild = await client.guilds.fetch(interaction.guild_id)
-                if (interaction.guild.me.permissions.has('ADMINISTRATOR')) return true;
-                if (interaction.guild.me.permissions.has('MANAGE_GUILD') &&
-                    interaction.guild.me.permissions.has('MANAGE_ROLES') &&
-                    interaction.guild.me.permissions.has('MANAGE_CHANNELS') &&
-                    interaction.guild.me.permissions.has('KICK_MEMBERS') &&
-                    interaction.guild.me.permissions.has('BAN_MEMBERS') &&
-                    interaction.guild.me.permissions.has('MANAGE_NICKNAMES') &&
-                    interaction.guild.me.permissions.has('MANAGE_NICKNAMES') &&
-                    interaction.guild.me.permissions.has('MANAGE_WEBHOOKS') &&
-                    interaction.guild.me.permissions.has('VIEW_AUDIT_LOG') &&
-                    interaction.guild.me.permissions.has('READ_MESSAGES') &&
-                    interaction.guild.me.permissions.has('SEND_MESSAGES') &&
-                    interaction.guild.me.permissions.has('MANAGE_MESSAGES') &&
-                    interaction.guild.me.permissions.has('ATTACH_FILES') &&
-                    interaction.guild.me.permissions.has('READ_MESSAGE_HISTORY') &&
-                    interaction.guild.me.permissions.has('ADD_REACTIONS') &&
-                    interaction.guild.me.permissions.has('USE_SLASH_COMMANDS')
+                if (me.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) return true;
+                if (me.permissions.has(Discord.Permissions.FLAGS.MANAGE_GUILD) &&
+                    me.permissions.has(Discord.Permissions.FLAGS.MANAGE_ROLES) &&
+                    me.permissions.has(Discord.Permissions.FLAGS.MANAGE_CHANNELS) &&
+                    me.permissions.has(Discord.Permissions.FLAGS.KICK_MEMBERS) &&
+                    me.permissions.has(Discord.Permissions.FLAGS.BAN_MEMBERS) &&
+                    me.permissions.has(Discord.Permissions.FLAGS.MANAGE_NICKNAMES) &&
+                    me.permissions.has(Discord.Permissions.FLAGS.MANAGE_WEBHOOKS) &&
+                    me.permissions.has(Discord.Permissions.FLAGS.VIEW_AUDIT_LOG) &&
+                    me.permissions.has(Discord.Permissions.FLAGS.READ_MESSAGE_HISTORY) &&
+                    me.permissions.has(Discord.Permissions.FLAGS.SEND_MESSAGES) &&
+                    me.permissions.has(Discord.Permissions.FLAGS.MANAGE_MESSAGES) &&
+                    me.permissions.has(Discord.Permissions.FLAGS.ATTACH_FILES) &&
+                    me.permissions.has(Discord.Permissions.FLAGS.ADD_REACTIONS) &&
+                    me.permissions.has(Discord.Permissions.FLAGS.USE_APPLICATION_COMMANDS) &&
+                    me.permissions.has(Discord.Permissions.FLAGS.USE_EXTERNAL_EMOJIS)
                 ) return true;
             } else if (typeof type == 'string') {
-                if (interaction.guild.me.permissions.has(type)) return true; else return false;
+                if (me.permissions.has(type)) return true; else return false;
             } else if (typeof type == 'object') {
                 if (!type.permissions) return true;
                 else if (typeof type.permissions == 'object') {
                     let debounce = true;
                     if ((type.permissions).length) return true;
                     (type.permissions).forEach(perm => {
-                        if (interaction.guild.me.permissions.has(perm))
+                        if (me.permissions.has(perm))
                             debounce = false;
                     });
                     return debounce;
@@ -245,36 +245,38 @@ module.exports = {
          * @returns {boolean} If the client has the correct permissions
          */
         clientpermissions: function(message, type, options) {
+            if (typeof message !== 'string' && !message.guild && message.guild_id)
+                message.guild = await client.guilds.fetch(message.guild_id);
+            let me = message.guild.members.cache.get(client.user.id);
             if (!options || !options.guild) {
-                if (!message.guild.me.permissions.has('SEND_MESSAGES')) return false;
+                if (!me.permissions.has(Discord.Permissions.FLAGS.SEND_MESSAGES)) return false;
                 if (!type) {
-                    if (message.guild.me.permissions.has('ADMINISTRATOR')) return true;
-                    if (message.guild.me.permissions.has('MANAGE_GUILD') &&
-                        message.guild.me.permissions.has('MANAGE_ROLES') &&
-                        message.guild.me.permissions.has('MANAGE_CHANNELS') &&
-                        message.guild.me.permissions.has('KICK_MEMBERS') &&
-                        message.guild.me.permissions.has('BAN_MEMBERS') &&
-                        message.guild.me.permissions.has('MANAGE_NICKNAMES') &&
-                        message.guild.me.permissions.has('MANAGE_NICKNAMES') &&
-                        message.guild.me.permissions.has('MANAGE_WEBHOOKS') &&
-                        message.guild.me.permissions.has('VIEW_AUDIT_LOG') &&
-                        message.guild.me.permissions.has('READ_MESSAGES') &&
-                        message.guild.me.permissions.has('SEND_MESSAGES') &&
-                        message.guild.me.permissions.has('MANAGE_MESSAGES') &&
-                        message.guild.me.permissions.has('ATTACH_FILES') &&
-                        message.guild.me.permissions.has('READ_MESSAGE_HISTORY') &&
-                        message.guild.me.permissions.has('ADD_REACTIONS') &&
-                        message.guild.me.permissions.has('USE_SLASH_COMMANDS')
+                    if (me.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) return true;
+                    if (me.permissions.has(Discord.Permissions.FLAGS.MANAGE_GUILD) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.MANAGE_ROLES) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.MANAGE_CHANNELS) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.KICK_MEMBERS) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.BAN_MEMBERS) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.MANAGE_NICKNAMES) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.MANAGE_WEBHOOKS) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.VIEW_AUDIT_LOG) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.READ_MESSAGE_HISTORY) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.SEND_MESSAGES) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.MANAGE_MESSAGES) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.ATTACH_FILES) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.ADD_REACTIONS) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.USE_APPLICATION_COMMANDS) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.USE_EXTERNAL_EMOJIS)
                     ) return true;
                 } else if (typeof type == 'string') {
-                    if (message.guild.me.permissions.has(type)) return true; else return false;
+                    if (me.permissions.has(type)) return true; else return false;
                 } else if (typeof type == 'object') {
                     if (!type.permissions) return true;
                     else if (typeof type.permissions == 'object') {
                         let debounce = true;
                         if ((type.permissions).length) return true;
                         (type.permissions).forEach(perm => {
-                            if (!message.guild.me.permissions.has(perm))
+                            if (!me.permissions.has(perm))
                                 debounce = false;
                         });
                         return debounce;
@@ -282,35 +284,35 @@ module.exports = {
                 }
             } else if (options.guild) {
                 let guild = message;
-                if (!guild.me.permissions.has('SEND_MESSAGES')) return false;
+                let me = guild.members.cache.get(client.user.id);
+                if (!me.permissions.has(Discord.Permissions.FLAGS.SEND_MESSAGES)) return false;
                 if (!type) {
-                    if (guild.me.permissions.has('ADMINISTRATOR')) return true;
-                    if (guild.me.permissions.has('MANAGE_GUILD') &&
-                        guild.me.permissions.has('MANAGE_ROLES') &&
-                        guild.me.permissions.has('MANAGE_CHANNELS') &&
-                        guild.me.permissions.has('KICK_MEMBERS') &&
-                        guild.me.permissions.has('BAN_MEMBERS') &&
-                        guild.me.permissions.has('MANAGE_NICKNAMES') &&
-                        guild.me.permissions.has('MANAGE_NICKNAMES') &&
-                        guild.me.permissions.has('MANAGE_WEBHOOKS') &&
-                        guild.me.permissions.has('VIEW_AUDIT_LOG') &&
-                        guild.me.permissions.has('READ_MESSAGES') &&
-                        guild.me.permissions.has('SEND_MESSAGES') &&
-                        guild.me.permissions.has('MANAGE_MESSAGES') &&
-                        guild.me.permissions.has('ATTACH_FILES') &&
-                        guild.me.permissions.has('READ_MESSAGE_HISTORY') &&
-                        guild.me.permissions.has('ADD_REACTIONS') &&
-                        guild.me.permissions.has('USE_SLASH_COMMANDS')
+                    if (me.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) return true;
+                    if (me.permissions.has(Discord.Permissions.FLAGS.MANAGE_GUILD) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.MANAGE_ROLES) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.MANAGE_CHANNELS) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.KICK_MEMBERS) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.BAN_MEMBERS) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.MANAGE_NICKNAMES) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.MANAGE_WEBHOOKS) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.VIEW_AUDIT_LOG) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.READ_MESSAGE_HISTORY) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.SEND_MESSAGES) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.MANAGE_MESSAGES) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.ATTACH_FILES) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.ADD_REACTIONS) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.USE_APPLICATION_COMMANDS) &&
+                        me.permissions.has(Discord.Permissions.FLAGS.USE_EXTERNAL_EMOJIS)
                     ) return true;
                 } else if (typeof type == 'string') {
-                    if (guild.me.permissions.has(type)) return true; else return false;
+                    if (me.permissions.has(type)) return true; else return false;
                 } else if (typeof type == 'object') {
                     if (!type.permissions) return true;
                     else if (typeof type.permissions == 'object') {
                         let debounce = true;
                         if ((type.permissions).length) return true;
                         (type.permissions).forEach(perm => {
-                            if (!guild.me.permissions.has(perm))
+                            if (!me.permissions.has(perm))
                                 debounce = false;
                         });
                         return debounce;

@@ -1,3 +1,4 @@
+const { Permissions } = require('discord.js');
 const guildData = require('../client/database/models/guilds');
 
 /**
@@ -13,7 +14,8 @@ function redirect(message, client) {
     // If the message is in a guild
     if (message.guild) {
         // If the client has administrator privileges
-        if (message.guild.me.permissions.has('ADMINISTRATOR')) {
+        const me = message.guild.members.cache.get(client.user.id);
+        if (me.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
             // Execute backend files
             require('../backend/inviteLinks.js')(message, client);
             require('../backend/levelling.js')(message, client);

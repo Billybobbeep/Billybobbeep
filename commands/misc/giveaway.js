@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, Permissions } = require('discord.js');
 const ms = require('ms');
 const guildData = require('../../events/client/database/models/guilds.js');
 
@@ -14,7 +14,7 @@ module.exports = {
 	   * @param {Client} client The bots client
 	   */
 	execute(message, prefix, _client) {
-		if (!message.member.permissions.has('MANAGE_SERVER')) return message.channel.send('You must have `Manage Server` permissions to use this command');
+		if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) return message.channel.send('You must have `Manage Guild` permissions to use this command');
 		guildData.findOne({ guildId: message.guild.id }).then(async result => {
 			let args = message.content.slice(prefix.length).trim().split(/ +/g);
 			if (!args[1]) return message.channel.send('You must provide what time the giveaway ends');

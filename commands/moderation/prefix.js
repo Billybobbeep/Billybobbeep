@@ -1,3 +1,4 @@
+const { Permissions } = require('discord.js');
 const guildData = require('../../events/client/database/models/guilds.js');
 
 module.exports = {
@@ -37,7 +38,7 @@ module.exports = {
 		}
 
 		guildData.findOne({ guildId: message.guild.id }).then(result => {
-			if (message.member.permissions.has('MANAGE_GUILD') || message.member.permissions.has('ADMINISTRATOR')) {
+			if (message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD) || message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
 				prefixCmd()
 				debounce = true;
 			} else if (result.preferences.modRole) {

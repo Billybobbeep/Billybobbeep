@@ -92,7 +92,7 @@ module.exports = {
 
         let debounce = false;
         guildData.findOne({ guildId: message.guild.id }).then(result => {
-            if (message.member.permissions.has('MANAGE_SERVER') || message.member.permissions.has('ADMINISTRATOR')) {
+            if (message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD) || message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
               lockdown();
               debounce = true;
             } else if (result.preferences.modRole) {

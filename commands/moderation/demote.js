@@ -60,7 +60,7 @@ module.exports = {
             });
         }
 
-        if (message.member.permissions.has('ADMINISTRATOR'))
+        if (message.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR))
             demoteCmd();
         else 
             message.channel.send('You do not have the permissions to use this command');

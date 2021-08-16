@@ -58,7 +58,7 @@ module.exports = {
 		}
 
 		let debounce = false;
-		if (message.member.permissions.has('MANAGE_MESSAGES') || message.member.permissions.has('ADMINISTRATOR')) {
+		if (message.member.permissions.has(Discord.Permissions.FLAGS.MANAGE_MESSAGES) || message.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
 			purgeCmd();
 			debounce = true;
 		} else if (result.preferences.modRole) {

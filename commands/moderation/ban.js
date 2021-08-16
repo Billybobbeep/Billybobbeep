@@ -66,7 +66,7 @@ module.exports = {
 		let debounce = false;
 
 		guildData.findOne({ guildId: message.guild.id }).then(result => {
-			if (message.member.permissions.has('BAN_MEMBERS') || message.member.permissions.has('ADMINISTRATOR')) {
+			if (message.member.permissions.has(Discord.Permissions.FLAGS.BAN_MEMBERS) || message.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
 				banCmd()
 				debounce = true;
 			} else if (result.preferences.modRole) {

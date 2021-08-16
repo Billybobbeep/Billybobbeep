@@ -5,7 +5,12 @@ const logging = require('../../utils/functions').logging;
 
 module.exports.add = (guild, user, client) => {
     guildData.findOne({ guildId: guild.id }).then(result => {
-        if (!guild.me.permissions.has('ADMINISTRATOR')) return;
+        const me = message.guild.members.cache.get(client.user.id);
+        if (
+            !me.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR) ||
+            !me.permissions.has(Discord.Permissions.FLAGS.VIEW_AUDIT_LOG) &&
+            !me.permissions.has(Discord.Permissions.FLAGS.SEND_MESSAGES)
+        ) return;
         guild.fetchAuditLogs()
         .then(logs => {
             let ban = logs.entries
@@ -35,7 +40,12 @@ module.exports.add = (guild, user, client) => {
 
 module.exports.remove = (guild, user, client) => {
     guildData.findOne({ guildId: guild.id }).then(result => {
-        if (!guild.me.permissions.has('ADMINISTRATOR')) return;
+        const me = message.guild.members.cache.get(client.user.id);
+        if (
+            !me.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR) ||
+            !me.permissions.has(Discord.Permissions.FLAGS.VIEW_AUDIT_LOG) &&
+            !me.permissions.has(Discord.Permissions.FLAGS.SEND_MESSAGES)
+        ) return;
         setTimeout(() => {
             guild.fetchAuditLogs()
             .then(logs => {

@@ -12,7 +12,7 @@ module.exports = {
      * @param {Client} client The bots client
      */
     execute(message, prefix, client) {
-        const { MessageEmbed } = require('discord.js');
+        const { MessageEmbed, Permissions } = require('discord.js');
         const ms = require('ms');
         const log = require('../../utils/functions').logging;
         const guildData = require('../../events/client/database/models/guilds');
@@ -86,7 +86,7 @@ module.exports = {
 
         let debounce = false;
         guildData.findOne({ guildId: message.guild.id }).then(result => {
-            if (message.member.permissions.has('MANAGE_SERVER') || message.member.permissions.has('ADMINISTRATOR')) {
+            if (message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD) || message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
               unlock();
               debounce = true;
             } else if (result.preferences.modRole) {

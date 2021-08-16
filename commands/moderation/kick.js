@@ -91,8 +91,8 @@ module.exports = {
 
 		guildData.findOne({ guildId: message.guild?.id || message.guild_id }).then(async result => {
 			if (!result || result) await client.guilds.cache.get(message.guild?.id || message.guild_id);
-			if (client.guilds.cache.get(message.guild?.id || message.guild_id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('KICK_MEMBERS') ||
-				client.guilds.cache.get(message.guild?.id || message.guild_id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has('ADMINISTRATOR')) {
+			if (client.guilds.cache.get(message.guild?.id || message.guild_id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has(Discord.Permissions.FLAGS.KICK_MEMBERS) ||
+				client.guilds.cache.get(message.guild?.id || message.guild_id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
 				kickCmd();
 				debounce = true;
 			} else if (result.preferences.modRole) {
