@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const mutedSchema = new mongoose.Schema({
-    userId: String,
-    guildId: String,
-    time: String
+    userId: { type: String },
+    guildId: { type: String },
+    time: { type: String }
 });
 
 module.exports = mongoose.model('mutedMembers', mutedSchema);

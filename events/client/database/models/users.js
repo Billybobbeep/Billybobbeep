@@ -1,31 +1,30 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    userId: String,
-    //General
-    dmed: Boolean, //If the user has DMed the bot
+    userId: { type: String }, // The users Discord user ID
+    dmed: { type: Boolean }, //If the user has DMed the bot
     //Economy
     economy_balance: { type: Number, default: 0 }, 
-    economy_work: Number,
+    economy_work: { type: Number },
     economy_streak: { type: Number, default: 0 },
     economy_tStreak: { type: Number, default: 0 },
-    economy_daily: Number,
-    economy_lastDonated: String,
+    economy_daily: { Number },
+    economy_lastDonated: { type: String},
     //-Jobs
-    job_name: String,
-    job_lastApplied: String,
+    job_name: { type: String },
+    job_lastApplied: { type: String },
     job_level: { type: Number, default: 0 },
     job_xp: { type: Number, default: 0 },
     job_timesFired: { type: Number, default: 0 },
-    job_lastFired: String,
+    job_lastFired: { type: String },
     job_awaiting: { type: Boolean, default: false },
     //-Bank
     bank_balance: { type: Number, default: 0 },
     //AFK
-    isAfk: Boolean,
-    afkReason: String,
+    isAfk: { type: Boolean },
+    afkReason: { type: String },
     //Website
-    cache: Array
+    cache: { type: Object }
 });
 
 module.exports = mongoose.model('users', userSchema);
