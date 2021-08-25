@@ -3,7 +3,14 @@ const Discord = require('discord.js');
 const embed = new Discord.MessageEmbed();
 const logging = require('../../utils/functions').logging;
 
+/**
+ * Called when a guild member has been banned
+ * @param {object} guild The guild that the event took place in
+ * @param {object} user The user that was banned
+ * @param {Client} client The bots client
+ */
 module.exports.add = (guild, user, client) => {
+    console.log(client);
     guildData.findOne({ guildId: guild.id }).then(result => {
         const me = (await client.guilds.fetch(guild.id)).members.cache.get(client.user.id);
         if (
@@ -38,6 +45,12 @@ module.exports.add = (guild, user, client) => {
     });
 }
 
+/**
+ * Called when a guild member has been unbanned
+ * @param {object} guild The guild that the event took place in
+ * @param {object} user The user that was unbanned
+ * @param {Client} client The bots client
+ */
 module.exports.remove = (guild, user, client) => {
     guildData.findOne({ guildId: guild.id }).then(result => {
         const me = (await client.guilds.fetch(guild.id)).members.cache.get(client.user.id);

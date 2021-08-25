@@ -24,7 +24,7 @@ function setupSlashCommands(directory, client) {
 				// If the command is set to moderators only
 				if ((typeof command.slashInfo.options == 'object' && command.slashInfo.options.mod)) {
 					data.permissions = [];
-					guildData.find(function (err, data1) {
+					guildData.find(function(err, data1) {
 						if (err || !data) return;
 						data1.forEach(guild => {
 							// If the guild has setup a mod-role
@@ -79,7 +79,7 @@ function setupSlashCommands(directory, client) {
 				}
 				if ((typeof command.slashInfo.options == 'object' && command.slashInfo.options.mod)) {
 					data.permissions = [];
-					guildData.find(function (err, data1) {
+					guildData.find(function(err, data1) {
 						if (err || !data) return;
 						data1.forEach(guild => {
 							if (guild.modRole) {
