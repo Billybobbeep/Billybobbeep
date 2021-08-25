@@ -31,7 +31,7 @@ module.exports = (newMessage, oldMessage, client) => {
 		  )
 		  .setTimestamp()
 		  .setColor(result && result.preferences ? result.preferences.embedColor : '#447ba1');
-		return logging(embed, message, client);
+		return logging(embed, newMessage, client);
 	  });
 	}
 	if ((oldMessage.content).toLowerCase() === (newMessage.content).toLowerCase()) return;
