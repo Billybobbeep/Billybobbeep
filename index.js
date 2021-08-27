@@ -39,3 +39,4 @@ if (getFlags().includes('guild-only') || getFlags().includes('dev-mode')) {
 
 require('./events/client/database/connection')();
 require('./bot')(client);
+require('./server/server')(client);
