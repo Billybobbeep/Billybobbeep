@@ -97,7 +97,7 @@ module.exports = {
          * @param {object} interaction The slash command interaction
          * @param {string} type The permission type
          */
-        clientpermissions: async function(interaction, type) {
+        clientpermissions: async function(client, interaction, type) {
             interaction.guild = await client.guilds.fetch(interaction.guild_id);
             const me = interaction.guild.members.cache.get(client.user.id);
             if (!type) {
@@ -244,7 +244,7 @@ module.exports = {
          * @param {object} options Additional options
          * @returns {boolean} If the client has the correct permissions
          */
-        clientpermissions: async function(message, type, options) {
+        clientpermissions: async function(client, message, type, options) {
             if (typeof message !== 'string' && !message.guild && message.guild_id)
                 message.guild = await client.guilds.fetch(message.guild_id);
             let me = message.guild.members.cache.get(client.user.id);

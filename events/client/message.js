@@ -91,7 +91,7 @@ function handleMessage(message, client) {
             if (client.commands.get(command).guildOnly && !message.guild) return;
             // If the command catagory is for moderators only, check the client has the correct permissions to actually execute the command
             if (message.guild && client.commands.get(command).catagory && client.commands.get(command).catagory == 'moderation') {
-                if (!require('../../utils/functions').guildPerms.clientpermissions(message, client.commands.get(command)))
+                if (!require('../../utils/functions').guildPerms.clientpermissions(client, message, client.commands.get(command)))
                     require('../../utils/functions').guildPerms.permissionCallback(message, client, (client.commands.get(command).permissions || 'UNKNOWN'))
             }
             try {
@@ -116,16 +116,17 @@ function handleSlashCommand(interaction, client) {
     const command = (interaction.data.name).toLowerCase();
 
     // Fallback if the slash command was executed in a DM channel or the comma dis not registered in client.commands
-    if (!interaction.guild_id || !client.commands.get(command)) return require('../../utils/functions').slashCommands.reply(interaction, client, `${client.user.username} does not support DM commands, consider using commands via a mutual server`);
+    if (!interaction.guild_id && !client.commands.get(command))
+        return require('../../utils/functions').slashCommands.reply(interaction, client, `${client.user.username} does not support DM commands, consider using commands via a mutual server`);
 
     // If the command exists in client.commands
     if (client.commands.get(command)) {
         // If the command is registered as a guild-only command and the command was executed in a DM, return a friendly message
         if (client.commands.get(command).guildOnly && !interaction.guild_id)
-            return require('../../utils/functions').slashCommands.reply(interaction, client, `${client.user.username} does not support DM commands, consider using commands via a mutual server`);
+            return require('../../utils/functions').slashCommands.reply(interaction, client, `The command \`/${command}\` is a guild-only command, consider using this command via a mutual server`);
         // If the command catagory is for moderators only, check the client has the correct permissions to actually execute the command
         if (typeof client.commands.get(command).catagory == 'string' && client.commands.get(command).catagory == 'moderation') {
-            if (!require('../../utils/functions').slashCommands.clientpermissions(interaction, client.commands.get(command)))
+            if (!require('../../utils/functions').slashCommands.clientpermissions(client, interaction, client.commands.get(command)))
                 require('../../utils/functions').slashCommands.permissionCallback(interaction, client, (client.commands.get(command).permissions || 'UNKNOWN'))
         }
         try {
@@ -162,7 +163,7 @@ function handleButtonClick(interaction, client) {
  * @param {Client} client The bots client
  */
 module.exports = function(message, client) {
-    if (!message.data && message.author) { // If the message is a normal message
+    if (typeof message.interaction !== 'object' && message.author) { // If the message is a normal message
         // If the bot is in dev mode and the server is not the dev server, return
         if (require('../../utils/cache').dev.get() && !message.guild) return;
         if (require('../../utils/cache').dev.get() && message.guild.id !== require('../../utils/config.json').DevServer) return;
@@ -171,7 +172,10 @@ module.exports = function(message, client) {
         // Handle message
         redirect(message, client);
         handleMessage(message, client);
-    } else if (message.data && message.data.custom_id && message.data.component_type) { // If the message type was a button click
+    } else if (
+        message.data && message.data.custom_id &&
+        message.data.component_type
+    ) { // If the message type was a button click
         // If the bot is in dev mode and the server is not the dev server, return
         if (require('../../utils/cache').dev.get() && message.guild_id !== require('../../utils/config.json').DevServer) return;
         handleButtonClick(message, client); // Handle interaction
