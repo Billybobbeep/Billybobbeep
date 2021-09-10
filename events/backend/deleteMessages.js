@@ -13,17 +13,11 @@ module.exports = async (message, client) => {
 
 	if (!message || !message.author.id) return;
 
-	guildData
-		.findOne({ guildId: message.guild.id })
-		.then(result => {
+	guildData.findOne({ guildId: message.guild.id }).then(result => {
+		if (!result) return;
 			embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
-			let prefix =
-				guildData
-					.findOne({ guildId: message.guild.id })
-					.then(result => result.prefix) || '~';
-			let content = message.content.length
-				? message.content
-				: '*This message contained no content.*';
+			let prefix = result.prefix || '~';
+			let content = message.content.length ? message.content : '*This message contained no content.*';
 			message.attachments
 				? message.attachments.forEach(attachment =>
 					attachments.push(`[${attachment.name}](${attachment.proxyURL})`)
