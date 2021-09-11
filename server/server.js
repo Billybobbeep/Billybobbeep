@@ -1,6 +1,12 @@
 module.exports = function(client) {
     const express = require('express');
     const app = express();
+    const bodyParser = require('body-parser');
+    const userData = require('../events/client/database/models/users');
+
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.urlencoded({ extended: true }));
 
     let cache = {
         lastVote: false,
@@ -50,7 +56,10 @@ module.exports = function(client) {
     }
 
     app.all('/', function(req, res) {
-        res.send('working');
+        if ((req.method).toUpperCase() !== 'GET')
+            res.json({ website: 'https://billybobbeep.com' });
+        else
+            res.status(301).redirect('https://billybbobeep.com');
     });
     app.post('/api/commands/:catagory', function(req, res) {
         if ((req.params.catagory).toLowerCase() == 'all')
@@ -67,22 +76,22 @@ module.exports = function(client) {
     app.post('/api/user/voted', function(req, res) {
         let data = { name: 'top.gg', link: `https://top.gg/bot/${client.user.id}` }
         if (req.body.id && !req.body.user)
-          data = { name: 'discordbotlist.com', link: `https://discordbotlist.com/bots/${client.user.username}` }
-          if (!client.readyTimestamp) {
-              client.once('ready', () => {
-                  userVoted(req, res, data);
-              });
-          } else
-              userVoted(req, res, data);
-      });
-      app.post('/api/user/voted/disc', function(req, res) {
-          if (!client.readyTimestamp) {
-              client.once('ready', () => {
-                  userVoted(req, res, { name: 'discordbotlist.com', link: `https://discordbotlist.com/bots/${client.user.username}` });
-              });
-          } else
-              userVoted(req, res, { name: 'discordbotlist.com', link: `https://discordbotlist.com/bots/${client.user.username}` });
-      });
+            data = { name: 'discordbotlist.com', link: `https://discordbotlist.com/bots/${client.user.username}` }
+        if (!client.readyTimestamp) {
+            client.once('ready', () => {
+                userVoted(req, res, data);
+            });
+        } else
+            userVoted(req, res, data);
+    });
+    app.post('/api/user/voted/disc', function(req, res) {
+        if (!client.readyTimestamp) {
+            client.once('ready', () => {
+                userVoted(req, res, { name: 'discordbotlist.com', link: `https://discordbotlist.com/bots/${client.user.username}` });
+            });
+        } else
+            userVoted(req, res, { name: 'discordbotlist.com', link: `https://discordbotlist.com/bots/${client.user.username}` });
+    });
 
     app.all('*', function(_req, res) {
         res.status(404).json({ error: 'Cannot find what you\'re looking for', response: 404 });
