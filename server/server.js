@@ -3,6 +3,7 @@ module.exports = function(client) {
     const app = express();
     const bodyParser = require('body-parser');
     const userData = require('../events/client/database/models/users');
+    const { MessageEmbed } = require('discord.js');
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
@@ -56,10 +57,7 @@ module.exports = function(client) {
     }
 
     app.all('/', function(req, res) {
-        if ((req.method).toUpperCase() !== 'GET')
-            res.json({ website: 'https://billybobbeep.com' });
-        else
-            res.status(301).redirect('https://billybbobeep.com');
+        res.send('Working');
     });
     app.post('/api/commands/:catagory', function(req, res) {
         if ((req.params.catagory).toLowerCase() == 'all')
