@@ -11,8 +11,8 @@ module.exports = (client) => {
     client.on('guildMemberAdd', (member) => require('./cache').dev.get() || event('member').add(member, client));
     client.on('guildMemberRemove', (member) => require('./cache').dev.get() || event('member').remove(member, client));
     client.on('guildMemberUpdate', (oldMember, newMember) => require('./cache').dev.get() || events('roles')(oldMember, newMember, client));
-    client.on('guildBanAdd', (guild, user) => require('./cache').dev.get() || events('logging').add(guild, user, client));
-    client.on('guildBanRemove', (guild, user) => require('./cache').dev.get() || events('logging').remove(guild, user, client));
+    client.on('guildBanAdd', (guild) => require('./cache').dev.get() || events('logging').add(guild, client));
+    client.on('guildBanRemove', (guild) => require('./cache').dev.get() || events('logging').remove(guild, client));
     client.on('guildCreate', (guild) => require('./cache').dev.get() || events('guildManager').add(guild, client));
     client.on('guildDelete', (guild) => require('./cache').dev.get() || events('guildManager').remove(guild, client));
     client.on('messageDelete', (message) => require('./cache').dev.get() || events('deleteMessages')(message, client));
