@@ -163,7 +163,7 @@ function handleButtonClick(interaction, client) {
  * @param {Client} client The bots client
  */
 module.exports = function(message, client) {
-    if (typeof message.interaction !== 'object' && message.author) { // If the message is a normal message
+    if (!message.interaction && message.author) { // If the message is a normal message
         // If the bot is in dev mode and the server is not the dev server, return
         if (require('../../utils/cache').dev.get() && !message.guild) return;
         if (require('../../utils/cache').dev.get() && message.guild.id !== require('../../utils/config.json').DevServer) return;
