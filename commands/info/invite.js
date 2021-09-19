@@ -6,8 +6,8 @@ module.exports = {
     options: [],
 	/**
      * Execute the selected command
-     * @param {object} message The message that was sent
-     * @param {string} prefix The servers prefix
+     * @param {Object} message The message that was sent
+     * @param {String} prefix The servers prefix
      * @param {Client} client The bots client
      */
 	execute (message, _prefix, client) {

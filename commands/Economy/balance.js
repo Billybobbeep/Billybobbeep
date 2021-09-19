@@ -9,8 +9,8 @@ module.exports = {
     options: [{ name: 'user', description: 'The user you\'d like to check the balance of', type: 6, required: false }],
     /**
      * Execute the selected command
-     * @param {object} message The message that was sent
-     * @param {string} prefix The servers prefix
+     * @param {Object} message The message that was sent
+     * @param {String} prefix The servers prefix
      * @param {Client} client The bots client
      */
     execute(message, prefix, client) {

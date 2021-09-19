@@ -6,8 +6,8 @@ module.exports = {
 	catagory: 'economy',
 	guildOnly: true,
 	/**
-	 * @param {object} message The message that was sent
-	 * @param {string} prefix The servers prefix
+	 * @param {Object} message The message that was sent
+	 * @param {String} prefix The servers prefix
 	 * @param {Client} client The bots client
 	 */
 	async execute(message, _prefix, _client) {

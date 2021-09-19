@@ -19,7 +19,7 @@ const client = new Discord.Client({
 
 /**
  * Get the flags used when executing the command
- * @returns {object} List of flags
+ * @returns List of flags
  */
 function getFlags() {
 	let args = [];

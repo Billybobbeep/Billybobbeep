@@ -1,5 +1,5 @@
 /**
- * @param {object} button The button that was clicked
+ * @param {Object} button The button that was clicked
  * @param {Client} client Thwe bots client
  */
 module.exports = function(button, client) {

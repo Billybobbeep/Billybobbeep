@@ -10,8 +10,8 @@ module.exports = {
     options: [{ name: 'description', description: 'The poll description', type: 3, required: true }, { name: 'title', description: 'The poll title', type: 3, required: false }, { name: 'channel', description: 'The channel to send the poll in', type: 7, required: false }],
     /**
      * Execute the selected command
-     * @param {object} message The message that was sent
-     * @param {string} prefix The servers prefix
+     * @param {Object} message The message that was sent
+     * @param {String} prefix The servers prefix
      * @param {Client} client The bots client
      */
     execute (message, prefix, client) {

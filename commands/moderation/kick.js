@@ -7,8 +7,8 @@ module.exports = {
 	slashInfo: { enabled: true, public: false, options: { mod: true } },
 	options: [{ name: 'user', description: 'The user you\'d like to kick', type: 6, required: true }, { name: 'reason', description: 'Reason to kick', type: 3, required: false }],
 	/**
-	 * @param {object} message The message that was sent
-	 * @param {string} prefix The servers prefix
+	 * @param {Object} message The message that was sent
+	 * @param {String} prefix The servers prefix
 	 * @param {Client} client The bots client
 	 */
 	execute(message, prefix, client) {

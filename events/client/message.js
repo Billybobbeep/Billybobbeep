@@ -5,7 +5,7 @@ const guildData = require('../client/database/models/guilds');
  * Basic functionality:
  *     - Add users and guilds to the database if they're not already indexed
  *     - Check if the message contains an invite link, is in the counting channel or is spam
- * @param {object} message The sent message
+ * @param {Object} message The sent message
  * @param {Client} client The bots client
  */
 function redirect(message, client) {
@@ -60,7 +60,7 @@ function redirect(message, client) {
 
 /**
  * Handle bot commands
- * @param {object} message The sent message
+ * @param {Object} message The sent message
  * @param {Client} client The bots client
  */
 function handleMessage(message, client) {
@@ -108,7 +108,7 @@ function handleMessage(message, client) {
 
 /**
  * Handle slash commands
- * @param {object} interaction The interaction
+ * @param {Object} interaction The interaction
  * @param {Client} client The bots client
  */
 function handleSlashCommand(interaction, client) {
@@ -142,7 +142,7 @@ function handleSlashCommand(interaction, client) {
 
 /**
  * Handle when someone clicks a button
- * @param {object} interaction The interaction
+ * @param {Object} interaction The interaction
  * @param {Client} client The bots client
  */
 function handleButtonClick(interaction, client) {
@@ -159,7 +159,7 @@ function handleButtonClick(interaction, client) {
 
 /**
  * Handle incoming commands, messages or button clicks
- * @param {object} message The interaction/message
+ * @param {Object} message The interaction/message
  * @param {Client} client The bots client
  */
 module.exports = function(message, client) {

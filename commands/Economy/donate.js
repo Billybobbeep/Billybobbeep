@@ -9,8 +9,8 @@ module.exports = {
         { name: 'amount', description: 'The amount you\d like to donate', type: 3, required: true }],
         /**
      * Execute the selected command
-     * @param {object} message The message that was sent
-     * @param {string} prefix The servers prefix
+     * @param {Object} message The message that was sent
+     * @param {String} prefix The servers prefix
      * @param {Client} client The bots client
      */
     async execute(message, prefix, client) {

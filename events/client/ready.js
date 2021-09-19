@@ -1,6 +1,6 @@
 /**
  * Post slash commands 
- * @param {string} directory The directory name
+ * @param {String} directory The directory name
  * @param {Client} client The bots client
  */
 function setupSlashCommands(directory, client) {

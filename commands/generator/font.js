@@ -79,8 +79,8 @@ module.exports = {
     options: [{ name: 'font_name', description: 'The name of the font you\'d like to use', type: 3, required: true },
     { name: 'message', description: 'The message you\'d like to convert', type: 3, required: true }],
     /**
-     * @param {string} font The font you'd like to recieve
-     * @returns {object} The font letters
+     * @param {String} font The font you'd like to recieve
+     * @returns The font letters
      */
     fonts(font) {
         let letters;
@@ -511,8 +511,8 @@ module.exports = {
         return letters;
     },
     /**
-     * @param {object} message
-     * @returns {object} The help embed
+     * @param {Object} message
+     * @returns The help embed
      */
     help(message) {
         const { MessageEmbed } = require('discord.js');
@@ -529,8 +529,8 @@ module.exports = {
     },
     /**
      * Execute the selected command
-     * @param {object} message The message that was sent
-     * @param {string} prefix The servers prefix
+     * @param {Object} message The message that was sent
+     * @param {String} prefix The servers prefix
      * @param {Client} client The bots client
      */
     execute(message, prefix, client) {

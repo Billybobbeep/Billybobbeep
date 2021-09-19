@@ -11,8 +11,8 @@ module.exports = {
 	slashInfo: { enabled: true, public: true },
 	options: [{ name: 'user', description: 'The user to change the nickname of', type: 6, required: true }, { name: 'nickname', description: 'The new nickname', type: 3, required: false }],
 	/**
-	 * @param {object} message The message that was sent
-	 * @param {string} prefix The servers prefix
+	 * @param {Object} message The message that was sent
+	 * @param {String} prefix The servers prefix
 	 * @param {Client} client The bots client
 	 */
 	execute(message, prefix, client) {

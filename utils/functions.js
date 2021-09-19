@@ -5,10 +5,10 @@ const Discord = require('discord.js');
 module.exports = {
     /**
      * Send a message into the servers logging channel
-     * @param {object} msg The message to send
-     * @param {object} message The message to retreve the guild from
+     * @param {Object} msg The message to send
+     * @param {Object} message The message to retreve the guild from
      * @param {Client} client The bots client
-     * @param {object} options Any additional options
+     * @param {Object} options Any additional options
      */
     logging: function(msg, message, client, _options) {
         if (typeof message == 'string') {
@@ -69,10 +69,10 @@ module.exports = {
      */
     slashCommands: {
         /**
-         * @param {object} interaction The slash command interaction
+         * @param {Object} interaction The slash command interaction
          * @param {Client} client The bots client
          * @param {*} response The response to the interaction
-         * @returns {object} Returns the sent message
+         * @returns Returns the sent message
          */
         reply: async function(interaction, client, response) {
             if (!interaction || !response) return false;
@@ -94,8 +94,9 @@ module.exports = {
         },
         /**
          * Check if the client has the correct permissions
-         * @param {object} interaction The slash command interaction
-         * @param {string} type The permission type
+         * @param {Object} interaction The slash command interaction
+         * @param {String} type The permission type
+         * @returns If the client has the permission
          */
         clientpermissions: async function(client, interaction, type) {
             interaction.guild = await client.guilds.fetch(interaction.guild_id);
@@ -135,9 +136,9 @@ module.exports = {
         },
         /**
          * Send an embed explaining that the client does not have the correct permissions
-         * @param {object} interaction The slash command interaction
+         * @param {Object} interaction The slash command interaction
          * @param {Client} client The bots client
-         * @param {string} permission The missing permission
+         * @param {String} permission The missing permission
          */
         permissionCallback: function(interaction, client, permission) {
             const { MessageEmbed } = require('discord.js');
@@ -161,11 +162,11 @@ module.exports = {
      */
     buttons: {
         /**
-         * @param {object} interaction The slash command interaction
+         * @param {Object} interaction The slash command interaction
          * @param {Client} client The bots client
          * @param {*} response The response to the interaction
-         * @param {object} options The message options
-         * @returns {boolean} If the response was successful
+         * @param {Object} options The message options
+         * @returns If the response was successful
          */
         respond: async function(interaction, client, response, options = { userOnly: false }) {
             if (!interaction || !response) return false;
@@ -183,7 +184,7 @@ module.exports = {
                     type: 4,
                     data
                 }
-            }).then((data) => { return { custom: { id: interaction.id, token: interaction.token }, message: data } }).catch(() => this.permissionCallback(interaction, client, 'SEND_MESSAGES'));
+            }).then((data) => { return { interaction: { id: interaction.id, token: interaction.token }, message: data } }).catch(() => this.permissionCallback(interaction, client, 'SEND_MESSAGES'));
         }
     },
 
@@ -239,10 +240,10 @@ module.exports = {
     guildPerms: {
         /**
          * Check if the client has the correct permissions
-         * @param {object} message
-         * @param {string} type The permission type
-         * @param {object} options Additional options
-         * @returns {boolean} If the client has the correct permissions
+         * @param {Object} message
+         * @param {String} type The permission type
+         * @param {Object} options Additional options
+         * @returns If the client has the correct permissions
          */
         clientpermissions: async function(client, message, type, options) {
             if (typeof message !== 'string' && !message.guild && message.guild_id)
@@ -322,9 +323,9 @@ module.exports = {
         },
         /**
          * Send an embed to the server explaining that the client does not have the correct permissions
-         * @param {object} message
+         * @param {Object} message
          * @param {Client} client
-         * @param {string} permission The missing permission
+         * @param {String} permission The missing permission
          */
         permissionCallback: function(message, client, permission) {
             const { MessageEmbed } = require('discord.js');
@@ -346,13 +347,12 @@ module.exports = {
 
     /**
      * Draw a users rank card
-     * @param {object} message The users message
-     * @param {object} avatar The users avatar
-     * @param {string} username The users username
-     * @param {number} discriminator The users discriminator
-     * @param {number} currentXP The users current XP
-     * @param {number} requiredXP The required XP to level up
-     * @param {number} level The users current level
+     * @param {Object} avatar The users avatar
+     * @param {String} username The users username
+     * @param {Number} discriminator The users discriminator
+     * @param {Number} currentXP The users current XP
+     * @param {Number} requiredXP The required XP to level up
+     * @param {Number} level The users current level
      * @returns The rank card as a MessageAtachment
      */
     rank: function(avatar, username, discriminator, currentXP, requiredXP, level) {

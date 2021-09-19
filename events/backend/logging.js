@@ -5,8 +5,8 @@ const logging = require('../../utils/functions').logging;
 
 /**
  * Called when a guild member has been banned
- * @param {object} guild The guild that the event took place in
- * @param {object} user The user that was banned
+ * @param {Object} guild The guild that the event took place in
+ * @param {Object} user The user that was banned
  * @param {Client} client The bots client
  */
 module.exports.add = (guildObj, client) => {
@@ -47,8 +47,8 @@ module.exports.add = (guildObj, client) => {
 
 /**
  * Called when a guild member has been unbanned
- * @param {object} guild The guild that the event took place in
- * @param {object} user The user that was unbanned
+ * @param {Object} guild The guild that the event took place in
+ * @param {Object} user The user that was unbanned
  * @param {Client} client The bots client
  */
 module.exports.remove = (guildObj, client) => {
