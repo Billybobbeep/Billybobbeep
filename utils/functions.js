@@ -64,9 +64,6 @@ module.exports = {
         }
     },
 
-    /**
-     * Slash command fucntions
-     */
     slashCommands: {
         /**
          * @param {Object} interaction The slash command interaction
@@ -157,9 +154,6 @@ module.exports = {
         }
     },
 
-    /**
-     * Button interactions
-     */
     buttons: {
         /**
          * @param {Object} interaction The slash command interaction

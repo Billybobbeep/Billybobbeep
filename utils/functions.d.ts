@@ -28,19 +28,8 @@ export function cleanDatabase(client: Client);
 export function rank(avatar: Buffer, username: String, discriminator: Number, currentXP: Number, requiredXP: Number, level: Number): MessageAttachment;
 
 /**
- * Log a string to the console
- * @param string A string to log
- */
-export function log(string: String): void;
-
-export declare namespace examples {
-    /**
-     * Log a string to the console
-     * @param string A string to log
-     */
-    function log2(string: String): void;
-}
-
+ * Slash command functions
+*/
 export declare namespace slashCommands {
     /**
      * @param {Interaction} interaction The slash command interaction
@@ -67,6 +56,9 @@ export declare namespace slashCommands {
     function permissionCallback(interaction: Interaction, client: Client, permission: String): void;
 }
 
+/**
+ * Button interactions
+*/
 export declare namespace buttons {
     interface responseData {
         interaction: {
