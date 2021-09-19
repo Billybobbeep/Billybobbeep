@@ -1,6 +1,6 @@
 module.exports = {
     name: 'mute',
-    description: 'Mute a member',
+    description: 'Mute a someone in your server',
     guildOnly: true,
     catagory: 'moderation',
     usage: 'mute [user] [time] [reason]',
@@ -18,17 +18,18 @@ module.exports = {
         let embed2 = new Discord.MessageEmbed();
         const ms = require('ms');
         const logging = require('../../utils/functions').logging;
-        let args = message.content.slice(prefix.length).trim().split(/ +/g);
+        let args = message.guild_id ? message.options : message.content.slice(prefix.length).trim().split(/ +/g);
         function muteCmd() {
             guildData.findOne({ guildId: message.guild.id }).then(async result => {
                 if (!result.preferences) {
                     result.preferences = {}
                     result.save();
                 }
-                let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
+                let guild = client.guilds.cache.get(message.guild_id || message.guild.id);
+                let user = message.guild_id ?  (await client.users.fetch(args[0].value)) : (message.mentions.users.first() || (await client.users.fetch(args[1])));
                 let reason = args.slice(3).join(' ');
                 let time = args[2] || undefined;
-                let member = message.guild.members.cache.get(user.id);
+                let member = guild.members.cache.get(user.id);
                 if (member.roles.cache.find(r => r.id === result.preferences.mutedRole)) return message.channel.send(`<@!${user.id}> is already muted`);
                 if (user.bot) return message.channel.send('You cannot mute bots');
                 if (!result.preferences.mutedRole) return message.channel.send('You must setup a muted role in your server to use this command');
@@ -37,8 +38,8 @@ module.exports = {
                 if (user.id === message.author.id) return message.channel.send('You cannot mute yourself');
                 if (!member) return message.channel.send('I could not find the member you provided');
                 if (!time) return message.channel.send('You must provide a time or reason');
-                if (user.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) return message.channel.send('You cannot mute a server administrator');
-                if (result.preferences?.modRole && user.roles.find(r => r.id == result.preferences?.modRole)) return message.channel.send('You cannot mute a server moderator');
+                if (member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) return message.channel.send('You cannot mute a server administrator');
+                if (result.preferences?.modRole && member.roles.cache.find(r => r.id == result.preferences?.modRole)) return message.channel.send('You cannot mute a server moderator');
                 try {
                     if (time.endsWith('h') || time.endsWith('m') || time.endsWith('s')) time = ms(time); else time = false;
                 } catch {
@@ -46,8 +47,8 @@ module.exports = {
                 }
                 if (!time) reason = args.slice(2).join(' ');
                 if (!reason) reason = 'No reason was provided';
-                if (!message.guild.roles.fetch(r => r.id === result.preferences.mutedRole)) return message.channel.send('You must setup a muted role in your server to use this command');
-                member.roles.add(message.guild.roles.cache.find(role => role.id === result.preferences.mutedRole)).then(() => message.channel.send('Successfully muted <@!' + user.id + '>')).catch(error => {
+                if (!guild.roles.fetch(r => r.id === result.preferences.mutedRole)) return message.channel.send('You must setup a muted role in your server to use this command');
+                member.roles.add(guild.roles.cache.find(role => role.id === result.preferences.mutedRole)).then(() => message.channel.send('Successfully muted <@!' + user.id + '>')).catch(error => {
                     if (error.toString().includes('permissions')) return message.channel.send('I cannot mute <@!' + user.id + '>. Make sure my highest role is above <@!' + user.id + '>\'s highest role.');
                     else { return message.channel.send('An unknown error occurred') }
                 });
@@ -56,7 +57,7 @@ module.exports = {
                 embed1.setTitle('You have been muted');
                 embed1.addField('Responsible Moderator:', message.author.tag);
                 embed1.addField('Reason:', reason);
-                embed1.addField('Guild:', message.guild.name);
+                embed1.addField('Guild:', guild.name);
                 time ? embed1.addField('Time:', ms(time).replace('s', 'second(s)').replace('m', ' minute(s)').replace('h', ' hour(s)')) : null;
                 try {
                     user.send({ embeds: [embed1] });
@@ -70,14 +71,16 @@ module.exports = {
                     embed2.setDescription(`**User:** ${user}\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Time:** ${ms(time).replace('m', ' minute(s)').replace('h', ' hours')}\n**Reason:** ${reason}\n\n**Moderator:** ${message.author}\n**Moderator Tag:** ${message.author.tag}\n**Moderator ID:** ${message.author.id}`)
                     : embed2.setDescription(`**User:** ${user}\n**User Tag:** ${user.tag}\n**User ID:** ${user.id}\n\n**Time:** Until unmuted\n**Reason:** ${reason}\n\n**Moderator:** ${message.author}\n**Moderator Tag:** ${message.author.tag}\n**Moderator ID:** ${message.author.id}`);
                 logging(embed2, message, client);
-                const newMutedMember = new mutedMembers({ guildId: message.guild.id, userId: user.id, time: (Date.now() + time) });
+                const newMutedMember = new mutedMembers({ guildId: guild.id, userId: user.id, time: (Date.now() + time) });
                 time ? newMutedMember.save() : null;
             });
         }
         let debounce = false;
 
-        guildData.findOne({ guildId: message.guild.id }).then(result => {
-            if (message.member.permissions.has(Discord.Permissions.FLAGS.MANAGE_MESSAGES) || message.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
+        guildData.findOne({ guildId: (message.guild_id || message.guild.id) }).then(async result => {
+            let guild = await client.guilds.fetch(message.guild_id || message.guild.id);
+            let member = guild.members.cache.get(!message.author ? message.member.user.id : message.author.id);
+            if (member.permissions.has(Discord.Permissions.FLAGS.MANAGE_MESSAGES) || member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
                 muteCmd();
                 debounce = true;
             } else if (result.preferences.modRole) {
