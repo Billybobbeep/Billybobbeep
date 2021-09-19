@@ -37,7 +37,8 @@ module.exports = {
                 if (user.id === message.author.id) return message.channel.send('You cannot mute yourself');
                 if (!member) return message.channel.send('I could not find the member you provided');
                 if (!time) return message.channel.send('You must provide a time or reason');
-                if (user.id === message.guild.owner.id) return message.channel.send('You cannot mute the guild owner');
+                if (user.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) return message.channel.send('You cannot mute a server administrator');
+                if (result.preferences?.modRole && user.roles.find(r => r.id == result.preferences?.modRole)) return message.channel.send('You cannot mute a server moderator');
                 try {
                     if (time.endsWith('h') || time.endsWith('m') || time.endsWith('s')) time = ms(time); else time = false;
                 } catch {
@@ -58,7 +59,7 @@ module.exports = {
                 embed1.addField('Guild:', message.guild.name);
                 time ? embed1.addField('Time:', ms(time).replace('s', 'second(s)').replace('m', ' minute(s)').replace('h', ' hour(s)')) : null;
                 try {
-                    user.send(embed1);
+                    user.send({ embeds: [embed1] });
                 } catch {
                     embed2.setFooter('DM could not be sent');
                 }
