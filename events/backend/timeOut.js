@@ -123,19 +123,19 @@ async function remove(result, guild, user, string, client) {
     const guildData = require('../client/database/models/guilds');
     let member = guild.members.cache.get(user);
     let guildRes = await guildData.findOne({ guildId: guild.id });
-    let mutedRole = guildRes.mutedRole;
+    let mutedRole = guildRes.preferences?.mutedRole;
     if (!member) return result.delete();
     if (string == 'mute') {
         setTimeout(() => {
             let role = guild.roles.cache.find(role => role.id == mutedRole);
-            if (member.roles.cache.find(role => role.id == mutedRole))
+            if (role && member.roles.cache.find(r => r.id == role.id))
                 member.roles.remove(role.id);
         }, 50);
         const logging = require('../../utils/functions').logging;
         const embed = new MessageEmbed();
         embed.setTitle('User Unmuted');
         embed.setTimestamp();
-        embed.setColor(guildRes.embedColor);
+        embed.setColor(guildRes.preferences ? guildRes.preferences.embedColor : '#447ba1');
         embed.setDescription(`**User:** <@!${member.user.id}>\n**User Tag:** ${member.user.tag}\n**User ID:** ${member.user.id}\n\n**Reason:** Automatic unmute\n\n**Moderator:** <@!${client.user.id}>\n**Moderator Tag:** ${client.user.tag}\n**Moderator ID:** ${client.user.id}`);
         logging(embed, (guild.id).toString(), client);
         result.delete();
