@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const guildSchema = new mongoose.Schema({
     guildId: { type: String }, // The server ID
-    prefix: { type: String, default: '~' }, // The servers custom prefix
+    prefix: { type: String, default: "~" }, // The servers custom prefix
 
     counting_number: { type: Number }, // The current number in the counting channel
 
     preferences: {
         autoRoles: { type: Array }, // The roles to automatically give users upon joining
         lvlRoles: { type: Array }, // Allows users to claim a certain role after achieving a certain level
-        embedColor: { type: String, default: '#447ba1' }, // The servers embed color
+        embedColor: { type: String, default: "#447ba1" }, // The servers embed color
 
         // Server Stats, voice channel ID's  & fonts
         serverStats_totalNo: { type: String },
@@ -40,4 +40,4 @@ const guildSchema = new mongoose.Schema({
     }]
 });
 
-module.exports = mongoose.model('guilds', guildSchema);
+module.exports = mongoose.model("guilds", guildSchema);
