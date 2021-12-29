@@ -7,13 +7,13 @@ import { Client, Message, Interaction, MessageAttachment } from "discord.js";
  * @param {Client} client The bots client
  * @param {Object} options Any additional options
 */
-export function logging(msg: any, message: Message, client: Client, options: Object): void;
+export declare function logging(msg: any, message: Message, client: Client, options: Object): void;
 
 /**
  * Clean the databoase of any unused documents
  * @param {Client} client The bots client
 */
-export function cleanDatabase(client: Client);
+export declare function cleanDatabase(client: Client): void;
 
 /**
  * Draw a users rank card
@@ -25,7 +25,7 @@ export function cleanDatabase(client: Client);
  * @param {Number} level The users current level
  * @returns The rank card as a MessageAtachment
 */
-export function rank(avatar: Buffer, username: String, discriminator: Number, currentXP: Number, requiredXP: Number, level: Number): MessageAttachment;
+export declare function rank(avatar: Buffer, username: String, discriminator: Number, currentXP: Number, requiredXP: Number, level: Number): MessageAttachment;
 
 /**
  * Slash command functions
@@ -37,7 +37,7 @@ export declare namespace slashCommands {
      * @param {*} response The response to the interaction
      * @returns Returns the sent message
     */
-    async function reply(interaction: Interaction, client: Client, response: any): void;
+    declare async function reply(interaction: Interaction, client: Client, response: any): void;
     
     /**
      * Check if the client has the correct permissions
@@ -45,7 +45,7 @@ export declare namespace slashCommands {
      * @param {String} type The permission type
      * @returns If the client has the permission
     */
-    async function clientPermissions(client: Client, interaction: Interaction, type: String): Boolean;
+    declare async function clientPermissions(client: Client, interaction: Interaction, type: String): Boolean;
 
     /**
      * Send an embed explaining that the client does not have the correct permissions
@@ -53,14 +53,14 @@ export declare namespace slashCommands {
      * @param {Client} client The bots client
      * @param {String} permission The missing permission
     */
-    function permissionCallback(interaction: Interaction, client: Client, permission: String): void;
+    declare function permissionCallback(interaction: Interaction, client: Client, permission: String): void;
 }
 
 /**
  * Button interactions
 */
 export declare namespace buttons {
-    interface responseData {
+   declare interface responseData {
         interaction: {
             readonly id: String,
             readonly token: String            
@@ -74,11 +74,11 @@ export declare namespace buttons {
      * @param {Object} options The message options
      * @returns If the response was successful
     */
-    async function respond(interaction: Interaction, client: Client, response: any): Boolean | responseData;
+    declare async function respond(interaction: Interaction, client: Client, response: any): Boolean | responseData;
 }
 
 export declare namespace guildPerms {
-    interface Options {
+    declare interface Options {
         guild: Boolean
     }
     /**
@@ -88,7 +88,7 @@ export declare namespace guildPerms {
      * @param {Object} options Additional options
      * @returns If the client has the correct permissions
     */
-    async function clientPermissions(client: Client, message: Message, type: String, options: Options): Boolean;
+    declare async function clientPermissions(client: Client, message: Message, type: String, options: Options): Boolean;
 
     /**
      * Send an embed to the server explaining that the client does not have the correct permissions
@@ -96,5 +96,5 @@ export declare namespace guildPerms {
      * @param {Client} client
      * @param {String} permission The missing permission
     */
-    function permissionCallback(message: Message, client: Client, permission: String): void;
+    declare function permissionCallback(message: Message, client: Client, permission: String): void;
 }
