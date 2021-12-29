@@ -1,24 +1,22 @@
 let cache = {}
 
 module.exports = {
-    /**
-     * Dev-mode cache
-     */
     dev: {
         /**
-         * @returns {boolean} If dev mode is enabled
+         * Check if developer mode has been enabled
+         * @returns If developer mode is enabled
          */
-        get: function () {
+        get: function() {
             return cache.devMode || false;
         },
         /**
-         * Change if dev mode is enabled
-         * @param {boolean} devMode If dev mode is enabled
-         * @returns {boolean} If the function was successful
+         * Change if developer mode is enabled
+         * @param {Boolean} devMode If dev mode is enabled
+         * @returns If the function was successful
          */
-        set: function (devMode) {
-            if (typeof devMode !== 'boolean') return false;
-            cache.devMode = devMode;
+        set: function(value) {
+            if (typeof value !== 'boolean') return false;
+            cache.devMode = value;
             return true;
         }
     }

@@ -1,12 +1,16 @@
 /**
  * Dev-mode cache
  */
-export namespace dev {
-    function get(): Boolean;
+export declare namespace dev {
     /**
-     * Change if dev mode is enabled
+     * Check if developer mode has been enabled
+     * @returns If developer mode is enabled
+     */
+    declare function get(): Boolean;
+    /**
+     * Change if developer mode is enabled
      * @param {Boolean} devMode If dev mode is enabled
      * @returns If the function was successful
-    */
-    function set(value: Boolean): Boolean;
+     */
+    declare function set(value: Boolean): Boolean;
 }
