@@ -17,10 +17,16 @@ module.exports = {
 		const logging = require('../../utils/functions').logging;
 		let args = message.content.slice(prefix.length).trim().split(/ +/g);
 		function banCmd() {
-			guildData.findOne({ guildId: message.guild.id }).then(result => {
-				let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
+      if (!args[1]) return message.channel.send('You must provide a member to ban');
+			guildData.findOne({ guildId: message.guild.id }).then(async result => {
+				let user;
+        if (message.mentions.users.first()) {
+          user = await message.mentions.users.first();
+        } else {
+          user = await client.users.fetch(args[1]);
+        }
 
-				let member = message.guild.member(user);
+				let member = client.guilds.cache.get(message.guild.id).members.cache.get(user.id);
 				let reason = args.slice(2).join(' ');
 				let succ = true
 
@@ -48,7 +54,7 @@ module.exports = {
 				log.setTitle(`You have been banned`);
 				log.addField(`Responsible Moderator:`, message.author.tag, true);
 				log.addField(`Reason:`, reason);
-				log.addField(`Guild:`, message.guild);
+				log.addField(`Guild:`, (message.guild).name);
 				user.send(log).catch(() => embed.setFooter('DM could not be sent'));
 
 				reason = reason + ' - ' + message.author.tag.toString()
@@ -67,13 +73,13 @@ module.exports = {
 
 		guildData.findOne({ guildId: message.guild.id }).then(result => {
 			if (message.member.permissions.has(Discord.Permissions.FLAGS.BAN_MEMBERS) || message.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
-				banCmd()
+				banCmd();
 				debounce = true;
 			} else if (result.preferences.modRole) {
 				if (message.member.roles.cache.find(role => role.id === result.modsRole)) {
 					if (result.modsCanBan) {
 						if (message.guild.id === '733442092667502613') return;
-						banCmd()
+						banCmd();
 						debounce = true;
 					}
 				}
