@@ -19,7 +19,7 @@ module.exports = {
 		let userResult = await userData.findOne({ userId: message.author.id });
 		const ms = require('ms');
 		const embed = new Discord.MessageEmbed();
-		const info = require('./jobRequirements.js');
+		const info = require('./jobRequirements');
 
 		let crossEmoji = client.emojis.cache.get('736952985330122772');
 		embed.setAuthor(`${message.author.username}`, message.author.displayAvatarURL());
@@ -177,7 +177,7 @@ module.exports = {
 			} else {
 				userResult.job_xp = userResult.job_xp ? userResult.job_xp + gainedXp : gainedXp;
 				userResult.economy_work = Date.now() + cooldown;
-				userResult.economy_balance = userResult.economy_balance ? parseInt(userResult.economy_balance) + Math.round(parseInt(workAmt + '.' + decimal)) : parseInt(workAmt + '.' + decimal);
+				userResult.economy_balance = userResult.economy_balance ? parseFloat(userResult.economy_balance) + Math.round(parseFloat(workAmt + '.' + decimal)) : parseFloat(workAmt + '.' + decimal);
 
 				let xp = userResult.job_xp;
 				if (cashier !== undefined && xp >= info.global.xp.lower.max) {
