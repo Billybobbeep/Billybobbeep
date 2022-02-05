@@ -29,14 +29,35 @@ const guildSchema = new mongoose.Schema({
         ecoEnabled: { type: Boolean }, // Enables and disables economy commands in the server
         levelsEnabled: { type: Boolean }, // Enables and disables levelling in the server
         inviteLinks: { type: Boolean }, // Automatically remove all third-party server invites
-        cleanFilter: { type: Boolean } // Prevent commands that may include explicit content from being executed
+        cleanFilter: { type: Boolean }, // Prevent commands that may include explicit content from being executed,
+
+        antiSpam: { // Anti-spam settings
+            mentions: { // Mention spam settings
+                enabled: { type: Boolean, default: false }, // If billy should check for mention spamming
+                max: { type: Number, default: 3 }, // Max mentions per message
+                includeEveryone: { type: Boolean, default: false } // Include the @everyone ping as spam
+            },
+            ignoredChannels: { type: Array }, // Channels to ignore spam in
+            ignoredRoles: { type: Array }, // Roles to ignore
+            ignoredMembers: { type: Array }, // Members to ignore
+            duplicatesInterval: { type: Number, default: 2000 }, // Duplicate messages interval
+            messageInterval: { type: Number, default: 1000 }, // Message interval
+            muteSettings: {
+                enabled: { type: Boolean, default: false }, // If billy can mute spammers
+                thresold: { type: Number, default: 4 }, // No. of messages for a mute to take place
+                time: { type: Number, default: 1800000 } // Time to mute the spammer for - default = 30m
+            },
+            warnSettings: {
+                enabled: { type: Boolean, default: true }, // If billy can warn spammers
+                threshold: { type: Number, default: 4 }, // No. of messages for a warn to take place
+                first: { type: Boolean, default: true } // Warn the spammer before muting
+            }
+        }
     },
-    logs: [{
-        user: {
-            id: { type: String }
-        },
-        event: { type: String },
-        date: { type: String }
+    logs: [{ // Dashboard logs
+        user: { type: Object }, // The user
+        event: { type: String }, // The event
+        timestamp: { type: String } // The timestamp of the event
     }]
 });
 
