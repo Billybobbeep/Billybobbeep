@@ -47,7 +47,7 @@ module.exports = {
 
 			let msg1;
 			// Delete the original message
-			await message.delete();
+			await message.delete().catch(() => null);
 			// Bulk delete the defined messages
 			message.channel.bulkDelete(args[1])
 				.then(async messages => {
