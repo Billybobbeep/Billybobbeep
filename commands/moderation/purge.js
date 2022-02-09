@@ -47,7 +47,7 @@ module.exports = {
 
 			let msg1;
 			// Delete the original message
-			await message.delete();
+			await message.delete().catch(() => null);
 			// Bulk delete the defined messages
 			message.channel.bulkDelete(args[1])
 				.then(async messages => {
@@ -67,7 +67,11 @@ module.exports = {
 					logging(embed, message, client);
 					// Delete the sent message after 3 seconds
 					setTimeout(() => {
-						msg1.delete();
+						try {
+							msg1.delete();
+						} catch {
+							null;
+						}
 					}, 3000);
 				})
 				.catch(() => message.channel.send('Something went wrong, ensure the messages are not over 2 weeks old'));
