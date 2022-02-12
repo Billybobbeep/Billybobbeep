@@ -61,7 +61,7 @@ module.exports.add = async (guild, client) => {
         embed2.setTimestamp();
         embed2.setThumbnail(guild.iconURL({ dynamic: true }));
         embed2.setFooter(`Total Guilds: ${client.guilds.cache.size}`);
-        logging(embed2, '733442092667502613', client, 'guild');
+        logging(embed2, '942042511793328138', client, { type: 'channel' });
 
         guildData.findOne({ guildId: guild.id }).then(result => {
             if (result) return;
@@ -82,7 +82,7 @@ module.exports.remove = (guild, client) => {
         .setTimestamp()
         .setThumbnail(guild.iconURL({ dynamic: true }))
         .setFooter(`Total Guilds: ${client.guilds.cache.size}`);
-    logging(embed, '733442092667502613', client, 'guild');
+    logging(embed, '942042511793328138', client, { type: 'channel' });
 
     const guildData = require('../client/database/models/guilds');
     guildData.findOne({ guildId: guild.id }).then(res => {
