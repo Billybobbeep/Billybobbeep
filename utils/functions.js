@@ -10,9 +10,29 @@ module.exports = {
      * @param {Client} client The bots client
      * @param {Object} options Any additional options
      */
-    logging: function(msg, message, client, _options) {
-        if (typeof message == 'string') {
-            guildData.findOne({ guildId: message.toString() }).then(result => {
+    logging: async function(msg, message, client, options) {
+        if ((options?.type && (options.type).toLowerCase() === 'channel') && typeof message === 'string') {
+            let loggingChannel = await client.channels.fetch(message);
+            if (loggingChannel && typeof loggingChannel == 'object') {
+                if (typeof msg == 'string')
+                    loggingChannel.send({ content: msg }).catch((error) => { console.log(error) });
+                else
+                    loggingChannel.send({ embeds: [msg] }).catch((error) => { console.log(error) });
+            }
+        } else if (typeof message == 'string') {
+            let result = await guildData.findOne({ guildId: message.toString() });
+            if (!result) return;
+            let loggingChannel = client.channels.cache.get(result && result.preferences.loggingChannel);
+            if (typeof msg == 'string') {
+                if (loggingChannel && typeof loggingChannel == 'object')
+                    loggingChannel.send({ content: msg }).catch((error) => { console.log(error) });
+            } else {
+                if (loggingChannel && typeof loggingChannel == 'object')
+                    loggingChannel.send({ embeds: [msg] }).catch((error) => { console.log(error) });
+            }
+        } else if (typeof message === 'object') {
+            if (message.guild) {
+                let result = await guildData.findOne({ guildId: message.guild.id });
                 if (!result) return;
                 let loggingChannel = client.channels.cache.get(result && result.preferences.loggingChannel);
                 if (typeof msg == 'string') {
@@ -22,32 +42,17 @@ module.exports = {
                     if (loggingChannel && typeof loggingChannel == 'object')
                         loggingChannel.send({ embeds: [msg] }).catch((error) => { console.log(error) });
                 }
-            });
-        } else if (typeof message === 'object') {
-            if (message.guild) {
-                guildData.findOne({ guildId: message.guild.id }).then(result => {
-                    if (!result) return;
-                    let loggingChannel = client.channels.cache.get(result && result.preferences.loggingChannel);
-                    if (typeof msg == 'string') {
-                        if (loggingChannel && typeof loggingChannel == 'object')
-                            loggingChannel.send({ content: msg }).catch((error) => { console.log(error) });
-                    } else {
-                        if (loggingChannel && typeof loggingChannel == 'object')
-                            loggingChannel.send({ embeds: [msg] }).catch((error) => { console.log(error) });
-                    }
-                });
             } else {
-                guildData.findOne({ guildId: guildID }).then(result => {
-                    if (!result) return;
-                    let loggingChannel = client.channels.cache.get(result && result.preferences.loggingChannel);
-                    if (typeof msg == 'string') {
-                        if (loggingChannel && typeof loggingChannel == 'object')
-                            loggingChannel.send({ content: msg }).catch((error) => { console.log(error) });
-                    } else {
-                        if (loggingChannel && typeof loggingChannel == 'object')
-                            loggingChannel.send({ embeds: [msg] }).catch((error) => { console.log(error) });
-                    }
-                });
+                let result = await guildData.findOne({ guildId: guildID });
+                if (!result) return;
+                let loggingChannel = client.channels.cache.get(result && result.preferences.loggingChannel);
+                if (typeof msg == 'string') {
+                    if (loggingChannel && typeof loggingChannel == 'object')
+                        loggingChannel.send({ content: msg }).catch((error) => { console.log(error) });
+                } else {
+                    if (loggingChannel && typeof loggingChannel == 'object')
+                        loggingChannel.send({ embeds: [msg] }).catch((error) => { console.log(error) });
+                }
             }
         } else {
             guildData.findOne({ guildId: guildID }).then(result => {

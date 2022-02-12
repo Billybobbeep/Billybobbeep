@@ -7,7 +7,7 @@ import { Client, Message, Interaction, MessageAttachment } from "discord.js";
  * @param {Client} client The bots client
  * @param {Object} options Any additional options
 */
-export declare function logging(msg: any, message: Message, client: Client, options: Object): void;
+export declare function logging(msg: any, message: Message, client: Client, options: Object): Promise<void>;
 
 /**
  * Clean the databoase of any unused documents
