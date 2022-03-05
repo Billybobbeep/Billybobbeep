@@ -95,6 +95,11 @@ function handleMessage(message, client) {
                     require('../../utils/functions').guildPerms.permissionCallback(message, client, (client.commands.get(command).permissions || 'UNKNOWN'))
             }
             try {
+                // Send news announcement
+                let embed = new MessageEmbed();
+                embed.setTitle("Use this command as a slash command");
+                embed.setDescription("Due to some Discord changes, Billy will only reply to slash commands as of April 2022.");
+                message.channel.send({ embeds: [embed] });
                 // Execute the command
                 client.commands.get(command).execute(message, prefix, client);
             } catch (err) {
