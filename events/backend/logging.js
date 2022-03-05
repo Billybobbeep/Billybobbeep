@@ -13,11 +13,11 @@ module.exports.add = (guildObj, client) => {
     let guild = guildObj.guild;
     let user = guildObj.user;
     guildData.findOne({ guildId: guild.id }).then(async result => {
-        const me = guild.members.cache.get(client.user.id);
+        const me = await guild.members.fetch(client.user.id);
         if (
             !me.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR) ||
-            !me.permissions.has(Discord.Permissions.FLAGS.VIEW_AUDIT_LOG) &&
-            !me.permissions.has(Discord.Permissions.FLAGS.SEND_MESSAGES)
+            (!me.permissions.has(Discord.Permissions.FLAGS.VIEW_AUDIT_LOG) &&
+            !me.permissions.has(Discord.Permissions.FLAGS.SEND_MESSAGES))
         ) return;
         guild.fetchAuditLogs()
             .then(logs => {
