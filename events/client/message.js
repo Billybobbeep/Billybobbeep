@@ -21,7 +21,6 @@ function redirect(message, client) {
             require("../backend/levelling.js")(message, client);
             require("../commands/counting.js").execute(message, client);
             require("../commands/mentions.js")(message, client);
-            require("../backend/antiSpam.js").execute(message, client);
         }
     } else
         require("../backend/dmRecieving.js")(message, client); // Record incoming DMs
