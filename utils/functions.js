@@ -71,28 +71,57 @@ module.exports = {
 
     slashCommands: {
         /**
+         * Reply to an incoming interaction
          * @param {Object} interaction The slash command interaction
          * @param {Client} client The bots client
-         * @param {*} response The response to the interaction
+         * @param {String | Object} response The response to the interaction
          * @returns Returns the sent message
          */
         reply: async function(interaction, client, response) {
             if (!interaction || !response) return false;
-            if (typeof response !== 'object' && typeof response !== 'string' || ['', ' '].includes(response)) return false;
+            if (typeof response !== "object" && typeof response !== "string" || ["", " "].includes(response)) return false;
 
             let data = {
                 content: response
             }
-            if (typeof response === 'object')
+            if (typeof response === "object")
                 data = {
                     embeds: [response]
                 }
-            client.api.interactions(interaction.id, interaction.token).callback.post({
+            let interactionResponse = await client.api.interactions(interaction.id, interaction.token).callback.post({
                 data: {
                     type: 4,
                     data
                 }
-            }).then((data) => { return { custom: { id: interaction.id, token: interaction.token }, message: data } }).catch((e) => console.log(e) && this.permissionCallback(interaction, client, 'SEND_MESSAGES'));
+            }).catch((e) => {
+                console.log(e);
+                this.permissionCallback(interaction, client, "SEND_MESSAGES");
+            });
+            
+            return { custom: { id: interaction.id, token: interaction.token }, message: interactionResponse, rawInteraction: interaction }
+        },
+        /**
+         * Update a pre-existing interaction
+         * @param {Object} interaction The interaction
+         * @param {String | Object} response The updated response
+         * @returns Returns the Interaction
+         */
+        update: async function(interaction, response) {
+            if (!interaction || !response) return false;
+            if (typeof response !== "object" && typeof response !== "string" || ["", " "].includes(response)) return false;
+
+            let data = {
+                content: response
+            }
+            if (typeof response === "object") {
+                data = {
+                    embeds: [response]
+                }
+            }
+            
+            interaction.update(data);
+
+            return interaction;
         },
         /**
          * Check if the client has the correct permissions

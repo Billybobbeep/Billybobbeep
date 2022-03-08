@@ -31,13 +31,29 @@ export declare function rank(avatar: Buffer, username: String, discriminator: Nu
  * Slash command functions
 */
 export declare namespace slashCommands {
+    interface interactionResponse {
+        custom: {
+            id: String,
+            token: String
+        },
+        message: Object,
+        rawInteraction: Interaction
+    }
     /**
      * @param {Interaction} interaction The slash command interaction
      * @param {Client} client The bots client
-     * @param {*} response The response to the interaction
+     * @param {String | Object} response The response to the interaction
      * @returns Returns the sent message
     */
-    declare async function reply(interaction: Interaction, client: Client, response: any): void;
+    declare function reply(interaction: Interaction, client: Client, response: String | Object): Promise<interactionResponse>;
+
+    /**
+     * Update a pre-existing interaction
+     * @param {Object} interaction The interaction
+     * @param {String | Object} response The updated response
+     * @returns Returns the Interaction
+     */
+    declare function update(interaction: Interaction, response: String | Object): Interaction;
     
     /**
      * Check if the client has the correct permissions
@@ -45,7 +61,7 @@ export declare namespace slashCommands {
      * @param {String} type The permission type
      * @returns If the client has the permission
     */
-    declare async function clientPermissions(client: Client, interaction: Interaction, type: String): Boolean;
+    declare function clientPermissions(client: Client, interaction: Interaction, type: String): Promise<Boolean>;
 
     /**
      * Send an embed explaining that the client does not have the correct permissions
@@ -74,7 +90,7 @@ export declare namespace buttons {
      * @param {Object} options The message options
      * @returns If the response was successful
     */
-    declare async function respond(interaction: Interaction, client: Client, response: any): Boolean | responseData;
+    declare function respond(interaction: Interaction, client: Client, response: any): Promise<Boolean | responseData>;
 }
 
 export declare namespace guildPerms {
@@ -88,7 +104,7 @@ export declare namespace guildPerms {
      * @param {Object} options Additional options
      * @returns If the client has the correct permissions
     */
-    declare async function clientPermissions(client: Client, message: Message, type: String, options: Options): Boolean;
+    declare function clientPermissions(client: Client, message: Message, type: String, options: Options): Promise<Boolean>;
 
     /**
      * Send an embed to the server explaining that the client does not have the correct permissions
