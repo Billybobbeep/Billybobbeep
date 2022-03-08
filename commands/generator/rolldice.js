@@ -1,8 +1,8 @@
 module.exports = {
-    name: 'rolldice',
-    description: 'Roll a rice and recieve a number',
-    alias: ['roll', 'dice'],
-    catagory: 'generator',
+    name: "rolldice",
+    description: "Roll a rice and recieve a number",
+    alias: ["roll", "dice"],
+    catagory: "generator",
     options: [],
     /**
      * Execute the selected command

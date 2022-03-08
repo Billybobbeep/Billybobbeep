@@ -1,11 +1,11 @@
 module.exports = {
-    name: 'rank',
-    description: 'View your rank card or someone elses in the server',
-    catagory: 'info',
-    alias: ['cl', 'currlvl', 'xp'],
+    name: "rank",
+    description: "View your rank card or someone elses in the server",
+    catagory: "info",
+    alias: ["cl", "currlvl", "xp"],
     guildOnly: true,
     slashInfo: { enabled: true, public: false },
-    options: [{ name: 'user', description: 'User to get rank of', type: 6, required: false }],
+    options: [{ name: "user", description: "User to get rank of", type: 6, required: false }],
     /**
      * Execute the selected command
      * @param {Object} message The message that was sent
@@ -13,13 +13,13 @@ module.exports = {
      * @param {Client} client The bots client
      */
     async execute (message, prefix, client) {
-        const guildMemberData = require('../../events/client/database/models/guildMembers.js');
+        const guildMemberData = require("../../events/client/database/models/guildMembers.js");
         let channel = message.data ? {
             send(msg) {
-                require('../../utils/functions').slashCommands.reply(message, client, msg);
+                require("../../utils/functions").slashCommands.reply(message, client, msg);
             },
             reply(user, msg) {
-                require('../../utils/functions').slashCommands.reply(message, client, `<@!${user.id}>, ${msg}`);
+                require("../../utils/functions").slashCommands.reply(message, client, `<@!${user.id}>, ${msg}`);
             },
             async sendTyping() {
                 let guild = client.guilds.cache.get(message.guild_id);
@@ -34,12 +34,12 @@ module.exports = {
         let user;
         if (message.data && message.guild_id) {
             if (message.data.options)
-                user = client.users.cache.get((message.data.options).filter(x => (x.name).toLowerCase() == 'user').value);
+                user = client.users.cache.get((message.data.options).filter(x => (x.name).toLowerCase() == "user").value);
             else
                 user = client.users.cache.get(message.member.user.id);
 
-            if (typeof user !== 'object' && message.data.options)
-                user = await client.users.fetch((message.data.options).filter(x => (x.name).toLowerCase() == 'user').value);
+            if (typeof user !== "object" && message.data.options)
+                user = await client.users.fetch((message.data.options).filter(x => (x.name).toLowerCase() == "user").value);
             else
                 user = await client.users.fetch(message.member.user.id);
         }
@@ -50,7 +50,7 @@ module.exports = {
         channel.sendTyping();
 
         guildMemberData.findOne({ guildId: message.guild?.id || message.guild_id, memberId: user.id}).then(async result => {
-            if (!result) return channel.send('No data found');
+            if (!result) return channel.send("No data found");
             let level = result.level || 0;
             let xp = result.xp || 1;
             let xpForLevel = 150;
@@ -63,9 +63,9 @@ module.exports = {
                 if (xpForLevel < 100)
                     xpForLevel = 100;
             }
-            const canvas = require('canvas');
-            let avatar = await canvas.loadImage(user.displayAvatarURL({ dynamic: false, format: 'png' }));
-            channel.send({ files: [require('../../utils/functions').rank(avatar, displayName, parseInt(user.discriminator), xp, xpForLevel, level)] });
+            const canvas = require("canvas");
+            let avatar = await canvas.loadImage(user.displayAvatarURL({ dynamic: false, format: "png" }));
+            channel.send({ files: [require("../../utils/functions").rank(avatar, displayName, parseInt(user.discriminator), xp, xpForLevel, level)] });
         });
     }
 }

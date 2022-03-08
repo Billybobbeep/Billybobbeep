@@ -1,22 +1,22 @@
-const guildData = require('../client/database/models/guilds');
-const { MessageEmbed } = require('discord.js');
-const { logging } = require('../../utils/functions');
-const axios = require('axios');
-let il = ['dsc.gg', 'discord.gg', 'discord.com/invite'];
+const guildData = require("../client/database/models/guilds");
+const { MessageEmbed } = require("discord.js");
+const { logging } = require("../../utils/functions");
+const axios = require("axios");
+let il = ["dsc.gg", "discord.gg", "discord.com/invite"];
 
 async function getInvite(guildResult, inviteResponse, message, client) {
 	const embed = new MessageEmbed();
 	embed.setTitle(`Billybobbeep | Invite Links`);
 	embed.setTimestamp();
-	embed.setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1');
+	embed.setColor(guildResult.preferences ? guildResult.preferences.embedColor : "#447ba1");
 	embed.setDescription(
 		`${message.guild.id} does not allow you to send links to external servers.\n` +
 		`**Connected Server:** ${inviteResponse.guild.name}\n` +
 		`**Detected Invite Link:** https://discord.gg/${inviteResponse.code}`
 	);
-	(await message.author.send({ embeds: [embed] })).catch(() => embed.setFooter('DM was not sent'));
+	(await message.author.send({ embeds: [embed] })).catch(() => embed.setFooter("DM was not sent"));
 
-	embed.setTitle('Invite Link Detected');
+	embed.setTitle("Invite Link Detected");
 	embed.setDescription(
 		`**Server:** [${inviteResponse.guild.name}](https://discord.gg/${inviteResponse.code})\n` +
 		`**Message ID:** ${message.id}\n\n` +
@@ -47,12 +47,12 @@ module.exports = function(message, client) {
 		if (found) {
 			message.delete();
 			(message.content).split(/ +/g).forEach(word => {
-				let word1 = word.split('/');
+				let word1 = word.split("/");
 				word1.forEach(word2 => {
 					if (completed) return;
 					if (il.includes(word2.toLowerCase())) {
 						completed = true;
-						axios.get(`https://discord.com/api/v9/invites/${word.split('/')[1]}`).then(data => {
+						axios.get(`https://discord.com/api/v9/invites/${word.split("/")[1]}`).then(data => {
 							if (data.data && !data.data.error)
 								getInvite(result, data.data, message, client);
 						});

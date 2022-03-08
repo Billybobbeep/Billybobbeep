@@ -1,9 +1,9 @@
 module.exports = {
-  name: 'rwarn',
-  description: 'Remove a users last warning',
+  name: "rwarn",
+  description: "Remove a users last warning",
   guildOnly: true,
-  catagory: 'moderation',
-  usage: 'rwarn [user] [reason]',
+  catagory: "moderation",
+  usage: "rwarn [user] [reason]",
   /**
      * Execute the selected command
      * @param {Object} message The message that was sent
@@ -11,18 +11,18 @@ module.exports = {
      * @param {Client} client The bots client
      */
   execute (message, prefix, client) {
-    const Discord = require('discord.js');
-    const guildData = require('../../events/client/database/models/guilds.js');
-    const guildMemberData = require('../../events/client/database/models/guildMembers.js');
+    const Discord = require("discord.js");
+    const guildData = require("../../events/client/database/models/guilds.js");
+    const guildMemberData = require("../../events/client/database/models/guildMembers.js");
     let reasons = [];
-    const logging = require('../../utils/functions').logging;
+    const logging = require("../../utils/functions").logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
     async function rwarnCmd() {
       let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
-      if (!user) return message.channel.send('You must provide a user');
+      if (!user) return message.channel.send("You must provide a user");
 
-      if (user.id === message.author.id) return message.channel.send('You cannot remove your own warnings');
-      if (user.bot) return message.channel.send('Bots cannot be warned');
+      if (user.id === message.author.id) return message.channel.send("You cannot remove your own warnings");
+      if (user.bot) return message.channel.send("Bots cannot be warned");
 
       let member;
       let memberResult = await guildMemberData.findOne({ guildId: message.guild.id, memberId: user.id });
@@ -42,9 +42,9 @@ module.exports = {
 
       if (!member) return message.channel.send(`<@!${message.author ? message.author.id : message.member.user.id}>, That user is not in this server`);
 
-      let reason = args.splice(2).join(' ');
+      let reason = args.splice(2).join(" ");
       let tw = memberResult.warnReasons.length;
-      if (!reason) reason = 'No reason was provided';
+      if (!reason) reason = "No reason was provided";
       message.channel.send(`Removed \`1\` warning from ${user}`);
 
       reasons = memberResult.warnReasons;
@@ -57,8 +57,8 @@ module.exports = {
       }
 
       warnReason = warnReason.split(/ +/g);
-      let index = warnReason.findIndex(result => result === '-');
-      let warnReason2 = '';
+      let index = warnReason.findIndex(result => result === "-");
+      let warnReason2 = "";
       let i = 0;
       warnReason.forEach(word => {
           i++;
@@ -72,13 +72,13 @@ module.exports = {
 
       let log = new Discord.MessageEmbed()
         .setTimestamp()
-        .setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1')
-        .setTitle('Warning Removed')
-        .addField('User:', user, true)
-        .addField('By:', message.author, true)
-        .addField('Reason:', reason, false)
-        .addField('Warning Reason', warnReason, false)
-        .addField('Total Warnings', memberResult.warnReasons.length - 1, true)
+        .setColor(guildResult.preferences ? guildResult.preferences.embedColor : "#447ba1")
+        .setTitle("Warning Removed")
+        .addField("User:", user, true)
+        .addField("By:", message.author, true)
+        .addField("Reason:", reason, false)
+        .addField("Warning Reason", warnReason, false)
+        .addField("Total Warnings", memberResult.warnReasons.length - 1, true)
       logging(log, message, client);
       if (memberResult.warnReasons.length < 1)
         message.channel.send(`${user.username} does not have any warnings to remove`);
@@ -101,7 +101,7 @@ module.exports = {
           debounce = true;
         }
         if (debounce === false) {
-          message.channel.send('You do not have the permissions to use this command');
+          message.channel.send("You do not have the permissions to use this command");
         }
       }
     });

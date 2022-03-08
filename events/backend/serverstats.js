@@ -1,4 +1,4 @@
-const guildData = require('../client/database/models/guilds');
+const guildData = require("../client/database/models/guilds");
 
 module.exports = (member, client) => {
 	guildData.findOne({ guildId: member.guild.id }).then(result => {
@@ -11,9 +11,9 @@ module.exports = (member, client) => {
 		}
 
 		if (!data.total || !data.member || !data.bots) return;
-		let tu = result.preferences.serverStats_totalNoText || 'Total Users:'
-		let tm = result.preferences.serverStats_memberNoText || 'Members:';
-		let tb = result.preferences.serverStats_botNoText || 'Bots:';
+		let tu = result.preferences.serverStats_totalNoText || "Total Users:"
+		let tm = result.preferences.serverStats_memberNoText || "Members:";
+		let tb = result.preferences.serverStats_botNoText || "Bots:";
 		try {
 			client.channels.cache.get(data.total).setName(`${tu} ${member.guild.memberCount}`);
 			client.channels.cache.get(data.member).setName(`${tm} ${member.guild.members.cache.filter(m => !m.user.bot).size}`);

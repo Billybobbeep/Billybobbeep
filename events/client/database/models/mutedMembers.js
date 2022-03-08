@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const mutedSchema = new mongoose.Schema({
     userId: { type: String },
@@ -6,4 +6,4 @@ const mutedSchema = new mongoose.Schema({
     time: { type: String }
 });
 
-module.exports = mongoose.model('mutedMembers', mutedSchema);
+module.exports = mongoose.model("mutedMembers", mutedSchema);

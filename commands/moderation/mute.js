@@ -4,10 +4,12 @@ module.exports = {
     guildOnly: true,
     catagory: 'moderation',
     usage: 'mute [user] [time] [reason]',
+    slashInfo: { enabled: true, public: false, options: { mod: true } },
+	options: [{ name: 'user', description: 'The user you\'d like to mute', type: 6, required: true }, { name: 'reason', description: 'Mute reason', type: 3, required: false }],
     /**
      * Execute the selected command
-     * @param {object} message The message that was sent
-     * @param {string} prefix The servers prefix
+     * @param {Object} message The message that was sent
+     * @param {String} prefix The servers prefix
      * @param {Client} client The bots client
      */
     execute(message, prefix, client) {

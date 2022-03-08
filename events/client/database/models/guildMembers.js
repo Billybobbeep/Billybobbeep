@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const guildMemberSchema = new mongoose.Schema({
     memberId: { type: String },
@@ -8,4 +8,4 @@ const guildMemberSchema = new mongoose.Schema({
     warnReasons: { type: Array },
 });
 
-module.exports = mongoose.model('guildMembers', guildMemberSchema);
+module.exports = mongoose.model("guildMembers", guildMemberSchema);

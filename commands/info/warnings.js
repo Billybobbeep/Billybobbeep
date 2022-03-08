@@ -1,8 +1,8 @@
 module.exports = {
-    name: 'warnings',
-    description: 'View a users warnings',
-    catagory: 'info',
-    usage: 'warnings [user]',
+    name: "warnings",
+    description: "View a users warnings",
+    catagory: "info",
+    usage: "warnings [user]",
     guildOnly: true,
     /**
      * Execute the selected command
@@ -11,15 +11,15 @@ module.exports = {
      * @param {Client} client The bots client
      */
     async execute (message, prefix, _client) {
-        const Discord = require('discord.js');
-        const guildData = require('../../events/client/database/models/guilds.js');
-        const guildMemberData = require('../../events/client/database/models/guildMembers.js');
+        const Discord = require("discord.js");
+        const guildData = require("../../events/client/database/models/guilds.js");
+        const guildMemberData = require("../../events/client/database/models/guildMembers.js");
         let reasons = [];
         
         let args = message.content.slice(prefix.length).trim().split(/ +/g);
         let user = message.mentions.users.first() || message.guild.members.cache.get(args[1]);
-        if (!user) return message.channel.send('You must provide a user');
-        if (user.bot || user.user && user.user.bot) return message.channel.send('Bots do not have warnings');
+        if (!user) return message.channel.send("You must provide a user");
+        if (user.bot || user.user && user.user.bot) return message.channel.send("Bots do not have warnings");
         let memberResult = await guildMemberData.findOne({ guildId: message.guild.id, memberId: user.id });
         let guildResult = await guildData.findOne({ guildId: message.guild.id });
         if (!memberResult) return noWarnings();
@@ -34,10 +34,10 @@ module.exports = {
             const embed = new Discord.MessageEmbed()
                 .setDescription(`${user.username} has **${tWarnings}** warnings`)
                 .setTimestamp()
-                .setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1')
+                .setColor(guildResult.preferences ? guildResult.preferences.embedColor : "#447ba1")
                 .setAuthor(`${user.tag}`)
             reasons.forEach(result => {
-                if (typeof result !== 'object') return;
+                if (typeof result !== "object") return;
                 count++;
                 let r = result.reason;
                 let u = `${result.moderator.username}#${result.moderator.discriminator}`;
@@ -51,7 +51,7 @@ module.exports = {
             const embed = new Discord.MessageEmbed()
                 .setDescription(`${user.username} has 0 warnings`)
                 .setTimestamp()
-                .setColor(guildResult.preferences ? guildResult.preferences.embedColor : '#447ba1')
+                .setColor(guildResult.preferences ? guildResult.preferences.embedColor : "#447ba1")
                 .setAuthor(`${user.tag}`)
             message.channel.send({ embeds: [embed] });
         }

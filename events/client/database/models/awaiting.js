@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const awaitingSchema = new mongoose.Schema({
     memberId: { type: String },
@@ -6,4 +6,4 @@ const awaitingSchema = new mongoose.Schema({
     job: { type: String }
 });
 
-module.exports = mongoose.model('awaitingApplications', awaitingSchema);
+module.exports = mongoose.model("awaitingApplications", awaitingSchema);

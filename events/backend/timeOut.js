@@ -1,7 +1,7 @@
 module.exports = (client) => {
-    const mutedData = require('../client/database/models/mutedMembers');
-    const awaitingData = require('../client/database/models/awaiting');
-    const guildMemberData = require('../client/database/models/guildMembers');
+    const mutedData = require("../client/database/models/mutedMembers");
+    const awaitingData = require("../client/database/models/awaiting");
+    const guildMemberData = require("../client/database/models/guildMembers");
     setInterval(() => {
         mute(client);
         database(guildMemberData, client);
@@ -21,8 +21,8 @@ function database(db, client) {
         data.forEach(result => {
             let amt = data.economy_balance;
             let newAmt;
-            if (amt && amt.toString().includes('.')) {
-                amt = amt.toString().split('.');
+            if (amt && amt.toString().includes(".")) {
+                amt = amt.toString().split(".");
                 if (amt[1].length > 2) newAmt = [amt[0]];
                 else return;
                 newAmt.push(amt[1][0] + amt[1][1]);
@@ -31,8 +31,8 @@ function database(db, client) {
             }
             amt = result.bank_balance;
             newAmt = [];
-            if (amt && amt.toString().includes('.')) {
-                amt = amt.toString().split('.');
+            if (amt && amt.toString().includes(".")) {
+                amt = amt.toString().split(".");
                 if (amt[1].length > 2) newAmt = [amt[0]];
                 else return;
                 newAmt.push(amt[1][0] + amt[1][1]);
@@ -44,10 +44,10 @@ function database(db, client) {
 }
 
 function application(db, client) {
-    const { MessageEmbed } = require('discord.js');
-    const moment = require('moment');
-    let appliedUsers = require('../client/database/models/awaiting');
-    let userData = require('../client/database/models/users');
+    const { MessageEmbed } = require("discord.js");
+    const moment = require("moment");
+    let appliedUsers = require("../client/database/models/awaiting");
+    let userData = require("../client/database/models/users");
     appliedUsers.find(function(err, data) {
         if (!data) return;
         data.forEach(async result => {
@@ -56,11 +56,11 @@ function application(db, client) {
             let userResult = await userData.findOne({ userId: user.id });
             
             const embed = new MessageEmbed();
-            embed.setColor('#447ba1');
+            embed.setColor("#447ba1");
             embed.setAuthor(user.username, user.displayAvatarURL());
             let failed = false;
-            let tick = client.emojis.cache.get(require('../../utils/config.json').TickEmoji);
-            let cross = client.emojis.cache.get(require('../../utils/config.json').CrossEmoji);
+            let tick = client.emojis.cache.get(require("../../utils/config.json").TickEmoji);
+            let cross = client.emojis.cache.get(require("../../utils/config.json").CrossEmoji);
             let results = [tick, cross, tick];
             let result1 = Math.floor(Math.random() * results.length);
             let result2 = Math.floor(Math.random() * results.length);
@@ -71,14 +71,14 @@ function application(db, client) {
             if (result1 == 1 && result3 == 1) failed = true;
 
             if (failed == true) {
-                embed.addField('Overall Score:', 'Failed');
-                embed.setFooter('Feel free to apply again in 2 minutes');
+                embed.addField("Overall Score:", "Failed");
+                embed.setFooter("Feel free to apply again in 2 minutes");
                 userResult.job_lastApplied= Date.now();
                 userResult.job_awaiting = false;
                 userResult.save();
             } else {
-                embed.addField('Overall Score:', 'Passed');
-                embed.setFooter('Feel free to start working when you\'re ready');
+                embed.addField("Overall Score:", "Passed");
+                embed.setFooter("Feel free to start working when you're ready");
                 userResult.job_lastApplied= Date.now();
                 userResult.job_awaiting = false;
                 userResult.job_name = job.toLowerCase();
@@ -95,7 +95,7 @@ let cache = {
 }
 function mute(client) {
   if (!client || !client.guilds) return;
-    let MM = require('../client/database/models/mutedMembers');
+    let MM = require("../client/database/models/mutedMembers");
     MM.find(function(err, data) {
         let guild;
         let user;
@@ -109,9 +109,9 @@ function mute(client) {
             time = result.time;
             guild = client.guilds.cache.get(guild);
             let member = guild.members.cache.get(user);
-            if (!member) return remove(result, guild, user, 'mute', client);
+            if (!member) return remove(result, guild, user, "mute", client);
             if (Date.now() >= time) {
-              remove(result, guild, user, 'mute', client);
+              remove(result, guild, user, "mute", client);
               cache.lastUnmuted = { u: result.userId, g: result.guildId }
             }
         });
@@ -119,23 +119,23 @@ function mute(client) {
 }
 
 async function remove(result, guild, user, string, client) {
-    const { MessageEmbed } = require('discord.js');
-    const guildData = require('../client/database/models/guilds');
+    const { MessageEmbed } = require("discord.js");
+    const guildData = require("../client/database/models/guilds");
     let member = guild.members.cache.get(user);
     let guildRes = await guildData.findOne({ guildId: guild.id });
     let mutedRole = guildRes.preferences?.mutedRole;
     if (!member) return result.delete();
-    if (string == 'mute') {
+    if (string == "mute") {
         setTimeout(() => {
             let role = guild.roles.cache.find(role => role.id == mutedRole);
             if (role && member.roles.cache.find(r => r.id == role.id))
                 member.roles.remove(role.id);
         }, 50);
-        const logging = require('../../utils/functions').logging;
+        const logging = require("../../utils/functions").logging;
         const embed = new MessageEmbed();
-        embed.setTitle('User Unmuted');
+        embed.setTitle("User Unmuted");
         embed.setTimestamp();
-        embed.setColor(guildRes.preferences ? guildRes.preferences.embedColor : '#447ba1');
+        embed.setColor(guildRes.preferences ? guildRes.preferences.embedColor : "#447ba1");
         embed.setDescription(`**User:** <@!${member.user.id}>\n**User Tag:** ${member.user.tag}\n**User ID:** ${member.user.id}\n\n**Reason:** Automatic unmute\n\n**Moderator:** <@!${client.user.id}>\n**Moderator Tag:** ${client.user.tag}\n**Moderator ID:** ${client.user.id}`);
         logging(embed, (guild.id).toString(), client);
         result.delete();

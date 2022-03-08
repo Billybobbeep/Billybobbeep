@@ -1,9 +1,9 @@
 module.exports = {
-	name: 'purge',
-	description: 'Delete alot of messages at once',
+	name: "purge",
+	description: "Delete alot of messages at once",
 	guildOnly: true,
-	catagory: 'moderation',
-	usage: 'purge [amount]',
+	catagory: "moderation",
+	usage: "purge [amount]",
 	/**
 	 * Execute the selected command
 	 * @param {Object} message The message that was sent
@@ -12,9 +12,9 @@ module.exports = {
 	 */
 	async execute(message, prefix, client) {
 		// Define dependancies
-		const Discord = require('discord.js');
-		const guilds = require('../../events/client/database/models/guilds.js');
-		const logging = require('../../utils/functions').logging;
+		const Discord = require("discord.js");
+		const guilds = require("../../events/client/database/models/guilds.js");
+		const logging = require("../../utils/functions").logging;
 		// Define the message args
 		let args = message.content.slice(prefix.length).trim().split(/ +/g);
 		// Find the guild data
@@ -27,7 +27,7 @@ module.exports = {
 		 */
 		async function send(msg) {
 			return await message.data ?
-				require('../../utils/functions').slashCommands.reply(message, client, msg).message :
+				require("../../utils/functions").slashCommands.reply(message, client, msg).message :
 				message.channel.send(msg);
 		}
 		/**
@@ -56,14 +56,14 @@ module.exports = {
 
 					// Send a message to the logging channel, if set up
 					const embed = new Discord.MessageEmbed();
-					embed.setTitle('Purged Messages');
+					embed.setTitle("Purged Messages");
 					embed.setDescription(`**Channel:** ${message.channel}\n` +
 						`**Messages Purged:** ${messages.size}\n\n` +
 						`**Moderator:** ${message.author}\n` +
 						`**Moderator Tag:** ${message.author.tag}\n` +
 						`**Moderator ID:** ${message.author.id}\n`)
 					embed.setTimestamp();
-					embed.setColor(guildData?.preferences ? guildData.preferences.embedColor : '#447ba1');
+					embed.setColor(guildData?.preferences ? guildData.preferences.embedColor : "#447ba1");
 					logging(embed, message, client);
 					// Delete the sent message after 3 seconds
 					setTimeout(() => {
@@ -74,7 +74,7 @@ module.exports = {
 						}
 					}, 3000);
 				})
-				.catch(() => message.channel.send('Something went wrong, ensure the messages are not over 2 weeks old'));
+				.catch(() => message.channel.send("Something went wrong, ensure the messages are not over 2 weeks old"));
 		}
 
 		let debounce = false;
@@ -89,7 +89,7 @@ module.exports = {
 				debounce = true;
 			}
 		}
-		// If the user doesn't have permission to execute the command, send an error message
+		// If the user doesn"t have permission to execute the command, send an error message
 		if (debounce === false)
 			send("You do not have the permissions to use this command");
 	}

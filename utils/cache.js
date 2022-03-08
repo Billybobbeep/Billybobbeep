@@ -15,7 +15,7 @@ module.exports = {
          * @returns If the function was successful
          */
         set: function(value) {
-            if (typeof value !== 'boolean') return false;
+            if (typeof value !== "boolean") return false;
             cache.devMode = value;
             return true;
         }

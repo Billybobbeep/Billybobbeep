@@ -1,5 +1,5 @@
-const guildData = require('../client/database/models/guilds');
-const guildMemberData = require('../client/database/models/guildMembers');
+const guildData = require("../client/database/models/guilds");
+const guildMemberData = require("../client/database/models/guildMembers");
 
 module.exports = async (member) => {
 	guildData.findOne({ guildId: member.guild.id }).then(result => {

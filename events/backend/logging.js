@@ -1,7 +1,7 @@
-const guildData = require('../client/database/models/guilds');
-const Discord = require('discord.js');
+const guildData = require("../client/database/models/guilds");
+const Discord = require("discord.js");
 const embed = new Discord.MessageEmbed();
-const logging = require('../../utils/functions').logging;
+const logging = require("../../utils/functions").logging;
 
 /**
  * Called when a guild member has been banned
@@ -22,23 +22,23 @@ module.exports.add = (guildObj, client) => {
         guild.fetchAuditLogs()
             .then(logs => {
                 let ban = logs.entries
-                    .filter(e => e.action === 'MEMBER_BAN_ADD')
+                    .filter(e => e.action === "MEMBER_BAN_ADD")
                     .sort((a, b) => b.createdAt - a.createdAt)
                     .first();
 
                 if (!ban || !ban.target) return;
                 if (ban && ban.executor.id == client.user.id) return;
-                embed.setTitle('User Banned');
+                embed.setTitle("User Banned");
                 embed.setDescription(
                     `**User:** ${user.tag}\n` +
                     `**User ID:** ${user.id}\n\n` +
-                    `**Reason:** ${ban && ban.reason ? ban.reason : 'No reason was provided'}\n\n` +
-                    `**Moderator:** ${ban && ban.executor ? ban.executor : 'Unknown'}\n` +
-                    `**Moderator Tag:** ${ban && ban.executor ? ban.executor.tag : 'Unknown'}\n` +
-                    `**Moderator ID:** ${ban && ban.executor ? ban.executor.id : 'Unknown'}`
+                    `**Reason:** ${ban && ban.reason ? ban.reason : "No reason was provided"}\n\n` +
+                    `**Moderator:** ${ban && ban.executor ? ban.executor : "Unknown"}\n` +
+                    `**Moderator Tag:** ${ban && ban.executor ? ban.executor.tag : "Unknown"}\n` +
+                    `**Moderator ID:** ${ban && ban.executor ? ban.executor.id : "Unknown"}`
                 )
                 embed.setTimestamp(ban.createdTimestamp);
-                embed.setColor(result?.preferences ? result.preferences.embedColor : '#447ba1');
+                embed.setColor(result?.preferences ? result.preferences.embedColor : "#447ba1");
 
                 logging(embed, guild.id, client);
             });
@@ -65,28 +65,28 @@ module.exports.remove = (guildObj, client) => {
             guild.fetchAuditLogs()
                 .then(logs => {
                     let ban = logs.entries
-                        .filter(e => e.action == 'MEMBER_BAN_REMOVE')
+                        .filter(e => e.action == "MEMBER_BAN_REMOVE")
                         .sort((a, b) => b.createdAt - a.createdAt)
                         .first();
                     let pb = logs.entries
-                        .filter(e => e.action == 'MEMBER_BAN_ADD')
+                        .filter(e => e.action == "MEMBER_BAN_ADD")
                         .filter(e => e.target.id === ban.target.id)
                         .sort((a, b) => b.createdAt - a.createdAt)
                         .first();
 
                     if (!ban || !ban.target) return;
-                    embed.setTitle('User Unbanned');
+                    embed.setTitle("User Unbanned");
                     embed.setDescription(
                         `**User:** ${ban.target.tag}\n` +
                         `**User ID:** ${ban.target.id}\n\n` +
-                        `**Banned By:** ${pb && pb.executor ? pb.executor.tag : 'Unknown'}\n` +
-                        `**Banned For:** ${pb && pb.reason ? pb.reason.toString() : 'No reason was provided'}\n\n` +
-                        `**Moderator:** ${ban && ban.executor ? ban.executor : 'Unknown'}\n` +
-                        `**Moderator Tag:** ${ban && ban.executor ? ban.executor.tag : 'Unknown'}\n` +
-                        `**Moderator ID:** ${ban && ban.executor ? ban.executor.id : 'Unknown'}`
+                        `**Banned By:** ${pb && pb.executor ? pb.executor.tag : "Unknown"}\n` +
+                        `**Banned For:** ${pb && pb.reason ? pb.reason.toString() : "No reason was provided"}\n\n` +
+                        `**Moderator:** ${ban && ban.executor ? ban.executor : "Unknown"}\n` +
+                        `**Moderator Tag:** ${ban && ban.executor ? ban.executor.tag : "Unknown"}\n` +
+                        `**Moderator ID:** ${ban && ban.executor ? ban.executor.id : "Unknown"}`
                     )
                     embed.setTimestamp(ban.createdTimestamp);
-                    embed.setColor(result?.preferences ? result.preferences.embedColor : '#447ba1');
+                    embed.setColor(result?.preferences ? result.preferences.embedColor : "#447ba1");
 
                     logging(embed, guild.id, client);
                 });

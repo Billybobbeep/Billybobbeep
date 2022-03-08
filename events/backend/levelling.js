@@ -1,6 +1,6 @@
-const guildData = require('../client/database/models/guilds');
-const guildMemberData = require('../client/database/models/guildMembers');
-let punc = ['!', '/', '"', 'p!', '%', '&', '?', '£', '$', '^', '*', '', '>', ',', '<', 'pls', 'owo', '~'];
+const guildData = require("../client/database/models/guilds");
+const guildMemberData = require("../client/database/models/guildMembers");
+let punc = ["!", "/", "\"", "'", "p!", "%", "&", "?", "£", "$", "^", "*", "", ">", ",", "<", "pls", "owo", "~"];
 
 module.exports = async (message, _client) => {
 	if (!message.guild) return;
@@ -10,7 +10,7 @@ module.exports = async (message, _client) => {
 			if (!memberResult) return;
 
 			// Define required variables
-			let prefix = guildResult.prefix || '~';
+			let prefix = guildResult.prefix || "~";
 			let levelUpChannel = guildResult.preferences ? guildResult.preferences.levelUpChannel || false : false;
 			let args = message.content.split(/ +/g);
 			let xpForLevel = 150;
@@ -37,7 +37,7 @@ module.exports = async (message, _client) => {
 			if (gainedXp < 1) gainedXp = Math.round(Math.random() * 5);
 			if (message.author.bot) return;
 			let levelsEnabled =
-				typeof guildResult.preferences == 'object' && guildResult.preferences.levelsEnabled == 'boolean' ?
+				typeof guildResult.preferences == "object" && guildResult.preferences.levelsEnabled == "boolean" ?
 					guildResult.preferences.levelsEnabled :
 					true;
 			if (!levelsEnabled) return;
@@ -46,7 +46,7 @@ module.exports = async (message, _client) => {
 
 			// If the message starts with a registered prefix, return
 			punc.forEach(p => {
-				if (debounce == true || !p || p == ' ' || p == '') return;
+				if (debounce == true || !p || p == " " || p == "") return;
 				if (message.content.startsWith(p)) debounce = true;
 				else if (args[0].includes(p)) debounce = true;
 			});
@@ -69,7 +69,7 @@ module.exports = async (message, _client) => {
 			memberResult.save(); // Save the users profile
 			currlev = memberResult.level; // Get the users current level
 
-			if (guildResult.preferences && typeof guildResult.preferences.lvlRoles == 'object') {
+			if (guildResult.preferences && typeof guildResult.preferences.lvlRoles == "object") {
 				let roleExists = false;
 				(guildResult.preferences.lvlRoles).forEach(data => {
 					if (data.level == currlev)

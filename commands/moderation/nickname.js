@@ -1,15 +1,15 @@
-const guildData = require('../../events/client/database/models/guilds.js');
-const { Permissions } = require('discord.js');
+const guildData = require("../../events/client/database/models/guilds.js");
+const { Permissions } = require("discord.js");
 
 module.exports = {
-	name: 'nickname',
-	description: 'Change a users nickname',
-	alias: ['nick'],
+	name: "nickname",
+	description: "Change a users nickname",
+	alias: ["nick"],
 	guildOnly: true,
-	catagory: 'moderation',
-	usage: 'nickname [user] [nickname]',
+	catagory: "moderation",
+	usage: "nickname [user] [nickname]",
 	slashInfo: { enabled: true, public: true },
-	options: [{ name: 'user', description: 'The user to change the nickname of', type: 6, required: true }, { name: 'nickname', description: 'The new nickname', type: 3, required: false }],
+	options: [{ name: "user", description: "The user to change the nickname of", type: 6, required: true }, { name: "nickname", description: "The new nickname", type: 3, required: false }],
 	/**
 	 * @param {Object} message The message that was sent
 	 * @param {String} prefix The servers prefix
@@ -23,26 +23,26 @@ module.exports = {
 
 			if (!slash) user = message.mentions.users.first() || message.guild.members.cache.get(args[1]).user;
 			else args[0] && args[0].value ? user = client.guilds.cache.get(message.guild_id).members.cache.get(args[0].value).user : user = message.member.user;
-			if (!user) return slash ? require('../../utils/functions').slashCommands.reply(message, client, 'You must provide a valid user') : message.channel.send('You must provide a valid user');
+			if (!user) return slash ? require("../../utils/functions").slashCommands.reply(message, client, "You must provide a valid user") : message.channel.send("You must provide a valid user");
 
 			let nick;
-			if (slash && args[1] && args[1].name !== 'user') nick = args[1].value
+			if (slash && args[1] && args[1].name !== "user") nick = args[1].value
 			else if (slash) nick = undefined;
-			else nick = args.slice(2).join(' ');
+			else nick = args.slice(2).join(" ");
 			let member = slash ? client.guilds.cache.get(message.guild_id).members.cache.get(args[0].value) : message.guild.members.cache.get(user.id);
 			if (!nick) {
 				try {
-					await member.setNickname('', `${slash ? `${message.member.user.username + '#' + message.member.user.discriminator} via slash command` : `${message.author.tag} via command`}`);
-					slash ? require('../../utils/functions').slashCommands.reply(message, client, 'Removed **' + user.tag + '\'s** nickname') : message.channel.send('Removed **' + user.tag + '\'s** nickname');
+					await member.setNickname("", `${slash ? `${message.member.user.username + "#" + message.member.user.discriminator} via slash command` : `${message.author.tag} via command`}`);
+					slash ? require("../../utils/functions").slashCommands.reply(message, client, "Removed **" + user.tag + "'s** nickname") : message.channel.send("Removed **" + user.tag + "'s** nickname");
 				} catch {
-					slash ? require('../../utils/functions').slashCommands.reply(message, client, 'I do not have the permissions to change this users nickname') : message.channel.send('I do not have the permissions to change this users nickname');
+					slash ? require("../../utils/functions").slashCommands.reply(message, client, "I do not have the permissions to change this users nickname") : message.channel.send("I do not have the permissions to change this users nickname");
 				}
 			} else {
 				try {
-					await member.setNickname(nick, `${slash ? `${message.member.user.username + '#' + message.member.user.discriminator} via slash command` : `${message.author.tag} via command`}`);
-					slash ? require('../../utils/functions').slashCommands.reply(message, client, `Changed **${user.tag}'s** nickname to ${nick}`) : message.channel.send(`Changed **${user.tag}'s** nickname to ${nick}`);
+					await member.setNickname(nick, `${slash ? `${message.member.user.username + "#" + message.member.user.discriminator} via slash command` : `${message.author.tag} via command`}`);
+					slash ? require("../../utils/functions").slashCommands.reply(message, client, `Changed **${user.tag}"s** nickname to ${nick}`) : message.channel.send(`Changed **${user.tag}"s** nickname to ${nick}`);
 				} catch {
-					slash ? require('../../utils/functions').slashCommands.reply(message, client, 'I do not have the permissions to change this users nickname') : message.channel.send('I do not have the permissions to change this users nickname');
+					slash ? require("../../utils/functions").slashCommands.reply(message, client, "I do not have the permissions to change this users nickname") : message.channel.send("I do not have the permissions to change this users nickname");
 				}
 			}
 		}
@@ -64,7 +64,7 @@ module.exports = {
 					nicknameCmd();
 				}
 				if (!debounce)
-					message.channel.send('You can only use this command on yourself unless you are a server moderator');
+					message.channel.send("You can only use this command on yourself unless you are a server moderator");
 			});
 		} else {
 			guildData.findOne({ guildId: message.guild_id }).then(result => {
@@ -77,9 +77,9 @@ module.exports = {
 						debounce = true;
 					}
 				}
-				if (!message.data.options[1]) message.data.options[1] = { value: message.member.user.id, name: 'user', type: 6 }
+				if (!message.data.options[1]) message.data.options[1] = { value: message.member.user.id, name: "user", type: 6 }
 				if (!debounce && message.data.options[1].value !== message.member.user.id)
-					require('../../utils/functions').slashCommands.reply(message, client, 'You can only use this command on yourself unless you are a server moderator');
+					require("../../utils/functions").slashCommands.reply(message, client, "You can only use this command on yourself unless you are a server moderator");
 				else
 					nicknameCmd();
 			});

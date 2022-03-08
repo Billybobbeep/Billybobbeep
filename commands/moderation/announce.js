@@ -1,13 +1,13 @@
-const Discord = require('discord.js');
-const guildData = require('../../events/client/database/models/guilds.js');
-const logging = require('../../utils/functions').logging;
+const Discord = require("discord.js");
+const guildData = require("../../events/client/database/models/guilds.js");
+const logging = require("../../utils/functions").logging;
 
 module.exports = {
-    name: 'announce',
-    description: 'Announce a message in a different channel',
+    name: "announce",
+    description: "Announce a message in a different channel",
     guildOnly: true,
-    catagory: 'moderation',
-    usage: 'announce',
+    catagory: "moderation",
+    usage: "announce",
     /**
      * Execute the selected command
      * @param {Object} message The message that was sent
@@ -20,24 +20,24 @@ module.exports = {
             const embed = new Discord.MessageEmbed()
             embed.setTitle(`Announcement Sent`)
             embed.setTimestamp()
-            embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1')
+            embed.setColor(result.preferences ? result.preferences.embedColor : "#447ba1")
             let filter = m => m.author.id === message.author.id;
             let q1 = new Discord.MessageCollector(message.channel, filter, {
                 max: 1
             })
-            message.channel.send({ content: 'What channel would you like to share your announcement in?' });
+            message.channel.send({ content: "What channel would you like to share your announcement in?" });
 
-            q1.on('collect', async (message, col) => {
+            q1.on("collect", async (message, col) => {
                 let channel = message.mentions.channels.first();
-                if (!channel) return message.channel.send('I cannot find the channel you have provided')
-                message.channel.send('What is the message you would like to annouce?')
+                if (!channel) return message.channel.send("I cannot find the channel you have provided")
+                message.channel.send("What is the message you would like to annouce?")
                 q1.stop();
                 let q2 = new Discord.MessageCollector(message.channel, filter, {
                     max: 1
                 });
-                q2.on('collect', async (message, col) => {
+                q2.on("collect", async (message, col) => {
                     channel.send({ content: message.content });
-                    await message.react('✔');
+                    await message.react("✔");
                     embed.setDescription(
                         `**Message:** ${message.content}\n` +
                         `**Message ID:** ${message.id}\n` +

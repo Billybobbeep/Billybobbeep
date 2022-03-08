@@ -1,12 +1,12 @@
-const { Permissions } = require('discord.js');
-const guildData = require('../../events/client/database/models/guilds.js');
+const { Permissions } = require("discord.js");
+const guildData = require("../../events/client/database/models/guilds.js");
 
 module.exports = {
-	name: 'prefix',
-	description: 'Set up a new server prefix',
+	name: "prefix",
+	description: "Set up a new server prefix",
 	guildOnly: true,
-	catagory: 'moderation',
-	usage: 'prefix [new-prefix]',
+	catagory: "moderation",
+	usage: "prefix [new-prefix]",
 	/**
      * Execute the selected command
      * @param {Object} message The message that was sent
@@ -17,17 +17,17 @@ module.exports = {
 		function prefixCmd() {
 			guildData.findOne({ guildId: message.guild.id }).then(result => {
 				let args = message.content.slice(prefix.length).trim().split(/ +/g);
-				if (!args[1]) return message.channel.send('You must provide a new prefix for this server\n\nThis servers current prefix is ' + result.prefix ? result.prefix : '~');
+				if (!args[1]) return message.channel.send("You must provide a new prefix for this server\n\nThis servers current prefix is " + result.prefix ? result.prefix : "~");
 				let newPrefix = args[1].toLowerCase();
-				if (!newPrefix && result.prefix == '~') return message.channel.send('You must provide a new prefix');
+				if (!newPrefix && result.prefix == "~") return message.channel.send("You must provide a new prefix");
 				if (!newPrefix) {
-					result.prefix = '~';
+					result.prefix = "~";
 					result.save().then(() => {
-						message.channel.send('This servers prefix has been set to `~`');
+						message.channel.send("This servers prefix has been set to `~`");
 					});
 				} else {
 					if (newPrefix === prefix) return message.channel.send(`This servers prefix is already ${newPrefix}`);
-					if (!isNaN(newPrefix)) return message.channel.send('The prefix cannot be a number');
+					if (!isNaN(newPrefix)) return message.channel.send("The prefix cannot be a number");
 
 					result.prefix = newPrefix;
 					result.save().then(() => {
@@ -48,7 +48,7 @@ module.exports = {
 				}
 			}
 			if (debounce === false)
-				message.channel.send('You do not have the permissions to use this command');
+				message.channel.send("You do not have the permissions to use this command");
 		});
 	}
 }

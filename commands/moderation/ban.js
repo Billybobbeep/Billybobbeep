@@ -1,9 +1,9 @@
 module.exports = {
-	name: 'ban',
-	description: 'Ban a member',
+	name: "ban",
+	description: "Ban a member",
 	guildOnly: true,
-	catagory: 'moderation',
-	usage: 'ban [user] [reason]',
+	catagory: "moderation",
+	usage: "ban [user] [reason]",
 	/**
      * Execute the selected command
      * @param {Object} message The message that was sent
@@ -11,13 +11,13 @@ module.exports = {
      * @param {Client} client The bots client
      */
 	execute (message, prefix, client) {
-		const Discord = require('discord.js');
-		const guildData = require('../../events/client/database/models/guilds.js');
+		const Discord = require("discord.js");
+		const guildData = require("../../events/client/database/models/guilds.js");
 		const embed = new Discord.MessageEmbed();
-		const logging = require('../../utils/functions').logging;
+		const logging = require("../../utils/functions").logging;
 		let args = message.content.slice(prefix.length).trim().split(/ +/g);
 		function banCmd() {
-      if (!args[1]) return message.channel.send('You must provide a member to ban');
+      if (!args[1]) return message.channel.send("You must provide a member to ban");
 			guildData.findOne({ guildId: message.guild.id }).then(async result => {
 				let user;
         if (message.mentions.users.first()) {
@@ -27,17 +27,17 @@ module.exports = {
         }
 
 				let member = client.guilds.cache.get(message.guild.id).members.cache.get(user.id);
-				let reason = args.slice(2).join(' ');
+				let reason = args.slice(2).join(" ");
 				let succ = true
 
-				if (!user) return message.channel.send('You must provide a user to ban');
-				if (user.id === message.author.id) return message.channel.send('You cannot ban yourself from the server');
-				if (user.id === client.user.id) return message.channel.send('You cannot ban me');
-				if (!reason) reason = 'No reason was provided';
+				if (!user) return message.channel.send("You must provide a user to ban");
+				if (user.id === message.author.id) return message.channel.send("You cannot ban yourself from the server");
+				if (user.id === client.user.id) return message.channel.send("You cannot ban me");
+				if (!reason) reason = "No reason was provided";
 				if (user.tag === undefined || user.id === undefined) user = user.user;
 
 				let embed = new Discord.MessageEmbed();
-				embed.setTitle('Member Banned');
+				embed.setTitle("Member Banned");
 				embed.setDescription(
 					`**Member Tag:** ${user.tag}\n` +
 					`**Member ID:** ${user.id}\n` +
@@ -47,17 +47,17 @@ module.exports = {
 					`**Moderator ID:** ${message.author.id}`
 				);
 				embed.setTimestamp();
-				embed.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
+				embed.setColor(result.preferences ? result.preferences.embedColor : "#447ba1");
 				let log = new Discord.MessageEmbed();
 				log.setTimestamp();
-				log.setColor(result.preferences ? result.preferences.embedColor : '#447ba1');
+				log.setColor(result.preferences ? result.preferences.embedColor : "#447ba1");
 				log.setTitle(`You have been banned`);
 				log.addField(`Responsible Moderator:`, message.author.tag, true);
 				log.addField(`Reason:`, reason);
 				log.addField(`Guild:`, (message.guild).name);
-				user.send(log).catch(() => embed.setFooter('DM could not be sent'));
+				user.send(log).catch(() => embed.setFooter("DM could not be sent"));
 
-				reason = reason + ' - ' + message.author.tag.toString()
+				reason = reason + " - " + message.author.tag.toString()
 				member.ban({ days: 0, reason: reason })
 				.then(() => {
 					message.channel.send(`Successfully banned **${user.tag}**`);
@@ -78,14 +78,14 @@ module.exports = {
 			} else if (result.preferences.modRole) {
 				if (message.member.roles.cache.find(role => role.id === result.modsRole)) {
 					if (result.modsCanBan) {
-						if (message.guild.id === '733442092667502613') return;
+						if (message.guild.id === "733442092667502613") return;
 						banCmd();
 						debounce = true;
 					}
 				}
 			}
 			if (debounce === false)
-				message.channel.send('You do not have the permissions to use this command');
+				message.channel.send("You do not have the permissions to use this command");
 		});
 	}
 }

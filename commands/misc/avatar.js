@@ -1,12 +1,12 @@
-const Discord = require('discord.js');
-const configFile = require('../../utils/config.json');
+const Discord = require("discord.js");
+const configFile = require("../../utils/config.json");
 
 module.exports = {
-    name: 'avatar',
-    description: 'Announce a message in a different channel',
-    alias: ['pfp', 'myavatar', 'av'],
-    catagory: 'info',
-    usage: 'avatar [user]',
+    name: "avatar",
+    description: "Announce a message in a different channel",
+    alias: ["pfp", "myavatar", "av"],
+    catagory: "info",
+    usage: "avatar [user]",
     guildOnly: true,
     /**
      * Execute the selected command
