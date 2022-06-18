@@ -83,7 +83,7 @@ function handleMessage(message, client) {
         let embed = new MessageEmbed();
         embed.setTitle("Use this command as a slash command");
         embed.setDescription(
-          "Due to some Discord changes, Billy will only reply to slash commands as of April 2022."
+          "Due to some Discord changes, Billy will only reply to slash commands as of August 2022."
         );
         message.channel.send({ embeds: [embed] });
         // Execute the command
