@@ -22,14 +22,19 @@ module.exports = async (message, client) => {
 		logging(embed, message, client)
 
 	userData.findOne({ userId: message.author.id }).then(result => {
-		if (!result.dmed) {
+		if (!result?.dmed) {
 			embed = new Discord.MessageEmbed();
 			embed.setDescription("Note: All messages sent to billybobbeep are recorded");
 			embed.setAuthor(message.author.username, message.author.displayAvatarURL());
 			embed.setColor("#447ba1");
 			message.channel.send({ embeds: [embed] });
-			result.dmed = true;
-			result.save();
+
+			if (!result) {
+				new userData({ userId: message.author.id, dmed: true });
+			} else {
+				result.dmed = true;
+				result.save();
+			}
 		}
 	});
 }

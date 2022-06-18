@@ -9,8 +9,9 @@ module.exports = async (member) => {
 			channel.send(`${member} left the server. (${member.user.tag})`);
 		}
 		if (!member.user.bot) {
-			const guildMemberData = require("../client/database/models/guildMembers.js");
-			guildMemberData.findOne({ guildId: member.guild.id, memberId: member.user.id }).then(memberResult => { if (memberResult) memberResult.delete() });
+			// Remove the user from the database
+			const guildMemberData = require("../client/database/models/guildMembers");
+			guildMemberData.findOne({ guildId: member.guild.id, memberId: member.user.id }).then(memberResult => memberResult ? memberResult.delete() : null);
 		}
 	});
 }

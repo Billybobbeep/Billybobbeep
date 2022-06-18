@@ -12,7 +12,6 @@ module.exports = () => {
         mongoose.connect(process.env.mongoDB, dbOptions).catch(() => console.log(chalk.red("MongoDB connection failed, check your internet connection and activation key.")))
     }
     connect();
-    mongoose.set("useFindAndModify", false);
     mongoose.Promise = global.Promise;
 
     //Event listeners

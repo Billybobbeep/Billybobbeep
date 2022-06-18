@@ -13,7 +13,7 @@ module.exports = {
   execute (message, prefix, client) {
     const Discord = require("discord.js");
     const guildData = require("../../events/client/database/models/guilds.js");
-    const guildMemberData = require("../../events/client/database/models/guildMembers.js");
+    const guildMemberData = require("../../events/client/database/models/guildMembers");
     let reasons = [];
     const logging = require("../../utils/functions").logging;
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -28,7 +28,7 @@ module.exports = {
       let memberResult = await guildMemberData.findOne({ guildId: message.guild.id, memberId: user.id });
       let guildResult = await guildData.findOne({ guildId: message.guild.id });
 
-      if (memberResult.warnReasons.length < 1 || !memberResult.warnReasons.length)
+      if (!memberResult || memberResult.warnReasons.length < 1 || !memberResult.warnReasons.length)
         return message.channel.send(`${user} does not have any warnings`)
 
       try {

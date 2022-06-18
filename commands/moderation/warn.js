@@ -14,7 +14,7 @@ module.exports = {
 	async execute(message, prefix, client) {
 		const Discord = require("discord.js");
 		const guildData = require("../../events/client/database/models/guilds.js");
-		const guildMemberData = require("../../events/client/database/models/guildMembers.js");
+		const guildMemberData = require("../../events/client/database/models/guildMembers");
 		const logging = require("../../utils/functions").logging;
 		let guildResult = await guildData.findOne({ guildId: message.guild?.id || message.guild_id });
 

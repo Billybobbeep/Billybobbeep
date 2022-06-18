@@ -7,7 +7,8 @@ module.exports = async (message, _client) => {
 	guildData.findOne({ guildId: message.guild.id }).then(guildResult => {
 		if (!guildResult) return;
 		guildMemberData.findOne({ guildId: message.guild.id, memberId: message.author.id }).then(async memberResult => {
-			if (!memberResult) return;
+			// Add the user to the database if they aren't already
+			if (!memberResult) return new guildMemberData({ guildId: message.guild.id, memberId: message.author.id });
 
 			// Define required variables
 			let prefix = guildResult.prefix || "~";

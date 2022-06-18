@@ -10,8 +10,8 @@ module.exports = {
      * @param {Client} client The bots client
      */
     execute(message, prefix, client) {
-        const guildData = require("../../events/client/database/models/guilds.js");
-        const guildMemberData = require("../../events/client/database/models/guildMembers.js");
+        const guildData = require("../../events/client/database/models/guilds");
+        const guildMemberData = require("../../events/client/database/models/guildMembers");
         const { MessageEmbed } = require("discord.js");
 
         guildData.findOne({ guildId: message.guild.id }).then(guildResult => {

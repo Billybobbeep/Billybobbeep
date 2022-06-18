@@ -1,8 +1,10 @@
 module.exports = {
-    name: 'ping',
-    description: 'View the reaction times',
-    catagory: 'info',
+    name: "ping",
+    description: "View the reaction times",
+    catagory: "info",
     guildOnly: true,
+    slashInfo: { enabled: true, public: false },
+    options: [],
     /**
      * Execute the selected command
      * @param {Object} message The message that was sent
@@ -10,14 +12,18 @@ module.exports = {
      * @param {Client} client The bots client
      */
     async execute (message, _prefix, client) {
-        let serverResponse;
-        let messageResponse;
-        let msg = await message.channel.send({ content: 'Ping: Receiving Data..' });
-        messageResponse = msg.createdAt - message.createdAt;
-        await client.channels.cache.get('775402441021456385').send(`Ping, Receiving data for: **${message.guild.name}** (${message.guild.id})`).then(msg => serverResponse = msg.createdAt - message.createdAt);
-        if (messageResponse > 500)
-            msg.edit({ content: `**Pong!**\n**Message Response Time:** ${messageResponse}ms\n**Client Response Time:** ${client.ws.ping}ms\n**Server Response Time:** ${serverResponse}ms\n\n⚠ It appears I have a slow connection, please be patient` });
-        else
-            msg.edit({ content: `**Pong!**\n**Message Response Time:** ${messageResponse}ms\n**Client Response Time:** ${client.ws.ping}ms\n**Server Response Time:** ${serverResponse}ms` });
+        const { slashCommands } = require("../../utils/functions");
+
+        console.log(message);
+
+        if (parseInt(client.ws.ping) > 500) {
+            message.data ?
+                slashCommands.reply(message, `**Pong** in ${client.ws.ping}ms\n\n⚠ It appears I have a slow connection, please be patient`) :
+                message.channel.send({ content: `**Pong** in ${client.ws.ping}ms\n\n⚠ It appears I have a slow connection, please be patient` });
+        } else {
+            message.data ?
+                slashCommands.reply(message, `**Pong** in ${client.ws.ping}ms`) :
+                message.channel.send({ content: `**Pong** in ${client.ws.ping}ms` });
+        }
     }
 }
