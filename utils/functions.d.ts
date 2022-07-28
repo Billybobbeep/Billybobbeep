@@ -45,7 +45,7 @@ export declare namespace slashCommands {
      * @param {String | Object} response The response to the interaction
      * @returns Returns the sent message
     */
-    declare function reply(interaction: Interaction, client: Client, response: String | Object): Promise<interactionResponse>;
+    export function reply(interaction: Interaction, client: Client, response: String | Object): Promise<interactionResponse>;
 
     /**
      * Update a pre-existing interaction
@@ -53,7 +53,7 @@ export declare namespace slashCommands {
      * @param {String | Object} response The updated response
      * @returns Returns the Interaction
      */
-    declare function update(interaction: Interaction, response: String | Object): Interaction;
+    export function update(interaction: Interaction, response: String | Object): Interaction;
     
     /**
      * Check if the client has the correct permissions
@@ -61,7 +61,7 @@ export declare namespace slashCommands {
      * @param {String} type The permission type
      * @returns If the client has the permission
     */
-    declare function clientPermissions(client: Client, interaction: Interaction, type: String): Promise<Boolean>;
+    export function clientPermissions(client: Client, interaction: Interaction, type: String): Promise<Boolean>;
 
     /**
      * Send an embed explaining that the client does not have the correct permissions
@@ -69,14 +69,14 @@ export declare namespace slashCommands {
      * @param {Client} client The bots client
      * @param {String} permission The missing permission
     */
-    declare function permissionCallback(interaction: Interaction, client: Client, permission: String): void;
+    export function permissionCallback(interaction: Interaction, client: Client, permission: String): void;
 }
 
 /**
  * Button interactions
 */
 export declare namespace buttons {
-   declare interface responseData {
+   export interface responseData {
         interaction: {
             readonly id: String,
             readonly token: String            
@@ -90,11 +90,11 @@ export declare namespace buttons {
      * @param {Object} options The message options
      * @returns If the response was successful
     */
-    declare function respond(interaction: Interaction, client: Client, response: any): Promise<Boolean | responseData>;
+    export function respond(interaction: Interaction, client: Client, response: any): Promise<Boolean | responseData>;
 }
 
 export declare namespace guildPerms {
-    declare interface Options {
+    export interface Options {
         guild: Boolean
     }
     /**
@@ -104,7 +104,7 @@ export declare namespace guildPerms {
      * @param {Object} options Additional options
      * @returns If the client has the correct permissions
     */
-    declare function clientPermissions(client: Client, message: Message, type: String, options: Options): Promise<Boolean>;
+    export function clientPermissions(client: Client, message: Message, type: String, options: Options): Promise<Boolean>;
 
     /**
      * Send an embed to the server explaining that the client does not have the correct permissions
@@ -112,5 +112,5 @@ export declare namespace guildPerms {
      * @param {Client} client
      * @param {String} permission The missing permission
     */
-    declare function permissionCallback(message: Message, client: Client, permission: String): void;
+    export function permissionCallback(message: Message, client: Client, permission: String): void;
 }
