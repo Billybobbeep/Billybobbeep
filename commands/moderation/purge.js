@@ -10,7 +10,7 @@ module.exports = {
 	 * @param {String} prefix The servers prefix
 	 * @param {Client} client The bots client
 	 */
-	async execute(message, prefix, client) {
+	execute: async function(message, prefix, client) {
 		// Define dependancies
 		const Discord = require("discord.js");
 		const guilds = require("../../events/client/database/models/guilds.js");

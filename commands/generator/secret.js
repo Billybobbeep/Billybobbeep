@@ -103,11 +103,11 @@ module.exports = {
 	guildOnly: true,
 	//options: [{ name: "message", description: "The message to repeat", type: 3, required: false }],
 	/**
-	   * @param {Object} message The message that was sent
-	   * @param {String} prefix The servers prefix
-	   * @param {Client} client The bots client
-	   */
-	execute(message, prefix, _client) {
+	 * @param {Object} message The message that was sent
+	 * @param {String} prefix The servers prefix
+	 * @param {Client} client The bots client
+	 */
+	execute: function(message, prefix, _client) {
 		let args = message.content.slice(prefix.length).trim().split(/ +/g);
 		if (!args) return message.channel.send("You must provide a message to send");
 

@@ -15,7 +15,7 @@ module.exports = {
 	 * @param {String} prefix The servers prefix
 	 * @param {Client} client The bots client
 	 */
-	execute(message, prefix, client) {
+	execute: function(message, prefix, client) {
 		async function nicknameCmd() {
 			let slash = message.data && !message.content ? true : false;
 			let args = slash ? message.data.options : message.content.slice(prefix.length).trim().split(/ +/g);

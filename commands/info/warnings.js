@@ -10,7 +10,7 @@ module.exports = {
    * @param {String} prefix The servers prefix
    * @param {Client} client The bots client
    */
-  async execute(message, prefix, _client) {
+  execute: async function(message, prefix, _client) {
     const Discord = require("discord.js");
     const guildData = require("../../events/client/database/models/guilds");
     const guildMemberData = require("../../events/client/database/models/guildMembers");
@@ -70,5 +70,5 @@ module.exports = {
         .setAuthor(`${user.tag}`);
       message.channel.send({ embeds: [embed] });
     }
-  },
-};
+  }
+}

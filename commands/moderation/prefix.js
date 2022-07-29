@@ -13,7 +13,7 @@ module.exports = {
      * @param {String} prefix The servers prefix
      * @param {Client} client The bots client
      */
-	execute (message, prefix, client) {
+	execute: function(message, prefix, client) {
 		function prefixCmd() {
 			guildData.findOne({ guildId: message.guild.id }).then(result => {
 				let args = message.content.slice(prefix.length).trim().split(/ +/g);

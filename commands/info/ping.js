@@ -11,7 +11,7 @@ module.exports = {
    * @param {String} prefix The servers prefix
    * @param {Client} client The bots client
    */
-  async execute(message, _prefix, client) {
+  execute: async function(message, _prefix, client) {
     const { slashCommands } = require("../../utils/functions");
 
     if (parseInt(client.ws.ping) > 500) {
@@ -28,5 +28,5 @@ module.exports = {
         ? slashCommands.reply(message, `**Pong** in ${client.ws.ping}ms`)
         : message.channel.send({ content: `**Pong** in ${client.ws.ping}ms` });
     }
-  },
-};
+  }
+}

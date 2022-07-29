@@ -15,7 +15,7 @@ module.exports = {
 	 * @param {String} prefix The servers prefix
 	 * @param {Client} client The bots client
 	 */
-	execute(message, _prefix, client) {
+	execute: function(message, _prefix, client) {
 		let randomImage = [
 			`https://cdn.discordapp.com/attachments/731508540761440336/732301974543794297/8296f82029ae59b698060544deb1531a.png`,
 			`https://media.discordapp.net/attachments/729336942998585346/732000263988314242/image0.png?width=415&height=475`,

@@ -19,7 +19,7 @@ module.exports = {
    * @param {String} prefix The servers prefix
    * @param {Client} client The bots client
    */
-  async execute(message, prefix, client) {
+  execute: async function(message, prefix, client) {
     const guildMemberData = require("../../events/client/database/models/guildMembers");
     let channel = message.data
       ? {
@@ -110,5 +110,5 @@ module.exports = {
           ],
         });
       });
-  },
-};
+  }
+}

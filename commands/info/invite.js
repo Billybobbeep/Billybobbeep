@@ -3,14 +3,14 @@ module.exports = {
 	description: "Generate a bot invite",
 	catagory: "info",
 	slashInfo: { enabled: true, public: false },
-    options: [],
+  options: [],
 	/**
-     * Execute the selected command
-     * @param {Object} message The message that was sent
-     * @param {String} prefix The servers prefix
-     * @param {Client} client The bots client
-     */
-	execute (message, _prefix, client) {
+	 * Execute the selected command
+	 * @param {Object} message The message that was sent
+	 * @param {String} prefix The servers prefix
+	 * @param {Client} client The bots client
+	 */
+	execute: function(message, _prefix, client) {
 		const guildData = require("../../events/client/database/models/guilds");
 		const Discord = require("discord.js");
 		const embed = new Discord.MessageEmbed();
@@ -20,9 +20,9 @@ module.exports = {
 			embed.addField("Invite the bot to your server", `[https://discord.com/oauth2/authorize/...](https://discord.com/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot)`);
 			embed.addField("View more information", `[View ${client.user.username} on top.gg](https://top.gg/bot/${client.user.id})`);
 			embed.addField(`Join the official ${client.user.username} server`, "[Billybobbeep Help Center](https://discord.com/invite/AUGX9sywnP)");
-			message.data ?
-				require("../../utils/functions").slashCommands.reply(message, client, embed) :
-				message.channel.send({ embeds: [embed] });
+			message.data
+				? require("../../utils/functions").slashCommands.reply(message, client, embed)
+				: message.channel.send({ embeds: [embed] });
 		});
 	}
 }

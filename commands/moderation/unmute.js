@@ -10,7 +10,7 @@ module.exports = {
      * @param {String} prefix The servers prefix
      * @param {Client} client The bots client
      */
-	execute(message, prefix, client) {
+	execute: function(message, prefix, client) {
 		const mutedMembers = require("../../events/client/database/models/mutedMembers");
 		const guildData = require("../../events/client/database/models/guilds");
 		const Discord = require("discord.js");

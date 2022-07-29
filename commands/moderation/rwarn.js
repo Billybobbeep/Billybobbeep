@@ -5,12 +5,12 @@ module.exports = {
   catagory: "moderation",
   usage: "rwarn [user] [reason]",
   /**
-     * Execute the selected command
-     * @param {Object} message The message that was sent
-     * @param {String} prefix The servers prefix
-     * @param {Client} client The bots client
-     */
-  execute (message, prefix, client) {
+   * Execute the selected command
+   * @param {Object} message The message that was sent
+   * @param {String} prefix The servers prefix
+   * @param {Client} client The bots client
+   */
+  execute: function(message, prefix, client) {
     const Discord = require("discord.js");
     const guildData = require("../../events/client/database/models/guilds.js");
     const guildMemberData = require("../../events/client/database/models/guildMembers");

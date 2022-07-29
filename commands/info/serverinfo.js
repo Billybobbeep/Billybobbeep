@@ -44,7 +44,7 @@ module.exports = {
      * @param {String} prefix The servers prefix
      * @param {Client} client The bots client
      */
-	execute (message, _prefix, _client) {
+	execute: function(message, _prefix, _client) {
 		const roles = message.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
 		const members = message.guild.members.cache;
 		const channels = message.guild.channels.cache;

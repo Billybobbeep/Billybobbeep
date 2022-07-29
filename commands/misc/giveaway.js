@@ -9,11 +9,11 @@ module.exports = {
 	usage: "giveaway [time] [channel] [prize]",
 	guildOnly: true,
 	/**
-	   * @param {Object} message The message that was sent
-	   * @param {String} prefix The servers prefix
-	   * @param {Client} client The bots client
-	   */
-	execute(message, prefix, _client) {
+	 * @param {Object} message The message that was sent
+	 * @param {String} prefix The servers prefix
+	 * @param {Client} client The bots client
+	 */
+	execute: function(message, prefix, _client) {
 		if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) return message.channel.send("You must have `Manage Guild` permissions to use this command");
 		guildData.findOne({ guildId: message.guild.id }).then(async result => {
 			let args = message.content.slice(prefix.length).trim().split(/ +/g);
