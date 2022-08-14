@@ -1,110 +1,123 @@
+const { Client, CommandInteraction, EmbedBuilder, SlashCommandBuilder } = require("discord.js");
+const { logging, checkMod } = require("../../utils/functions");
+
 module.exports = {
-	name: "kick",
-	description: "Kick a member",
-	guildOnly: true,
-	catagory: "moderation",
-	usage: "kick [user] [reason]",
-	slashInfo: { enabled: true, public: false, options: { mod: true } },
-	options: [{ name: "user", description: "The user you'd like to kick", type: 6, required: true }, { name: "reason", description: "Reason to kick", type: 3, required: false }],
-	/**
-	 * @param {Object} message The message that was sent
-	 * @param {String} prefix The servers prefix
-	 * @param {Client} client The bots client
-	 */
-	execute: function(message, prefix, client) {
-		const Discord = require("discord.js");
-		const guildData = require("../../events/client/database/models/guilds.js");
-		const logging = require("../../utils/functions").logging;
+  name: "kick",
+  description: "Kick a user from the server",
+  category: "moderation",
+  slashInfo: {
+    enabled: true,
+    public: true
+  },
+  /**
+   * Get the command's slash info
+   * @returns The slash information
+   */
+  getSlashInfo: function() {
+    const builder = new SlashCommandBuilder();
+    // Set basic command information
+    builder.setName(this.name);
+    builder.setDescription(this.description);
+    // If the command can be used in DMs
+    builder.setDMPermission(false);
+    // Add an option to select the target user
+    builder.addUserOption((option) => {
+      // Set the option name
+      option.setName("user");
+      // Set the option description
+      option.setDescription("The user to kick");
+      // If the option is required
+      option.setRequired(true);
+      // Return the option
+      return option;
+    })
+    // Add an option to provide a reason
+    builder.addStringOption((option) => {
+      // Set the option name
+      option.setName("reason");
+      // Set the option description
+      option.setDescription("The reason for the kick");
+      // If the option is required
+      option.setRequired(false);
+      // Return the option
+      return option;
+    });
+    // Return the information in JSON format
+    return builder.toJSON();
+  },
+  /**
+   * Execute the selected command
+   * @param {CommandInteraction} interaction The interaction that was sent
+   * @param {Client} client The bots client
+   */
+  execute: async function(interaction, client) {
+    // Defer the reply
+    await interaction.deferReply();
 
-		async function kickCmd() {
-			let slash = (!message.content && message.data ? true : false);
-			let args = !slash ? message.content.slice(prefix.length).trim().split(/ +/g) : message.data.options;
-			let channel = slash ?
-				{
-					send(msg) {
-						require("../../utils/functions").slashCommands.reply(message, client, msg)
-					},
-					reply(user, msg) {
-						require("../../utils/functions").slashCommands.reply(message, client, `<@!${user.id}>, ${msg}`)
-					}
-				} : message.channel;
-			let guild = await client.guilds.fetch(message.guild?.id || message.guild_id);
-			guildData.findOne({ guildId: guild.id }).then(async result => {
-				let user = slash ? message.data.options[0].value : message.mentions.users.first() || message.guild.members.cache.get(args[1]);
-				let reason = typeof args == "object" ? (args[1] ? args[1].value : false) : (args ? args.slice(2).join(" ") : false);
-				let succ = true;
-				let member;
+    if (!(await checkMod(interaction)))
+      return interaction.followUp({ content: "You must be a moderator to change a users nickname", ephemeral: true });
 
-				if (typeof user == "string") {
-					member = await guild.members.fetch(user);
-					user = await client.users.fetch(user);
-				} else if (typeof user == "object") {
-					if (!user.id || user.user) user = user.user;
-					member = await guild.members.fetch(user.id);
-				} else
-					return channel.send("You must mention a user to kick");
+    // Get the target user
+    let user = (interaction.options.data).find((option) => option.name === "user")?.value;
+    let reason = (interaction.options.data).find((option) => option.name === "reason")?.value;
 
-				if (user.id == (message.author ? message.author.id : message.member.user.id))
-					return channel.send("You cannot kick yourself from the server");
-				if (user.id == client.user.id)
-					return channel.send("You cannot kick me from the server");
+    // If the user is not found
+    if (!user)
+      return interaction.followUp({ content: "Invalid arguments, you must provide a user to kick", ephemeral: true });
 
-				if (!reason) reason = "No reason provided";
-				if (member.roles.highest <= message.member.roles.highest) return channel.send("You cannot kick " + user.username);
+    // Fetch the user's guild member object
+    let member = await interaction.guild.members.fetch(user);
 
-				let log = new Discord.MessageEmbed()
-					.setTimestamp()
-					.setColor(result.preferences ? result.preferences.embedColor : "#447ba1")
-					.setTitle("You have been kicked")
-					.addField("Responsible Moderator:", (message.author ? message.author.tag : `${message.member.user.username}#${message.member.user.discriminator}`), true)
-					.addField("Reason:", reason)
-					.addField("Guild:", (message.guild ? message.guild.name : client.guilds.cache.get(message.guild_id).name));
-				let embed = new Discord.MessageEmbed()
-					.setTitle("Member Kicked")
-					.setDescription(
-						`**Member Tag:** ${user.tag}\n` +
-						`**Member ID:** ${user.id}\n` +
-						`**Reason:** ${reason}\n\n` +
-						`**Moderator:** ${message.author ? message.author : message.member.user}\n` +
-						`**Moderator Tag:** ${message.author ? message.author.tag : (message.member.user.username + "#" + message.member.user.discriminator)}\n` +
-						`**Moderator ID:** ${message.author ? message.author.id : message.member.user.id}`
-					)
-					.setColor(result.preferences ? result.preferences.embedColor : "#447ba1")
-					.setTimestamp();
+    // If the member is not found
+    if (!member)
+      return interaction.followUp({ content: "Could not find the user provided", ephemeral: true });
 
-				reason = reason + " - " + (message.author ? message.author.tag : (message.member.user.username + "#" + message.member.user.discriminator))
-				member.kick({ reason: reason })
-					.then(() => {
-						channel.send(`Successfully kicked **${user.tag}**`);
-					})
-					.catch(() => {
-						channel.reply("I was unable to kick the member you provided");
-						succ = false
-					});
-				if (succ) {
-					await user.send(log).catch(() => embed.setFooter("DM could not be sent"));
-					logging(embed, (message.guild?.id || message.guild_id), client);
-				}
-			});
-		}
-		let debounce = false;
+    // If the user is the client
+    if (member.user.id === client.user.id)
+      return interaction.followUp({ content: "I cannot kick myself", ephemeral: true });
 
-		guildData.findOne({ guildId: message.guild?.id || message.guild_id }).then(async result => {
-			if (!result || result) await client.guilds.cache.get(message.guild?.id || message.guild_id);
-			if (client.guilds.cache.get(message.guild?.id || message.guild_id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has(Discord.Permissions.FLAGS.KICK_MEMBERS) ||
-				client.guilds.cache.get(message.guild?.id || message.guild_id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
-				kickCmd();
-				debounce = true;
-			} else if (result.preferences.modRole) {
-				if (message.member.roles.cache.find(role => role.id == result.preferences.modRole)) {
-					if (result.modsCanKick) {
-						kickCmd();
-						debounce = true;
-					}
-				}
-			}
-			if (!debounce)
-				message.channel.send("You do not have the permissions to use this command");
-		});
-	}
+    // Cannot kick people with a higher role than yourself
+    if ((member.roles.highest.rawPosition || 0) <= (interaction.guild.members.cache.get(interaction.user.id).roles.highest.rawPosition || 0))
+      return interaction.followUp({ content: "You cannot kick users with a higher role than yourself", ephemeral: true });
+
+    // If the user is not kickable
+    if (!member.kickable)
+      return interaction.followUp({ content: "I cannot kick this user", ephemeral: true });
+
+    // Define the error flag
+    let errorExists = false;
+
+    // Kick the user
+    member
+      .kick(reason || "No reason provided")
+      .then(() => interaction.followUp({ content: `Kicked ${member.user.username}`, ephemeral: true }))
+      .catch(() => {
+        // Set the error flag
+        errorExists = true;
+        // Reply with an error
+        interaction.followUp({ content: "Could not kick the user", ephemeral: true });
+      });
+
+    // If there was an error, return
+    if (errorExists)
+      return;
+
+    // Construct an embed
+    let embed = new EmbedBuilder();
+    // Set default properties
+    embed.setColor("#447ba1");
+    embed.setTimestamp();
+    // Set the title
+    embed.setTitle("Member Kicked");
+    // Set the description
+    embed.setDescription([
+      `**User:** <@!${member.user.id}>`,
+      `**User Tag:** ${member.user.tag}`,
+      `**User ID:** ${member.user.id}`,
+      `**Reason:** ${reason || "No reason provided"}`,
+      `**Respensible Moderator:** ${interaction.user.tag}`,
+    ]);
+    // Log the event
+    logging(embed, interaction, client, { type: "interaction", messageType: "embed" });
+  }
 }

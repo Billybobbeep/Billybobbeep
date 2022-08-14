@@ -1,91 +1,121 @@
+const { Client, CommandInteraction, Embedbuilder, SlashCommandBuilder } = require("discord.js");
+const { logging, checkMod } = require("../../utils/functions");
+
 module.exports = {
-	name: "ban",
-	description: "Ban a member",
-	guildOnly: true,
-	catagory: "moderation",
-	usage: "ban [user] [reason]",
-	/**
-	 * Execute the selected command
-	 * @param {Object} message The message that was sent
-	 * @param {String} prefix The servers prefix
-	 * @param {Client} client The bots client
-	 */
-	execute: function(message, prefix, client) {
-		const Discord = require("discord.js");
-		const guildData = require("../../events/client/database/models/guilds.js");
-		const embed = new Discord.MessageEmbed();
-		const logging = require("../../utils/functions").logging;
-		let args = message.content.slice(prefix.length).trim().split(/ +/g);
-		function banCmd() {
-      if (!args[1]) return message.channel.send("You must provide a member to ban");
-			guildData.findOne({ guildId: message.guild.id }).then(async result => {
-				let user;
-        if (message.mentions.users.first()) {
-          user = await message.mentions.users.first();
-        } else {
-          user = await client.users.fetch(args[1]);
-        }
+  name: "ban",
+  description: "Ban a user from the server",
+  category: "moderation",
+  slashInfo: {
+    enabled: true,
+    public: true
+  },
+  /**
+   * Get the command's slash info
+   * @returns The slash information
+   */
+  getSlashInfo: function() {
+    const builder = new SlashCommandBuilder();
+    // Set basic command information
+    builder.setName(this.name);
+    builder.setDescription(this.description);
+    // If the command can be used in DMs
+    builder.setDMPermission(false);
+    // Add an option to select the target user
+    builder.addUserOption((option) => {
+      // Set the option name
+      option.setName("user");
+      // Set the option description
+      option.setDescription("The user to ban");
+      // If the option is required
+      option.setRequired(true);
+      // Return the option
+      return option;
+    })
+    // Add an option to provide a reason
+    builder.addStringOption((option) => {
+      // Set the option name
+      option.setName("reason");
+      // Set the option description
+      option.setDescription("The reason for the ban");
+      // If the option is required
+      option.setRequired(false);
+      // Return the option
+      return option;
+    });
+    // Return the information in JSON format
+    return builder.toJSON();
+  },
+  /**
+   * Execute the selected command
+   * @param {CommandInteraction} interaction The interaction that was sent
+   * @param {Client} client The bots client
+   */
+  execute: async function(interaction, client) {
+    // Defer the reply
+    await interaction.deferReply();
 
-				let member = client.guilds.cache.get(message.guild.id).members.cache.get(user.id);
-				let reason = args.slice(2).join(" ");
-				let succ = true
+    if (!(await checkMod(interaction)))
+      return interaction.followUp({ content: "You must be a moderator to change a users nickname", ephemeral: true });
 
-				if (!user) return message.channel.send("You must provide a user to ban");
-				if (user.id === message.author.id) return message.channel.send("You cannot ban yourself from the server");
-				if (user.id === client.user.id) return message.channel.send("You cannot ban me");
-				if (!reason) reason = "No reason was provided";
-				if (user.tag === undefined || user.id === undefined) user = user.user;
+    // Get the target user
+    let user = (interaction.options.data).find((option) => option.name === "user")?.value;
+    let reason = (interaction.options.data).find((option) => option.name === "reason")?.value;
 
-				let embed = new Discord.MessageEmbed();
-				embed.setTitle("Member Banned");
-				embed.setDescription(
-					`**Member Tag:** ${user.tag}\n` +
-					`**Member ID:** ${user.id}\n` +
-					`**Reason:** ${reason}\n\n` +
-					`**Moderator:** ${message.author}\n` +
-					`**Moderator Tag:** ${message.author.tag}\n` +
-					`**Moderator ID:** ${message.author.id}`
-				);
-				embed.setTimestamp();
-				embed.setColor(result.preferences ? result.preferences.embedColor : "#447ba1");
-				let log = new Discord.MessageEmbed();
-				log.setTimestamp();
-				log.setColor(result.preferences ? result.preferences.embedColor : "#447ba1");
-				log.setTitle(`You have been banned`);
-				log.addField(`Responsible Moderator:`, message.author.tag, true);
-				log.addField(`Reason:`, reason);
-				log.addField(`Guild:`, (message.guild).name);
-				user.send(log).catch(() => embed.setFooter("DM could not be sent"));
+    // If the user is not found
+    if (!user)
+      return interaction.followUp({ content: "Invalid arguments, you must provide a user to ban", ephemeral: true });
 
-				reason = reason + " - " + message.author.tag.toString()
-				member.ban({ days: 0, reason: reason })
-				.then(() => {
-					message.channel.send(`Successfully banned **${user.tag}**`);
-				}).catch(() => {
-					succ = false
-					message.channel.send(`<@!${message.author ? message.author.id : message.member.user.id}>, I was unable to ban the member you provided`);
-				});
-				if (succ) logging(embed, message, client);
-			});
-		}
+    // Fetch the user's guild member object
+    let member = await interaction.guild.members.fetch(user);
 
-		let debounce = false;
+    // If the member is not found
+    if (!member)
+      return interaction.followUp({ content: "Could not find the user provided", ephemeral: true });
 
-		guildData.findOne({ guildId: message.guild.id }).then(result => {
-			if (message.member.permissions.has(Discord.Permissions.FLAGS.BAN_MEMBERS) || message.member.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
-				banCmd();
-				debounce = true;
-			} else if (result.preferences.modRole) {
-				if (message.member.roles.cache.find(role => role.id === result.modsRole)) {
-					if (result.modsCanBan) {
-						if (message.guild.id === "733442092667502613") return;
-						banCmd();
-						debounce = true;
-					}
-				}
-			}
-			if (debounce === false)
-				message.channel.send("You do not have the permissions to use this command");
-		});
-	}
+    // If the user is the client
+    if (member.user.id === client.user.id)
+      return interaction.followUp({ content: "I cannot ban myself", ephemeral: true });
+
+    // Cannot ban people with a higher role than yourself
+    if ((member.roles.highest.rawPosition || 0) <= (interaction.guild.members.cache.get(interaction.user.id).roles.highest.rawPosition || 0))
+      return interaction.followUp({ content: "You cannot ban users with a higher role than yourself", ephemeral: true });
+
+    // If the user is not bannable
+    if (!member.bannable)
+      return interaction.followUp({ content: "I cannot ban this user", ephemeral: true });
+
+    // Define the error flag
+    let errorExists = false;
+
+    // Ban the user
+    member
+      .ban({
+        deleteMessageDays: 0,
+        reason: reason || "No reason provided"
+      })
+      .then(() => interaction.followUp({ content: `Banned ${member.user.username}`, ephemeral: true }))
+      .catch(() => interaction.followUp({ content: "Could not ban the user", ephemeral: true }));
+
+    // If there was an error, return
+    if (errorExists)
+      return;
+
+    // Construct an embed
+    let embed = new EmbedBuilder();
+    // Set default properties
+    embed.setColor("#447ba1");
+    embed.setTimestamp();
+    // Set the title
+    embed.setTitle("Member Banned");
+    // Set the description
+    embed.setDescription([
+      `**User:** <@!${member.user.id}>`,
+      `**User Tag:** ${member.user.tag}`,
+      `**User ID:** ${member.user.id}`,
+      `**Reason:** ${reason || "No reason provided"}`,
+      `**Respensible Moderator:** ${interaction.user.tag}`,
+    ]);
+    // Log the event
+    logging(embed, interaction, client, { type: "interaction", messageType: "embed" });
+  }
 }

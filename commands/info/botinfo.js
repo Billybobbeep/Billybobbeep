@@ -1,44 +1,68 @@
-module.exports = {
-    name: "info",
-    description: "View billybobbeep's info",
-    guildOnly: true,
-    /**
-     * Execute the selected command
-     * @param {Object} message The message that was sent
-     * @param {String} prefix The servers prefix
-     * @param {Client} client The bots client
-     */
-  execute: function(message, _prefix, client) {
-    const { MessageEmbed, version: djsversion } = require("discord.js");
-    const { version } = require("../../package.json");
-    const { utc } = require("moment");
-    const guildData = require("../../events/client/database/models/guilds");
-    const os = require("os");
-    const ms = require("ms");
+const { Client, CommandInteraction, EmbedBuilder, SlashCommandBuilder } = require("discord.js");
+const { format } = require("date-fns");
 
-    const core = os.cpus()[0];
-    guildData.findOne({ guildId: message.guild.id }).then(result => {
-      const embed = new MessageEmbed()
-        .setDescription("**Billybobbeep | Bot Info**")
-        .setThumbnail(client.user.displayAvatarURL())
-        .setColor(result.preferences ? result.preferences.embedColor : "#447ba1")
-        .setFooter(`Requested by: ${message.author.tag}`)
-        .addField("General", [
-          `**Name:** ${client.user.tag} (${client.user.id})`,
-          `**Servers:** ${client.guilds.cache.size.toLocaleString()} `,
-          `**Users:** ${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0).toLocaleString()}`,
-          `**Creation Date:** ${utc(client.user.createdTimestamp).format("Do MMMM YYYY HH:mm:ss")}`,
-          `**Node.js:** ${process.version}`,
-          `**Version:** v${version}`,
-          `**Discord.js:** v${djsversion}`,
-          "\u200b"
-        ])
-        .addField("System", [
-          `**✰ Platform:** ${(process.platform).replace("win32", "Windows").replace("linux", "Linux")}`,
-          `**✰ Uptime:** ${ms(os.uptime() * 1000, { long: true })}`,
-        ])
-        .setTimestamp();
-      message.channel.send({ embeds: [embed] });
+module.exports = {
+  name: "info",
+  description: "View billybobbeep's info",
+  category: "info",
+  slashInfo: {
+    enabled: true,
+    public: true
+  },
+  /**
+   * Get the command's slash info
+   * @returns The slash information
+   */
+  getSlashInfo: function() {
+    const builder = new SlashCommandBuilder();
+    // Set basic command information
+    builder.setName(this.name);
+    builder.setDescription(this.description);
+    // If the command can be used in DMs
+    builder.setDMPermission(true);
+    // Return the information in JSON format
+    return builder.toJSON();
+  },
+  /**
+   * Execute the selected command
+   * @param {CommandInteraction} interaction The interaction that was sent
+   * @param {Client} client The bots client
+   */
+  execute: function(interaction, client) {
+    // Construct an embed
+    const embed = new EmbedBuilder();
+    embed.setDescription(`**${client.user.username} | Bot Information**`);
+    embed.addFields([
+      {
+        name: "**Servers:**",
+        value: (client.guilds.cache.size).toLocalestring(),
+        inline: true
+      }, {
+        name: "**Users:**",
+        value: client.guilds.cache.reduce((a, b) => a + b.memberCount, 0).toLocalestring(),
+        inline: true
+      }, {
+        name: "\u200b",
+        value: "** **",
+      }, {
+        name: "**Creation Date:**",
+        value: format(new Date(client.user.createdTimestamp), "do MMMM yyyy HH:mm:ss"),
+        inline: true
+      }, {
+        name: "**Version:**",
+        value: "v" + require("../../package.json").version,
+        inline: true
+      }
+    ]);
+    
+    embed.setColor("#447ba1");
+    embed.setFooter({
+      text: `Requested by ${interaction.user.username}`,
+      iconURL: interaction.user.avatarURL()
     });
+    embed.setTimestamp();
+    
+    // Send the embed
+    interaction.reply({ embeds: [embed] });
   }
 }

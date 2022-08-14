@@ -1,32 +1,41 @@
+const { Client, CommandInteraction, SlashCommandBuilder} = require("discord.js");
+
 module.exports = {
   name: "ping",
   description: "View the reaction times",
-  catagory: "info",
-  guildOnly: true,
-  slashInfo: { enabled: true, public: false },
-  options: [],
+  category: "info",
+  slashInfo: {
+    enabled: true,
+    public: true
+  },
+  /**
+   * Get the command's slash info
+   * @returns The slash information
+   */
+  getSlashInfo: function() {
+    const builder = new SlashCommandBuilder();
+    // Set basic command information
+    builder.setName(this.name);
+    builder.setDescription(this.description);
+    // If the command can be used in DMs
+    builder.setDMPermission(true);
+    // Return the information in JSON format
+    return builder.toJSON();
+  },
   /**
    * Execute the selected command
-   * @param {Object} message The message that was sent
-   * @param {String} prefix The servers prefix
+   * @param {CommandInteraction} interaction The interaction that was sent
    * @param {Client} client The bots client
    */
-  execute: async function(message, _prefix, client) {
-    const { slashCommands } = require("../../utils/functions");
-
+  execute: function(interaction, client) {
     if (parseInt(client.ws.ping) > 500) {
-      message.data
-        ? slashCommands.reply(
-            message,
-            `**Pong** in ${client.ws.ping}ms\n\n⚠ It appears I have a slow connection, please be patient`
-          )
-        : message.channel.send({
-            content: `**Pong** in ${client.ws.ping}ms\n\n⚠ It appears I have a slow connection, please be patient`,
-          });
+      interaction.reply({
+        content: `**Pong** in ${client.ws.ping}ms\n\n⚠ It appears I have a slow connection, please be patient`
+      });
     } else {
-      message.data
-        ? slashCommands.reply(message, `**Pong** in ${client.ws.ping}ms`)
-        : message.channel.send({ content: `**Pong** in ${client.ws.ping}ms` });
+      interaction.reply({
+        content: `**Pong** in ${client.ws.ping}ms`
+      });
     }
   }
 }

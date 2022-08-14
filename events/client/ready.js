@@ -1,68 +1,123 @@
+const { Client, Routes, ActivityType, Guild } = require("discord.js");
+const { REST } = require("@discordjs/rest");
+const fs = require("fs");
+const guilds = require("../../database/models/guilds");
+// Define the API client to connect with Discord
+const rest = new REST({ version: "10" }).setToken(process.env.token);
+
 /**
- * Post slash commands 
- * @param {String} directory The directory name
+ * Delete a slash command
+ * @param {Client} client The bots client
+ * @param {object} command The command to delete
+ */
+function deleteCommand(client, command) {
+  rest.delete(
+    Routes.applicationCommands(client.user.id, command.id)
+  );
+}
+
+/**
+ * Post all slash commands to Discord
+ * @param {Array} data The slash command data
+ * @param {string} to The guild to post the slash commands to
  * @param {Client} client The bots client
  */
-function setupSlashCommands(directory, client) {
-	// Define required modules
-	const fs = require("fs");
-	const guildData = require("../client/database/models/guilds");
+function postSlashCommands(data, to, client) {
+  if (!to) {
+    // Post command to all guilds
+    rest.put(
+      Routes.applicationCommands(client.user.id),
+      { body: data }
+    )
+    // .catch(() => console.log("Error posting slash commands"));
+  } else {
+    // Post command for use only in a specific server
+    rest.put(
+      Routes.applicationGuildCommands(client.user.id, to),
+      { body: data }
+    )
+    // .catch(() => console.log("Error posting slash commands"));
+  }
+}
+
+/**
+ * Post slash commands 
+ * @param {string} directory The directory name
+ * @param {Client} client The bots client
+ * @param {Guild} guild The guild to post the slash commands to
+ */
+async function setupSlashCommands(directory, client, guild) {
+  let globalCommands = [];
+  let privateCommands = [];
 
 	// Loop through known command files
 	const commandFolders = fs.readdirSync(`./${directory}`).filter(file => !file.endsWith(".js") && !file.endsWith(".json"));
 	for (const folder of commandFolders) {
 		const commandFiles = fs.readdirSync(`./${directory}/${folder}`).filter(file => file.endsWith(".js"));
 		for (const file of commandFiles) {
+      // Find the command object
 			const command = require(`../../${directory}/${folder}/${file}`);
-			// If the command supports slash
-			if (command.options && (command.slashInfo && command.slashInfo.enabled)) {
-				let data = {
-					name: command.name, // The commands name
-					description: command.description, // The commands description
-					options: command.options // The command arguments
-				}
-				// If the command is set to moderators only
-				if ((typeof command.slashInfo.options == "object" && command.slashInfo.options.mod)) {
-					data.permissions = [];
-					guildData.find(function(err, data1) {
-						if (err || !data) return;
-						data1.forEach(guild => {
-							// If the guild has setup a mod-role
-							if (guild.modRole) {
-								// Add the role into the permissions array
-								data.permissions.push({
-									id: guild.modRole,
-									type: 1,
-									permission: true
-								});
-							}
-						});
-						if (command.slashInfo.public) { // If the slash command is public
-							// Post command to all guilds
-							client.api.applications(client.user.id).commands.post({
-								data
-							});
-						} else { // If the slash command is in testing
-							// Post command for use only in the dev server
-							client.api.applications(client.user.id).guilds(require("../../utils/config.json").DevServer).commands.post({
-								data
-							});
-						}
-					});
-				} else {
-					if (command.slashInfo.public) { // If the slash command is public
-						// Post command to all guilds
-						client.api.applications(client.user.id).commands.post({
-							data
-						});
-					} else { // If the slash command is in testing
-						// Post command for use only in the dev server
-						client.api.applications(client.user.id).guilds(require("../../utils/config.json").DevServer).commands.post({
-							data
-						});
-					}
-				}
-			}
+			// Ensure the command supports slash
+			if (command.template === true || !command.slashInfo?.enabled) continue;
+
+      // Get the slash data
+      let data = command.getSlashInfo();
+
+      // If the command is set to moderators only
+      if (["mod", "moderation"].includes(command.category)) {
+        data.permissions = [];
+        // Loop through every guild in the database to find their mod role and add it to the moderators array
+        guilds.find(function(err, data1) {
+          if (err || !data) return;
+          data1.forEach(guild => {
+            // If the server has setup a mod role
+            // Some older servers in the database may not have converted to the new schema type
+            if (guild.modRole || guild.preferences?.modRole) {
+              // Add the role into the permissions array
+              data.permissions.push({
+                roleId: guild.modRole || guild.preferences?.modRole,
+                guildId: guild.id,
+                type: 1, // 1 = role
+                permission: true
+              });
+            }
+            // If the server has setup multiple mod roles
+            if (Array.isArray(guild.preferences?.modRoles)) {
+              [...guild.preferences?.modRoles].forEach(roleId => {
+                console.log("modrole ID: " + roleId);
+                // Add the role into the permissions array
+                data.permissions.push({
+                  roleId: roleId,
+                  guildId: guild.id,
+                  type: 1, // 1 = role
+                  permission: true
+                });
+              });
+            }
+            // If the server has setup custom mods
+            if (Array.isArray(guild.preferences?.customMods)) {
+              [...guild.preferences?.customMods].forEach(userId => {
+                // Add the role into the permissions array
+                data.permissions.push({
+                  userId: userId,
+                  guildId: guild.id,
+                  type: 2, // 2 = user
+                  permission: true
+                });
+              });
+            }
+          });
+        });
+      }
+
+      // Post the command to Discord
+      if (command.slashInfo.public) { // If the slash command is public
+        // Push the command into the global commands array
+        globalCommands.push(data);
+      } else { // If the slash command is in testing
+        // Push the command to the private commands array
+        privateCommands.push(data);
+      }
 		}
 	}
 
@@ -70,86 +125,112 @@ function setupSlashCommands(directory, client) {
 	const commandFiles = fs.readdirSync(`./${directory}`).filter(file => file.endsWith(".js"));
 	if (commandFiles.length >= 1) {
 		for (const file of commandFiles) {
+      // Get the command object
 			const command = require(`../../${directory}/${file}`);
-			if (command.options && (command.slashInfo && command.slashInfo.enabled)) {
-				let data = {
-					name: command.name,
-					description: command.description,
-					options: command.options
-				}
-				if ((typeof command.slashInfo.options == "object" && command.slashInfo.options.mod)) {
-					data.permissions = [];
-					guildData.find(function(err, data1) {
-						if (err || !data) return;
-						data1.forEach(guild => {
-							if (guild.modRole) {
-								data.permissions.push({
-									id: guild.modRole,
-									type: 1,
-									permission: true
-								});
-							}
-						});
-						if (command.slashInfo.public) {
-							client.api.applications(client.user.id).commands.post({
-								data
-							});
-						} else {
-							client.api.applications(client.user.id).guilds(require("../../utils/config.json").DevServer).commands.post({
-								data
-							});
-						}
-					});
-				} else {
-					if (command.slashInfo.public) {
-						client.api.applications(client.user.id).commands.post({
-							data
-						});
-					} else {
-						client.api.applications(client.user.id).guilds(require("../../utils/config.json").DevServer).commands.post({
-							data
-						});
-					}
-				}
+
+      // Ensure the command supports slash
+			if (command.template === true || !command.slashInfo?.enabled) continue;
+
+      // Get the slash data
+      let data = command.getSlashInfo();
+
+      // If the command is set to moderators only
+      if ((typeof command.slashInfo.options == "object" && command.slashInfo.options.mod)) {
+        data.permissions = [];
+        // Loop through every guild in the database to find their mod role and add it to the moderators array
+        guilds.find(function(err, data1) {
+          if (err || !data) return; // If there was an error or the data is empty, return
+          // Loop through every guild in the database
+          data1.forEach(guild => {
+            // If the server has setup a mod role
+            // Some older servers in the database may not have converted to the new schema type
+            if (guild.modRole || guild.preferences?.modRole) {
+              // Add the role into the permissions array
+              data.permissions.push({
+                id: guild.modRole || guild.preferences?.modRole,
+                type: 1, // 1 = role
+                permission: true
+              });
+            }
+            // If the server has setup multiple mod roles
+            if (Array.isArray(guild.preferences?.modRoles)) {
+              [...guild.preferences?.modRoles].forEach(roleId => {
+                // Add the role into the permissions array
+                data.permissions.push({
+                  id: roleId,
+                  type: 1, // 1 = role
+                  permission: true
+                });
+              });
+            }
+            // If the server has setup custom mods
+            if (Array.isArray(guild.preferences?.customMods)) {
+              [...guild.preferences?.customMods].forEach(userId => {
+                // Add the role into the permissions array
+                data.permissions.push({
+                  id: userId,
+                  type: 2, // 2 = user
+                  permission: true
+                });
+              });
+            }
+          });
+        });
+
+        // Post the command to Discord
+        if (command.slashInfo.public && !guild) { // If the slash command is public and a guild is not provided
+          // Push the command into the global commands array
+          globalCommands.push(data);
+        } else { // If the slash command is in testing
+          // Push the command to the private commands array
+          privateCommands.push(data);
+        }
 			}
 		}
 	}
 
-	// Delete non-public slash command(s) from guilds
-	client.api.applications(client.user.id).commands.get().then(commands => {
-		commands.forEach(command => {
-			if (!client.commands.get(command.name)) deleteCommand();
-			if (!client.commands.get(command.name).slashInfo || !client.commands.get(command.name).slashInfo.public) deleteCommand();
+  // Post the global commands to Discord
+  if (globalCommands.length > 0) {
+    postSlashCommands(globalCommands, null, client);
+  }
+  // Post the private commands to Discord
+  if (privateCommands.length > 0) {
+    postSlashCommands(privateCommands, require("../../utils/config.json").DevServer, client);
+  }
 
-			function deleteCommand() {
-				console.log("Deleting the slash command: " + command.name);
-				client.api.applications(client.user.id).commands(command.id).delete();
-			}
-		});
-	});
+  // Delete non-public slash command(s) from guilds
+  let commands = await rest.get(
+    Routes.applicationCommands(client.user.id)
+  );
+
+  // Loop through all commands
+  [...commands].forEach(command => {
+    // If the command doesn't exist anymore
+    if (!client.commands.get(command.name))
+      deleteCommand(client, command);
+    // If the command is not public or no longer supports slash
+    if (!client.commands.get(command.name).slashInfo || !client.commands.get(command.name).slashInfo.public)
+      deleteCommand(client, command);
+  });
 }
 
-module.exports = (client) => {
-	// Activities to loop through
-	let activities = [`~help`, `v${(require("../../package.json").version)[0]}${(require("../../package.json").version)[1]}${(require("../../package.json").version)[2]}`];
+/**
+ * Setup the client
+ * @param {Client} client The bots client
+ */
+module.exports = function(client) {
+  // Activities to loop through
+	let activities = [`~help`, `v${require("../../package.json").version}`];
 	let i = 0;
 	setInterval(() => {
 		// Loop through activities in order
-		client.user.setActivity(`${activities[i++ % activities.length]}`, { type: "LISTENING" });
+		client.user.setActivity(`${activities[i++ % activities.length]}`, { type: ActivityType.Listening });
 	}, 10000);
 	// Log the cached guild size and user size
 	console.log(`Total Guilds: ${client.guilds.cache.size}\nTotal Members: ${client.users.cache.size}`);
-	// Start backend timeouts
-	require("../backend/timeOut.js")(client);
 
-	// Setup the slash commands
-	setupSlashCommands("commands", client);
-
-	// Delete a/all slash command(s)
-	// client.api.applications(client.user.id).guilds(require("../../utils/config.json").DevServer).commands.get().then(commands => {
-	// 	commands.forEach(command => {
-	// 		console.log("Deleting the slash command: " + command.name);
-	// 		client.api.applications(client.user.id).guilds(require("../../utils/config.json").DevServer).commands(command.id).delete()
-	// 	});
-	// });
+  // Setup slash commands
+  setupSlashCommands("commands", client);
 }
+
+module.exports.setupSlashCommands = (guild, client) => setupSlashCommands("commands", client, guild);

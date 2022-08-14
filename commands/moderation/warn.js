@@ -1,109 +1,180 @@
+const { Client, CommandInteraction, SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+const members = require("../../database/models/guildMembers");
+const guilds = require("../../database/models/guilds");
+const { logging, checkMod } = require("../../utils/functions");
+
 module.exports = {
-	name: "warn",
-	description: "Warn a user",
-	guildOnly: true,
-	catagory: "moderation",
-	usage: "warn [user] [reason]",
-	slashInfo: { enabled: true, public: true, options: { mod: true } },
-	options: [{ name: "user", description: "The user you'd like to warn", type: 6, required: true }, { name: "reason", description: "Warning reason", type: 3, required: false }],
-	/**
-	 * @param {Object} message The message that was sent
-	 * @param {String} prefix The servers prefix
-	 * @param {Client} client The bots client
-	 */
-	execute: async function(message, prefix, client) {
-		const Discord = require("discord.js");
-		const guildData = require("../../events/client/database/models/guilds.js");
-		const guildMemberData = require("../../events/client/database/models/guildMembers");
-		const logging = require("../../utils/functions").logging;
-		let guildResult = await guildData.findOne({ guildId: message.guild?.id || message.guild_id });
+  name: "warn",
+  description: "Warn a user",
+  category: "moderation",
+  slashInfo: {
+    enabled: true,
+    public: true
+  },
+  /**
+   * Get the command's slash info
+   * @returns The slash information
+   */
+  getSlashInfo: function() {
+    const builder = new SlashCommandBuilder();
+    // Set basic command information
+    builder.setName(this.name);
+    builder.setDescription(this.description);
+    // If the command can be used in DMs
+    builder.setDMPermission(false);
+    // Set the commands options
+    builder.addUserOption((option) => {
+      // The option name
+      option.setName("user");
+      // The option description
+      option.setDescription("The user to warn");
+      // If the option is required
+      option.setRequired(true);
+      // Return the option
+      return option;
+    });
+    builder.addStringOption(option => {
+      // The option name
+      option.setName("reason");
+      // The option description
+      option.setDescription("The reason for the warning");
+      // If the option is required
+      option.setRequired(false);
+      // Return the option
+      return option;
+    });
+    // Return the information in JSON format
+    return builder.toJSON();
+  },
+  /**
+   * Execute the selected command
+   * @param {CommandInteraction} interaction The interaction that was sent
+   * @param {Client} client The bots client
+   */
+  execute: async function(interaction, client) {
+    // Send a "thinking" message to the user
+    await interaction.deferReply();
 
-		async function warnCmd(slash) {
-			let args = slash ? message.data.options : message.content.slice(prefix.length).trim().split(/ +/g);
-			let user = slash ? args[0].value : (message.mentions.users.first() || message.guild.members.cache.get(args[1]));
-			let channel = slash ? {
-				send(msg) {
-					require("../../utils/functions").slashCommands.reply(message, client, msg)
-				},
-				reply(user, msg) {
-					require("../../utils/functions").slashCommands.reply(message, client, `<@!${user.id}>, ${msg}`)
-				}
-			} : message.channel;
-			let guild = await client.guilds.fetch(message.guild?.id || message.guild_id);
-			if (typeof user == "undefined")
-				return channel.send("You must mention a user to warn");
-			if (!isNaN(user) && !user.id) user = await client.users.fetch(user);
-			if (!user.id && user.user) user = user.user;
+    // Define the user and reason
+    let user = interaction.options.data.find(option => option.name === "user").value;
+    let reason = interaction.options.data.find(option => option.name === "reason")?.value;
 
-			if (!slash && user.id == message.author.id || slash	&& user.id == message.member.user.id) return channel.send("You cannot warn yourself");
-			if (user.bot) return channel.send("Bots cannot be warned");
+    // Ensure the user value was provided
+    if (!user)
+      return interaction.followUp({ content: "Invalid arguments, you must provide a user to warn", ephemeral: true });
 
-			let member;
-			let memberResult = await guildMemberData.findOne({ guildId: guild.id, memberId: user.id });
-			if (!memberResult)
-				memberResult = new guildMemberData({ memberId: user.id, guildId: guild.id });
+    // Fetch the user object
+    user = await client.users.fetch(user);
 
-			if (typeof user == "string") {
-				member = await guild.members.fetch(user);
-				user = await client.users.fetch(user);
-			} else if (typeof user == "object") {
-				if (!user.id || user.user) user = user.user;
-				member = await guild.members.fetch(user.id);
-			} else
-				return channel.send("You must mention a user to warn");
+    if (!user)
+      return interaction.followUp({ content: "Cannot find the provided user", ephemeral: true });
 
-			if (!member) return channel.send(user.username + " is not in this server");
-			if (member && member.user.bot) return channel.send("You cannot warn bots");
-			if (typeof member.roles == "object" && (member.roles).length > 0) {
-				if (
-					slash && member.roles.highest.rawPosition <= client.guilds.cache.get(message.guild_id).members.cache.get(message.member.user.id).roles.highest.rawPosition ||
-					!slash && member.roles.highest.rawPosition <= message.guild.members.cache.get(message.author.id).roles.highest.rawPosition
-				) return channel.send("You cannot warn " + user.username);
-			}
+    // If the user is a bot, return an error
+    if (user.bot)
+      return interaction.followUp({ content: "Bots do not have warnings", ephemeral: true });
+    // Prevent the user from warning themselves
+    if (user.id === interaction.user.id)
+      return interaction.followUp({ content: "You cannot warn yourself", ephemeral: true });
 
-			let reason = slash ? (args[1] ? args[1].value : "No reason was provided"): args.splice(2).join(" ");
-			if (!reason || ["", " "].includes(reason)) reason = "No reason provided";
+    // Get data from the database
+    let guild = await guilds.findOne({ guildId: interaction.guild.id });
+    let member = await members.findOne({ memberId: user.id, guildId: interaction.guild.id });
 
-			memberResult.warnReasons.length > 0 ?
-				(memberResult.warnReasons).push({ reason: reason, moderator: (message.author ? message.author : message.member.user) }) :
-				memberResult.warnReasons = [{ reason: reason, moderator: (message.author ? message.author : message.member.user) }];
+    // If the member object doesn't exist, create it
+    if (!member) {
+      member = new members({
+        guildId: interaction.guild.id,
+        memberId: user.id,
+      }).save();
+    }
+    // If the guild object doesn't exist, create it
+    if (!guild) {
+      // Create a new document
+      guild = new guilds({
+        guildId: interaction.guild.id,
+      });
+      // Save the new document
+      guild.save();
+    }
 
-			let log = new Discord.MessageEmbed()
-				.setTimestamp()
-				.setColor(guildResult.preferences ? guildResult.preferences.embedColor : "#447ba1")
-				.setTitle("User Warned")
-				.addField("User:", user.tag, true)
-				.addField("By:", (message.author ? message.author.tag : message.member.user.username + "#" + message.member.user.discriminator), true)
-				.addField("Reason:", reason)
-				.addField("Total Warnings", `${memberResult.warnReasons.length || 1}`, true)
+    // Ensure the user is a moderator
+    if (!(await checkMod(interaction, guild)))
+      return interaction.followUp({ content: "You must be a moderator to warn users", ephemeral: true });
 
-			let log2 = new Discord.MessageEmbed()
-				.setTimestamp()
-				.setColor(guildResult.preferences ? guildResult.preferences.embedColor : "#447ba1")
-				.setTitle("You have been warned")
-				.addField("Responsible Moderator:", (message.author ? message.author.tag: message.member.user.username + "#" + message.member.user.discriminator), true)
-				.addField("Reason:", reason)
-				.addField("Guild:", guild.name);
-			user.send(log2).catch(() => log.setFooter("DM could not be sent"));
-			channel.send(`<@!${user.id}> has been warned by <@!${message.author ? message.author.id : message.member.user.id}>`);
-			logging(log, (message.guild ? message : message.guild_id), client);
+    // Get the guild member object
+    let guildMemberObj = await interaction.guild.members.fetch(user.id);
 
-			memberResult.save();
-		}
+    // Cannot warn people with a higher role than yourself
+    if ((guildMemberObj.roles.highest.rawPosition || 0) <= (interaction.guild.members.cache.get(interaction.user.id).roles.highest.rawPosition || 0))
+      return interaction.followUp({ content: "You cannot warn users with a higher role than yourself", ephemeral: true });
 
-		let debounce = false;
+    // Add the warning to the member object
+    if (member.warnings && member.warnings.length > 0) {
+      member.warnings.push({
+        moderatorId: interaction.user.id,
+        reason: reason || "No reason provided",
+        timestamp: new Date(),
+        id: member.warnings.length
+      });
+    } else {
+      member.warnings = [{
+        moderatorId: interaction.user.id,
+        reason: reason || "No reason provided",
+        timestamp: new Date(),
+        id: 1
+      }];
+    }
 
-		if (client.guilds.cache.get(message.guild?.id || message.guild_id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has(Discord.Permissions.FLAGS.MANAGE_MESSAGES) ||
-			client.guilds.cache.get(message.guild?.id || message.guild_id).members.cache.get(message.author ? message.author.id : message.member.user.id).permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
-			warnCmd(message.guild && message.author ? false : true);
-			debounce = true;
-		} else if (guildResult.preferences && guildResult.preferences.modRole) {
-			if (message.member.roles.cache.find(role => role.id === guildResult.preferences.modRole)) {
-				warnCmd(message.guild && message.author ? false : true);
-				debounce = true;
-			}
-			if (debounce === false)
-				channel.send("You do not have the permissions to use this command");
-		}
-	}
+    // Mark the document as modified
+    member.markModified("warnings");
+    // Save the member object
+    member.save();
+
+    // Construct the embeds
+    const logEmbed = new EmbedBuilder();
+    logEmbed.setTitle("User Warned");
+    logEmbed.setColor("#447ba1");
+    logEmbed.setFields([
+      {
+        name: "User",
+        value: user.tag
+      }, {
+        name: "Responsible Moderator",
+        value: interaction.user.tag
+      }, {
+        name: "Reason",
+        value: reason || "No reason provided"
+      }, {
+        name: "Total Warnings",
+        value: (member.warnings.length).toString()
+      }
+    ]);
+    const userEmbed = new EmbedBuilder();
+    userEmbed.setTitle("You have been warned");
+    userEmbed.setColor("#447ba1");
+    userEmbed.setFields([
+      {
+        name: "Responsible Moderator",
+        value: interaction.user.tag,
+        inline: false
+      }, {
+        name: "Reason",
+        value: reason || "No reason provided",
+        inline: false
+      }, {
+        name: "Server",
+        value: interaction.guild.name,
+        inline: false
+      }
+    ]);
+
+    // Send the embeds
+    user
+      .send({ embeds: [userEmbed] })
+      .catch(() => logEmbed.setFooter({ text: "User not notified" }));
+    logging(logEmbed, interaction, client, { type: "interaction", messageType: "embed" });
+
+    // Send a message to the user
+    return interaction.followUp({ content: `${user.username} has been warned` });
+  }
 }

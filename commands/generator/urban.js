@@ -1,81 +1,83 @@
-const Discord = require("discord.js");
-const urban = require("urban");
-const guildData = require("../../events/client/database/models/guilds.js");
+const { Client, CommandInteraction, SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { default: axios } = require("axios");
 
 module.exports = {
   name: "urban",
-  aliases: ["search", "dictionary", "dict"],
-  description: "Search the dictionary for a word",
-  catagory: "generator",
-  guildOnly: true,
-  options: [
-    {
-      name: "word",
-      description: "A word to search in the dictionary.",
-      type: 3,
-      required: true,
-    },
-  ],
+  description: "Lookup a word on Urban Dictionary",
+  category: "generator",
+  slashInfo: {
+    enabled: true,
+    public: true
+  },
+  /**
+   * Get the command's slash info
+   * @returns The slash information
+   */
+  getSlashInfo: function() {
+    const builder = new SlashCommandBuilder();
+    // Set basic command information
+    builder.setName(this.name);
+    builder.setDescription(this.description);
+    // If the command can be used in DMs
+    builder.setDMPermission(false);
+    // Add an option to provide a word
+    builder.addStringOption((option) => {
+      // Set the option name
+      option.setName("word");
+      // Set the option description
+      option.setDescription("The word to lookup");
+      // If the option is required
+      option.setRequired(true);
+      // Set the minimum and maximum length requirements
+      option.setMinLength(3);
+      option.setMaxLength(256);
+      // Return the option
+      return option;
+    });
+    // Return the information in JSON format
+    return builder.toJSON();
+  },
   /**
    * Execute the selected command
-   * @param {Object} message The message that was sent
-   * @param {String} prefix The servers prefix
+   * @param {CommandInteraction} interaction The interaction that was sent
    * @param {Client} client The bots client
    */
-  execute: function(message, prefix, client) {
-    if (!message.data) {
-      guildData.findOne({ guildId: message.guild.id }).then((result) => {
-        let args = message.content.slice(prefix.length).trim().split(/ +/g);
+  execute: async function(interaction, _client) {
+    // Find command options
+    let word = (interaction.options.data).find((option) => option.name === "word")?.value;
 
-        urban(args[1]).first(async (json) => {
-          if (!json)
-            return message.channel.send(
-              "The word " + args[1] + " does not exist"
-            );
-          let embed = new Discord.MessageEmbed()
-            .setTitle(json.word)
-            .setDescription(json.definition)
-            .setColor(
-              result.preferences ? result.preferences.embedColor : "#447ba1"
-            )
-            .setFooter(
-              "Billybobbeep is not responsible for what you search | Written by: " +
-                (json.author || "Unknown")
-            )
-            .addField("Upvotes", json.thumbs_up || 0, true)
-            .addField("Downvotes", json.thumb_down || 0, true);
-          let msgEmbed = await message.channel.send({ embeds: [embed] });
-          await msgEmbed.react("👍");
-          await msgEmbed.react("👎");
-        });
-      });
-    } else {
-      guildData.findOne({ guildId: message.guild_id }).then((result) => {
-        urban(message.data.options[0].value).first(async (json) => {
-          if (!json)
-            return require("../../utils/functions").slashCommands.reply(
-              message,
-              client,
-              "The word " +
-                interaction.data.options[0].value +
-                " does not exist"
-            );
-          const embed = new Discord.MessageEmbed()
-            .setTitle(json.word)
-            .setDescription(
-              json.definition.split("[").join("").split("]").join("")
-            )
-            .addField("Upvotes", json.thumbs_up || 0, true)
-            .addField("Downvotes", json.thumb_down || 0, true)
-            .setFooter("Billybobbeep is not responsible for what you search | Written by: " + (json.author || "Unknown"))
-            .setColor(result.preferences ? result.preferences.embedColor : "#447ba1");
-          require("../../utils/functions").slashCommands.reply(
-            message,
-            client,
-            embed
-          );
-        });
-      });
-    }
+    // Construct an embed
+    const embed = new EmbedBuilder();
+    // Set the embed data
+    embed.setTitle(`Definition of **${word}**`);
+    embed.setDescription(`No results found for ${word}`);
+    // Set the default properties of the embed
+    embed.setColor("#447ba1");
+
+    // Defer a reply
+    await interaction.deferReply();
+
+    let definition = await axios.get(`http://api.urbandictionary.com/v0/define?term=${word}`);
+
+    if (!definition || !definition.data || !definition.data.list || !definition.data.list.length)
+      return interaction.reply({ embeds: [embed] });
+
+    definition = definition.data.list[0];
+
+    embed.setDescription((definition.definition).replaceAll("[", "").replaceAll("]", ""));
+    embed.setFooter({
+      text: `Billybobbeep is not responsible for what you search | Written by: ${definition.author || "Unknown"}`,
+    });
+    embed.addFields({
+      name: "Upvotes",
+      value: (definition.thumbs_up || 0).toString(),
+      inline: true
+    }, {
+      name: "Downvotes",
+      value: (definition.thumbs_down || 0).toString(),
+      inline: true
+    });
+
+    interaction.followUp({ embeds: [embed], ephemeral: false });
   }
 }

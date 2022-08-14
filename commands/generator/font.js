@@ -70,36 +70,78 @@
   }
 */
 
+const { Client, CommandInteraction, SlashCommandBuilder } = require("discord.js");
+
 module.exports = {
   name: "font",
-  description: "Put your message into a new font",
-  alias: ["fonts"],
-  catagory: "generator",
-  slashInfo: { enabled: true, public: true },
-  options: [
-    {
-      name: "font_name",
-      description: 'The name of the font you"d like to use',
-      type: 3,
-      required: true,
-    }, {
-      name: "message",
-      description: 'The message you"d like to convert',
-      type: 3,
-      required: true,
-    },
-  ],
+  description: "Convert a message into another font",
+  category: "generator",
+  slashInfo: {
+    enabled: true,
+    public: true
+  },
   /**
-   * @param {String} font The font you"d like to recieve
-   * @returns The font letters
+   * Get the command's slash info
+   * @returns The slash information
    */
-  fonts: function (font) {
+  getSlashInfo: function() {
+    const builder = new SlashCommandBuilder();
+    // Set basic command information
+    builder.setName(this.name);
+    builder.setDescription(this.description);
+    // If the command can be used in DMs
+    builder.setDMPermission(false);
+    // Add an option to provide the new font
+    builder.addStringOption((option) => {
+      // Set the option name
+      option.setName("font");
+      // Set the option description
+      option.setDescription("The font to convert the message to");
+      // If the option is required
+      option.setRequired(true);
+      // Set the minimum and maximum length requirements
+      option.addChoices({
+        name: "fancy",
+        value: "fancy"
+      }, {
+        name: "handwritten",
+        value: "hand"
+      }, {
+        name: "cursed",
+        value: "cursed"
+      }, {
+        name: "smooth",
+        value: "smooth"
+      }, {
+        name: "small",
+        value: "small"
+      })
+      // Return the option
+      return option;
+    });
+    // Add an option to provide the message
+    builder.addStringOption((option) => {
+      // Set the option name
+      option.setName("message");
+      // Set the option description
+      option.setDescription("The message to convert");
+      // If the option is required
+      option.setRequired(true);
+      // Return the option
+      return option;
+    });
+    // Return the information in JSON format
+    return builder.toJSON();
+  },
+  /**
+   * @param {string} font The font you'd like to recieve
+   * @returns {object | string} The font letters
+   */
+  fonts: function(font) {
     let letters;
-    if (typeof font !== "string")
-      return message.channel.send(
-        `Expected font to be string, recieved ${typeof font}`
-      );
+    if (typeof font !== "string") return "Invalid font";
     font = font.toLowerCase();
+
     if (font == "fancy") {
       letters = {
         a: "𝓪",
@@ -455,7 +497,7 @@ module.exports = {
         9: "9",
         0: "0",
       };
-    } else if (font == "smol") {
+    } else if (font == "smol" || font == "small") {
       letters = {
         a: "α",
         b: "в",
@@ -560,92 +602,39 @@ module.exports = {
   },
   /**
    * Execute the selected command
-   * @param {Object} message The message that was sent
-   * @param {String} prefix The servers prefix
+   * @param {CommandInteraction} interaction The interaction that was sent
    * @param {Client} client The bots client
    */
-  execute: function(message, prefix, client) {
-    if (message.data) {
-      let args = message.data.options;
-      let lines = [];
-      let starter = "➳";
-      let letters;
+  execute: function(interaction, client) {
+    // Find the provided options
+    let font = (interaction.options.data).find((option) => option.name == "font")?.value;
+    let msg = (interaction.options.data).find((option) => option.name == "message")?.value;
 
-      if (!args[0])
-        return require("../../utils/functions").slashCommands.reply(
-          message,
-          client,
-          "You must provide a font"
-        );
-      letters = this.fonts(args[0].value);
-      if (typeof letters == "string")
-        return require("../../utils/functions").slashCommands.reply(
-          message,
-          client,
-          letters
-        );
+    if (!font || !msg)
+      return interaction.reply({ content: "Invalid arguments, ensure all required arguments have been provided", ephemeral: true });
 
-      if (!args[1])
-        require("../../utils/functions").slashCommands.reply(
-          message,
-          client,
-          "You must provide a message to convert"
-        );
-      else {
-        try {
-          for (let i = 0; i < args[1].value.length; i++) {
-            let letter = args[1].value[i].toLowerCase();
-            for (let j = 0; j < 1; j++) {
-              lines[j] += letters[letter] + "";
-            }
-          }
-          require("../../utils/functions").slashCommands.reply(
-            message,
-            client,
-            starter + lines.join("\n")
-          );
-        } catch {
-          require("../../utils/functions").slashCommands.reply(
-            message,
-            client,
-            "Internal error, try again later"
-          );
+    let lines = "";
+    let starter = "➳";
+    let letters = this.fonts(font);
+
+    if (typeof letters == "string")
+      return interaction.reply({ content: letters, ephemeral: true });
+
+    try {
+      for (let i = 0; i < msg.length; i++) {
+        let letter = msg[i].toLowerCase();
+        for (let j = 0; j < 1; j++) {
+          if (!letters[letter]) continue;
+          lines += letters[letter];
         }
       }
-    } else {
-      let args = message.content.slice(prefix.length).trim().split(/ +/g);
-      let lines = ["", ""];
-      let starter = "➳";
-      let letters;
-
-      if (
-        message.content.toLowerCase() === prefix + "font" ||
-        message.content.toLowerCase() === prefix + "fonts"
-      )
-        return message.channel / send(this.help(message));
-      if (!args[1]) return message.channel.send("You must provide a font");
-      letters = this.fonts(args[1]);
-      if (typeof letters == "string") return message.channel.send(letters);
-
-      if (!args[2])
-        message.channel.send(
-          `<@!${
-            message.author ? message.author.id : message.member.user.id
-          }>, You must provide a message`
-        );
-      else {
-        try {
-          for (let i = 0; i < args.slice(2).join(" ").length; i++) {
-            let letter = args.slice(2).join(" ")[i].toLowerCase();
-            for (let j = 0; j < 1; j++) {
-              lines[j] += letters[letter] + "";
-            }
-          }
-          message.channel.send(starter + lines.join("\n"));
-        } catch {
-          return message.channel.send("Internal error, try again later");
-        }
-      }
+      
+      if (font === "fancy")
+        interaction.reply({ content: starter + lines, ephemeral: false });
+      else
+        interaction.reply({ content: lines, ephemeral: false });
+    } catch {
+      interaction.reply({ content: "Something went wrong, try again later", ephemeral: true });
     }
   }
 }

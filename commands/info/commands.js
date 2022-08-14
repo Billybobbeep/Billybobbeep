@@ -1,232 +1,273 @@
+const { Client, CommandInteraction, MessageComponentInteraction, ButtonStyle, EmbedBuilder, ButtonBuilder, SlashCommandBuilder, ActionRowBuilder, CommandInteractionOptionResolver } = require("discord.js");
+const { readdirSync } = require("fs");
 let requesters = [];
-let pages = [];
+
+/**
+ * Add a page to the embed
+ * @param {EmbedBuilder} embed The embed to add the page to
+ * @param {string} title The embed title
+ * @param {any[]} catagories An array of command catagories to include
+ * @param {Boolean} inline Whether the fields should be inline
+ * @returns {EmbedBuilder} The page
+ */
+function addPage(title, catagories, inline) {
+  const embed = new EmbedBuilder();
+  // Array of fields to add to the embed
+  let fields = [];
+  // Set the title of the page
+  embed.setTitle(`Billybobbeep | ${title}`);
+  // Default properties of the embed
+  embed.setColor("#447ba1");
+  embed.setTimestamp();
+
+  const commandFolders = readdirSync("./commands") // Get the command folder
+    .filter((file) => !file.includes(".")); // Filter out files
+
+  // Loop through the subfolders of the commands folder
+  for (const folder of commandFolders) {
+    // Get the commands in the subfolder
+    const commands = readdirSync(`./commands/${folder}`) // Get the subfolder
+      .filter((file) => file.endsWith(".js")); // Filter JavaScript files
+
+    // Loop through the commands in the subfolder
+    for (const file of commands) {
+      // Get the command
+      let command = require(`../../commands/${folder}/${file}`);
+
+      // Prevent "circular dependancies" error
+      if (file === "commands.js") {
+        command = {
+          name: "commands",
+          description: "View supported commands",
+          category: "info"
+        }
+      }
+
+      // Return if the command isn't enabled
+      if (command.template === true || !command.slashInfo?.enabled) continue;
+      // If the command is not public and dev mode isn't enabled
+      if (!require("../../utils/cache").dev.enabled && !command.slashInfo?.public) continue;
+      // If the command category matches the category to add
+      if (catagories.includes(command.category)) {
+        // Add the command to the fields array
+        fields.push({
+          name: `${command.name}`,
+          value: `${command.description}`,
+          inline: inline || false
+        });
+      }
+    }
+  }
+
+  if (fields.length > 0)
+    return embed.addFields(fields);
+  else
+    return null;
+}
+
+// Get the pages to add to the embed
+let pages = [
+  addPage("Informational Commands", ["info"], null, 1),
+  addPage("Fun Commands", ["fun", "generator"], null, 2),
+  addPage("Moderation Commands", ["mod", "moderation"], null, 3),
+  addPage("Other Commands", ["other"], null, 4),
+]
 
 module.exports = {
   name: "commands",
-  description: "View billybobbeeps commands",
-  alias: ["help", "cmds"],
-  slashInfo: { enabled: true, public: false },
-  options: [],
-  /**
-   * @param {Object} message The message that was sent
-   * @param {String} prefix The servers prefix
-   * @param {Client} client The bots client
-   */
-  execute: function(message, prefix, client) {
-    const Discord = require("discord.js");
-    const fs = require("fs");
-    const guildData = require("../../events/client/database/models/guilds");
-
-    let channel =
-      message.data && !message.author
-        ? {
-          send(msg) {
-            console.log(msg);
-            require("../../utils/functions").slashCommands.reply(
-              message,
-              client,
-              msg
-            );
-          },
-        }
-      : message.channel;
-
-    guildData
-      .findOne({ guildId: message.guild?.id || message.guild_id })
-      .then((result) => {
-        function addPage(title, catagories, inline) {
-          let page = new Discord.MessageEmbed()
-            .setTitle("Billybobbeep | " + title)
-            .setDescription(
-              `Below are ${client.user.username}'s ${title.toLowerCase()}`
-            );
-          result.preferences && result.preferences.embedColor
-            ? page.setColor(result.preferences.embedColor)
-            : page.setColor("#447ba1");
-
-          for (const folder of commandFolders) {
-            const commandFiles = fs
-              .readdirSync(`./commands/${folder}`)
-              .filter((file) => file.endsWith(".js"));
-            for (const file of commandFiles) {
-              const command = require(`../../commands/${folder}/${file}`);
-              catagories.forEach((catagory) => {
-                if (
-                  command.usage &&
-                  command.catagory &&
-                  command.catagory == catagory
-                ) {
-                  page.addField(
-                    `${prefix}${command.name}`,
-                    `${command.description}\n` +
-                      `Usage: ${prefix}${command.usage}`,
-                    inline || false
-                  );
-                } else if (command.catagory && command.catagory == catagory) {
-                  page.addField(
-                    `${prefix}${command.name}`,
-                    `${command.description}`,
-                    inline || false
-                  );
-                }
-              });
-            }
-          }
-          if (page.fields.length > 0) pages.push(page);
-        }
-        const commandFolders = fs
-          .readdirSync("./commands")
-          .filter((file) => !file.endsWith(".js"));
-
-        addPage("Fun Commands", ["fun", "generator"]);
-        addPage("Informational Commands", ["info"]);
-        addPage("Economy Commands", ["economy"]);
-        addPage("Moderation Commands", ["moderation"], true);
-        addPage("Other Commands", ["other", "none"]);
-        // addPage("Music Commands", ["music"]);
-
-        let nextBtn = new Discord.MessageButton();
-        nextBtn.setLabel("Next Page");
-        nextBtn.setStyle("PRIMARY");
-        nextBtn.setCustomId("commands-next");
-        let backBtn = new Discord.MessageButton();
-        backBtn.setLabel("Previous Page");
-        backBtn.setStyle("PRIMARY");
-        backBtn.setCustomId("commands-back");
-        backBtn.setDisabled(true);
-        let row = new Discord.MessageActionRow().addComponents(
-          backBtn,
-          nextBtn
-        );
-
-        channel.send({ embeds: [pages[0]], components: [row] });
-        requesters.push(
-          message.author ? message.author.id : message.member.user.id
-        );
-      });
+  description: "View supported commands",
+  category: "info",
+  slashInfo: {
+    enabled: true,
+    public: true
+  },
+  buttonInfo: {
+    enabled: true
   },
   /**
-   * A function to be emitted whenever someone interacts with a button
-   * @param {*} interaction The interaction
+   * Get the command's slash info
+   * @returns The slash information
+   */
+  getSlashInfo: function() {
+    const builder = new SlashCommandBuilder();
+    // Set basic command information
+    builder.setName(this.name);
+    builder.setDescription(this.description);
+    // If the command can be used in DMs
+    builder.setDMPermission(true);
+    // Command options
+    builder.addIntegerOption((option) => {
+      // Set the options name
+      option.setName("page-no");
+      // The options description
+      option.setDescription("The page number to view");
+      // Set if the option is required
+      option.setRequired(false);
+      // Set min/max values for the option
+      option.setMinValue(1);
+      option.setMaxValue(pages.length);
+      // Return the option
+      return option;
+    })
+    // Return the information in JSON format
+    return builder.toJSON();
+  },
+  /**
+   * Execute the selected command
+   * @param {CommandInteraction} interaction The interaction that was sent
    * @param {Client} client The bots client
    */
-  async buttonCallback(interaction, client) {
-    /**
-     * Changes whether or not a component is disabled
-     * @param {*} message The message with the attached
-     * @param {array} componentsToChange An array of comonents to change and their new values
-     * @example changeComponents(message, [{ name: `${this.name}-example`, disabled: true }]);
-     * @returns A row of components
-     */
-    function changeComponents(message, componentsToChange) {
-      let components = [];
-      componentsToChange.forEach((c) => {
-        message.components.forEach((row) => {
-          row.components.forEach((component) => {
-            if (component.custom_id == c.name) component.disabled = c.disabled;
-          });
-          components.push(row);
-        });
+  execute: function(interaction, _client) {
+    // Define the buttons
+    let nextBtn = new ButtonBuilder();
+    nextBtn.setLabel("Next Page");
+    nextBtn.setStyle(ButtonStyle.Primary);
+    nextBtn.setCustomId("commands::next");
+
+    let backBtn = new ButtonBuilder();
+    backBtn.setLabel("Previous Page");
+    backBtn.setStyle(ButtonStyle.Primary);
+    backBtn.setDisabled(true);
+    backBtn.setCustomId("commands::back");
+
+    // Define the action row
+    let btnRow = new ActionRowBuilder().addComponents(backBtn, nextBtn);
+
+    // Ensure the page is not null
+    pages.forEach((page, index) => {
+      if (!page)
+        pages.splice(index, 1);
+    });
+    if (pages[pages.length - 1] === null)
+      pages.pop();
+
+    // Number the pages
+    pages.forEach((page, index) => {
+      page?.setFooter({
+        text: `Page ${index + 1}/${pages.length} - Requested by ${interaction.user.username}`
       });
-      return [components[1]];
-    }
-    let guild = client.guilds.cache.get(interaction.guild_id);
-    if (typeof guild !== "object")
-      guild = await client.guilds.fetch(interaction.guild_id);
-    let channel = guild.channels.cache.get(interaction.channel_id);
-    if (typeof channel !== "object")
-      channel = await client.channels.fetch(interaction.channel_id);
-    let originalMessage = await channel.messages.fetch(interaction.message.id);
-    if (!requesters.includes(interaction.member.user.id))
-      return require("../../utils/functions").buttons.respond(
-        interaction,
-        client,
-        `Only the person that executes the ${this.name} command can interact with the embed`,
-        { userOnly: true }
-      );
-    if (!originalMessage || originalMessage.embeds.length < 1)
-      return require("../../utils/functions").buttons.respond(
-        interaction,
-        client,
-        "Something went wrong, execute the command again to fix the issue",
-        { userOnly: true }
-      );
+    });
 
-    let currentPage = pages.filter(
-      (page) => page.title == originalMessage.embeds[0].title
-    );
+    // If the page is null, return with an error
+    if (pages.length === 0 || pages[0] === null)
+      return interaction.reply({ content: "Something went wrong, please try again later", ephemeral: true });
 
-    if (interaction.data.custom_id.toLowerCase() == "commands-next") {
-      let embed = pages[pages.indexOf(currentPage[0]) + 1];
-      if (embed) {
-        originalMessage.edit({
-          embeds: [embed],
-          components: changeComponents(originalMessage, [
-            {
-              name: `${this.name}-back`,
-              disabled: false,
-            },
-            {
-              name: `${this.name}-next`,
-              disabled: false,
-            },
-          ]),
-        });
-      } else
-        return require("../../utils/functions").buttons.respond(
-          interaction,
-          client,
-          "You've reached the last page",
-          { userOnly: true }
-        );
-
-      if (pages.indexOf(currentPage[0]) == pages.length - 1) {
-        originalMessage.edit({
-          embeds: [embed],
-          components: changeComponents(originalMessage, [
-            {
-              name: `${this.name}-next`,
-              disabled: true,
-            },
-            {
-              name: `${this.name}-back`,
-              disabled: false,
-            },
-          ]),
-        });
-      }
+    if (interaction.options.data[0]) {
+      // Send the requested page
+      interaction.reply({ embeds: [pages[parseInt(interaction.options.data[0].value) - 1]] });
     } else {
-      let embed = pages[pages.indexOf(currentPage[0]) - 1];
-      if (embed) {
-        originalMessage.edit({
-          embeds: [embed],
-          components: changeComponents(originalMessage, [
-            { name: `${this.name}-next`, disabled: false },
-          ]),
-        });
-      } else
-        return require("../../utils/functions").buttons.respond(
-          interaction,
-          client,
-          "You're already at the first page",
-          { userOnly: true }
-        );
+      // Send the first page of the embed
+      if (pages.length > 1) {
+        interaction.reply({ embeds: [pages[0]], components: [btnRow] })
+          .then(async () => {
+            // Add the user to the requesters array
+            let x = await interaction.fetchReply();
+            requesters.push({ userId: interaction.user.id, messageId: x.id });
 
-      if (pages.indexOf(currentPage[0]) == 0) {
-        originalMessage.edit({
-          embeds: [embed],
-          components: changeComponents(originalMessage, [
-            {
-              name: `${this.name}-back`,
-              disabled: true,
-            },
-            {
-              name: `${this.name}-next`,
-              disabled: false,
-            },
-          ]),
-        });
+            setTimeout(() => {
+              // Remove the requester from the array
+              requesters = requesters.filter(x => x.userId !== interaction.user.id && x.messageId !== x.id);
+            }, 180000); // 3 minutes
+          });
+      } else {
+        // Send the embed with no components as there is only one page
+        interaction.reply({ embeds: [pages[0]] });
       }
+    }
+  },
+  /**
+   * Handle button clicks on the embed
+   * @param {MessageComponentInteraction} interaction The interaction that was sent
+   * @param {Client} client The bots client
+   */
+  buttonCallback: async function(interaction, _client) {
+    // Ensure the parameter is valid
+    if (!interaction instanceof MessageComponentInteraction) return;
+
+    let originalMessage = interaction.message;
+
+    // Find out if a requester exists
+    let requesterExists = !!requesters.find((obj) => {
+      let id1 = parseInt(obj.messageId);
+      let id2 = parseInt(interaction.message.id);
+
+      return obj.userId === interaction.user.id && id1 === id2;
+    });
+
+    // Define the buttons
+    let nextBtn = new ButtonBuilder();
+    nextBtn.setLabel("Next Page");
+    nextBtn.setStyle(ButtonStyle.Primary);
+    nextBtn.setCustomId("commands::next");
+    let backBtn = new ButtonBuilder();
+    backBtn.setLabel("Previous Page");
+    backBtn.setStyle(ButtonStyle.Primary);
+    backBtn.setCustomId("commands::back");
+
+    let currentPage = pages.indexOf(pages.find((page) => page && page.data.title === originalMessage.embeds[0].data.title));
+
+    if (!currentPage && currentPage !== 0)
+      return interaction.reply({ content: "This embed is expired, execute the command `/commands` again", ephemeral: true });
+
+    if (requesterExists && interaction.customId.includes("next")) {
+      // Ensure the next page is not null
+      if (currentPage === pages.length - 1)
+        return interaction.reply({ content: "You have already reached the last page", ephemeral: true });
+      // If its the last page, disable the next button
+      if (currentPage + 1 === pages.length - 1)
+        nextBtn.setDisabled(true);
+
+      // Enable the back button
+      backBtn.setDisabled(false);
+
+      // Prevent discord displaying an error message to the user
+      interaction.deferUpdate();
+      
+      // Edit the orginal message with the next page
+      (interaction.message).edit({ embeds: [pages[currentPage + 1]], components: [new ActionRowBuilder().addComponents(backBtn, nextBtn)] })
+        .then(async () => {
+          // Remove the requester from the array
+          requesters = requesters.filter(x => x.userId !== interaction.user.id && x.messageId !== interaction.message.id);
+
+          // Add the user to the requesters array
+          let x = await interaction.fetchReply();
+          requesters.push({ userId: interaction.user.id, messageId: x.id });
+
+          setTimeout(() => {
+            // Remove the requester from the array
+            requesters = requesters.filter(x => x.userId !== interaction.user.id && x.messageId !== x.id);
+          }, 180000); // 3 minutes
+        });
+    } else if (requesterExists && interaction.customId.includes("back")) {
+      // Ensure the previous page is not null
+      if (currentPage === 0)
+        return interaction.reply({ content: "You have already reached the first page", ephemeral: true });
+      // If its the first page, disable the back button
+      if (currentPage - 1 === 0)
+        backBtn.setDisabled(true);
+
+      // Prevent discord displaying an error message to the user
+      interaction.deferUpdate();
+
+      // Edit the orginal message with the previous page
+      (interaction.message).edit({ embeds: [pages[currentPage - 1]], components: [new ActionRowBuilder().addComponents(backBtn, nextBtn)] })
+        .then(async () => {
+          // Add the user to the requesters array
+          let x = await interaction.fetchReply();
+
+          // Remove the requester from the array
+          requesters = requesters.filter(x => x.userId !== interaction.user.id && x.messageId !== interaction.message.id);
+
+          requesters.push({ userId: interaction.user.id, messageId: x.id });
+
+          setTimeout(() => {
+            // Remove the requester from the array
+            requesters = requesters.filter(x => x.userId !== interaction.user.id && x.messageId !== x.id);
+          }, 180000); // 3 minutes
+        });
+    } else {
+      // Inform the user that they cannot click the button
+      interaction.reply({ content: "Only the person that executes the command can interact with the embed", ephemeral: true });
     }
   }
 }

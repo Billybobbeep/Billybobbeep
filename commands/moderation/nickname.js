@@ -1,88 +1,117 @@
-const guildData = require("../../events/client/database/models/guilds.js");
-const { Permissions } = require("discord.js");
+const { Client, CommandInteraction, SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+const { checkMod } = require("../../utils/functions");
 
 module.exports = {
-	name: "nickname",
-	description: "Change a users nickname",
-	alias: ["nick"],
-	guildOnly: true,
-	catagory: "moderation",
-	usage: "nickname [user] [nickname]",
-	slashInfo: { enabled: true, public: true },
-	options: [{ name: "user", description: "The user to change the nickname of", type: 6, required: true }, { name: "nickname", description: "The new nickname", type: 3, required: false }],
-	/**
-	 * @param {Object} message The message that was sent
-	 * @param {String} prefix The servers prefix
-	 * @param {Client} client The bots client
-	 */
-	execute: function(message, prefix, client) {
-		async function nicknameCmd() {
-			let slash = message.data && !message.content ? true : false;
-			let args = slash ? message.data.options : message.content.slice(prefix.length).trim().split(/ +/g);
-			let user;
+  name: "nickname",
+  description: "Change a users nickname",
+  category: "moderation",
+  slashInfo: {
+    enabled: true,
+    public: true
+  },
+  /**
+   * Get the command's slash info
+   * @returns The slash information
+   */
+  getSlashInfo: function() {
+    const builder = new SlashCommandBuilder();
+    // Set basic command information
+    builder.setName(this.name);
+    builder.setDescription(this.description);
+    // If the command can be used in DMs
+    builder.setDMPermission(false);
+    // Set the default permissions for this command
+    builder.setDefaultMemberPermissions(PermissionFlagsBits.ManageNicknames);
+    // Subcommand "set"
+    builder.addSubcommand((command) => {
+      // Basic sub-command information
+      command.setName("set");
+      command.setDescription("Change a users nickname");
+      // Add an option to select the target user
+      command.addUserOption((option) => {
+        // Set the option name
+        option.setName("user");
+        // Set the option description
+        option.setDescription("The user to change the nickname of");
+        // If the option is required
+        option.setRequired(true);
+        // Return the option
+        return option;
+      });
+      // Add an option to provide a new nickname
+      command.addStringOption((option) => {
+        // Set the option name
+        option.setName("nickname");
+        // Set the option description
+        option.setDescription("The new nickname");
+        // If the option is required
+        option.setRequired(true);
+        // Return the option
+        return option;
+      });
+      // Return the command
+      return command;
+    });
+    // Subcommand "remove"
+    builder.addSubcommand((command) => {
+      // Basic sub-command information
+      command.setName("remove");
+      command.setDescription("Remove a users nickname");
+      // Add an option to select the target user
+      command.addUserOption((option) => {
+        // Set the option name
+        option.setName("user");
+        // Set the option description
+        option.setDescription("The user to remove the nickname of");
+        // If the option is required
+        option.setRequired(true);
+        // Return the option
+        return option;
+      });
+      // Return the command
+      return command;
+    });
+    // Return the information in JSON format
+    return builder.toJSON();
+  },
+  /**
+   * Execute the selected command
+   * @param {CommandInteraction} interaction The interaction that was sent
+   * @param {Client} client The bots client
+   */
+  execute: async function(interaction, client) {
+    if (!(await checkMod(interaction)))
+      return interaction.reply({ content: "You must be a moderator to change a users nickname", ephemeral: true });
 
-			if (!slash) user = message.mentions.users.first() || message.guild.members.cache.get(args[1]).user;
-			else args[0] && args[0].value ? user = client.guilds.cache.get(message.guild_id).members.cache.get(args[0].value).user : user = message.member.user;
-			if (!user) return slash ? require("../../utils/functions").slashCommands.reply(message, client, "You must provide a valid user") : message.channel.send("You must provide a valid user");
+    let subCommand = (interaction.options.data).find((option) => ["set", "remove"].includes(option.name));
+    if (!subCommand || !["set", "remove"].includes(subCommand.name))
+      return interaction.reply({ content: "Invalid arguments, ensure all required arguments have been provided", ephemeral: true });
 
-			let nick;
-			if (slash && args[1] && args[1].name !== "user") nick = args[1].value
-			else if (slash) nick = undefined;
-			else nick = args.slice(2).join(" ");
-			let member = slash ? client.guilds.cache.get(message.guild_id).members.cache.get(args[0].value) : message.guild.members.cache.get(user.id);
-			if (!nick) {
-				try {
-					await member.setNickname("", `${slash ? `${message.member.user.username + "#" + message.member.user.discriminator} via slash command` : `${message.author.tag} via command`}`);
-					slash ? require("../../utils/functions").slashCommands.reply(message, client, "Removed **" + user.tag + "'s** nickname") : message.channel.send("Removed **" + user.tag + "'s** nickname");
-				} catch {
-					slash ? require("../../utils/functions").slashCommands.reply(message, client, "I do not have the permissions to change this users nickname") : message.channel.send("I do not have the permissions to change this users nickname");
-				}
-			} else {
-				try {
-					await member.setNickname(nick, `${slash ? `${message.member.user.username + "#" + message.member.user.discriminator} via slash command` : `${message.author.tag} via command`}`);
-					slash ? require("../../utils/functions").slashCommands.reply(message, client, `Changed **${user.tag}"s** nickname to ${nick}`) : message.channel.send(`Changed **${user.tag}"s** nickname to ${nick}`);
-				} catch {
-					slash ? require("../../utils/functions").slashCommands.reply(message, client, "I do not have the permissions to change this users nickname") : message.channel.send("I do not have the permissions to change this users nickname");
-				}
-			}
-		}
+    // Define arguments
+    let user = (subCommand.options).find(option => option.name === "user")?.value;
+    let nickname = (subCommand.options).find(option => option.name === "nickname")?.value;
 
-		let debounce = false;
-		if (!message.data) {
-			guildData.findOne({ guildId: message.guild.id }).then(result => {
-				if (message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD) || message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-					nicknameCmd()
-					debounce = true;
-				} else if (result.preferences.modRole) {
-					if (message.member.roles.cache.find(role => role.id == result.preferences.modRole)) {
-						nicknameCmd()
-						debounce = true;
-					}
-				}
-				if (message.mentions.users.first() && message.mentions.users.first().id == message.author.id) {
-					debounce = true;
-					nicknameCmd();
-				}
-				if (!debounce)
-					message.channel.send("You can only use this command on yourself unless you are a server moderator");
-			});
-		} else {
-			guildData.findOne({ guildId: message.guild_id }).then(result => {
-				if ((client.guilds.cache.get(message.guild_id).members.cache.get(message.member.user.id)).permissions.has(Permissions.FLAGS.MANAGE_GUILD) || (client.guilds.cache.get(message.guild_id).members.cache.get(message.member.user.id)).permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-					nicknameCmd();
-					debounce = true;
-				} else if (result.preferences.modRole) {
-					if (message.member.roles.cache.find(role => role.id == result.preferences.modRole)) {
-						nicknameCmd();
-						debounce = true;
-					}
-				}
-				if (!message.data.options[1]) message.data.options[1] = { value: message.member.user.id, name: "user", type: 6 }
-				if (!debounce && message.data.options[1].value !== message.member.user.id)
-					require("../../utils/functions").slashCommands.reply(message, client, "You can only use this command on yourself unless you are a server moderator");
-				else
-					nicknameCmd();
-			});
-		}
-	}
+    if (!user)
+      return interaction.reply({ content: "Invalid arguments, you must provide a user", ephemeral: true });
+
+    // Get the users member object
+    let member = await interaction.guild.members.fetch(user);
+
+    if (!member)
+      return interaction.reply({ content: "Could not find the user you provided in this server", ephemeral: true });
+
+    if (subCommand.name === "set") {
+      // Set the nickname
+      member
+        .setNickname(nickname, `Responsible moderator: ${interaction.user.tag}`)
+        .then(() => interaction.reply({ content: `${member.user.username}'s nickname is now '${nickname}'`, ephemeral: false }))
+        .catch(() => interaction.reply({ content: "Could not change the nickname of the provided user, ensure the permissions are correct and try again", ephemeral: true }));
+    } else if (subCommand.name === "remove") {
+      // Remove the nickname
+      member
+        .setNickname(null, `Responsible moderator: ${interaction.user.tag}`)
+        .then(() => interaction.reply({ content: `Removed ${member.user.username}'s nickname`, ephemeral: false }))
+        .catch(() => interaction.reply({ content: "Could not change the nickname of the provided user, ensure the permissions are correct and try again", ephemeral: true }));
+    }
+  }
 }

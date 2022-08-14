@@ -1,20 +1,26 @@
-const Discord = require("discord.js");
-const client = new Discord.Client({
-	partials: ["MESSAGE", "CHANNEL", "REACTION"],
-	disableMentions: "everyone",
-	intents: [
-		Discord.Intents.FLAGS.GUILDS,
-		Discord.Intents.FLAGS.GUILD_MESSAGES,
-		Discord.Intents.FLAGS.GUILD_PRESENCES,
-		Discord.Intents.FLAGS.GUILD_MEMBERS,
-		Discord.Intents.FLAGS.GUILD_INVITES,
-		Discord.Intents.FLAGS.GUILD_BANS,
-		Discord.Intents.FLAGS.GUILD_MESSAGE_TYPING,
-		Discord.Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
-		Discord.Intents.FLAGS.GUILD_INTEGRATIONS,
-		Discord.Intents.FLAGS.GUILD_VOICE_STATES,
-		Discord.Intents.FLAGS.DIRECT_MESSAGES,
-	]
+const { Client, GatewayIntentBits } = require("discord.js");
+const chalk = require("chalk");
+
+const client = new Client({
+  disableEveryone: true,
+  fetchAllMembers: true,
+  partials: ["MESSAGE", "CHANNEL", "REACTION"],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.GuildPresences,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildInvites,
+    GatewayIntentBits.GuildBans,
+    GatewayIntentBits.GuildMessageTyping,
+    GatewayIntentBits.GuildEmojisAndStickers,
+    GatewayIntentBits.GuildIntegrations,
+    GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.GuildScheduledEvents
+  ]
 });
 
 /**
@@ -30,13 +36,18 @@ function getFlags() {
 	return args;
 }
 
+// Get the environment variables
 require("dotenv").config();
+// Login to the bot
 client.login(process.env.token);
-if (getFlags().includes("guild-only") || getFlags().includes("dev-mode")) {
-	console.log("[" + require("chalk").blue("INFO") + "] Starting up in dev mode");
-	require("./utils/cache").dev.set(true);
+
+// Check the flags
+if (getFlags().includes("dev-mode") || getFlags().includes("dev")) {
+	console.log("[" + chalk.blue("INFO") + "] Starting up in dev mode");
+	require("./utils/cache").dev.changeState(true);
 }
 
-require("./events/client/database/connection")();
+// Connect to the database
+require("./database/connection")();
+// Start the bot
 require("./bot")(client);
-require("./server/server")(client);

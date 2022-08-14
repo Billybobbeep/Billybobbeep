@@ -1,28 +1,57 @@
-module.exports = {
-	name: "invite",
-	description: "Generate a bot invite",
-	catagory: "info",
-	slashInfo: { enabled: true, public: false },
-  options: [],
-	/**
-	 * Execute the selected command
-	 * @param {Object} message The message that was sent
-	 * @param {String} prefix The servers prefix
-	 * @param {Client} client The bots client
-	 */
-	execute: function(message, _prefix, client) {
-		const guildData = require("../../events/client/database/models/guilds");
-		const Discord = require("discord.js");
-		const embed = new Discord.MessageEmbed();
+const { Client, CommandInteraction, EmbedBuilder, SlashCommandBuilder } = require("discord.js");
 
-		guildData.findOne({ guildId: message.guild?.id || message.guild_id }).then(result => {
-			if (result) embed.setColor(result.preferences ? result.preferences.embedColor : "#447ba1"); else embed.setColor("#447ba1");
-			embed.addField("Invite the bot to your server", `[https://discord.com/oauth2/authorize/...](https://discord.com/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot)`);
-			embed.addField("View more information", `[View ${client.user.username} on top.gg](https://top.gg/bot/${client.user.id})`);
-			embed.addField(`Join the official ${client.user.username} server`, "[Billybobbeep Help Center](https://discord.com/invite/AUGX9sywnP)");
-			message.data
-				? require("../../utils/functions").slashCommands.reply(message, client, embed)
-				: message.channel.send({ embeds: [embed] });
-		});
-	}
+module.exports = {
+  name: "invite",
+  description: "Invite the bot to your server",
+  category: "info",
+  slashInfo: {
+    enabled: true,
+    public: true
+  },
+  /**
+   * Get the command's slash info
+   * @returns The slash information
+   */
+  getSlashInfo: function() {
+    const builder = new SlashCommandBuilder();
+    // Set basic command information
+    builder.setName(this.name);
+    builder.setDescription(this.description);
+    // If the command can be used in DMs
+    builder.setDMPermission(true);
+    // Return the information in JSON format
+    return builder.toJSON();
+  },
+  /**
+   * Execute the selected command
+   * @param {CommandInteraction} interaction The interaction that was sent
+   * @param {Client} client The bots client
+   */
+  execute: function(interaction, client) {
+    // Construct an embed
+    const embed = new EmbedBuilder();
+    embed.setColor("#447ba1");
+    embed.setFooter({
+      text: `Requested by ${interaction.user.username}`,
+      iconURL: interaction.user.avatarURL()
+    });
+    embed.setTimestamp();
+    embed.addFields([
+      {
+        name: "Invite the bot to your server",
+        value: `[https://discord.com/authorize/...](https://discord.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=8)`,
+        inline: false
+      }, {
+        name: "View the bot on top.gg",
+        value: `https://top.gg/bot/${client.user.id}`,
+        inline: false
+      }, {
+        name: "Join the support server",
+        value: `[Billybobbeep Help Center](https://discord.com/invite/AUGX9sywnP)`,
+        inline: false
+      }
+    ]);
+    // Send the embed
+    interaction.reply({ embeds: [embed] });
+  }
 }

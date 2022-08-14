@@ -1,27 +1,42 @@
+const { Client, CommandInteraction, EmbedBuilder, SlashCommandBuilder } = require("discord.js");
+const { correctCapitalisation } = require("../../utils/functions");
+
 module.exports = {
   name: "vote",
-  description: "Vote for billybobbeep",
-  guildOnly: true,
+  description: "Vote for the bot",
+  category: "",
+  slashInfo: {
+    enabled: true,
+    public: true
+  },
+  /**
+   * Get the command's slash info
+   * @returns The slash information
+   */
+  getSlashInfo: function() {
+    const builder = new SlashCommandBuilder();
+    // Set basic command information
+    builder.setName(this.name);
+    builder.setDescription(this.description);
+    // If the command can be used in DMs
+    builder.setDMPermission(false);
+    // Return the information in JSON format
+    return builder.toJSON();
+  },
   /**
    * Execute the selected command
-   * @param {Object} message The message that was sent
-   * @param {String} prefix The servers prefix
+   * @param {CommandInteraction} interaction The interaction that was sent
    * @param {Client} client The bots client
    */
-  execute: function(message, _prefix, client) {
-    const Discord = require("discord.js");
-    const embed = new Discord.MessageEmbed();
-    const guildData = require("../../events/client/database/models/guilds");
-
-    guildData.findOne({ guildId: message.guild.id }).then((result) => {
-      embed.setTitle("Vote for Billybobbeep");
-      embed.setDescription(
-        `[See here](https://top.gg/bot/${client.user.id}/vote) to vote for Billybobbeep on [top.gg](https://top.gg)`
-      );
-      embed.setColor(
-        result.preferences ? result.preferences.embedColor : "#447ba1"
-      );
-      message.channel.send({ embeds: [embed] });
-    });
-  },
+  execute: function(interaction, client) {
+    // Construct an embed
+    const embed = new EmbedBuilder();
+    // Set the embed data
+    embed.setTitle(`Vote for ${correctCapitalisation(client.user.username)}`);
+    embed.setDescription(`[See here](https://top.gg/bot/${client.user.id}/vote) to vote for Billybobbeep on [top.gg](https://top.gg)`);
+    // Set the default properties of the embed
+    embed.setColor("#447ba1");
+    embed.setTimestamp();
+    interaction.reply({ embeds: [embed] });
+  }
 }

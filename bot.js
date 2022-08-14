@@ -1,9 +1,9 @@
-module.exports = async function(client) {
-	const Discord = require("discord.js");
+module.exports = function(client) {
+	const discord = require("discord.js");
 	const fs = require("fs");
 
 	require("./utils/events")(client);
-	client.commands = new Discord.Collection();
+	client.commands = new discord.Collection();
 
 	const commandFolders = fs
 		.readdirSync("./commands")
@@ -22,7 +22,4 @@ module.exports = async function(client) {
 			}
 		}
 	}
-
-	client.commands.set("afk", require("./events/commands/afkHandle.js"));
-	client.commands.set("back", require("./events/commands/afkHandle.js"));
 }

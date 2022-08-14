@@ -1,89 +1,99 @@
-const Discord = require("discord.js");
-const guildData = require("../../events/client/database/models/guilds.js");
+const { Client, CommandInteraction, SlashCommandBuilder, ChannelType } = require("discord.js");
 
 module.exports = {
   name: "poll",
-  description: "Send a poll",
-  catagory: "generator",
-  guildOnly: true,
-  slashInfo: { enabled: true, public: true, options: { mod: true } },
-  options: [
-    {
-      name: "description",
-      description: "The poll description",
-      type: 3,
-      required: true,
-    }, {
-      name: "title",
-      description: "The poll title",
-      type: 3,
-      required: false
-    }, {
-      name: "channel",
-      description: "The channel to send the poll in",
-      type: 7,
-      required: false,
-    },
-  ],
+  description: "Create a poll",
+  category: "generator",
+  slashInfo: {
+    enabled: true,
+    public: true
+  },
+  /**
+   * Get the command's slash info
+   * @returns The slash information
+   */
+  getSlashInfo: function() {
+    const builder = new SlashCommandBuilder();
+    // Set basic command information
+    builder.setName(this.name);
+    builder.setDescription(this.description);
+    // If the command can be used in DMs
+    builder.setDMPermission(false);
+    // Add an option to provide a message
+    builder.addStringOption((option) => {
+      // Set the name of the option
+      option.setName("message");
+      // Set the description of the option
+      option.setDescription("The poll message");
+      // Set the required value of the option
+      option.setRequired(true);
+      // Set min/max length
+      option.setMinLength(3);
+      option.setMaxLength(2000);
+      // Return the option
+      return option;
+    });
+    // Add an option to provide a channel
+    builder.addChannelOption((option) => {
+      // Set the name of the option
+      option.setName("channel");
+      // Set the description of the option
+      option.setDescription("The channel to send the poll in");
+      // Set the required value of the option
+      option.setRequired(true);
+      // Set the channel type of the option
+      option.addChannelTypes(ChannelType.GuildText);
+      // Return the option
+      return option;
+    });
+    // Return the information in JSON format
+    return builder.toJSON();
+  },
   /**
    * Execute the selected command
-   * @param {Object} message The message that was sent
-   * @param {String} prefix The servers prefix
+   * @param {CommandInteraction} interaction The interaction that was sent
    * @param {Client} client The bots client
    */
-  execute: function(message, prefix, client) {
-    if (!message.data) {
-      guildData.findOne({ guildId: message.guild.id }).then(async (result) => {
-        let args = message.content.slice(prefix.length).trim().split(/ +/g);
-        let channel = message.mentions.channels.first();
-        let desc = args.slice(2).join(" ");
+  execute: async function(interaction, client) {
+    // Find command options
+    let message = (interaction.options.data).find((option) => option.name === "message")?.value;
+    let channel = (interaction.options.data).find((option) => option.name === "channel")?.value;
 
-        if (!channel)
-          message.channel.send(
-            `Usage: ${result.prefix}poll \`#channel\` [description]`
-          );
-        if (!isNaN(channel)) channel = client.channels.fetch(channel);
+    // Check if the message is valid
+    if(!message || message.length >= 2000)
+      return interaction.reply({ content: "You must provide a valid message", ephemeral: true });
 
-        const embed = new Discord.MessageEmbed()
-          .setTitle("New Poll!")
-          .setDescription(desc)
-          .setColor(
-            result.preferences ? result.preferences.embedColor : "#447ba1"
-          )
-          .setFooter(`Poll created by: ${message.author.tag}`);
-        let msg = await channel.send(embedPoll);
-        await msg.react("👍");
-        await msg.react("👎");
+    // Ensure the channel is valid
+    if(!channel || !interaction.guild.channels.cache.has(channel))
+      return interaction.reply({ content: "You must provide a valid channel", ephemeral: true });
+
+    // Defer the reply
+    await interaction.deferReply();
+    
+    // Define the error flag
+    let errorExists = false;
+    // Find the channel object
+    channel = await interaction.guild.channels.fetch(channel);
+
+    if (!channel || !channel.type === ChannelType.GuildText)
+      return interaction.followUp({ content: "You must provide a valid channel", ephemeral: true });
+
+    // Send the poll
+    let msg = await channel.send({ content: message })
+      .catch(() => {
+        // Set the error flag
+        errorExists = true;
+        // Send the error message
+        interaction.followUp({ content: "An error occurred while sending the poll", ephemeral: true });
       });
-    } else {
-      guildData.findOne({ guildId: message.guild_id }).then(async (result) => {
-        let channel = message.data.options[2]
-          ? message.data.options[2].value
-          : message.channel_id;
-        if (!isNaN(channel)) channel = await client.channels.fetch(channel);
-        else channel = await client.channels.fetch(channel.id);
-        let embed = new Discord.MessageEmbed()
-          .setTitle(
-            message.data.options[1]
-              ? message.data.options[1].value
-              : "New Poll!"
-          )
-          .setDescription(message.data.options[0].value)
-          .setColor(
-            result.preferences ? result.preferences.embedColor : "#447ba1"
-          )
-          .setFooter(
-            `Poll created by: ${message.member.user.username}#${message.member.user.discriminator}`
-          );
-        require("../../utils/functions").slashCommands.reply(
-          message,
-          client,
-          "I have posted your poll"
-        );
-        let msg = await channel.send({ embeds: [embed] });
-        await msg.react("👍");
-        await msg.react("👎");
-      });
-    }
+
+    // Ensure an error is not present
+    if (errorExists) return;
+
+    await msg.react("👍");
+    await msg.react("👎");
+
+    // Reply to the interaction
+    interaction.followUp({ content: "Poll sent successfully", ephemeral: false });
   }
 }

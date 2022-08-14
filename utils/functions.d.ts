@@ -1,116 +1,103 @@
-import { Client, Message, Interaction, MessageAttachment } from "discord.js";
+import { Client, Message, Interaction, PermissionResolvable, CommandInteraction } from "discord.js";
+import { Schema } from "mongoose";
 
-/**
- * Send a message into the servers logging channel
- * @param {Object} msg The message to send
- * @param {Message} message The message to retreve the guild from
- * @param {Client} client The bots client
- * @param {Object} options Any additional options
-*/
-export declare function logging(msg: any, message: Message, client: Client, options: Object): Promise<void>;
-
-/**
- * Clean the databoase of any unused documents
- * @param {Client} client The bots client
-*/
-export declare function cleanDatabase(client: Client): void;
-
-/**
- * Draw a users rank card
- * @param {Buffer} avatar The users avatar
- * @param {String} username The users username
- * @param {Number} discriminator The users discriminator
- * @param {Number} currentXP The users current XP
- * @param {Number} requiredXP The required XP to level up
- * @param {Number} level The users current level
- * @returns The rank card as a MessageAtachment
-*/
-export declare function rank(avatar: Buffer, username: String, discriminator: Number, currentXP: Number, requiredXP: Number, level: Number): MessageAttachment;
-
-/**
- * Slash command functions
-*/
-export declare namespace slashCommands {
-    interface interactionResponse {
-        custom: {
-            id: String,
-            token: String
-        },
-        message: Object,
-        rawInteraction: Interaction
-    }
-    /**
-     * @param {Interaction} interaction The slash command interaction
-     * @param {Client} client The bots client
-     * @param {String | Object} response The response to the interaction
-     * @returns Returns the sent message
-    */
-    export function reply(interaction: Interaction, client: Client, response: String | Object): Promise<interactionResponse>;
-
-    /**
-     * Update a pre-existing interaction
-     * @param {Object} interaction The interaction
-     * @param {String | Object} response The updated response
-     * @returns Returns the Interaction
-     */
-    export function update(interaction: Interaction, response: String | Object): Interaction;
-    
-    /**
-     * Check if the client has the correct permissions
-     * @param {Interaction} interaction The slash command interaction
-     * @param {String} type The permission type
-     * @returns If the client has the permission
-    */
-    export function clientPermissions(client: Client, interaction: Interaction, type: String): Promise<Boolean>;
-
-    /**
-     * Send an embed explaining that the client does not have the correct permissions
-     * @param {Interaction} interaction The slash command interaction
-     * @param {Client} client The bots client
-     * @param {String} permission The missing permission
-    */
-    export function permissionCallback(interaction: Interaction, client: Client, permission: String): void;
+type loggingTypes = "channel" | "guild" | "interaction";
+type messageTypes = "embed" | "text" | "custom-object";
+declare interface loggingOptions {
+  /**
+   * The interaction type
+   */
+  type: loggingTypes;
+  /**
+   * The message content type
+   */
+  messageType: messageTypes;
 }
 
 /**
- * Button interactions
-*/
-export declare namespace buttons {
-   export interface responseData {
-        interaction: {
-            readonly id: String,
-            readonly token: String            
-        },
-        readonly message: Object
-    }
-    /**
-     * @param {Object} interaction The slash command interaction
-     * @param {Client} client The bots client
-     * @param {*} response The response to the interaction
-     * @param {Object} options The message options
-     * @returns If the response was successful
-    */
-    export function respond(interaction: Interaction, client: Client, response: any): Promise<Boolean | responseData>;
+ * Send a message to aa servers logging channel
+ * @param message The message to send
+ * @param interaction The interaction that was sent or the channel to send the message to
+ * @param client The bots client
+ * @param options The options to send the message with
+ */
+export function logging(message: string | EmbedBuilder, interaction: CommandInteraction | string, client: Client, options: loggingOptions): Promise<void>;
+
+/**
+ * Return an embed to send to the user if the server hasn't finished setting up
+ * @param message The embed description
+ * @param param The parameter that is missing
+ * @returns The embed object
+ */
+export function missingPreferences(message?: string, param?: string): EmbedBuilder;
+
+/**
+ * Check if a user is a server moderator
+ * @param interaction The interaction that was sent
+ * @param guildObj The guild database object
+ * @returns If the user has the required permissions
+ */
+export function checkMod(interaction: CommandInteraction, guildObj?: Schema): Promise<Boolean>;
+
+/**
+ * Create a random string of letters and numbers
+ * @param length The length of the random string
+ * @returns A random string
+ */
+export function makeid(length?: number): String;
+
+/**
+ * Correclty capitalise a string
+ * @param string The string to correct
+ * @returns The corrected string
+ */
+export function correctCapitalisation(string: string): string;
+
+export namespace guildPermsMessage {
+  /**
+   * Check if the client has permission to use a command
+   * @param message The message object
+   * @param client The bots client
+   * @param type The type of permission to check
+   */
+  export async function clientPermissions(message: Message, client: Client, type: Array<PermissionResolvable> | PermissionResolvable): Promise<Boolean>;
+
+  /**
+   * Send a message to the user asking them to provide required permissions
+   * @param message The message object
+   * @param client The bots client
+   * @param permission The missing permission
+   */
+  export function permissionCallback(message: Message, client: Client, permission: Array<PermissionResolvable> | PermissionResolvable): void;
 }
 
-export declare namespace guildPerms {
-    export interface Options {
-        guild: Boolean
-    }
-    /**
-     * Check if the client has the correct permissions
-     * @param {Message} message
-     * @param {String} type The permission type
-     * @param {Object} options Additional options
-     * @returns If the client has the correct permissions
-    */
-    export function clientPermissions(client: Client, message: Message, type: String, options: Options): Promise<Boolean>;
+export namespace guildPermsInteraction {
+  /**
+   * Check if the client has permission to use a command
+   * @param client The bots client
+   * @param interaction The message object
+   */
+   export async function clientPermissions(interaction: Interaction, client: Client, type: Array<PermissionResolvable> | PermissionResolvable): Promise<Boolean> {
+    // Ensure valid parameters have been provided
+    if (!interaction?.guildId || !client?.user) return Promise.resolve(false);
+    if (!type) throw new TypeError("Missing required parameter 'type'");
 
-    /**
-     * Send an embed to the server explaining that the client does not have the correct permissions
-     * @param {Message} message
-     * @param {Client} client
-     * @param {String} permission The missing permission
-    */
-    export function permissionCallback(message: Message, client: Client, permission: String): void;
+    const guild = await client.guilds.fetch(interaction.guildId);
+    const me = await guild.members.fetch(client.user.id);
+
+    // Return whether the client has the required permissions
+    if (Array.isArray(type))
+      return type.every(t => me.permissions.has(t)) || false;
+    else
+      return me.permissions.has(type);
+  }
+
+  /**
+   * Send a message to the user asking them to provide required permissions
+   * @param interaction The interaction object
+   * @param client The bots client
+   * @param permission The missing permission
+   * @param ephemeral Whether the message should be ephemeral
+   */
+  export function permissionCallback(interaction: Interaction, client: Client, permission: Array<PermissionResolvable> | PermissionResolvable, ephemeral?: boolean): void;
 }
