@@ -10,14 +10,12 @@ const guildMembers = require("../../database/models/guildMembers");
  */
 module.exports.create = async function(guild, client) {
   // Ensure the guild parameter exists
-  if (!guild instanceof Guild) return;
+  if (!guild instanceof Guild || !guild.name) return;
 
   // Add the server to the database
   new guilds({ guildId: guild.id })
     .save()
     .catch(() => console.log("Error adding guild to database"));
-  
-  console.log(`Added guild ${guild.name} (${guild.id})`);
 
   // Fetch the bots member object for the guild
   let me = await guild.members.fetchMe();
@@ -61,7 +59,7 @@ module.exports.create = async function(guild, client) {
  */
 module.exports.delete = async function(guild, client) {
   // Ensure the guild parameter exists
-  if (!guild instanceof Guild) return;
+  if (!guild instanceof Guild || !guild.name) return;
 
   // Construct an embed
   const embed = new EmbedBuilder();
@@ -77,8 +75,6 @@ module.exports.delete = async function(guild, client) {
   });
   // Log the embed
   logging(embed, "942042511793328138", client, { type: "channel", messageType: "embed" });
-
-  console.log(`Removed guild ${guild.name} (${guild.id})`);
 
   // Remove the guild from the database
   await guilds.deleteOne({ guildId: guild.id });
