@@ -209,7 +209,7 @@ async function setupSlashCommands(directory, client, guild) {
     if (!client.commands.get(command.name))
       deleteCommand(client, command);
     // If the command is not public or no longer supports slash
-    if (!client.commands.get(command.name).slashInfo || !client.commands.get(command.name).slashInfo.public)
+    if (!client.commands.get(command.name)?.slashInfo || !client.commands.get(command.name)?.slashInfo?.public)
       deleteCommand(client, command);
   });
 }
