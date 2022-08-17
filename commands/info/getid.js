@@ -31,6 +31,8 @@ module.exports = {
         option.setName("role");
         // The description of the option
         option.setDescription("The role to get the ID of");
+        // If the option is required
+        option.setRequired(true);
         // Return the option
         return option;
       });
@@ -49,6 +51,8 @@ module.exports = {
         option.setName("channel");
         // The description of the option
         option.setDescription("The channel to get the ID of");
+        // If the option is required
+        option.setRequired(false);
         // Return the option
         return option;
       });
@@ -67,6 +71,8 @@ module.exports = {
         option.setName("user");
         // The description of the option
         option.setDescription("The user to get the ID of");
+        // If the option is required
+        option.setRequired(true);
         // Return the option
         return option;
       });
@@ -111,7 +117,7 @@ module.exports = {
     } else if (subcommand.name === "channel") {
       // Ensure the option was provided
       if (!channel)
-        return interaction.reply({ content: "A valid channel must be provided", ephemeral: true });
+        channel = interaction.channel.id;
       // Find the channel
       channel = await interaction.guild.channels.fetch(channel);
       // Ensure the option was provided
