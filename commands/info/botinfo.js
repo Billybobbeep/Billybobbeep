@@ -35,11 +35,11 @@ module.exports = {
     embed.addFields([
       {
         name: "**Servers:**",
-        value: (client.guilds.cache.size).toLocalestring(),
+        value: (client.guilds.cache.size).toString(),
         inline: true
       }, {
         name: "**Users:**",
-        value: client.guilds.cache.reduce((a, b) => a + b.memberCount, 0).toLocalestring(),
+        value: client.guilds.cache.reduce((a, b) => a + b.memberCount, 0).toString(),
         inline: true
       }, {
         name: "\u200b",
