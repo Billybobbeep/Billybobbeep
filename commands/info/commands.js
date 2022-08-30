@@ -167,6 +167,8 @@ module.exports = {
             setTimeout(() => {
               // Remove the requester from the array
               requesters = requesters.filter(x => x.userId !== interaction.user.id && x.messageId !== x.id);
+              // Disable the buttons on the embed
+              x.edit({ embeds: [pages[0]], components: [(new ActionRowBuilder().addComponents(backBtn.setDisabled(true), nextBtn.setDisabled(true)))] })
             }, 180000); // 3 minutes
           });
       } else {
@@ -236,6 +238,8 @@ module.exports = {
           setTimeout(() => {
             // Remove the requester from the array
             requesters = requesters.filter(x => x.userId !== interaction.user.id && x.messageId !== x.id);
+            // Disable the buttons on the embed
+            x.edit({ embeds: [pages[currentPage + 1]], components: [(new ActionRowBuilder().addComponents(backBtn.setDisabled(true), nextBtn.setDisabled(true)))] });
           }, 180000); // 3 minutes
         });
     } else if (requesterExists && interaction.customId.includes("back")) {
@@ -263,6 +267,8 @@ module.exports = {
           setTimeout(() => {
             // Remove the requester from the array
             requesters = requesters.filter(x => x.userId !== interaction.user.id && x.messageId !== x.id);
+            // Disable the buttons on the embed
+            x.edit({ embeds: [pages[currentPage - 1]], components: [(new ActionRowBuilder().addComponents(backBtn.setDisabled(true), nextBtn.setDisabled(true)))] });
           }, 180000); // 3 minutes
         });
     } else {
