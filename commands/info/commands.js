@@ -168,7 +168,9 @@ module.exports = {
               // Remove the requester from the array
               requesters = requesters.filter(x => x.userId !== interaction.user.id && x.messageId !== x.id);
               // Disable the buttons on the embed
-              x.edit({ embeds: [pages[0]], components: [(new ActionRowBuilder().addComponents(backBtn.setDisabled(true), nextBtn.setDisabled(true)))] })
+              x
+                .edit({ embeds: [pages[0]], components: [(new ActionRowBuilder().addComponents(backBtn.setDisabled(true), nextBtn.setDisabled(true)))] })
+                .catch(() => null);
             }, 180000); // 3 minutes
           });
       } else {
@@ -239,9 +241,12 @@ module.exports = {
             // Remove the requester from the array
             requesters = requesters.filter(x => x.userId !== interaction.user.id && x.messageId !== x.id);
             // Disable the buttons on the embed
-            x.edit({ embeds: [pages[currentPage + 1]], components: [(new ActionRowBuilder().addComponents(backBtn.setDisabled(true), nextBtn.setDisabled(true)))] });
+            x
+              .edit({ embeds: [pages[currentPage + 1]], components: [(new ActionRowBuilder().addComponents(backBtn.setDisabled(true), nextBtn.setDisabled(true)))] })
+              .catch(() => null);
           }, 180000); // 3 minutes
-        });
+        })
+        .catch(() => null);
     } else if (requesterExists && interaction.customId.includes("back")) {
       // Ensure the previous page is not null
       if (currentPage === 0)
@@ -268,9 +273,12 @@ module.exports = {
             // Remove the requester from the array
             requesters = requesters.filter(x => x.userId !== interaction.user.id && x.messageId !== x.id);
             // Disable the buttons on the embed
-            x.edit({ embeds: [pages[currentPage - 1]], components: [(new ActionRowBuilder().addComponents(backBtn.setDisabled(true), nextBtn.setDisabled(true)))] });
+            x
+              .edit({ embeds: [pages[currentPage - 1]], components: [(new ActionRowBuilder().addComponents(backBtn.setDisabled(true), nextBtn.setDisabled(true)))] })
+              .catch(() => null);
           }, 180000); // 3 minutes
-        });
+        })
+        .catch(() => null);
     } else {
       // Inform the user that they cannot click the button
       interaction.reply({ content: "Only the person that executes the command can interact with the embed", ephemeral: true });
