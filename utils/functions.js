@@ -58,17 +58,35 @@ module.exports = {
       throw new Error("A valid type must be specified, recieved " + options.type);
     }
 
+    let webhook = null;
+    let webhooks = await channel.fetchWebhooks();
+
+    if (webhooks.size >= 1) {
+      let wh = webhooks.find(x => x.channelId === channel.id && x.owner.id === client.user.id);
+      if (wh)
+        webhook = wh;
+    }
+
+    if (!webhook) {
+      webhook = await channel.createWebhook({
+        name: client.user.username,
+        avatar: "https://i.imgur.com/p0SwlNs.png",
+        channel: channel.id,
+        reason: "Logging webhook"
+      });
+    }
+
     // Send the message to the channel
-    if (channel && options.messageType === "embed") {
-      channel
+    if (webhook && options.messageType === "embed") {
+      webhook
         .send({ embeds: [message] })
         .catch(() => null);
-    } else if (channel && options.messageType === "text") {
-      channel
+    } else if (webhook && options.messageType === "text") {
+      webhook
         .send({ content: message})
         .catch(() => null);
-    } else if (channel && typeof message === "object") {
-      channel
+    } else if (webhook && typeof message === "object") {
+      webhook
         .send(message)
         .catch(() => null);
     }
