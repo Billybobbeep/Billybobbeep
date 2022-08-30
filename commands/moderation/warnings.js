@@ -86,10 +86,6 @@ module.exports = {
       name: user.tag,
       iconURL: user.displayAvatarURL()
     });
-    embed.setFooter({
-      text: `Requested by ${interaction.user.username}`,
-      iconURL: interaction.user.avatarURL()
-    });
     // Add the warnings
     warnings = warnings.sort((a, b) => b.id - a.id);
     if (warnings.length > 10)

@@ -198,12 +198,12 @@ async function setupSlashCommands(directory, client, guild) {
     postSlashCommands(privateCommands, require("../../utils/config.json").DevServer, client);
   }
 
-  // Delete non-public slash command(s) from guilds
+  // Fetch all registered commands
   let commands = await rest.get(
     Routes.applicationCommands(client.user.id)
   );
 
-  // Loop through all commands
+  // Delete non-public slash command(s) from guilds
   [...commands].forEach(command => {
     // If the command doesn't exist anymore
     if (!client.commands.get(command.name))
@@ -212,6 +212,16 @@ async function setupSlashCommands(directory, client, guild) {
     if (!client.commands.get(command.name)?.slashInfo || !client.commands.get(command.name)?.slashInfo?.public)
       deleteCommand(client, command);
   });
+
+  // Remove duplicate commands
+  [...commands]
+    .filter(function(cmd, index, self) {
+      // Filter all duplicate commands
+      return self.indexOf(cmd) !== index;
+    })
+    .forEach(cmd => {
+      deleteCommand(client, cmd);
+    });
 }
 
 /**

@@ -36,10 +36,6 @@ module.exports = {
 
     const embed = new EmbedBuilder();
     embed.setDescription("**Billybobbeep | Server Information**");
-    embed.setFooter({
-      text: `Requested by ${interaction.user.username}`,
-      iconURL: interaction.user.avatarURL()
-    });
     embed.setTimestamp();
     embed.setColor("#447ba1");
     embed.setThumbnail(interaction.guild.iconURL({ dynamic: true}));

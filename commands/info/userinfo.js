@@ -55,10 +55,6 @@ module.exports = {
     // The embed title
     embed.setDescription("**Billybobbeep | User Information**");
     // Default information
-    embed.setFooter({
-      text: `Requested by ${interaction.user.username}`,
-      iconURL: interaction.user.avatarURL()
-    });
     embed.setTimestamp();
     embed.setColor(user.accentColor || "#447ba1");
     // The users information

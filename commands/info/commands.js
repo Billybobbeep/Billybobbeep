@@ -144,7 +144,7 @@ module.exports = {
     // Number the pages
     pages.forEach((page, index) => {
       page?.setFooter({
-        text: `Page ${index + 1}/${pages.length} - Requested by ${interaction.user.username}`
+        text: `Page ${index + 1}/${pages.length}`
       });
     });
 

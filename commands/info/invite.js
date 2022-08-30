@@ -31,10 +31,6 @@ module.exports = {
     // Construct an embed
     const embed = new EmbedBuilder();
     embed.setColor("#447ba1");
-    embed.setFooter({
-      text: `Requested by ${interaction.user.username}`,
-      iconURL: interaction.user.avatarURL()
-    });
     embed.setTimestamp();
     embed.addFields([
       {

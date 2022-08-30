@@ -586,13 +586,6 @@ module.exports = {
         embed.setDescription(
           "Supported Fonts:\nDouble\nFancy\nHand\nCursed\nSmooth\nSmol"
         );
-        embed.setFooter(
-          `Requested by: ${
-            message.author
-              ? message.author.tag
-              : message.member.user.username + message.member.user.discriminator
-          }`
-        );
         embed.setTimestamp();
         embed.setColor(
           result.preferences ? result.preferences.embedColor : "#447ba1"

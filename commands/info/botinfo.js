@@ -56,10 +56,6 @@ module.exports = {
     ]);
     
     embed.setColor("#447ba1");
-    embed.setFooter({
-      text: `Requested by ${interaction.user.username}`,
-      iconURL: interaction.user.avatarURL()
-    });
     embed.setTimestamp();
     
     // Send the embed

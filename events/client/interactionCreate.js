@@ -1,4 +1,4 @@
-const { CommandInteraction, MessageComponentInteraction, Client, InteractionType } = require("discord.js");
+const { CommandInteraction, MessageComponentInteraction, Client, Routes, InteractionType } = require("discord.js");
 const { REST } = require("@discordjs/rest");
 // Define the API client to connect with Discord
 const rest = new REST({ version: "10" }).setToken(process.env.token);
@@ -8,14 +8,24 @@ const rest = new REST({ version: "10" }).setToken(process.env.token);
  * @param {CommandInteraction} interaction The interaction sent by the user
  * @param {Client} client The bots client
  */
-function handleInteraction(interaction, client) {
+async function handleInteraction(interaction, client) {
   // Get the command name
   const command = interaction.commandName;
 
   // Ensure the command exists and is enabled
   if (!client.commands.get(command) || !client.commands.get(command)?.slashInfo?.enabled) {
-    // Delete the interaction
-    rest.delete(Routes.applicationCommands(client.user.id, interaction.id));
+    let commands = await rest.get(Routes.applicationCommands(client.user.id));
+    
+    commands = [...commands].find(c => c.name === command);
+
+    console.log(commands);
+
+    if (Array.isArray(commands)) {
+      // Delete the interaction
+      commands.forEach(cmd => {
+        rest.delete(Routes.applicationCommand(client.user.id, cmd.id));
+      });
+    }
     // Return an error message
     return interaction.reply({ content: "This command no longer exists", ephemeral: true, options: { allowedMentions: false } });
   }
