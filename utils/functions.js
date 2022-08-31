@@ -59,9 +59,9 @@ module.exports = {
     }
 
     let webhook = null;
-    let webhooks = await channel.fetchWebhooks();
+    let webhooks = await channel.fetchWebhooks().catch(() => null);
 
-    if (webhooks.size >= 1) {
+    if (webhooks?.size >= 1) {
       let wh = webhooks.find(x => x.channelId === channel.id && x.owner.id === client.user.id);
       if (wh)
         webhook = wh;
@@ -73,7 +73,7 @@ module.exports = {
         avatar: "https://i.imgur.com/p0SwlNs.png",
         channel: channel.id,
         reason: "Logging webhook"
-      });
+      }).catch(() => null);
     }
 
     // Send the message to the channel
