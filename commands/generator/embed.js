@@ -152,7 +152,7 @@ module.exports = {
       embed.setThumbnail(thumbnail.url);
     // Set the footer
     if (footer)
-      embed.setFooter(footer);
+      embed.setFooter({ text: footer });
     // Set the color
     if (color)
       embed.setColor(color || "#447ba1");
