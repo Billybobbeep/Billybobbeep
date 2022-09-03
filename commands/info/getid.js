@@ -124,7 +124,7 @@ module.exports = {
       if (!channel)
         return interaction.reply({ content: "A valid channel must be provided", ephemeral: true });
       // Reply to the user
-      interaction.reply({ content: `The ID of the chanel \`${channel.name}\` is ${channel.id}` });
+      interaction.reply({ content: `The ID of the channel \`${channel.name}\` is ${channel.id}` });
     } else if (subcommand.name === "user") {
       // Ensure the option was provided
       if (!user)
