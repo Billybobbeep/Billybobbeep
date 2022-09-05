@@ -1,4 +1,4 @@
-const { Client, Message, Guild, CommandInteraction, PermissionResolvable, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+const { Client, Message, Guild, CommandInteraction, PermissionResolvable, PermissionFlagsBits, EmbedBuilder, ChannelType } = require("discord.js");
 const { Schema } = require("mongoose");
 const { default: axios } = require("axios");
 const { REST } = require("@discordjs/rest");
@@ -58,8 +58,10 @@ module.exports = {
       throw new Error("A valid type must be specified, recieved " + options.type);
     }
 
+    if (channel.type !== ChannelType.GuildText) return;
+
     let webhook = null;
-    let webhooks = await channel.fetchWebhooks().catch(() => null);
+    let webhooks = await channel?.fetchWebhooks().catch(() => null);
 
     if (webhooks?.size >= 1) {
       let wh = webhooks.find(x => x.channelId === channel.id && x.owner.id === client.user.id);
