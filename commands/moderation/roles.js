@@ -55,11 +55,19 @@ module.exports = {
         // Return the option
         return option;
       });
-      command.addBooleanOption((option) => {
+      command.addStringOption((option) => {
         // Set the option name
         option.setName("include-bots");
         // Set the option description
         option.setDescription("Include bots in the update");
+        // Set the choices
+        option.setChoices({
+          name: "Yes",
+          value: "yes"
+        }, {
+          name: "No",
+          value: "no"
+        });
         // If the option is required
         option.setRequired(false);
         // Return the option
@@ -152,6 +160,15 @@ module.exports = {
       return interaction.reply({ content: "Invalid arguments, please provide a role", ephemeral: true });
     if (!user && subCommand.name === "single")
       return interaction.reply({ content: "Invalid arguments, please provide a user", ephemeral: true });
+    if (!["yes", "no"].includes(includeBots?.toLowerCase()) && subCommand.name === "all")
+      return interaction.reply({ content: "Invalid arguments, please provide a user", ephemeral: true });
+    else {
+      // Translate 'yes' and 'no' to boolean values
+      if (includeBots?.toLowerCase() === "yes")
+        includeBots = true;
+      else
+        includeBots = false;
+    }
 
     // Defer a reply to the user
     await interaction.deferReply();
@@ -189,7 +206,9 @@ module.exports = {
         // If the update includes bots, return true
         if (includeBots) return true;
         // If the update does not include bots and the user is a bot, return false
-        if (!m.user.bot) return false;
+        if (m.user.bot) return false;
+        // If none of the above filters apply, return true
+        return true;
       });
       // Update all users roles
       if (action === "add") {
