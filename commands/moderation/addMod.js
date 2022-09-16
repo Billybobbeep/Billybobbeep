@@ -69,6 +69,8 @@ module.exports = {
 
     if (!user)
       return interaction.followUp({ content: "The user you provided was not found", ephemeral: true });
+    if (!user.bot)
+      return interaction.followUp({ content: "You cannot grant bots moderator privileges", ephemeral: true });
 
     // Get the guild
     let guild = await guilds.findOne({ guildId: interaction.guild.id });
