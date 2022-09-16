@@ -1,6 +1,6 @@
 const { Client, CommandInteraction, EmbedBuilder, SlashCommandBuilder, GuildScheduledEventPrivacyLevel, GuildScheduledEventEntityType, ChannelType } = require("discord.js");
 const { logging, checkMod } = require("../../utils/functions");
-const { format } = require("date-fns");
+const { format, addDays } = require("date-fns");
 
 module.exports = {
   name: "events",
@@ -103,6 +103,23 @@ module.exports = {
       if (time2 && time2.length < 2)
         return interaction.followUp({ content: "The start time provided is not valid, ensure the format is in 'hh:mm'", ephemeral: true });
 
+      if (date < Date.UTC(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        new Date().getDate(),
+        new Date().getHours(),
+        new Date().getMinutes(),
+        new Date().getSeconds()
+      )) {
+        if ((subCommand.options).find(option => option.name === "date"))
+          interaction.followUp({ content: "The event date must be in the future", ephemeral: true })
+        else
+          date = addDays(date, 1).toUTCString();
+      }
+
+      // Convert the date into a date object
+      date = new Date(date);
+
       // Convert the date to UTC
       date = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), time1[0], time1[1], 0, 0);
       // Add the time to the date
@@ -116,9 +133,6 @@ module.exports = {
         endTime = new Date(date)
           .setHours(time2[0], time2[1]);
       }
-
-      console.log("startTime: " + startTime);
-      console.log("endTime: " + endTime);
 
       events.create({
         name,
