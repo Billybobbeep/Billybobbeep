@@ -61,7 +61,7 @@ module.exports = async function(message, client) {
   let serverOptions = guild?.preferences?.serverOptions;
 
   // Ensure logging is enabled for this type
-  if (serverOptions.invitesEnabled === false) return;
+  if (!serverOptions || serverOptions?.invitesEnabled === false) return;
 
   // Ensure the message wasn't sent from an administrator or mod
   if (message.member.permissions.has("Administrator")) return;
