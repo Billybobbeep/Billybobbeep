@@ -187,7 +187,7 @@ module.exports.update = async function(oldMember, newMember, client) {
     // Ensure logging is enabled for this type
     if (!loggingTypes?.roleUpdates) return;
     // Set the embed description
-    embed.setDescription(`${newMember.user.username}'s roles have been updated`);
+    embed.setDescription(`**${newMember.user.username}**'s roles have been updated`);
     embed.setAuthor({
       name: newMember.user.tag,
       iconURL: newMember.user.displayAvatarURL()
