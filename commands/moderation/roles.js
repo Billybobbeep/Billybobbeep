@@ -142,6 +142,8 @@ module.exports = {
     if (!subCommand || !["single", "all"].includes(subCommand.name))
       return interaction.reply({ content: "Invalid arguments, ensure all required arguments have been provided", ephemeral: true });
 
+    console.log(subCommand);
+
     // Ensure the bot has the required permissions
     let me = await interaction.guild.members.fetchMe();
     if (!me.permissions.has(PermissionFlagsBits.Administrator) && !me.permissions.has(PermissionFlagsBits.ManageRoles))
@@ -160,9 +162,11 @@ module.exports = {
       return interaction.reply({ content: "Invalid arguments, please provide a role", ephemeral: true });
     if (!user && subCommand.name === "single")
       return interaction.reply({ content: "Invalid arguments, please provide a user", ephemeral: true });
-    if (!["yes", "no"].includes(includeBots?.toLowerCase()) && subCommand.name === "all")
-      return interaction.reply({ content: "Invalid arguments, please provide a user", ephemeral: true });
-    else {
+
+    if (!["yes", "no"].includes(includeBots?.toLowerCase()) && subCommand.name === "all") {
+      // Set default value
+      includeBots = false;
+    } else {
       // Translate 'yes' and 'no' to boolean values
       if (includeBots?.toLowerCase() === "yes")
         includeBots = true;
