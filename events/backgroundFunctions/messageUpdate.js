@@ -20,7 +20,7 @@ module.exports = async function(oldMessage, newMessage, client) {
 
   // Find the guild from the database
   let guild = await guilds.findOne({ guildId: newMessage.guild.id });
-  let loggingTypes = guild.preferences?.loggingTypes;
+  let loggingTypes = guild?.preferences?.loggingTypes;
 
   if (!loggingTypes?.messageUpdates) return;
 
