@@ -15,7 +15,7 @@ module.exports.add = async function(ban, client) {
   if (!ban instanceof GuildBan) return;
 
   // Find the guild from the database
-  let loggingTypes = (await guilds.findOne({ guildId: member.guild.id })).preferences?.loggingTypes;
+  let loggingTypes = (await guilds.findOne({ guildId: guild.id })).preferences?.loggingTypes;
 
   // If the settings state that the bot should log guild member bans
   if (!loggingTypes?.bans) return;
