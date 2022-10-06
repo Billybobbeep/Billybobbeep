@@ -115,7 +115,7 @@ module.exports = {
       `**User Tag:** ${member.user.tag}`,
       `**User ID:** ${member.user.id}`,
       `**Reason:** ${reason || "No reason provided"}`,
-      `**Respensible Moderator:** ${interaction.user.tag}`,
+      `**Responsible Moderator:** ${interaction.user.tag}`,
     ].join("\n"));
     // Log the event
     logging(embed, interaction, client, { type: "interaction", messageType: "embed" });
