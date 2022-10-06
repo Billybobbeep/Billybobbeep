@@ -77,7 +77,7 @@ module.exports = {
       return interaction.followUp({ content: "I cannot kick myself", ephemeral: true });
 
     // Cannot kick people with a higher role than yourself
-    if ((member.roles.highest.rawPosition || 0) <= (interaction.guild.members.cache.get(interaction.user.id).roles.highest.rawPosition || 0))
+    if ((member.roles.highest.rawPosition || 0) > (interaction.guild.members.cache.get(interaction.user.id).roles.highest.rawPosition || 0))
       return interaction.followUp({ content: "You cannot kick users with a higher role than yourself", ephemeral: true });
 
     // If the user is not kickable
@@ -116,7 +116,7 @@ module.exports = {
       `**User ID:** ${member.user.id}`,
       `**Reason:** ${reason || "No reason provided"}`,
       `**Respensible Moderator:** ${interaction.user.tag}`,
-    ]);
+    ].join("\n"));
     // Log the event
     logging(embed, interaction, client, { type: "interaction", messageType: "embed" });
   }

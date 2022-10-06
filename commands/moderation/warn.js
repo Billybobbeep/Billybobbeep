@@ -105,7 +105,7 @@ module.exports = {
     let guildMemberObj = await interaction.guild.members.fetch(user.id);
 
     // Cannot warn people with a higher role than yourself
-    if ((guildMemberObj.roles.highest.rawPosition || 0) <= (interaction.guild.members.cache.get(interaction.user.id).roles.highest.rawPosition || 0))
+    if ((guildMemberObj.roles.highest.rawPosition || 0) > (interaction.guild.members.cache.get(interaction.user.id).roles.highest.rawPosition || 0))
       return interaction.followUp({ content: "You cannot warn users with a higher role than yourself", ephemeral: true });
 
     // Add the warning to the member object

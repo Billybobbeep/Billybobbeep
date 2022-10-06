@@ -1,4 +1,4 @@
-const { Client, CommandInteraction, Embedbuilder, SlashCommandBuilder } = require("discord.js");
+const { Client, CommandInteraction, EmbedBuilder, SlashCommandBuilder } = require("discord.js");
 const { logging, checkMod } = require("../../utils/functions");
 
 module.exports = {
@@ -77,7 +77,7 @@ module.exports = {
       return interaction.followUp({ content: "I cannot ban myself", ephemeral: true });
 
     // Cannot ban people with a higher role than yourself
-    if ((member.roles.highest.rawPosition || 0) <= (interaction.guild.members.cache.get(interaction.user.id).roles.highest.rawPosition || 0))
+    if ((member.roles.highest.rawPosition || 0) > (interaction.guild.members.cache.get(interaction.user.id).roles.highest.rawPosition || 0))
       return interaction.followUp({ content: "You cannot ban users with a higher role than yourself", ephemeral: true });
 
     // If the user is not bannable
@@ -114,7 +114,7 @@ module.exports = {
       `**User ID:** ${member.user.id}`,
       `**Reason:** ${reason || "No reason provided"}`,
       `**Respensible Moderator:** ${interaction.user.tag}`,
-    ]);
+    ].join("\n"));
     // Log the event
     logging(embed, interaction, client, { type: "interaction", messageType: "embed" });
   }
