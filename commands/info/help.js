@@ -33,7 +33,7 @@ module.exports = {
     embed.setTitle("Billybobbeep | Help");
     embed.setColor("#447ba1");
     embed.setDescription([
-      "To view our commands, use /commands\n",
+      "To view our commands, use </commands:1016374432249430037>\n",
       "To whom it may concern, we have a [Privacy Policy](https://docs.google.com/document/d/1bIQNkYiQf1aGLqGYqyjN5dV0cOwvrpJVUnhF7PSBcoI/edit?usp=sharing) and a [Terms of Use](https://docs.google.com/document/d/1rDoLsEn7Ad27fg-px8Sxhu3V1xCWH-TKdtOkHwB8a28/edit?usp=sharing) policy publicly available"
     ].join("\n"));
 
