@@ -33,7 +33,7 @@ module.exports = async function(message, client) {
     `**Author ID:** ${message.author.id}`,
     `**Attachments:** ${message.attachments.size > 0
       ? message.attachments.map(a => `[${a.name}](${a.proxyURL})`).join("\n")
-      : ""
+      : "None"
     }`
   ].join("\n"));
 
