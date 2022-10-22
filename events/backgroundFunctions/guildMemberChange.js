@@ -206,7 +206,7 @@ module.exports.update = async function(oldMember, newMember, client) {
           // If auto roles are enforced
           if (guild?.preferences?.autoRoles?.enforceRoles) {
             // Ensure the removed role is not an auto role
-            if (!(guild.preferences.autoRoles.roleIds).includes(role.id)) {
+            if ((guild.preferences.autoRoles.roleIds).includes(role.id)) {
               // Add the role to the user
               newMember.roles.add(role.id, "This role is an enforced auto role");
             }
@@ -222,6 +222,9 @@ module.exports.update = async function(oldMember, newMember, client) {
             name: "Role Added",
             value: `<@&${role.id}>`
           }]);
+          if ((guild?.preferences?.autoRoles?.roleIds || []).includes(role.id)) {
+            embed.setFooter({ text: guild.preferences.autoRoles.enforceRoles ? "Enforced auto role" : "Auto role" });
+          }
         }
       });
     }
