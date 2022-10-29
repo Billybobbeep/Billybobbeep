@@ -5,19 +5,19 @@ Billy is a discord.js operating bot with the desire of replacing several bots wi
 
 # Versions
 - **Discord.js** : v14.0.3
-- **Bot Version** : v4.0.0
+- **Bot Version** : v4.0.1
 - **Node JS** : v16.11.1
 
 # Setup
 1. Clone this repository
 ```bash
-git clone https://github.com/Tyler2P/Billybobbeep
+git clone https://github.com/Billybobbeep/Billybobbeep
 ```
 2. Install dependencies
 ```bash
 npm install
 ```
-3. Customize the [config.json](https://github.com/Tyler2P/Billybobbeep/blob/master/utils/config.json) file
+3. Customize the [config.json](https://github.com/Billybobbeep/Billybobbeep/blob/master/utils/config.json) file
 ```json
 {
   "DevServer": "your-development-server-id" // To use the --dev-mode option on startup
@@ -33,7 +33,7 @@ npm run start
 ```
 
 # Feedback
-To let us know about any questions or issues you find in the source code, [submit an issue](https://github.com/Tyler2P/Billybobbeep/issues) in this repository.
+To let us know about any questions or issues you find in the source code, [submit an issue](https://github.com/Billybobbeep/Billybobbeep/issues) in this repository.
 
 # Licence
-Please read [our licence](https://github.com/Tyler2P/Billybobbeep/blob/master/LICENCE) before using this source code.
+Please read [our licence](https://github.com/Billybobbeep/Billybobbeep/blob/master/LICENCE) before using this source code.
