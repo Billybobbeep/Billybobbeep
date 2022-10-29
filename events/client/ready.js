@@ -1,5 +1,6 @@
-const { Client, Routes, ActivityType, Guild } = require("discord.js");
+const { Client, Routes, ActivityType, Guild} = require("discord.js");
 const { REST } = require("@discordjs/rest");
+const { default: axios } = require("axios");
 const fs = require("fs");
 const guilds = require("../../database/models/guilds");
 // Define the API client to connect with Discord
@@ -8,31 +9,38 @@ const rest = new REST({ version: "10" }).setToken(process.env.token);
 /**
  * Delete a slash command
  * @param {Client} client The bots client
+ * @param {?string} guildId The guild connected to the command
  * @param {object} command The command to delete
  */
-function deleteCommand(client, command) {
-  rest.delete(
-    Routes.applicationCommands(client.user.id, command.id)
-  );
+async function deleteCommand(client, guildId, command) {
+  if (guildId) {
+    return await axios
+      .delete(`https://discord.com/api/v10/applications/${client.user.id}/guilds/${guildId}/commands/${command.id}`, { headers: { Authorization: `Bot ${process.env.token}` }})
+      .catch(() => null);
+  } else {
+    return await axios
+      .delete(`https://discord.com/api/v10/applications/${client.user.id}/commands/${command.id}`, { headers: { Authorization: `Bot ${process.env.token}` }})
+      .catch(() => null);
+  }
 }
 
 /**
  * Post all slash commands to Discord
  * @param {Array} data The slash command data
- * @param {string} to The guild to post the slash commands to
+ * @param {?string} to The guild to post the slash commands to
  * @param {Client} client The bots client
  */
-function postSlashCommands(data, to, client) {
+async function postSlashCommands(data, to, client) {
   if (!to) {
     // Post command to all guilds
-    rest.put(
+    return await rest.put(
       Routes.applicationCommands(client.user.id),
       { body: data }
     )
     // .catch(() => console.log("Error posting slash commands"));
   } else {
     // Post command for use only in a specific server
-    rest.put(
+    return await rest.put(
       Routes.applicationGuildCommands(client.user.id, to),
       { body: data }
     )
@@ -70,6 +78,9 @@ async function setupSlashCommands(directory, client, guild) {
         guilds.find(function(err, data1) {
           if (err || !data) return;
           data1.forEach(guild => {
+            // Define the guild ID for the command
+            data.guild = guild.id;
+
             // If the server has setup a mod role
             // Some older servers in the database may not have converted to the new schema type
             if (guild.modRole || guild.preferences?.modRole) {
@@ -111,7 +122,7 @@ async function setupSlashCommands(directory, client, guild) {
       }
 
       // Post the command to Discord
-      if (command.slashInfo.public) { // If the slash command is public
+      if (command.slashInfo.public && !["mod", "moderation"].includes(command.category)) { // If the slash command is public and not for moderators
         // Push the command into the global commands array
         globalCommands.push(data);
       } else { // If the slash command is in testing
@@ -195,22 +206,55 @@ async function setupSlashCommands(directory, client, guild) {
   }
   // Post the private commands to Discord
   if (privateCommands.length > 0) {
-    postSlashCommands(privateCommands, require("../../utils/config.json").DevServer, client);
+    let devCommands = privateCommands.filter(x => typeof x.guild !== "string" || x.guild === require("../../utils/config.json").DevServer);
+    postSlashCommands(devCommands, require("../../utils/config.json").DevServer, client);
+    
+    let guilds = privateCommands.map(x => x.guild).filter((cmd, index, self) => self.indexOf(cmd) !== index);
+    guilds.forEach(g => {
+      postSlashCommands(privateCommands.filter(x => x.guild === g), g, client);
+    });
   }
 
   // Fetch all registered commands
   let commands = await rest.get(
     Routes.applicationCommands(client.user.id)
-  );
+  ).catch(() => null);
+
+  client.guilds.cache.forEach(async (guild) => {
+    let guildcommands = await rest.get(
+      Routes.applicationGuildCommands(client.user.id, guild.id)
+    ).catch(() => null);
+
+    if (!guildcommands) return;
+
+    // Delete non-public slash command(s) from guilds
+    for await (let command of [...guildcommands]) {
+      // If the command doesn't exist anymore
+        await deleteCommand(client, guild.id, command);
+      // If the command is not public or no longer supports slash
+      if (!client.commands.get(command.name)?.slashInfo || !client.commands.get(command.name)?.slashInfo?.public)
+        deleteCommand(client, guild.id, command);
+    }
+
+    // Remove duplicate commands
+    [...guildcommands]
+      .filter(function(cmd, index, self) {
+        // Filter all duplicate commands
+        return self.indexOf(cmd) !== index;
+      })
+      .forEach(cmd => {
+        deleteCommand(client, guild.id, cmd);
+      });
+  });
 
   // Delete non-public slash command(s) from guilds
-  [...commands].forEach(command => {
+  [...commands].forEach(async command => {
     // If the command doesn't exist anymore
     if (!client.commands.get(command.name))
-      deleteCommand(client, command);
+      await deleteCommand(client, null, command);
     // If the command is not public or no longer supports slash
     if (!client.commands.get(command.name)?.slashInfo || !client.commands.get(command.name)?.slashInfo?.public)
-      deleteCommand(client, command);
+      deleteCommand(client, null, command);
   });
 
   // Remove duplicate commands
@@ -220,7 +264,7 @@ async function setupSlashCommands(directory, client, guild) {
       return self.indexOf(cmd) !== index;
     })
     .forEach(cmd => {
-      deleteCommand(client, cmd);
+      deleteCommand(client, null, cmd);
     });
 }
 
