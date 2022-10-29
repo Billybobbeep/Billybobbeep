@@ -32,7 +32,8 @@ const guildSchema = new mongoose.Schema({
      */
     autoRoles: {
       roleIds: { type: Array }, // The roles to automatically give users upon joining
-      enforceRoles: { type: Boolean, default: false } // Whether to enforce the roles
+      enforceRoles: { type: Boolean, default: false }, // Whether to enforce the roles
+      includeBots: { type: Boolean, default: false } // Whether to include bots in the auto-roles
     },
     /**
      * Server stats configuration
@@ -44,7 +45,7 @@ const guildSchema = new mongoose.Schema({
      */
     serverStats: {
       enabled: { type: Boolean, default: false }, // Whether the server stats function is enabled
-      totalMembers: {
+      totalCount: {
         channelId: { type: String }, // The channel ID
         text: { type: String, default: "All Members: {totalCount}" }, // The text to display
       },
@@ -52,7 +53,7 @@ const guildSchema = new mongoose.Schema({
         channelId: { type: String }, // The channel ID
         text: { type: String, default: "Total Bots: {botCount}" }, // The text to display
       },
-      totalUsers: {
+      totalMembers: {
         channelId: { type: String }, // The channel ID
         text: { type: String, default: "Total Members: {memberCount}" }, // The text to display
       }

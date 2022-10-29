@@ -4,22 +4,31 @@ const guilds = require("../../database/models/guilds");
 const guildMembers = require("../../database/models/guildMembers");
 
 async function updateServerStats(guild) {
+  /**
+   * Replace string variables with a value
+   * @param {string} str The string to replace
+   */
+  function replaceVariables(str) {
+    str = str.replaceAll("{totalCount}", member.guild.memberCount);
+    str = str.replaceAll("{totalBots}", member.guild.members.cache.filter(m => m.user.bot).size);
+    str = str.replaceAll("{totalUsers}", member.guild.members.cache.filter(m => !m.user.bot).size);
+    
+    return str;
+  }
   // If the server stats channels have been enabled
   if (guild?.preferences?.serverStats?.enabled) {
     // Total member
-    let totalMembers = guild?.preferences?.serverStats?.totalMembers;
+    let totalCount = guild?.preferences?.serverStats?.totalCount;
     let totalBots = guild?.preferences?.serverStats?.totalBots;
-    let totalUsers = guild?.preferences?.serverStats?.totalUsers;
+    let totalMembers = guild?.preferences?.serverStats?.totalMembers;
 
-    if (totalMembers?.channelId) { // If the total member count is enabled
+    if (totalCount?.channelId) { // If the total member count is enabled
       // Find the channel
-      let channel = await member.guild.channels.fetch(totalMembers.channelId);
-      let text = totalMembers.text || "All Members: {totalCount}";
+      let channel = await member.guild.channels.fetch(totalCount.channelId);
+      let text = totalCount.text || "All Members: {totalCount}";
 
       // Replace the placeholders
-      text = text.replaceAll("{totalCount}", member.guild.memberCount);
-      text = text.replaceAll("{totalBots}", member.guild.members.cache.filter(m => m.user.bot).size);
-      text = text.replaceAll("{totalUsers}", member.guild.members.cache.filter(m => !m.user.bot).size);
+      text = replaceVariables(text);
 
       if (channel) { // If the channel provided exists
         // Edit the channel name
@@ -32,31 +41,43 @@ async function updateServerStats(guild) {
       let text = totalBots.text || "Total Bots: {botCount}";
 
       // Replace the placeholders
-      text = text.replaceAll("{totalCount}", member.guild.memberCount);
-      text = text.replaceAll("{totalBots}", member.guild.members.cache.filter(m => m.user.bot).size);
-      text = text.replaceAll("{totalUsers}", member.guild.members.cache.filter(m => !m.user.bot).size);
+      text = replaceVariables(text);
 
       if (channel) { // If the channel provided exists
         // Edit the channel name
-        channel.setName(text, "Server stats update");
+        channel.setName(text, "Server statistics update");
       }
     }
-    if (totalUsers?.channelId) { // If the total member count is enabled
+    if (totalMembers?.channelId) { // If the total member count is enabled
       // Find the channel
-      let channel = await member.guild.channels.fetch(totalUsers.channelId);
-      let text = totalUsers.text || "Total Members: {memberCount}";
+      let channel = await member.guild.channels.fetch(totalMembers.channelId);
+      let text = totalMembers.text || "Total Members: {memberCount}";
 
       // Replace the placeholders
-      text = text.replaceAll("{totalCount}", member.guild.memberCount);
-      text = text.replaceAll("{totalBots}", member.guild.members.cache.filter(m => m.user.bot).size);
-      text = text.replaceAll("{totalUsers}", member.guild.members.cache.filter(m => !m.user.bot).size);
+      text = replaceVariables(text);
 
       if (channel) { // If the channel provided exists
         // Edit the channel name
-        channel.setName(text, "Server stats update");
+        channel.setName(text, "Server statistics update");
       }
     }
   }
+}
+
+/**
+ * Replace string variables with a value
+ * @param {string} str The string to replace
+ */
+function replaceVariables(str) {
+  str = str.replaceAll("{user}", `<@!${member.user.id}>`);
+  str = str.replaceAll("{user.tag}", member.user.tag);
+  str = str.replaceAll("{user.id}", member.user.id);
+  str = str.replaceAll("{server}", member.guild.name);
+  str = str.replaceAll("{server.name}", member.guild.name);
+  str = str.replaceAll("{server.id}", member.guild.id);
+  str = str.replaceAll("{server.memberCount}", member.guild.memberCount);
+  
+  return str;
 }
 
 /**
@@ -85,12 +106,7 @@ module.exports.add = async function(member, _client) {
         message = `${member.user.tag} has left the server`;
 
       // Replace the placeholders
-      message = message.replaceAll("{user}", `<@!${member.user.id}>`);
-      message = message.replaceAll("{user.tag}", member.user.tag);
-      message = message.replaceAll("{user.id}", member.user.id);
-      message = message.replaceAll("{guild.name}", member.guild.name);
-      message = message.replaceAll("{guild.id}", member.guild.id);
-      message = message.replaceAll("{guild.memberCount}", member.guild.memberCount);
+      message = replaceVariables(message);
       
       // Send a message to the servers welcome channel
       channel.send(message);
@@ -102,6 +118,9 @@ module.exports.add = async function(member, _client) {
 
   // Give the members any automatic roles
   if (guild?.preferences?.autoRoles && Array.isArray(guild.preferences.autoRoles.roleIds)) {
+    // Ensure the user isn't a bot
+    if (guild?.preferences?.autoRoles.includeBots === false && member.user.bot) return;
+
     // Get the roles to give the member
     (guild.preferences.autoRoles.roleIds).forEach(roleId => {
       // If the role exists, give the member the role
@@ -143,12 +162,7 @@ module.exports.remove = async function(member, _client) {
         message = `${member.user.tag} has left the server`;
 
       // Replace the placeholders
-      message = message.replaceAll("{user}", `<@!${member.user.id}>`);
-      message = message.replaceAll("{user.tag}", member.user.tag);
-      message = message.replaceAll("{user.id}", member.user.id);
-      message = message.replaceAll("{guild.name}", member.guild.name);
-      message = message.replaceAll("{guild.id}", member.guild.id);
-      message = message.replaceAll("{guild.memberCount}", member.guild.memberCount);
+      message = replaceVariables(message);
       
       // Send a message to the servers welcome channel
       channel.send(message);
@@ -205,6 +219,8 @@ module.exports.update = async function(oldMember, newMember, client) {
 
           // If auto roles are enforced
           if (guild?.preferences?.autoRoles?.enforceRoles) {
+            // Ensure the user is not a bot if the auto roles do not include bots
+            if (!guild?.preferences?.autoRoles?.includeBots && newMember.user.bot) return;
             // Ensure the removed role is not an auto role
             if ((guild.preferences.autoRoles.roleIds).includes(role.id)) {
               // Add the role to the user
