@@ -13,6 +13,7 @@ const rest = new REST({ version: "10" }).setToken(process.env.token);
  * @param {object} command The command to delete
  */
 async function deleteCommand(client, guildId, command) {
+  console.log("delete command: " + command.name);
   if (guildId) {
     return await axios
       .delete(`https://discord.com/api/v10/applications/${client.user.id}/guilds/${guildId}/commands/${command.id}`, { headers: { Authorization: `Bot ${process.env.token}` }})
@@ -230,10 +231,13 @@ async function setupSlashCommands(directory, client, guild) {
     // Delete non-public slash command(s) from guilds
     for await (let command of [...guildcommands]) {
       // If the command doesn't exist anymore
+      if (!client.commands.get(command.name)) {
         await deleteCommand(client, guild.id, command);
+      }
       // If the command is not public or no longer supports slash
-      if (!client.commands.get(command.name)?.slashInfo || !client.commands.get(command.name)?.slashInfo?.public)
+      if (!client.commands.get(command.name)?.slashInfo || !client.commands.get(command.name)?.slashInfo?.public) {
         deleteCommand(client, guild.id, command);
+      }
     }
 
     // Remove duplicate commands
