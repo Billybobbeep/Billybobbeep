@@ -6,7 +6,7 @@ module.exports = {
   category: "info",
   slashInfo: {
     enabled: true,
-    public: false
+    public: true
   },
   /**
    * Get the command's slash info
