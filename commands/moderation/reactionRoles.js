@@ -259,7 +259,7 @@ module.exports = {
 
       // Ensure the role isn't already pending
       if (guild.pendingReactionRoles.find(role => role.roleId === role))
-        return interaction.followUp({ content: `This role is already pending to be inserted into an embed, use the </${this.name} create:1031229933332213846> command to send the embed to a channel`, ephemeral: true });
+        return interaction.followUp({ content: `This role is already pending to be inserted into an embed, use the </${this.name} create:1036663090437177367> command to send the embed to a channel`, ephemeral: true });
 
       // Add the role to the pending list
       let pendingRoles = guild.pendingReactionRoles || [];
@@ -424,7 +424,7 @@ module.exports = {
 
       // Ensure there are pending roles
       if (guild.pendingReactionRoles.length < 1)
-        return interaction.followUp({ content: `There are no pending roles, ensure you have used the </${this.name} add-reaction:1031229933332213846> before finalization`, ephemeral: true });
+        return interaction.followUp({ content: `There are no pending roles, ensure you have used the </${this.name} add-reaction:1036663090437177367> before finalization`, ephemeral: true });
 
       // Define the action row builder for the buttons
       let actionRow = new ActionRowBuilder();
