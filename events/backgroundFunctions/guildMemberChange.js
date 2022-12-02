@@ -11,7 +11,9 @@ async function updateServerStats(guild) {
   function replaceVariables(str) {
     str = str.replaceAll("{totalCount}", member.guild.memberCount);
     str = str.replaceAll("{totalBots}", member.guild.members.cache.filter(m => m.user.bot).size);
+    str = str.replaceAll("{botCount}", member.guild.members.cache.filter(m => m.user.bot).size);
     str = str.replaceAll("{totalUsers}", member.guild.members.cache.filter(m => !m.user.bot).size);
+    str = str.replaceAll("{memberCount}", member.guild.members.cache.filter(m => !m.user.bot).size);
     
     return str;
   }
