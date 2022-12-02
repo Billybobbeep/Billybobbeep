@@ -20,8 +20,6 @@ module.exports.add = async function(ban, client) {
   // If the settings state that the bot should log guild member bans
   if (!loggingTypes?.bans) return;
 
-  console.log("ban");
-
   // Fetch the client
   const me = await guild.members.fetchMe();
 
@@ -96,8 +94,6 @@ module.exports.remove = async function(ban, client) {
 
   // If the settings state that the bot should log guild member bans
   if (!loggingTypes?.bans) return;
-
-  console.log("unban");
 
   // Fetch the client
   const me = await guild.members.fetchMe();
