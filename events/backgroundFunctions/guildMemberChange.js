@@ -3,7 +3,12 @@ const { logging } = require("../../utils/functions");
 const guilds = require("../../database/models/guilds");
 const guildMembers = require("../../database/models/guildMembers");
 
-async function updateServerStats(guild) {
+/**
+ * 
+ * @param {*} guildObj The guild member object from the database
+ * @param {GuildMember} member The guild member object
+ */
+async function updateServerStats(guildObj, member) {
   /**
    * Replace string variables with a value
    * @param {string} str The string to replace
@@ -18,11 +23,11 @@ async function updateServerStats(guild) {
     return str;
   }
   // If the server stats channels have been enabled
-  if (guild?.preferences?.serverStats?.enabled) {
+  if (guildObj?.preferences?.serverStats?.enabled) {
     // Total member
-    let totalCount = guild?.preferences?.serverStats?.totalCount;
-    let totalBots = guild?.preferences?.serverStats?.totalBots;
-    let totalMembers = guild?.preferences?.serverStats?.totalMembers;
+    let totalCount = guildObj?.preferences?.serverStats?.totalCount;
+    let totalBots = guildObj?.preferences?.serverStats?.totalBots;
+    let totalMembers = guildObj?.preferences?.serverStats?.totalMembers;
 
     if (totalCount?.channelId) { // If the total member count is enabled
       // Find the channel
@@ -69,8 +74,9 @@ async function updateServerStats(guild) {
 /**
  * Replace string variables with a value
  * @param {string} str The string to replace
+ * @param {GuildMember} member The guild member object
  */
-function replaceVariables(str) {
+function replaceVariables(str, member) {
   str = str.replaceAll("{user}", `<@!${member.user.id}>`);
   str = str.replaceAll("{user.tag}", member.user.tag);
   str = str.replaceAll("{user.id}", member.user.id);
@@ -92,13 +98,13 @@ module.exports.add = async function(member, _client) {
   if (!member instanceof GuildMember) return;
 
   // Find the guild from the database
-  let guild = await guilds.findOne({ guildId: member.guild.id });
+  let guildObj = await guilds.findOne({ guildId: member.guild.id });
 
   // If the welcome channel is enabled
-  if (guild?.preferences?.welcomeChannel?.enabled) {
+  if (guildObj?.preferences?.welcomeChannel?.enabled) {
     // Define the properties
-    let channelId = guild.preferences?.welcomeChannel?.channelId;
-    let message = guild.preferences?.welcomeChannel?.joinMessage;
+    let channelId = guildObj.preferences?.welcomeChannel?.channelId;
+    let message = guildObj.preferences?.welcomeChannel?.joinMessage;
     // Find the channel
     let channel = await member.guild.channels.fetch(channelId || null);
 
@@ -108,7 +114,7 @@ module.exports.add = async function(member, _client) {
         message = `${member.user.tag} has left the server`;
 
       // Replace the placeholders
-      message = replaceVariables(message);
+      message = replaceVariables(message, member);
       
       // Send a message to the servers welcome channel
       channel.send(message);
@@ -116,15 +122,15 @@ module.exports.add = async function(member, _client) {
   }
 
   // Update the server stats
-  updateServerStats(guild);
+  updateServerStats(guildObj);
 
   // Give the members any automatic roles
-  if (guild?.preferences?.autoRoles && Array.isArray(guild.preferences.autoRoles.roleIds)) {
+  if (guildObj?.preferences?.autoRoles && Array.isArray(guildObj.preferences.autoRoles.roleIds)) {
     // Ensure the user isn't a bot
-    if (guild?.preferences?.autoRoles.includeBots === false && member.user.bot) return;
+    if (guildObj?.preferences?.autoRoles.includeBots === false && member.user.bot) return;
 
     // Get the roles to give the member
-    (guild.preferences.autoRoles.roleIds).forEach(roleId => {
+    (guildObj.preferences.autoRoles.roleIds).forEach(roleId => {
       // If the role exists, give the member the role
       if (roleId) {
         member.roles.add(roleId);
@@ -149,12 +155,12 @@ module.exports.remove = async function(member, _client) {
   }).catch(() => null);
 
   // Find the guild from the database
-  let guild = await guilds.findOne({ guildId: member.guild.id });
+  let guildObj = await guilds.findOne({ guildId: member.guild.id });
 
-  if (guild?.preferences?.welcomeChannel?.enabled) {
+  if (guildObj?.preferences?.welcomeChannel?.enabled) {
     // Define the properties
-    let channelId = guild.preferences?.welcomeChannel?.channelId;
-    let message = guild.preferences?.welcomeChannel?.leaveMessage;
+    let channelId = guildObj.preferences?.welcomeChannel?.channelId;
+    let message = guildObj.preferences?.welcomeChannel?.leaveMessage;
     // Find the channel
     let channel = await member.guild.channels.fetch(channelId || null);
 
@@ -164,7 +170,7 @@ module.exports.remove = async function(member, _client) {
         message = `${member.user.tag} has left the server`;
 
       // Replace the placeholders
-      message = replaceVariables(message);
+      message = replaceVariables(message, member);
       
       // Send a message to the servers welcome channel
       channel.send(message);
@@ -172,7 +178,7 @@ module.exports.remove = async function(member, _client) {
   }
 
   // Update the server stats
-  updateServerStats(guild);
+  updateServerStats(guildObj);
 }
 
 /**
@@ -189,8 +195,8 @@ module.exports.update = async function(oldMember, newMember, client) {
   ) return;
 
   // Find the guild from the database
-  let guild = await guilds.findOne({ guildId: newMember.guild.id });
-  let loggingTypes = guild?.preferences?.loggingTypes;
+  let guildObj = await guilds.findOne({ guildId: newMember.guild.id });
+  let loggingTypes = guildObj?.preferences?.loggingTypes;
 
   // Define the embed
   const embed = new EmbedBuilder();
@@ -220,11 +226,11 @@ module.exports.update = async function(oldMember, newMember, client) {
           }]);
 
           // If auto roles are enforced
-          if (guild?.preferences?.autoRoles?.enforceRoles) {
+          if (guildObj?.preferences?.autoRoles?.enforceRoles) {
             // Ensure the user is not a bot if the auto roles do not include bots
-            if (!guild?.preferences?.autoRoles?.includeBots && newMember.user.bot) return;
+            if (!guildObj?.preferences?.autoRoles?.includeBots && newMember.user.bot) return;
             // Ensure the removed role is not an auto role
-            if ((guild.preferences.autoRoles.roleIds).includes(role.id)) {
+            if ((guildObj.preferences.autoRoles.roleIds).includes(role.id)) {
               // Add the role to the user
               newMember.roles.add(role.id, "This role is an enforced auto role");
             }
@@ -240,8 +246,8 @@ module.exports.update = async function(oldMember, newMember, client) {
             name: "Role Added",
             value: `<@&${role.id}>`
           }]);
-          if ((guild?.preferences?.autoRoles?.roleIds || []).includes(role.id)) {
-            embed.setFooter({ text: guild.preferences.autoRoles.enforceRoles ? "Enforced auto role" : "Auto role" });
+          if ((guildObj?.preferences?.autoRoles?.roleIds || []).includes(role.id)) {
+            embed.setFooter({ text: guildObj.preferences.autoRoles.enforceRoles ? "Enforced auto role" : "Auto role" });
           }
         }
       });
