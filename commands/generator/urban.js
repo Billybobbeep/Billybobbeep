@@ -58,13 +58,14 @@ module.exports = {
     // Defer a reply
     await interaction.deferReply();
 
-    let definition = await axios.get(`http://api.urbandictionary.com/v0/define?term=${word}`);
+    let definitionObj = await axios.get(`http://api.urbandictionary.com/v0/define?term=${word}`);
     let includesBadwords = false;
 
-    if (!definition || !definition.data || !definition.data.list || !definition.data.list.length)
+    if (!definitionObj || !definitionObj.data || !definitionObj.data?.list || !definitionObj.data?.list?.length)
       return interaction.followUp({ embeds: [embed] });
 
-    definition = definition.data.list[0]?.definition;
+    definitionObj = definitionObj.data.list[0];
+    let definition = definitionObj.definition;
     let split = definition.split(/ +/g);
 
     for await (let badword of badwords) {
@@ -78,15 +79,15 @@ module.exports = {
       embed.setDescription((definition).replaceAll("[", "").replaceAll("]", ""));
 
     embed.setFooter({
-      text: `Billybobbeep is not responsible for what you search | Written by: ${definition.author || "Unknown"}`,
+      text: `Billybobbeep is not responsible for what you search | Written by: ${definitionObj.author || "Unknown"}`,
     });
     embed.addFields({
       name: "Upvotes",
-      value: (definition.thumbs_up || 0).toString(),
+      value: (definitionObj.thumbs_up || 0).toString(),
       inline: true
     }, {
       name: "Downvotes",
-      value: (definition.thumbs_down || 0).toString(),
+      value: (definitionObj.thumbs_down || 0).toString(),
       inline: true
     });
 
