@@ -1,5 +1,6 @@
 const { Client, CommandInteraction, SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { default: axios } = require("axios");
+const badwords = require("badwords");
 
 module.exports = {
   name: "urban",
@@ -58,13 +59,24 @@ module.exports = {
     await interaction.deferReply();
 
     let definition = await axios.get(`http://api.urbandictionary.com/v0/define?term=${word}`);
+    let includesBadwords = false;
 
     if (!definition || !definition.data || !definition.data.list || !definition.data.list.length)
-      return interaction.reply({ embeds: [embed] });
+      return interaction.followUp({ embeds: [embed] });
 
-    definition = definition.data.list[0];
+    definition = definition.data.list[0]?.definition;
+    let split = definition.split(/ +/g);
 
-    embed.setDescription((definition.definition).replaceAll("[", "").replaceAll("]", ""));
+    for await (let badword of badwords) {
+      if (split.includes(badword))
+        includesBadwords = true;
+    }
+
+    if (includesBadwords && !interaction.channel.nsfw)
+      return interaction.followUp({ content: "This definition may include some nsfw content, please rerun this command in an nsfw channel" });
+    else
+      embed.setDescription((definition).replaceAll("[", "").replaceAll("]", ""));
+
     embed.setFooter({
       text: `Billybobbeep is not responsible for what you search | Written by: ${definition.author || "Unknown"}`,
     });
