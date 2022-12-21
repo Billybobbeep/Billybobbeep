@@ -21,12 +21,12 @@ module.exports = {
     builder.setDescription(this.description);
     // If the command can be used in DMs
     builder.setDMPermission(false);
-    // Add an option to provide a word
+    // Add an option to provide a phrase
     builder.addStringOption((option) => {
       // Set the option name
-      option.setName("word");
+      option.setName("phrase");
       // Set the option description
-      option.setDescription("The word to lookup");
+      option.setDescription("The phrase to lookup");
       // If the option is required
       option.setRequired(true);
       // Set the minimum and maximum length requirements
@@ -45,7 +45,7 @@ module.exports = {
    */
   execute: async function(interaction, _client) {
     // Find command options
-    let word = (interaction.options.data).find((option) => option.name === "word")?.value;
+    let word = (interaction.options.data).find((option) => option.name === "phrase")?.value;
 
     // Construct an embed
     const embed = new EmbedBuilder();
