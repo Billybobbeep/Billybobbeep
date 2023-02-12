@@ -272,11 +272,12 @@ module.exports = {
       if (emoji) {
         const regex_emoji = /[\p{Extended_Pictographic}\u{1F3FB}-\u{1F3FF}\u{1F9B0}-\u{1F9B3}]+/gu;
         let match = emoji.match(regex_emoji);
-        emoji = match[0];
 
         if (match.length < 1)
           interaction.followUp({ content: "A valid emoji must be provided to use reaction-roles", ephemeral: true });
-        else if (emoji.length === 2)
+
+        emoji = match[0];
+        if (emoji.length === 2)
           data.emoji = emoji;
         else if (emoji.length > 2)
           interaction.followUp({ content: "The 'emoji' field can only accept one emoji", ephemeral: true });
