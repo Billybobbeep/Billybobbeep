@@ -269,8 +269,18 @@ module.exports = {
       }
 
       // If an emoji was provided, add it to the data
-      if (emoji)
-        data.emoji = emoji;
+      if (emoji) {
+        const regex_emoji = /[\p{Extended_Pictographic}\u{1F3FB}-\u{1F3FF}\u{1F9B0}-\u{1F9B3}]+/gu;
+        let match = emoji.match(regex_emoji);
+        emoji = match[0];
+
+        if (match.length < 1)
+          interaction.followUp({ content: "A valid emoji must be provided to use reaction-roles", ephemeral: true });
+        else if (emoji.length === 2)
+          data.emoji = emoji;
+        else if (emoji.length > 2)
+          interaction.followUp({ content: "The 'emoji' field can only accept one emoji", ephemeral: true });
+      }
       if (color && ["blue", "grey", "green", "red"].includes(color))
         data.color = color;
 
@@ -460,7 +470,12 @@ module.exports = {
           // Find the role name
           let roleName = interaction.guild.roles.cache.get(obj.roleId)?.name || "New Role";
           // Add the button ID to the array
-          buttons.push({ buttonId: id, roleId: obj.roleId });
+          buttons.push({
+            buttonId: id,
+            roleId: obj.roleId,
+            emoji: obj.emoji,
+            color: obj.color
+          });
           // Set the button style
           button.setStyle((function() {
             switch (obj.color) {
