@@ -330,7 +330,7 @@ module.exports = {
 
       // Ensure the role isn't already pending
       if (!guild.pendingReactionRoles.find(role => role.roleId === role))
-        return interaction.followUp({ content: "This role is not in the ", ephemeral: true });
+        return interaction.followUp({ content: "This role is not in the pending list", ephemeral: true });
 
       // Add the role to the pending list
       let pendingRoles = guild.pendingReactionRoles || [];
