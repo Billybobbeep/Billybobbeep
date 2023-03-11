@@ -18,7 +18,7 @@ const guildSchema = new mongoose.Schema({
 
     modRoles: { type: Array }, // The server mod role
     customMods: { type: Array }, // Custom added server mods
-    mutedRole: { type: String }, // The role that muted users recieve to prevent them from talking
+    mutedRole: { type: String }, // The role that muted users receive to prevent them from talking
     /**
      * Allows users to claim a certain role after achieving a certain level
      */
@@ -26,6 +26,13 @@ const guildSchema = new mongoose.Schema({
       level: { type: Number }, // The level required to get the role
       roleId: { type: String } // The role ID
     }],
+
+    /**
+     * The servers polls
+     */
+    polls: {
+      automaticallyPost: { type: Boolean } // Automatically post the polls that are posted in the server
+    },
 
     /**
      * The servers auto roles
@@ -109,10 +116,17 @@ const guildSchema = new mongoose.Schema({
   reactionRoles: [{
     messageId: { type: String }, // The message ID
     channelId: { type: String }, // The channel ID
-    id: { type: String }, // The ID of the reaction role
+    id: { type: String, required: true }, // The ID of the reaction role
+    color: { type: String }, // The reaction role color
+    title: { type: String }, // The title of the reaction role
+    description: { type: String }, // The description of the reaction role
+    position: { type: Number, default: 999 }, // The position of the embed
+    archived: { type: Boolean }, // Whether the reaction role has been archived
     reactions: [{
       buttonId: { type: String }, // The button ID
       roleId: { type: String }, // The role ID
+      emoji: { type: String }, // The emoji ID
+      color: { type: String }, // The color of the button
       _id: false // Disable default IDs
     }],
     _id: false // Disable default IDs
@@ -125,13 +139,30 @@ const guildSchema = new mongoose.Schema({
     timestamp: { type: String, default: new Date().toString() }, // The timestamp of the reaction role
     _id: false // Disable default IDs
   }],
+  polls: [{
+    id: { type: String }, // The poll ID
+    title: { type: String }, // The poll's title
+    description: { type: String }, // The poll's description
+    position: { type: Number, default: 999 }, // The position of the embed
+    showVoters: { type: Boolean, default: true }, // Whether to show the voters to users
+    pending: { type: Boolean }, // Whether the poll has been posted
+    archived: { type: Boolean }, // Whether the poll has been archived
+    options: [{
+      name: { type: String }, // Name of the option
+      emoji: { type: String }, // The emoji associated
+      voters: { type: Array } // Array of who has voted
+    }]
+  }],
   logs: [{ // Dashboard logs
     user: { type: String }, // The user ID
+    flag: { type: String }, // The log flag
     event: {
       title: { type: String }, // The event title
-      description: { type: String } // The event description
+      description: { type: String }, // The event description
+      notes: { type: String } // Additional information for the log
     },
     timestamp: { type: String, default: new Date().toString() }, // The timestamp of the event
+    expires: { type: String, default: new Date(new Date().getTime() + 8.294e+9).toString() }, // When the log expires (96 days)
     _id: false // Disable default IDs
   }]
 });
