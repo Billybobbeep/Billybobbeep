@@ -273,14 +273,14 @@ module.exports = {
         const regex_emoji = /[\p{Extended_Pictographic}\u{1F3FB}-\u{1F3FF}\u{1F9B0}-\u{1F9B3}]+/gu;
         let match = emoji.match(regex_emoji);
 
-        if (match.length < 1)
-          interaction.followUp({ content: "A valid emoji must be provided to use reaction-roles", ephemeral: true });
+        if (!match || (match && match.length < 1))
+          return interaction.followUp({ content: "A valid emoji must be provided to use reaction-roles", ephemeral: true });
 
         emoji = match[0];
         if (emoji.length === 2)
           data.emoji = emoji;
         else if (emoji.length > 2)
-          interaction.followUp({ content: "The 'emoji' field can only accept one emoji", ephemeral: true });
+          return interaction.followUp({ content: "The 'emoji' field can only accept one emoji", ephemeral: true });
       }
       if (color && ["blue", "grey", "green", "red"].includes(color))
         data.color = color;
@@ -509,18 +509,32 @@ module.exports = {
       // Send the embed to the correct channel
       let msg = await channel.send({ embeds: [embed], components: [actionRow] });
 
+      // Log the event
+      let logs = [...guild.logs];
+      logs.push({
+        user: interaction.user.id,
+        flag: "REACTION_ROLE_CREATE",
+        event: {
+          title: "Reaction Role Created",
+          description: `${interaction.user.username} has created a reaction role`,
+          notes: reactionId
+        }
+      });
+      guild.logs = logs;
+
+      // Update the reaction-role array
       reactionRoles.push({
         messageId: msg.id,
         channelId: channel.id,
         id: reactionId,
         reactions: buttons
       });
-
       guild.reactionRoles = reactionRoles;
 
       // Clear the pending roles array
       guild.pendingReactionRoles = [];
       // Mark the document as modified
+      guild.markModified("logs");
       guild.markModified("pendingReactionRoles");
       guild.markModified("reactionRoles");
       // Save the guild object
