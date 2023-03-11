@@ -55,7 +55,7 @@ module.exports = {
         .fetch(guild?.preferences?.loggingChannel)
         .catch(() => null);
     } else {
-      throw new Error("A valid type must be specified, recieved " + options.type);
+      throw new Error("A valid type must be specified, received " + options.type);
     }
 
     if (channel.type !== ChannelType.GuildText) return;
@@ -140,9 +140,9 @@ module.exports = {
     // TODO: Finish function
     
     if (!client)
-      throw new TypeError(`A valid client must be provided, recieved ${typeof interactionId}`);
+      throw new TypeError(`A valid client must be provided, received ${typeof interactionId}`);
     if (!Array.isArray(commandsArr))
-      throw new TypeError(`A valid commandsArr must be provided, recieved ${typeof commandsArr}`);
+      throw new TypeError(`A valid commandsArr must be provided, received ${typeof commandsArr}`);
 
     commandsArr.forEach(async (command) => {
       // Ensure the command is of correct type
@@ -183,7 +183,7 @@ module.exports = {
     return result;
   },
   /**
-   * Correclty capitalise a string
+   * Correctly capitalise a string
    * @param {String} string The string to correct
    * @returns The corrected string
    */

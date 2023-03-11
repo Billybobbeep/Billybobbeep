@@ -47,7 +47,7 @@ export function checkMod(interaction: CommandInteraction, guildObj?: Schema): Pr
 export function makeid(length?: number): String;
 
 /**
- * Correclty capitalise a string
+ * Correctly capitalise a string
  * @param string The string to correct
  * @returns The corrected string
  */
