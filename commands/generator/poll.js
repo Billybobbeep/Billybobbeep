@@ -1,4 +1,6 @@
 const { Client, CommandInteraction, SlashCommandBuilder, ChannelType } = require("discord.js");
+const Guilds = require("../../database/models/guilds");
+const { makeid } = require("../../utils/functions");
 
 module.exports = {
   name: "poll",
@@ -95,5 +97,25 @@ module.exports = {
 
     // Reply to the interaction
     interaction.followUp({ content: "Poll sent successfully", ephemeral: false });
+
+    // Add the poll to the database
+    let guild = await Guilds.findOne({ guildId: interaction.guild.id });
+    let polls = guild.polls;
+    polls.push({
+      id: makeid(8),
+      title: message,
+      pending: guild.preferences?.polls?.automaticallyPost ? false : true,
+      options: [{
+        name: "Yes",
+        emoji: "👍"
+      }, {
+        name: "No",
+        emoji: "👎"
+      }]
+    });
+    guild.polls = polls;
+    // Save the changes
+    guild.markModified("polls");
+    guild.save();
   }
 }
