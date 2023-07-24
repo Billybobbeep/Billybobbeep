@@ -35,7 +35,7 @@ module.exports = {
     embed.addFields([
       {
         name: "Invite the bot to your server",
-        value: `[https://discord.com/authorize/...](https://discord.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=8)`,
+        value: `[discord.com/oauth2/authorize](https://discord.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=8)`,
         inline: false
       }, {
         name: "View the bot on top.gg",
